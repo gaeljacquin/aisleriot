@@ -35,7 +35,7 @@ cd apps/web && pnpm test
 ## Linting & Formatting
 
 ```bash
-pnpm lint         # ESLint across all packages
+pnpm lint         # ESLint across all packages (excludes packages/ui)
 pnpm format       # Prettier format check
 pnpm typecheck    # TypeScript type checking
 ```

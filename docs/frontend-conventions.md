@@ -5,7 +5,7 @@
 - **Framework**: Vite + TanStack Router (file-based routing).
 - **Styling**: Tailwind CSS v4.
 - **UI Components**: Base UI + `@workspace/ui` (shadcn/ui).
-- **Icons**: HugeIcons (`@hugeicons/react`) — preferred. Lucide (`lucide-react`) is kept for compatibility but do not use it for new code.
+- **Icons**: HugeIcons (`@hugeicons/react`) — use for all icons. Lucide has been removed from the project.
 - **State Management**: Zustand (game stores).
 - **Drag-and-drop**: dnd-kit (`@dnd-kit/core`, `@dnd-kit/sortable`).
 - **Validation**: Zod.
@@ -25,6 +25,15 @@ These skills are located in `.agents/skills/`.
 - **Global Styles**: `packages/ui/src/styles/globals.css` — OKLch color tokens, dark mode via `.dark` class.
 - **App Styles**: `apps/web/src/styles.css` — app-specific CSS variables and animations.
 - Scrollbars are disabled globally.
+
+### Game Page Colors
+
+The game page (where a game is actively played) uses a distinct color scheme from the rest of the app:
+
+- **Background**: `bg-primary` (green) — the full game canvas background.
+- **Buttons and interactive elements**: `bg-secondary` — keeps action elements visually distinct from the green felt surface.
+
+This applies to any route that renders a live game (e.g., `routes/klondike.tsx`). Other pages (menus, settings, how-to-play) use the default `bg-background`.
 
 ### Conditional ClassNames
 
