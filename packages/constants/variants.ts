@@ -1,4 +1,4 @@
-export type GameVariantId = 'klondike' | 'freecell' | 'pyramid' | 'tri-peaks'
+export type GameVariantId = 'klondike' | 'freecell' | 'pyramid' | 'tri-peaks' | 'tri-peaks-alt'
 
 export interface GameVariant {
   id: GameVariantId
@@ -55,7 +55,20 @@ export const gameVariants: GameVariant[] = [
     rules: [
       'Cards are arranged into three overlapping pyramids (peaks) of 4 rows each, plus a stock pile of 24 cards.',
       'The goal is to clear all cards from the peaks by sending them to the discard pile.',
-      'A face-up peak card may be moved to the discard pile if it is one rank higher or lower than the current top of the discard pile — suit does not matter.',
+      'A face-up peak card may be moved to the discard pile if it is one rank higher or lower than the current top of the discard pile — suit does not matter. Wrap-around is disabled: Kings and Aces are not adjacent.',
+      'When no moves are available, draw a card from the stock to the discard pile to continue the chain.',
+      'Building long chains without drawing from the stock earns bonus points.',
+    ],
+  },
+  {
+    id: 'tri-peaks-alt',
+    name: 'Tri Peaks Alt',
+    description: 'Tri Peaks with wrap-around: Kings and Aces are adjacent.',
+    color: 'bg-violet-100 dark:bg-violet-950',
+    rules: [
+      'Cards are arranged into three overlapping pyramids (peaks) of 4 rows each, plus a stock pile of 24 cards.',
+      'The goal is to clear all cards from the peaks by sending them to the discard pile.',
+      'A face-up peak card may be moved to the discard pile if it is one rank higher or lower than the current top — wrap-around enabled: Kings and Aces are adjacent.',
       'When no moves are available, draw a card from the stock to the discard pile to continue the chain.',
       'Building long chains without drawing from the stock earns bonus points.',
     ],

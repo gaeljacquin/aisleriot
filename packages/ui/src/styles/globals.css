@@ -5,7 +5,7 @@
 
 @custom-variant dark (&:is(.dark *));
 @source "../../../apps/**/*.{ts,tsx}";
-@source inline("bg-purple-100 dark:bg-purple-950 bg-sky-100 dark:bg-sky-950 bg-orange-100 dark:bg-orange-950 bg-rose-100 dark:bg-rose-950");
+@source inline("bg-purple-100 dark:bg-purple-950 bg-sky-100 dark:bg-sky-950 bg-orange-100 dark:bg-orange-950 bg-rose-100 dark:bg-rose-950 bg-violet-100 dark:bg-violet-950");
 @source "../../../components/**/*.{ts,tsx}";
 @source "../**/*.{ts,tsx}";
 

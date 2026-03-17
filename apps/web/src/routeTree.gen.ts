@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TriPeaksAltRouteImport } from './routes/tri-peaks-alt'
 import { Route as TriPeaksRouteImport } from './routes/tri-peaks'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as PyramidRouteImport } from './routes/pyramid'
@@ -20,6 +21,11 @@ import { Route as CreditsRouteImport } from './routes/credits'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TriPeaksAltRoute = TriPeaksAltRouteImport.update({
+  id: '/tri-peaks-alt',
+  path: '/tri-peaks-alt',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TriPeaksRoute = TriPeaksRouteImport.update({
   id: '/tri-peaks',
   path: '/tri-peaks',
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/pyramid': typeof PyramidRoute
   '/settings': typeof SettingsRoute
   '/tri-peaks': typeof TriPeaksRoute
+  '/tri-peaks-alt': typeof TriPeaksAltRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/pyramid': typeof PyramidRoute
   '/settings': typeof SettingsRoute
   '/tri-peaks': typeof TriPeaksRoute
+  '/tri-peaks-alt': typeof TriPeaksAltRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -107,6 +115,7 @@ export interface FileRoutesById {
   '/pyramid': typeof PyramidRoute
   '/settings': typeof SettingsRoute
   '/tri-peaks': typeof TriPeaksRoute
+  '/tri-peaks-alt': typeof TriPeaksAltRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
     | '/pyramid'
     | '/settings'
     | '/tri-peaks'
+    | '/tri-peaks-alt'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
     | '/pyramid'
     | '/settings'
     | '/tri-peaks'
+    | '/tri-peaks-alt'
   id:
     | '__root__'
     | '/'
@@ -145,6 +156,7 @@ export interface FileRouteTypes {
     | '/pyramid'
     | '/settings'
     | '/tri-peaks'
+    | '/tri-peaks-alt'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -158,10 +170,18 @@ export interface RootRouteChildren {
   PyramidRoute: typeof PyramidRoute
   SettingsRoute: typeof SettingsRoute
   TriPeaksRoute: typeof TriPeaksRoute
+  TriPeaksAltRoute: typeof TriPeaksAltRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tri-peaks-alt': {
+      id: '/tri-peaks-alt'
+      path: '/tri-peaks-alt'
+      fullPath: '/tri-peaks-alt'
+      preLoaderRoute: typeof TriPeaksAltRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tri-peaks': {
       id: '/tri-peaks'
       path: '/tri-peaks'
@@ -246,6 +266,7 @@ const rootRouteChildren: RootRouteChildren = {
   PyramidRoute: PyramidRoute,
   SettingsRoute: SettingsRoute,
   TriPeaksRoute: TriPeaksRoute,
+  TriPeaksAltRoute: TriPeaksAltRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
