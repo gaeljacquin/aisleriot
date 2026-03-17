@@ -30,28 +30,28 @@ const menuItems: {
   {
     label: 'New Game',
     arrow: ArrowRight02Icon,
-    bg: 'bg-red-500',
+    bg: 'bg-primary',
     to: '/new-game',
     hovered: { x: [0, 10, 0], transition },
   },
   {
     label: 'How to Play',
     arrow: ArrowDownRight01Icon,
-    bg: 'bg-amber-500',
+    bg: 'bg-pink-500',
     to: '/how-to-play',
     hovered: { x: [0, 10, 0], y: [0, 10, 0], transition },
   },
   {
     label: 'Settings',
     arrow: ArrowUpRight01Icon,
-    bg: 'bg-blue-500',
+    bg: 'bg-orange-500',
     to: '/settings',
     hovered: { x: [0, 10, 0], y: [0, -10, 0], transition },
   },
   {
     label: 'Credits',
     arrow: ArrowDown02Icon,
-    bg: 'bg-black',
+    bg: 'bg-indigo-500',
     to: '/credits',
     hovered: { y: [0, 10, 0], transition },
   },
@@ -73,7 +73,7 @@ function MenuItem({
       onMouseLeave={() => setIsHovered(false)}
     >
       <motion.span
-        className="inline-block w-6 text-center text-base font-medium text-black"
+        className="inline-block w-6 text-center text-base font-medium text-foreground"
         animate={isHovered ? hovered : { x: 0, y: 0 }}
       >
         <HugeiconsIcon icon={arrow} />
@@ -90,11 +90,16 @@ function MenuItem({
 
 function Home() {
   return (
-    <main className="flex h-full flex-col items-center justify-center bg-white">
+    <main className="flex h-full flex-col items-center justify-center bg-background">
       <img
         src="/logo.png"
         alt={appInfo.title}
-        className="mb-14 w-60 rounded-xl object-contain"
+        className="mb-14 w-60 rounded-xl object-contain dark:hidden"
+      />
+      <img
+        src="/logo-dark.png"
+        alt={appInfo.title}
+        className="mb-14 hidden w-60 rounded-xl object-contain dark:block"
       />
 
       <div className="flex flex-col gap-6">
