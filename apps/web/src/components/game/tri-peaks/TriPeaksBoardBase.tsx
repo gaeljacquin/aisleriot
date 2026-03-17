@@ -129,7 +129,7 @@ export default function TriPeaksBoardBase({ useGame, onHowToPlay }: TriPeaksBoar
           <p
             className={cn(
               'text-3xl font-black tracking-wide',
-              effectiveStatus === 'won' ? 'text-green-500' : 'text-red-500',
+              effectiveStatus === 'won' ? 'text-primary' : 'text-red-500',
             )}
           >
             {effectiveStatus === 'won' ? 'VICTORY' : 'GAME OVER'}

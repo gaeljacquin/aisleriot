@@ -1,19 +1,31 @@
+import { useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
+import { getVariant } from '@workspace/constants'
 import BackLink from '@/components/BackLink'
+import { HowToPlayModal } from '@/components/HowToPlayModal'
+import { PyramidBoard } from '@/components/game/pyramid'
 
 export const Route = createFileRoute('/pyramid')({ component: Pyramid })
 
 function Pyramid() {
+  const [howToPlayOpen, setHowToPlayOpen] = useState(false)
+
   return (
     <main className="flex h-full flex-col px-6 py-10">
-      <div className="mb-10">
-        <BackLink label='New Game' destination='/new-game' />
+      <div className="relative mb-6 flex items-center">
+        <BackLink label="Game Menu" destination="/new-game" />
+        <h1 className="absolute left-1/2 -translate-x-1/2 text-2xl font-bold text-foreground">Pyramid</h1>
       </div>
 
-      <div className="flex flex-1 flex-col items-center justify-center gap-3">
-        <h1 className="text-3xl font-bold text-foreground">Pyramid</h1>
-        <p className="text-sm text-muted-foreground">Coming Soon</p>
+      <div className="flex flex-1 flex-col">
+        <PyramidBoard onHowToPlay={() => setHowToPlayOpen(true)} />
       </div>
+
+      <HowToPlayModal
+        variant={getVariant('pyramid')}
+        open={howToPlayOpen}
+        onOpenChange={setHowToPlayOpen}
+      />
     </main>
   )
 }

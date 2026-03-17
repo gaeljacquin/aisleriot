@@ -48,7 +48,7 @@ function GameComponent() {
   return (
     <main className="flex h-full flex-col px-6 py-10">
       <div className="mb-6">
-        <BackLink label="New Game" destination="/new-game" />
+        <BackLink label="Game Menu" destination="/new-game" />
       </div>
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-foreground">Game Name</h1>

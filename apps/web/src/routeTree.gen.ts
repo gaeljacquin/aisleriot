@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TriPeaksAltRouteImport } from './routes/tri-peaks-alt'
 import { Route as TriPeaksRouteImport } from './routes/tri-peaks'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as PyramidAltRouteImport } from './routes/pyramid-alt'
 import { Route as PyramidRouteImport } from './routes/pyramid'
 import { Route as NewGameRouteImport } from './routes/new-game'
 import { Route as KlondikeRouteImport } from './routes/klondike'
@@ -34,6 +35,11 @@ const TriPeaksRoute = TriPeaksRouteImport.update({
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PyramidAltRoute = PyramidAltRouteImport.update({
+  id: '/pyramid-alt',
+  path: '/pyramid-alt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PyramidRoute = PyramidRouteImport.update({
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/klondike': typeof KlondikeRoute
   '/new-game': typeof NewGameRoute
   '/pyramid': typeof PyramidRoute
+  '/pyramid-alt': typeof PyramidAltRoute
   '/settings': typeof SettingsRoute
   '/tri-peaks': typeof TriPeaksRoute
   '/tri-peaks-alt': typeof TriPeaksAltRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/klondike': typeof KlondikeRoute
   '/new-game': typeof NewGameRoute
   '/pyramid': typeof PyramidRoute
+  '/pyramid-alt': typeof PyramidAltRoute
   '/settings': typeof SettingsRoute
   '/tri-peaks': typeof TriPeaksRoute
   '/tri-peaks-alt': typeof TriPeaksAltRoute
@@ -113,6 +121,7 @@ export interface FileRoutesById {
   '/klondike': typeof KlondikeRoute
   '/new-game': typeof NewGameRoute
   '/pyramid': typeof PyramidRoute
+  '/pyramid-alt': typeof PyramidAltRoute
   '/settings': typeof SettingsRoute
   '/tri-peaks': typeof TriPeaksRoute
   '/tri-peaks-alt': typeof TriPeaksAltRoute
@@ -128,6 +137,7 @@ export interface FileRouteTypes {
     | '/klondike'
     | '/new-game'
     | '/pyramid'
+    | '/pyramid-alt'
     | '/settings'
     | '/tri-peaks'
     | '/tri-peaks-alt'
@@ -141,6 +151,7 @@ export interface FileRouteTypes {
     | '/klondike'
     | '/new-game'
     | '/pyramid'
+    | '/pyramid-alt'
     | '/settings'
     | '/tri-peaks'
     | '/tri-peaks-alt'
@@ -154,6 +165,7 @@ export interface FileRouteTypes {
     | '/klondike'
     | '/new-game'
     | '/pyramid'
+    | '/pyramid-alt'
     | '/settings'
     | '/tri-peaks'
     | '/tri-peaks-alt'
@@ -168,6 +180,7 @@ export interface RootRouteChildren {
   KlondikeRoute: typeof KlondikeRoute
   NewGameRoute: typeof NewGameRoute
   PyramidRoute: typeof PyramidRoute
+  PyramidAltRoute: typeof PyramidAltRoute
   SettingsRoute: typeof SettingsRoute
   TriPeaksRoute: typeof TriPeaksRoute
   TriPeaksAltRoute: typeof TriPeaksAltRoute
@@ -194,6 +207,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pyramid-alt': {
+      id: '/pyramid-alt'
+      path: '/pyramid-alt'
+      fullPath: '/pyramid-alt'
+      preLoaderRoute: typeof PyramidAltRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pyramid': {
@@ -264,6 +284,7 @@ const rootRouteChildren: RootRouteChildren = {
   KlondikeRoute: KlondikeRoute,
   NewGameRoute: NewGameRoute,
   PyramidRoute: PyramidRoute,
+  PyramidAltRoute: PyramidAltRoute,
   SettingsRoute: SettingsRoute,
   TriPeaksRoute: TriPeaksRoute,
   TriPeaksAltRoute: TriPeaksAltRoute,

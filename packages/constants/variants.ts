@@ -1,4 +1,4 @@
-export type GameVariantId = 'klondike' | 'freecell' | 'pyramid' | 'tri-peaks' | 'tri-peaks-alt'
+export type GameVariantId = 'klondike' | 'freecell' | 'pyramid' | 'pyramid-alt' | 'tri-peaks' | 'tri-peaks-alt'
 
 export interface GameVariant {
   id: GameVariantId
@@ -41,9 +41,23 @@ export const gameVariants: GameVariant[] = [
     color: 'bg-sky-100 dark:bg-sky-950',
     rules: [
       'Cards are dealt into a pyramid of 7 rows. Each card is available once both cards overlapping it from the row below have been removed.',
-      'The goal is to remove all cards from the pyramid and the stock by pairing cards whose ranks sum to 13.',
+      'The goal is to remove all 28 cards from the pyramid by pairing cards whose ranks sum to 13.',
       'Valid pairs: Ace (1) + Queen (12), 2 + Jack (11), 3 + 10, 4 + 9, 5 + 8, 6 + 7. A King (13) may be removed alone.',
-      'You may draw from the stock pile and pair it with an available card in the pyramid, or set it aside in the waste.',
+      'Click the stock to draw a card to the waste pile. The top waste card can be paired with an available pyramid card. When the stock is empty you may recycle the waste back into the stock a limited number of times.',
+      'The game is won when the pyramid is completely cleared.',
+    ],
+  },
+  {
+    id: 'pyramid-alt',
+    name: 'Pyramid Alt',
+    description: 'Pyramid with direct stock-top pairing — match the stock top without drawing first.',
+    color: 'bg-cyan-100 dark:bg-cyan-950',
+    rules: [
+      'Cards are dealt into a pyramid of 7 rows, plus a stock pile. The top card of the stock is always visible face-up.',
+      'The goal is to remove all 28 pyramid cards by pairing cards whose ranks sum to 13.',
+      'The visible stock top card can be paired directly with any available pyramid card or with the waste top — no draw required.',
+      'A King anywhere (pyramid or stock top) is removed alone without pairing.',
+      'Use the arrow button to draw the stock top to the waste without pairing. When the stock is empty, recycle the waste back into the stock (limited times).',
       'The game is won when the pyramid is completely cleared.',
     ],
   },
@@ -64,7 +78,7 @@ export const gameVariants: GameVariant[] = [
     id: 'tri-peaks-alt',
     name: 'Tri Peaks Alt',
     description: 'Tri Peaks with wrap-around: Kings and Aces are adjacent.',
-    color: 'bg-violet-100 dark:bg-violet-950',
+    color: 'bg-emerald-100 dark:bg-emerald-950',
     rules: [
       'Cards are arranged into three overlapping pyramids (peaks) of 4 rows each, plus a stock pile of 24 cards.',
       'The goal is to clear all cards from the peaks by sending them to the discard pile.',
