@@ -1,14 +1,35 @@
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { useState } from 'react'
+import { createFileRoute } from '@tanstack/react-router'
+import type { GameVariant } from '@workspace/constants'
+import BackLink from '@/components/BackLink'
+import { HowToPlayModal } from '@/components/HowToPlayModal'
+import { VariantGrid } from '@/components/VariantGrid'
 
 export const Route = createFileRoute('/how-to-play')({ component: HowToPlay })
 
 function HowToPlay() {
+  const [selectedVariant, setSelectedVariant] = useState<GameVariant | null>(null)
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-white gap-6">
-      <h1 className="text-2xl font-bold">How to Play</h1>
-      <Link to="/" className="text-sm text-blue-500 no-underline hover:underline">
-        ← Back
-      </Link>
+    <main className="flex h-full flex-col px-6 py-10">
+      <div className="mb-10">
+        <BackLink />
+      </div>
+
+      <div className="flex flex-1 flex-col items-center justify-center">
+        <div className="w-full max-w-sm space-y-10">
+          <h1 className="text-center text-3xl font-bold text-foreground">How to Play</h1>
+          <VariantGrid onSelect={setSelectedVariant} />
+        </div>
+      </div>
+
+      <HowToPlayModal
+        variant={selectedVariant}
+        open={!!selectedVariant}
+        onOpenChange={(open) => {
+          if (!open) setSelectedVariant(null)
+        }}
+      />
     </main>
   )
 }

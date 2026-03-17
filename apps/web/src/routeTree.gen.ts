@@ -9,16 +9,30 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TriPeaksRouteImport } from './routes/tri-peaks'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as PyramidRouteImport } from './routes/pyramid'
 import { Route as NewGameRouteImport } from './routes/new-game'
+import { Route as KlondikeRouteImport } from './routes/klondike'
 import { Route as HowToPlayRouteImport } from './routes/how-to-play'
+import { Route as FreecellRouteImport } from './routes/freecell'
 import { Route as CreditsRouteImport } from './routes/credits'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TriPeaksRoute = TriPeaksRouteImport.update({
+  id: '/tri-peaks',
+  path: '/tri-peaks',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PyramidRoute = PyramidRouteImport.update({
+  id: '/pyramid',
+  path: '/pyramid',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewGameRoute = NewGameRouteImport.update({
@@ -26,9 +40,19 @@ const NewGameRoute = NewGameRouteImport.update({
   path: '/new-game',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KlondikeRoute = KlondikeRouteImport.update({
+  id: '/klondike',
+  path: '/klondike',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HowToPlayRoute = HowToPlayRouteImport.update({
   id: '/how-to-play',
   path: '/how-to-play',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FreecellRoute = FreecellRouteImport.update({
+  id: '/freecell',
+  path: '/freecell',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CreditsRoute = CreditsRouteImport.update({
@@ -51,26 +75,38 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/credits': typeof CreditsRoute
+  '/freecell': typeof FreecellRoute
   '/how-to-play': typeof HowToPlayRoute
+  '/klondike': typeof KlondikeRoute
   '/new-game': typeof NewGameRoute
+  '/pyramid': typeof PyramidRoute
   '/settings': typeof SettingsRoute
+  '/tri-peaks': typeof TriPeaksRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/credits': typeof CreditsRoute
+  '/freecell': typeof FreecellRoute
   '/how-to-play': typeof HowToPlayRoute
+  '/klondike': typeof KlondikeRoute
   '/new-game': typeof NewGameRoute
+  '/pyramid': typeof PyramidRoute
   '/settings': typeof SettingsRoute
+  '/tri-peaks': typeof TriPeaksRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/credits': typeof CreditsRoute
+  '/freecell': typeof FreecellRoute
   '/how-to-play': typeof HowToPlayRoute
+  '/klondike': typeof KlondikeRoute
   '/new-game': typeof NewGameRoute
+  '/pyramid': typeof PyramidRoute
   '/settings': typeof SettingsRoute
+  '/tri-peaks': typeof TriPeaksRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -78,37 +114,73 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/credits'
+    | '/freecell'
     | '/how-to-play'
+    | '/klondike'
     | '/new-game'
+    | '/pyramid'
     | '/settings'
+    | '/tri-peaks'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/credits' | '/how-to-play' | '/new-game' | '/settings'
+  to:
+    | '/'
+    | '/about'
+    | '/credits'
+    | '/freecell'
+    | '/how-to-play'
+    | '/klondike'
+    | '/new-game'
+    | '/pyramid'
+    | '/settings'
+    | '/tri-peaks'
   id:
     | '__root__'
     | '/'
     | '/about'
     | '/credits'
+    | '/freecell'
     | '/how-to-play'
+    | '/klondike'
     | '/new-game'
+    | '/pyramid'
     | '/settings'
+    | '/tri-peaks'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   CreditsRoute: typeof CreditsRoute
+  FreecellRoute: typeof FreecellRoute
   HowToPlayRoute: typeof HowToPlayRoute
+  KlondikeRoute: typeof KlondikeRoute
   NewGameRoute: typeof NewGameRoute
+  PyramidRoute: typeof PyramidRoute
   SettingsRoute: typeof SettingsRoute
+  TriPeaksRoute: typeof TriPeaksRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tri-peaks': {
+      id: '/tri-peaks'
+      path: '/tri-peaks'
+      fullPath: '/tri-peaks'
+      preLoaderRoute: typeof TriPeaksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/settings': {
       id: '/settings'
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pyramid': {
+      id: '/pyramid'
+      path: '/pyramid'
+      fullPath: '/pyramid'
+      preLoaderRoute: typeof PyramidRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/new-game': {
@@ -118,11 +190,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewGameRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/klondike': {
+      id: '/klondike'
+      path: '/klondike'
+      fullPath: '/klondike'
+      preLoaderRoute: typeof KlondikeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/how-to-play': {
       id: '/how-to-play'
       path: '/how-to-play'
       fullPath: '/how-to-play'
       preLoaderRoute: typeof HowToPlayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/freecell': {
+      id: '/freecell'
+      path: '/freecell'
+      fullPath: '/freecell'
+      preLoaderRoute: typeof FreecellRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/credits': {
@@ -153,9 +239,13 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   CreditsRoute: CreditsRoute,
+  FreecellRoute: FreecellRoute,
   HowToPlayRoute: HowToPlayRoute,
+  KlondikeRoute: KlondikeRoute,
   NewGameRoute: NewGameRoute,
+  PyramidRoute: PyramidRoute,
   SettingsRoute: SettingsRoute,
+  TriPeaksRoute: TriPeaksRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
