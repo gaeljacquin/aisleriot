@@ -12,6 +12,7 @@ import { cn } from '@workspace/ui/lib/utils'
 import FreeCellTopRow from './FreeCellTopRow'
 import FreeCellTableau from './FreeCellTableau'
 import FreeCellCard from './FreeCellCard'
+import { ConfirmModal } from '#/components/ConfirmModal'
 import { useFreeCell } from '#/lib/hooks/useFreeCell'
 import type { FreeCellPileId, DraggableCardData, DroppableZoneData } from '#/lib/games/freecell'
 import type { Card } from '#/lib/types'
@@ -45,6 +46,8 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
   const lastDropWasValid = useRef(false)
   const [devStatus, setDevStatus] = useState<'won' | null>(null)
   const [devUnlimitedMoves, setDevUnlimitedMoves] = useState(false)
+  const [confirmRestart, setConfirmRestart] = useState(false)
+  const [confirmNewGame, setConfirmNewGame] = useState(false)
 
   const sensors = useSensors(
     useSensor(MouseSensor, {
@@ -178,14 +181,14 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
                 </button>
                 <button
                   type="button"
-                  onClick={onRestartGame}
+                  onClick={() => setConfirmRestart(true)}
                   className="cursor-pointer rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80"
                 >
                   Restart
                 </button>
                 <button
                   type="button"
-                  onClick={() => onNewGame()}
+                  onClick={() => setConfirmNewGame(true)}
                   className={cn(
                     'cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
                     isGameOver
@@ -213,6 +216,23 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
           </div>
         )}
       </div>
+
+      <ConfirmModal
+        open={confirmRestart}
+        onOpenChange={setConfirmRestart}
+        title="Restart Game?"
+        description="Replay the same deal from the beginning."
+        confirmLabel="Restart"
+        onConfirm={onRestartGame}
+      />
+      <ConfirmModal
+        open={confirmNewGame}
+        onOpenChange={setConfirmNewGame}
+        title="New Game?"
+        description="Start a fresh game with a new deal."
+        confirmLabel="New Game"
+        onConfirm={onNewGame}
+      />
 
       {/* Drag overlay */}
       <DragOverlay dropAnimation={dropAnimation}>

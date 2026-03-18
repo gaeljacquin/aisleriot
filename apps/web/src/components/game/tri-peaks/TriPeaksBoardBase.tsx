@@ -3,6 +3,7 @@ import { cn } from '@workspace/ui/lib/utils'
 import { Stock, Waste } from '../index'
 import PeakGrid from './PeakGrid'
 import { WasteRefContext } from './WasteRefContext'
+import { ConfirmModal } from '#/components/ConfirmModal'
 import type { UseTriPeaksResult } from '#/lib/hooks/useTriPeaks'
 
 interface TriPeaksBoardBaseProps {
@@ -24,12 +25,15 @@ export default function TriPeaksBoardBase({ useGame, onHowToPlay }: TriPeaksBoar
     onPlayCard,
     onDraw,
     onNewGame,
+    onRestartGame,
     onUndo,
   } = useGame()
 
   const wasteRef = useRef<HTMLDivElement>(null)
   const lastAction = useRef<'draw' | 'play'>('play')
   const [devStatus, setDevStatus] = useState<'won' | 'lost' | null>(null)
+  const [confirmRestart, setConfirmRestart] = useState(false)
+  const [confirmNewGame, setConfirmNewGame] = useState(false)
 
   const effectiveStatus = devStatus ?? status
   const isGameOver = effectiveStatus === 'won' || effectiveStatus === 'lost'
@@ -99,7 +103,7 @@ export default function TriPeaksBoardBase({ useGame, onHowToPlay }: TriPeaksBoar
           </div>
         </div>
 
-        {/* Undo + How to Play buttons */}
+        {/* Undo + How to Play + Restart + New Game buttons */}
         <div className="mt-2 flex items-center justify-evenly gap-7">
           <button
             type="button"
@@ -120,6 +124,20 @@ export default function TriPeaksBoardBase({ useGame, onHowToPlay }: TriPeaksBoar
           >
             How to Play
           </button>
+          <button
+            type="button"
+            onClick={() => setConfirmRestart(true)}
+            className="cursor-pointer rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80"
+          >
+            Restart
+          </button>
+          <button
+            type="button"
+            onClick={() => setConfirmNewGame(true)}
+            className="cursor-pointer rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80"
+          >
+            New Game
+          </button>
         </div>
       </div>
 
@@ -136,13 +154,30 @@ export default function TriPeaksBoardBase({ useGame, onHowToPlay }: TriPeaksBoar
           </p>
           <button
             type="button"
-            onClick={onNewGame}
+            onClick={() => setConfirmNewGame(true)}
             className="cursor-pointer mt-1 rounded-lg bg-primary px-6 py-2 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Play Again
           </button>
         </div>
       )}
+
+      <ConfirmModal
+        open={confirmRestart}
+        onOpenChange={setConfirmRestart}
+        title="Restart Game?"
+        description="Replay the same deal from the beginning."
+        confirmLabel="Restart"
+        onConfirm={onRestartGame}
+      />
+      <ConfirmModal
+        open={confirmNewGame}
+        onOpenChange={setConfirmNewGame}
+        title="New Game?"
+        description="Start a fresh game with a new deal."
+        confirmLabel="New Game"
+        onConfirm={onNewGame}
+      />
     </div>
     </WasteRefContext>
   )

@@ -18,6 +18,7 @@ export interface TriPeaksStore extends TriPeaksState, HistorySlice<TriPeaksState
   playCard: (cellId: TriPeaksCellId) => void
   draw: () => void
   newGame: (seed?: number) => void
+  restartGame: () => void
 }
 
 export const useTriPeaksStore = create<TriPeaksStore>()(
@@ -53,6 +54,7 @@ export const useTriPeaksStore = create<TriPeaksStore>()(
           moveCount: state.moveCount,
           status: state.status,
           usedUndo: state.usedUndo,
+          currentSeed: state.currentSeed,
         }
         state.pushHistory(snapshot)
 
@@ -104,6 +106,7 @@ export const useTriPeaksStore = create<TriPeaksStore>()(
           moveCount: state.moveCount,
           status: state.status,
           usedUndo: state.usedUndo,
+          currentSeed: state.currentSeed,
         }
         state.pushHistory(snapshot)
 
@@ -131,6 +134,17 @@ export const useTriPeaksStore = create<TriPeaksStore>()(
       newGame: (seed?: number) => {
         set({
           ...createInitialState(seed),
+          past: [],
+          future: [],
+          canUndo: false,
+          canRedo: false,
+        } as Partial<TriPeaksStore>)
+      },
+
+      restartGame: () => {
+        const { currentSeed } = get()
+        set({
+          ...createInitialState(currentSeed),
           past: [],
           future: [],
           canUndo: false,

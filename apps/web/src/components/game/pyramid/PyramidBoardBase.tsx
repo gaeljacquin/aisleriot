@@ -3,6 +3,7 @@ import { cn } from '@workspace/ui/lib/utils'
 import { Stock, Waste } from '../index'
 import PyramidGrid from './PyramidGrid'
 import { PyramidWasteRefContext } from './PyramidWasteRefContext'
+import { ConfirmModal } from '#/components/ConfirmModal'
 import { isKing } from '#/lib/games/pyramid'
 import type { PyramidCellId } from '#/lib/games/pyramid'
 import type { Card } from '#/lib/types'
@@ -58,12 +59,15 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
     onDraw,
     onRecycle,
     onNewGame,
+    onRestartGame,
     onUndo,
   } = game
 
   const wasteRef = useRef<HTMLDivElement>(null)
   const [selectedCellId, setSelectedCellId] = useState<PyramidCellId | null>(null)
   const [devStatus, setDevStatus] = useState<'won' | 'lost' | null>(null)
+  const [confirmRestart, setConfirmRestart] = useState(false)
+  const [confirmNewGame, setConfirmNewGame] = useState(false)
 
   const effectiveStatus = devStatus ?? status
   const isGameOver = effectiveStatus === 'won' || effectiveStatus === 'lost'
@@ -228,7 +232,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
 
         </div>
 
-        {/* Undo + How to Play buttons */}
+        {/* Undo + How to Play + Restart + New Game buttons */}
         <div className="mt-6 flex items-center justify-evenly gap-8">
           <button
             type="button"
@@ -251,10 +255,19 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
           </button>
           <button
             type="button"
-            onClick={onNewGame}
+            onClick={() => setConfirmRestart(true)}
+            className="cursor-pointer rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80"
+          >
+            Restart
+          </button>
+          <button
+            type="button"
+            onClick={() => setConfirmNewGame(true)}
             className={cn(
-              "cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
-              isGameOver ? "bg-primary text-primary-foreground hover:bg-primary" : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+              'cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
+              isGameOver
+                ? 'bg-primary text-primary-foreground hover:bg-primary'
+                : 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
             )}
           >
             {isGameOver ? 'Play Again' : 'New Game'}
@@ -275,6 +288,23 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
           </div>
         )}
       </div>
+
+      <ConfirmModal
+        open={confirmRestart}
+        onOpenChange={setConfirmRestart}
+        title="Restart Game?"
+        description="Replay the same deal from the beginning."
+        confirmLabel="Restart"
+        onConfirm={onRestartGame}
+      />
+      <ConfirmModal
+        open={confirmNewGame}
+        onOpenChange={setConfirmNewGame}
+        title="New Game?"
+        description="Start a fresh game with a new deal."
+        confirmLabel="New Game"
+        onConfirm={onNewGame}
+      />
     </PyramidWasteRefContext>
   )
 }

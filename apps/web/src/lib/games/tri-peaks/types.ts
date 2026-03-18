@@ -18,4 +18,5 @@ export interface TriPeaksState {
   moveCount: number
   status: GameStatus
   usedUndo: boolean // tracks whether undo was used (for clean win stat)
+  currentSeed: number | undefined
 }

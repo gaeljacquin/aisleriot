@@ -22,7 +22,7 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
   const altGame = usePyramidAlt()
 
   const onBeforeCellClick = useCallback(
-    (cellId: PyramidCellId, defaultHandler: (id: PyramidCellId) => void): boolean => {
+    (cellId: PyramidCellId, _defaultHandler: (id: PyramidCellId) => void): boolean => {
       if (selectedIsStock) {
         altGame.onRemovePairWithStock(cellId)
         setSelectedIsStock(false)

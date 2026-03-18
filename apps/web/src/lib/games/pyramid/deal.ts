@@ -51,8 +51,9 @@ function cellId(index: number): PyramidCellId {
   return `cell-${index}`
 }
 
-export function createInitialState(recycleLimit: number, seed?: number): PyramidState {
-  const shuffled = shuffleDeck(createDeck(), seed)
+export function createInitialState(_recycleLimit: number, seed?: number): PyramidState {
+  const resolvedSeed = seed ?? Math.floor(Math.random() * 1_000_000)
+  const shuffled = shuffleDeck(createDeck(), resolvedSeed)
 
   const cells: Record<PyramidCellId, PyramidCell> = {}
 
@@ -79,5 +80,6 @@ export function createInitialState(recycleLimit: number, seed?: number): Pyramid
     moveCount: 0,
     status: 'playing',
     usedUndo: false,
+    currentSeed: resolvedSeed,
   }
 }

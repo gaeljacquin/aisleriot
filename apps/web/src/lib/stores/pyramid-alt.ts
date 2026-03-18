@@ -31,6 +31,7 @@ export interface PyramidAltStore extends PyramidState, HistorySlice<PyramidState
   draw: () => void
   recycle: () => void
   newGame: (seed?: number) => void
+  restartGame: () => void
   removeAloneFromStock: () => void
   removePairWithStock: (cellId: PyramidCellId) => void
   removePairStockWithWaste: () => void
@@ -46,6 +47,7 @@ function snapshot(state: PyramidState): PyramidState {
     moveCount: state.moveCount,
     status: state.status,
     usedUndo: state.usedUndo,
+    currentSeed: state.currentSeed,
   }
 }
 
@@ -265,6 +267,18 @@ export const usePyramidAltStore = create<PyramidAltStore>()(
         const recycleLimit = usePyramidSettingsStore.getState().recycleLimit
         set({
           ...createInitialState(recycleLimit, seed),
+          past: [],
+          future: [],
+          canUndo: false,
+          canRedo: false,
+        } as Partial<PyramidAltStore>)
+      },
+
+      restartGame: () => {
+        const { currentSeed } = get()
+        const recycleLimit = usePyramidSettingsStore.getState().recycleLimit
+        set({
+          ...createInitialState(recycleLimit, currentSeed),
           past: [],
           future: [],
           canUndo: false,

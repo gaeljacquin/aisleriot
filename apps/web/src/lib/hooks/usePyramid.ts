@@ -26,6 +26,7 @@ export interface UsePyramidResult {
   onDraw: () => void
   onRecycle: () => void
   onNewGame: () => void
+  onRestartGame: () => void
   onUndo: () => void
 }
 
@@ -60,6 +61,7 @@ export function usePyramid(): UsePyramidResult {
     onDraw: storeState.draw,
     onRecycle: storeState.recycle,
     onNewGame: storeState.newGame,
+    onRestartGame: storeState.restartGame,
     onUndo: storeState.undo,
   }
 }

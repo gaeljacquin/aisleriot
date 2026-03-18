@@ -16,6 +16,7 @@ export interface UseTriPeaksResult {
   onPlayCard: (id: TriPeaksCellId) => void
   onDraw: () => void
   onNewGame: () => void
+  onRestartGame: () => void
   onUndo: () => void
 }
 
@@ -44,6 +45,7 @@ export function useTriPeaks(): UseTriPeaksResult {
     onPlayCard: storeState.playCard,
     onDraw: storeState.draw,
     onNewGame: storeState.newGame,
+    onRestartGame: storeState.restartGame,
     onUndo: storeState.undo,
   }
 }

@@ -45,7 +45,8 @@ function cellId(index: number): TriPeaksCellId {
 }
 
 export function createInitialState(seed?: number): TriPeaksState {
-  const shuffled = shuffleDeck(createDeck(), seed)
+  const resolvedSeed = seed ?? Math.floor(Math.random() * 1_000_000)
+  const shuffled = shuffleDeck(createDeck(), resolvedSeed)
 
   const cells: Record<TriPeaksCellId, TriPeaksCell> = {}
 
@@ -71,5 +72,6 @@ export function createInitialState(seed?: number): TriPeaksState {
     moveCount: 0,
     status: 'playing',
     usedUndo: false,
+    currentSeed: resolvedSeed,
   }
 }

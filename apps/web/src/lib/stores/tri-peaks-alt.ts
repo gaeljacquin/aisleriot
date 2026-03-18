@@ -18,6 +18,7 @@ export interface TriPeaksAltStore extends TriPeaksState, HistorySlice<TriPeaksSt
   playCard: (cellId: TriPeaksCellId) => void
   draw: () => void
   newGame: (seed?: number) => void
+  restartGame: () => void
 }
 
 export const useTriPeaksAltStore = create<TriPeaksAltStore>()(
@@ -53,6 +54,7 @@ export const useTriPeaksAltStore = create<TriPeaksAltStore>()(
           moveCount: state.moveCount,
           status: state.status,
           usedUndo: state.usedUndo,
+          currentSeed: state.currentSeed,
         }
         state.pushHistory(snapshot)
 
@@ -104,6 +106,7 @@ export const useTriPeaksAltStore = create<TriPeaksAltStore>()(
           moveCount: state.moveCount,
           status: state.status,
           usedUndo: state.usedUndo,
+          currentSeed: state.currentSeed,
         }
         state.pushHistory(snapshot)
 
@@ -131,6 +134,17 @@ export const useTriPeaksAltStore = create<TriPeaksAltStore>()(
       newGame: (seed?: number) => {
         set({
           ...createInitialState(seed),
+          past: [],
+          future: [],
+          canUndo: false,
+          canRedo: false,
+        } as Partial<TriPeaksAltStore>)
+      },
+
+      restartGame: () => {
+        const { currentSeed } = get()
+        set({
+          ...createInitialState(currentSeed),
           past: [],
           future: [],
           canUndo: false,

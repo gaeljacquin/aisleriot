@@ -18,4 +18,5 @@ export interface PyramidState {
   moveCount: number
   status: GameStatus
   usedUndo: boolean
+  currentSeed: number | undefined
 }
