@@ -12,6 +12,7 @@ import {
   canPairWithStock,
   canPairStockWithWaste,
   isStockTopKing,
+  isKing,
   REMOVE_PAIR_POINTS,
   KING_POINTS,
 } from '#/lib/games/pyramid'
@@ -26,6 +27,7 @@ export interface PyramidAltStore extends PyramidState, HistorySlice<PyramidState
   removeAlone: (cellId: PyramidCellId) => void
   removePair: (idA: PyramidCellId, idB: PyramidCellId) => void
   removePairWithWaste: (cellId: PyramidCellId) => void
+  removeWasteKing: () => void
   draw: () => void
   recycle: () => void
   newGame: (seed?: number) => void
@@ -152,6 +154,38 @@ export const usePyramidAltStore = create<PyramidAltStore>()(
 
         const nextState: Partial<PyramidState> = {
           cells: updatedCells,
+          waste: newWaste,
+          score: newScore,
+          moveCount: state.moveCount + 1,
+        }
+
+        const tempState: PyramidState = { ...state, ...nextState }
+        const recycleLimit = usePyramidSettingsStore.getState().recycleLimit
+
+        if (isGameWon(tempState)) {
+          set({ ...nextState, status: 'won' } as Partial<PyramidAltStore>)
+          get().recordWin(newScore, !state.usedUndo)
+        } else if (isGameLostAlt(tempState, recycleLimit)) {
+          set({ ...nextState, status: 'lost' } as Partial<PyramidAltStore>)
+          get().recordLoss()
+        } else {
+          set(nextState as Partial<PyramidAltStore>)
+        }
+      },
+
+      removeWasteKing: () => {
+        const state = get()
+        if (state.status !== 'playing') return
+        if (state.waste.length === 0) return
+        const wasteTop = state.waste[state.waste.length - 1]
+        if (!isKing(wasteTop)) return
+
+        state.pushHistory(snapshot(state))
+
+        const newWaste = state.waste.slice(0, state.waste.length - 1)
+        const newScore = state.score + KING_POINTS
+
+        const nextState: Partial<PyramidState> = {
           waste: newWaste,
           score: newScore,
           moveCount: state.moveCount + 1,

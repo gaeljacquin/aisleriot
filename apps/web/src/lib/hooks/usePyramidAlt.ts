@@ -46,6 +46,7 @@ export function usePyramidAlt(): UsePyramidAltResult {
     onRemoveAlone: storeState.removeAlone,
     onRemovePair: storeState.removePair,
     onRemovePairWithWaste: storeState.removePairWithWaste,
+    onRemoveWasteKing: storeState.removeWasteKing,
     onDraw: storeState.draw,
     onRecycle: storeState.recycle,
     onNewGame: storeState.newGame,

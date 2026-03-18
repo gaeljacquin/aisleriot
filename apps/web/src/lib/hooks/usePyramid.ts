@@ -22,6 +22,7 @@ export interface UsePyramidResult {
   onRemoveAlone: (id: PyramidCellId) => void
   onRemovePair: (idA: PyramidCellId, idB: PyramidCellId) => void
   onRemovePairWithWaste: (id: PyramidCellId) => void
+  onRemoveWasteKing: () => void
   onDraw: () => void
   onRecycle: () => void
   onNewGame: () => void
@@ -55,6 +56,7 @@ export function usePyramid(): UsePyramidResult {
     onRemoveAlone: storeState.removeAlone,
     onRemovePair: storeState.removePair,
     onRemovePairWithWaste: storeState.removePairWithWaste,
+    onRemoveWasteKing: storeState.removeWasteKing,
     onDraw: storeState.draw,
     onRecycle: storeState.recycle,
     onNewGame: storeState.newGame,

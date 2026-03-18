@@ -54,6 +54,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
     onRemoveAlone,
     onRemovePair,
     onRemovePairWithWaste,
+    onRemoveWasteKing,
     onDraw,
     onRecycle,
     onNewGame,
@@ -107,6 +108,14 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
 
   function handleWasteTopClick() {
     if (status !== 'playing') return
+    if (!wasteTop) return
+
+    if (isKing(wasteTop)) {
+      onRemoveWasteKing()
+      setSelectedCellId(null)
+      return
+    }
+
     if (selectedCellId === null) return
     onRemovePairWithWaste(selectedCellId)
     setSelectedCellId(null)

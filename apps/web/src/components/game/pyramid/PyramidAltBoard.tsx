@@ -8,6 +8,7 @@ import CardSlot from '../CardSlot'
 import PyramidBoardBase from './PyramidBoardBase'
 import { usePyramidAlt } from '#/lib/hooks/usePyramidAlt'
 import type { UsePyramidAltResult } from '#/lib/hooks/usePyramidAlt'
+import { isKing } from '#/lib/games/pyramid'
 import type { PyramidCellId } from '#/lib/games/pyramid'
 import type { PyramidBoardBaseStockRowContext } from './PyramidBoardBase'
 
@@ -116,7 +117,11 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
                 )}
                 onClick={() => {
                   if (!ctx.wasteTop) return
-                  if (selectedIsStock && ctx.game.stockTop) {
+                  if (isKing(ctx.wasteTop)) {
+                    ctx.game.onRemoveWasteKing()
+                    setSelectedIsStock(false)
+                    setSelectedIsWaste(false)
+                  } else if (selectedIsStock && ctx.game.stockTop) {
                     ctx.game.onRemovePairStockWithWaste()
                     setSelectedIsStock(false)
                   } else if (ctx.selectedCellId !== null) {
