@@ -118,6 +118,57 @@ function GameComponent() {
 }
 ```
 
+## HugeIcons Usage Pattern
+
+Icon SVG data lives in `@hugeicons/core-free-icons` (exported as `IconSvgObject`).
+The React wrapper component is `HugeiconsIcon` from `@hugeicons/react`.
+
+```tsx
+import { HugeiconsIcon } from '@hugeicons/react'
+import { Cancel01Icon } from '@hugeicons/core-free-icons'
+
+<HugeiconsIcon icon={Cancel01Icon} size={32} className="text-red-500" />
+```
+
+Do NOT import icon names directly from `@hugeicons/react` — they are NOT exported there.
+
+## while (moved) pattern for cascade loops
+
+To avoid `@typescript-eslint/no-unnecessary-condition` on `while (true)`, use:
+```ts
+let moved = true
+while (moved) {
+  moved = false
+  // ... set moved = true to continue
+}
+```
+
+## Store Helper Function Extraction (Klondike pattern)
+
+When both draw-1 and draw-3 stores share identical logic, extract helper functions
+at module level (not inside the store callback) to keep stores DRY:
+- `applyAutoFlips(tableau)` — flip exposed face-down tops, return [newTableau, scoreGain]
+- `applyCascade(state)` — auto-move safe cards to foundation
+- `extractSource(move, state)` — pull movedCards + updated source piles
+- `applyDestination(move, movedCards, tableau, foundation)` — place cards at target
+- `scoreForMove(move)` — return score delta for a validated move
+
+## Two-variant Board pattern (Klondike)
+
+When two variants share identical board UI, use a `BoardBase` + injected hook:
+```tsx
+// KlondikeBoardBase.tsx — takes useGame prop
+interface KlondikeBoardBaseProps {
+  useGame: () => UseKlondikeResult
+  onHowToPlay: () => void
+}
+
+// KlondikeBoard.tsx — injects draw-1 hook
+export default function KlondikeBoard({ onHowToPlay }) {
+  return <KlondikeBoardBase useGame={useKlondikeDrawOne} onHowToPlay={onHowToPlay} />
+}
+```
+
 ## Tri Peaks Layout
 
 Absolute-positioned pyramid. Container: 42.25rem × 18rem. Step: 4.25rem (card + gap).

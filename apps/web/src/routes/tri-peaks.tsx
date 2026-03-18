@@ -11,7 +11,7 @@ function TriPeaks() {
   const [howToPlayOpen, setHowToPlayOpen] = useState(false)
 
   return (
-    <main className="flex h-full flex-col px-6 py-10">
+    <main className="flex h-full flex-col bg-primary px-6 py-10">
       <div className="relative mb-6 flex items-center">
         <BackLink label="Game Menu" destination="/new-game" />
         <h1 className="absolute left-1/2 -translate-x-1/2 text-2xl font-bold text-foreground">Tri Peaks</h1>

@@ -56,9 +56,33 @@ type: project
 - Icons: HugeIcons (`@hugeicons/react`) — NOT Lucide
 - `pnpm typecheck` (NOT `pnpm type-check`)
 
-## Game variants registered (as of 2026-03-17)
-`klondike`, `freecell`, `pyramid`, `tri-peaks`, `tri-peaks-alt`
-`GameVariantId = 'klondike' | 'freecell' | 'pyramid' | 'tri-peaks' | 'tri-peaks-alt'`
+## Game variants registered (as of 2026-03-18, pre-Klondike)
+`klondike` (stub), `freecell`, `pyramid`, `pyramid-alt`, `tri-peaks`, `tri-peaks-alt`
+`GameVariantId = 'klondike' | 'freecell' | 'pyramid' | 'pyramid-alt' | 'tri-peaks' | 'tri-peaks-alt'`
+
+After Klondike implementation: `'klondike'` will be replaced with `'solitaire-draw-1' | 'solitaire-draw-3'`
+
+## FreeCell — FULLY IMPLEMENTED
+- Route `/freecell` — live, fully functional
+- Store uses HistorySlice + StatsSlice; undo penalty = 5 points
+- applyCascade() loop for auto-foundation moves after each action
+- moveCard (validated) and moveCardForce (dev-only bypass) actions
+- DraggableCardData / DroppableZoneData typed via types.ts, used in both Column and Board
+- FreeCellColumn uses useDndMonitor to detect self-drag and hide the source card sequence
+- FreeCellBoard has dev toggles (devStatus, devUnlimitedMoves) in import.meta.env.DEV blocks
+- Shared Waste component shows single top card with AnimatePresence flip animation (not a fan)
+- Shared Stock component is a click-button (face-down styled), handles its own disabled state
+
+## Klondike — DESIGNED 2026-03-18, ready for implementation
+- Route stubs exist: `klondike.tsx` (Coming Soon) — must be replaced with `klondike-draw-1.tsx` + `klondike-draw-3.tsx`
+- No lib/games/klondike yet
+- Settings store: `klondike-settings.ts` — fields: drawCount (1|3), redealtCost (number)
+  - drawCount default: 1 for klondike-draw-1, 3 for klondike-draw-3
+  - redealtCost default: 0 (draw-1), -100 (draw-3)
+- Draw-3 waste: horizontal fan showing up to 3 cards, offset; only top card is interactive
+- Undo: drawing from stock IS undoable (pushHistory before flip)
+- Scoring constants: toFoundation +10, fromFoundation -15, redealt configurable (from settings)
+- KlondikeWaste component in components/game/klondike/ handles both draw-1 (single) and draw-3 (fan) via drawCount prop
 
 ## Pyramid game — FULLY IMPLEMENTED (as of 2026-03-17)
 - Route `/pyramid` — live, fully functional

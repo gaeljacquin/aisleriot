@@ -15,7 +15,8 @@ import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as PyramidAltRouteImport } from './routes/pyramid-alt'
 import { Route as PyramidRouteImport } from './routes/pyramid'
 import { Route as NewGameRouteImport } from './routes/new-game'
-import { Route as KlondikeRouteImport } from './routes/klondike'
+import { Route as KlondikeDraw3RouteImport } from './routes/klondike-draw-3'
+import { Route as KlondikeDraw1RouteImport } from './routes/klondike-draw-1'
 import { Route as HowToPlayRouteImport } from './routes/how-to-play'
 import { Route as FreecellRouteImport } from './routes/freecell'
 import { Route as CreditsRouteImport } from './routes/credits'
@@ -52,9 +53,14 @@ const NewGameRoute = NewGameRouteImport.update({
   path: '/new-game',
   getParentRoute: () => rootRouteImport,
 } as any)
-const KlondikeRoute = KlondikeRouteImport.update({
-  id: '/klondike',
-  path: '/klondike',
+const KlondikeDraw3Route = KlondikeDraw3RouteImport.update({
+  id: '/klondike-draw-3',
+  path: '/klondike-draw-3',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KlondikeDraw1Route = KlondikeDraw1RouteImport.update({
+  id: '/klondike-draw-1',
+  path: '/klondike-draw-1',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HowToPlayRoute = HowToPlayRouteImport.update({
@@ -89,7 +95,8 @@ export interface FileRoutesByFullPath {
   '/credits': typeof CreditsRoute
   '/freecell': typeof FreecellRoute
   '/how-to-play': typeof HowToPlayRoute
-  '/klondike': typeof KlondikeRoute
+  '/klondike-draw-1': typeof KlondikeDraw1Route
+  '/klondike-draw-3': typeof KlondikeDraw3Route
   '/new-game': typeof NewGameRoute
   '/pyramid': typeof PyramidRoute
   '/pyramid-alt': typeof PyramidAltRoute
@@ -103,7 +110,8 @@ export interface FileRoutesByTo {
   '/credits': typeof CreditsRoute
   '/freecell': typeof FreecellRoute
   '/how-to-play': typeof HowToPlayRoute
-  '/klondike': typeof KlondikeRoute
+  '/klondike-draw-1': typeof KlondikeDraw1Route
+  '/klondike-draw-3': typeof KlondikeDraw3Route
   '/new-game': typeof NewGameRoute
   '/pyramid': typeof PyramidRoute
   '/pyramid-alt': typeof PyramidAltRoute
@@ -118,7 +126,8 @@ export interface FileRoutesById {
   '/credits': typeof CreditsRoute
   '/freecell': typeof FreecellRoute
   '/how-to-play': typeof HowToPlayRoute
-  '/klondike': typeof KlondikeRoute
+  '/klondike-draw-1': typeof KlondikeDraw1Route
+  '/klondike-draw-3': typeof KlondikeDraw3Route
   '/new-game': typeof NewGameRoute
   '/pyramid': typeof PyramidRoute
   '/pyramid-alt': typeof PyramidAltRoute
@@ -134,7 +143,8 @@ export interface FileRouteTypes {
     | '/credits'
     | '/freecell'
     | '/how-to-play'
-    | '/klondike'
+    | '/klondike-draw-1'
+    | '/klondike-draw-3'
     | '/new-game'
     | '/pyramid'
     | '/pyramid-alt'
@@ -148,7 +158,8 @@ export interface FileRouteTypes {
     | '/credits'
     | '/freecell'
     | '/how-to-play'
-    | '/klondike'
+    | '/klondike-draw-1'
+    | '/klondike-draw-3'
     | '/new-game'
     | '/pyramid'
     | '/pyramid-alt'
@@ -162,7 +173,8 @@ export interface FileRouteTypes {
     | '/credits'
     | '/freecell'
     | '/how-to-play'
-    | '/klondike'
+    | '/klondike-draw-1'
+    | '/klondike-draw-3'
     | '/new-game'
     | '/pyramid'
     | '/pyramid-alt'
@@ -177,7 +189,8 @@ export interface RootRouteChildren {
   CreditsRoute: typeof CreditsRoute
   FreecellRoute: typeof FreecellRoute
   HowToPlayRoute: typeof HowToPlayRoute
-  KlondikeRoute: typeof KlondikeRoute
+  KlondikeDraw1Route: typeof KlondikeDraw1Route
+  KlondikeDraw3Route: typeof KlondikeDraw3Route
   NewGameRoute: typeof NewGameRoute
   PyramidRoute: typeof PyramidRoute
   PyramidAltRoute: typeof PyramidAltRoute
@@ -230,11 +243,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewGameRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/klondike': {
-      id: '/klondike'
-      path: '/klondike'
-      fullPath: '/klondike'
-      preLoaderRoute: typeof KlondikeRouteImport
+    '/klondike-draw-3': {
+      id: '/klondike-draw-3'
+      path: '/klondike-draw-3'
+      fullPath: '/klondike-draw-3'
+      preLoaderRoute: typeof KlondikeDraw3RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/klondike-draw-1': {
+      id: '/klondike-draw-1'
+      path: '/klondike-draw-1'
+      fullPath: '/klondike-draw-1'
+      preLoaderRoute: typeof KlondikeDraw1RouteImport
       parentRoute: typeof rootRouteImport
     }
     '/how-to-play': {
@@ -281,7 +301,8 @@ const rootRouteChildren: RootRouteChildren = {
   CreditsRoute: CreditsRoute,
   FreecellRoute: FreecellRoute,
   HowToPlayRoute: HowToPlayRoute,
-  KlondikeRoute: KlondikeRoute,
+  KlondikeDraw1Route: KlondikeDraw1Route,
+  KlondikeDraw3Route: KlondikeDraw3Route,
   NewGameRoute: NewGameRoute,
   PyramidRoute: PyramidRoute,
   PyramidAltRoute: PyramidAltRoute,

@@ -1,4 +1,4 @@
-export type GameVariantId = 'klondike' | 'freecell' | 'pyramid' | 'pyramid-alt' | 'tri-peaks' | 'tri-peaks-alt'
+export type GameVariantId = 'klondike-draw-1' | 'klondike-draw-3' | 'freecell' | 'pyramid' | 'pyramid-alt' | 'tri-peaks' | 'tri-peaks-alt'
 
 export interface GameVariant {
   id: GameVariantId
@@ -10,28 +10,29 @@ export interface GameVariant {
 
 export const gameVariants: GameVariant[] = [
   {
-    id: 'klondike',
-    name: 'Klondike',
-    description: 'The classic solitaire game played around the world.',
+    id: 'klondike-draw-1',
+    name: 'Klondike (Draw 1)',
+    description: 'Classic solitaire with one card drawn at a time.',
     color: 'bg-rose-100 dark:bg-rose-950',
     rules: [
       'The goal is to move all 52 cards to four foundation piles, one per suit, built up from Ace to King.',
       'Cards in the tableau are arranged in 7 columns. You may place a card onto a tableau column if it is one rank lower and the opposite color of the top card.',
-      'The stock pile can be flipped to the waste pile one card at a time. The top card of the waste pile may be moved to the tableau or foundations.',
+      'Click the stock pile to flip one card at a time to the waste pile. The top card of the waste pile may be moved to the tableau or foundations.',
       'An empty tableau column may only be filled with a King or a sequence starting with a King.',
+      'When the stock is empty, click the recycling indicator to flip the waste pile back into the stock.',
     ],
   },
   {
-    id: 'freecell',
-    name: 'FreeCell',
-    description: 'A skill-based variant where almost every deal is winnable.',
-    color: 'bg-orange-100 dark:bg-orange-950',
+    id: 'klondike-draw-3',
+    name: 'Klondike (Draw 3)',
+    description: 'Classic solitaire with three cards drawn at a time.',
+    color: 'bg-cyan-100 dark:bg-cyan-950',
     rules: [
-      'All 52 cards are dealt face-up into 8 tableau columns at the start of the game.',
-      'The goal is to move all cards to the four foundation piles, built up by suit from Ace to King.',
-      'Four free cells act as temporary holding spots — you may move any single card to an empty free cell at any time.',
-      'Cards in the tableau are built in descending order, alternating colors. More cards can be moved at once when free cells and empty columns are available.',
-      'Empty tableau columns can hold any card or sequence.',
+      'The goal is to move all 52 cards to four foundation piles, one per suit, built up from Ace to King.',
+      'Cards in the tableau are arranged in 7 columns. You may place a card onto a tableau column if it is one rank lower and the opposite color of the top card.',
+      'Click the stock pile to flip three cards at a time to the waste pile. Only the top (rightmost) waste card may be played.',
+      'An empty tableau column may only be filled with a King or a sequence starting with a King.',
+      'When the stock is empty, click the recycling indicator to flip the waste pile back into the stock. A -100 score penalty applies per recycle.',
     ],
   },
   {
@@ -51,7 +52,7 @@ export const gameVariants: GameVariant[] = [
     id: 'pyramid-alt',
     name: 'Pyramid Alt',
     description: 'Pyramid with direct stock-top pairing — match the stock top without drawing first.',
-    color: 'bg-cyan-100 dark:bg-cyan-950',
+    color: 'bg-pink-100 dark:bg-pink-950',
     rules: [
       'Cards are dealt into a pyramid of 7 rows, plus a stock pile. The top card of the stock is always visible face-up.',
       'The goal is to remove all 28 pyramid cards by pairing cards whose ranks sum to 13.',
@@ -85,6 +86,19 @@ export const gameVariants: GameVariant[] = [
       'A face-up peak card may be moved to the discard pile if it is one rank higher or lower than the current top — wrap-around enabled: Kings and Aces are adjacent.',
       'When no moves are available, draw a card from the stock to the discard pile to continue the chain.',
       'Building long chains without drawing from the stock earns bonus points.',
+    ],
+  },
+  {
+    id: 'freecell',
+    name: 'FreeCell',
+    description: 'A skill-based variant where almost every deal is winnable.',
+    color: 'bg-orange-100 dark:bg-orange-950',
+    rules: [
+      'All 52 cards are dealt face-up into 8 tableau columns at the start of the game.',
+      'The goal is to move all cards to the four foundation piles, built up by suit from Ace to King.',
+      'Four free cells act as temporary holding spots — you may move any single card to an empty free cell at any time.',
+      'Cards in the tableau are built in descending order, alternating colors. More cards can be moved at once when free cells and empty columns are available.',
+      'Empty tableau columns can hold any card or sequence.',
     ],
   },
 ]
