@@ -5,6 +5,7 @@ import { ArrowRight02Icon, Refresh01Icon } from '@hugeicons/core-free-icons'
 import { cn } from '@workspace/ui/lib/utils'
 import Card from '../Card'
 import CardSlot from '../CardSlot'
+import StockEmptyIndicator from '../StockEmptyIndicator'
 import PyramidBoardBase from './PyramidBoardBase'
 import { usePyramidAlt } from '#/lib/hooks/usePyramidAlt'
 import type { UsePyramidAltResult } from '#/lib/hooks/usePyramidAlt'
@@ -48,40 +49,52 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
         <div className="mt-6 flex flex-col items-center gap-3">
           <div className="flex items-center justify-center gap-4">
             {/* Stock top — face-up, interactive */}
-            <div className="h-28 w-20">
-              {ctx.stockCount > 0 && ctx.game.stockTop ? (
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={`${ctx.game.stockTop.suit}-${ctx.game.stockTop.rank}`}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={
-                      ctx.game.stockTopIsKing
-                        ? { rotateY: 360, opacity: 0, scale: 0 }
-                        : { opacity: 0 }
-                    }
-                    transition={{ duration: 0.25, ease: 'easeOut' }}
-                  >
-                    <Card
-                      suit={ctx.game.stockTop.suit}
-                      rank={ctx.game.stockTop.rank}
-                      faceUp={true}
-                      highlighted={selectedIsStock}
-                      onClick={() => {
-                        if (ctx.game.stockTopIsKing) {
-                          ctx.game.onRemoveAloneFromStock()
-                          setSelectedIsStock(false)
-                          setSelectedIsWaste(false)
-                        } else {
-                          setSelectedIsWaste(false)
-                          setSelectedIsStock((prev) => !prev)
-                        }
-                      }}
-                    />
-                  </motion.div>
-                </AnimatePresence>
+            <div className="relative h-28 w-20">
+              {/* Persistent background: face-down card while stock has cards, empty indicator otherwise */}
+              {ctx.stockCount > 0 ? (
+                <Card suit="spades" rank="A" faceUp={false} className="absolute inset-0" />
               ) : (
-                <CardSlot role="stock" />
+                <StockEmptyIndicator canRecycle={ctx.canRecycle} onClick={ctx.onRecycle} />
+              )}
+
+              {/* Animated face-up stockTop overlay */}
+              {ctx.stockCount > 0 && ctx.game.stockTop && (
+                <div className="absolute inset-0">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={`${ctx.game.stockTop.suit}-${ctx.game.stockTop.rank}`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={
+                        ctx.game.stockTopIsKing
+                          ? { rotateY: 360, opacity: 0, scale: 0 }
+                          : { opacity: 0 }
+                      }
+                      transition={{ duration: 0.25, ease: 'easeOut' }}
+                    >
+                      <Card
+                        suit={ctx.game.stockTop.suit}
+                        rank={ctx.game.stockTop.rank}
+                        faceUp={true}
+                        highlighted={selectedIsStock}
+                        onClick={() => {
+                          if (ctx.game.stockTopIsKing) {
+                            ctx.game.onRemoveAloneFromStock()
+                            setSelectedIsStock(false)
+                            setSelectedIsWaste(false)
+                            ctx.clearSelection()
+                          } else if (ctx.selectedCellId !== null) {
+                            // A pyramid cell is selected — clicking stock should deselect it, not select stock
+                            ctx.clearSelection()
+                          } else {
+                            setSelectedIsWaste(false)
+                            setSelectedIsStock((prev) => !prev)
+                          }
+                        }}
+                      />
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
               )}
             </div>
 
@@ -90,7 +103,7 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
               type="button"
               className={cn(
                 'rounded-xl p-3 shadow-md cursor-pointer transition-colors',
-                'bg-primary text-primary-foreground hover:bg-primary/90',
+                'bg-teal-600 dark:bg-teal-500 text-primary-foreground hover:bg-primary/90',
                 !canAction && 'cursor-not-allowed opacity-40',
               )}
               disabled={!canAction}

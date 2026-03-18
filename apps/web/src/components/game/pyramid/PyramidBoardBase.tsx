@@ -1,22 +1,24 @@
 import { useRef, useState } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
-import { Stock, Waste } from '../index'
+import { Card, Waste } from '../index'
+import StockEmptyIndicator from '../StockEmptyIndicator'
 import PyramidGrid from './PyramidGrid'
 import { PyramidWasteRefContext } from './PyramidWasteRefContext'
 import { ConfirmModal } from '#/components/ConfirmModal'
 import { isKing } from '#/lib/games/pyramid'
 import type { PyramidCellId } from '#/lib/games/pyramid'
-import type { Card } from '#/lib/types'
+import type { Card as CardType } from '#/lib/types'
 import type { UsePyramidResult } from '#/lib/hooks/usePyramid'
 
 export interface PyramidBoardBaseStockRowContext<T extends UsePyramidResult> {
   stockCount: number
-  wasteTop: Card | null
+  wasteTop: CardType | null
   canDraw: boolean
   canRecycle: boolean
   recyclesRemaining: number
   wasteRef: React.RefObject<HTMLDivElement | null>
   selectedCellId: PyramidCellId | null
+  clearSelection: () => void
   handleStockClick: () => void
   handleWasteTopClick: () => void
   onDraw: () => void
@@ -65,6 +67,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
 
   const wasteRef = useRef<HTMLDivElement>(null)
   const [selectedCellId, setSelectedCellId] = useState<PyramidCellId | null>(null)
+  const [selectedWaste, setSelectedWaste] = useState(false)
   const [devStatus, setDevStatus] = useState<'won' | 'lost' | null>(null)
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [confirmNewGame, setConfirmNewGame] = useState(false)
@@ -81,6 +84,15 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
     // King removes alone
     if (isKing(cell.card)) {
       onRemoveAlone(cellId)
+      setSelectedCellId(null)
+      setSelectedWaste(false)
+      return
+    }
+
+    // Waste was selected first — try to pair with this cell
+    if (selectedWaste) {
+      onRemovePairWithWaste(cellId)
+      setSelectedWaste(false)
       setSelectedCellId(null)
       return
     }
@@ -117,12 +129,19 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
     if (isKing(wasteTop)) {
       onRemoveWasteKing()
       setSelectedCellId(null)
+      setSelectedWaste(false)
       return
     }
 
-    if (selectedCellId === null) return
-    onRemovePairWithWaste(selectedCellId)
-    setSelectedCellId(null)
+    if (selectedCellId !== null) {
+      onRemovePairWithWaste(selectedCellId)
+      setSelectedCellId(null)
+      setSelectedWaste(false)
+      return
+    }
+
+    // Toggle waste selection
+    setSelectedWaste((prev) => !prev)
   }
 
   function handleStockClick() {
@@ -133,8 +152,10 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
     }
   }
 
-  // Stock button: enabled if can draw OR can recycle
-  const stockActionAvailable = canDraw || canRecycle
+  function clearSelection() {
+    setSelectedCellId(null)
+    setSelectedWaste(false)
+  }
 
   const stockRowCtx: PyramidBoardBaseStockRowContext<T> = {
     stockCount,
@@ -144,6 +165,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
     recyclesRemaining,
     wasteRef,
     selectedCellId,
+    clearSelection,
     handleStockClick,
     handleWasteTopClick,
     onDraw,
@@ -208,21 +230,29 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
             renderStockRow(stockRowCtx)
           ) : (
             <div className="mt-6 flex items-center justify-center gap-12">
-              <Stock
-                count={stockCount}
-                onClick={handleStockClick}
-                disabled={!stockActionAvailable}
-              />
+              {stockCount > 0 ? (
+                <div
+                  className="cursor-pointer"
+                  onClick={handleStockClick}
+                  role="button"
+                  aria-label={`Stock pile, ${stockCount} cards remaining`}
+                >
+                  <Card suit="spades" rank="A" faceUp={false} />
+                </div>
+              ) : (
+                <StockEmptyIndicator canRecycle={canRecycle} onClick={handleStockClick} />
+              )}
               <div ref={wasteRef} className="inline-block">
                 <div
                   className={cn(
                     'cursor-default',
-                    selectedCellId !== null && wasteTop !== null && 'cursor-pointer',
+                    wasteTop !== null && 'cursor-pointer',
                   )}
                   onClick={handleWasteTopClick}
                 >
                   <Waste
                     topCard={wasteTop}
+                    highlighted={selectedWaste}
                     animate={false}
                   />
                 </div>
@@ -266,7 +296,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
             className={cn(
               'cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
               isGameOver
-                ? 'bg-primary text-primary-foreground hover:bg-primary'
+                ? 'bg-slate-800 dark:bg-slate-500 text-primary-foreground hover:bg-primary'
                 : 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
             )}
           >
@@ -279,8 +309,10 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
           <div className="flex flex-col items-center gap-3 py-2">
             <p
               className={cn(
-                'text-xl font-black tracking-wide',
-                effectiveStatus === 'won' ? 'text-primary' : 'text-red-500',
+                'rounded px-3 py-1.5 text-xl font-black tracking-wide',
+                effectiveStatus === 'won'
+                  ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+                  : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
               )}
             >
               {effectiveStatus === 'won' ? 'VICTORY' : 'GAME OVER'}

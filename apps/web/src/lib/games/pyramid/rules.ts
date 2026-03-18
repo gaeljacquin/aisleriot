@@ -124,13 +124,8 @@ export function isGameLostAlt(state: PyramidState, recycleLimit: number): boolea
   if (state.stock.length > 0) {
     // Stock top is a king — can remove alone
     if (isStockTopKing(state)) return false
-    // Stock top pairs with waste top
-    if (canPairStockWithWaste(state)) return false
-    // Stock top pairs with any available cell
-    const available = getAvailableCells(state)
-    for (const cellId of available) {
-      if (canPairWithStock(state, cellId)) return false
-    }
+    // Non-king stock top can always be drawn to waste — not lost
+    return false
   }
 
   // Check for any valid move among available cells

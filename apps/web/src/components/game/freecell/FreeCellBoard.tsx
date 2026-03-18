@@ -212,7 +212,7 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
         {/* Victory message */}
         {isGameOver && (
           <div className="flex flex-col items-center gap-3 py-2">
-            <p className="text-xl font-black tracking-wide text-primary">VICTORY</p>
+            <p className="rounded px-3 py-1.5 text-xl font-black tracking-wide bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">VICTORY</p>
           </div>
         )}
       </div>

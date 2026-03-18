@@ -5,16 +5,17 @@ import type { Card as CardType } from '#/lib/types'
 
 interface WasteProps {
   topCard: CardType | null
+  highlighted?: boolean
   animate?: boolean
 }
 
-export default function Waste({ topCard, animate = true }: WasteProps) {
+export default function Waste({ topCard, highlighted, animate = true }: WasteProps) {
   if (!topCard) {
     return <CardSlot role="waste" />
   }
 
   if (!animate) {
-    return <Card suit={topCard.suit} rank={topCard.rank} faceUp={true} />
+    return <Card suit={topCard.suit} rank={topCard.rank} faceUp={true} highlighted={highlighted} />
   }
 
   return (
@@ -25,7 +26,7 @@ export default function Waste({ topCard, animate = true }: WasteProps) {
         animate={{ x: 0, rotateY: 0, opacity: 1 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
       >
-        <Card suit={topCard.suit} rank={topCard.rank} faceUp={true} />
+        <Card suit={topCard.suit} rank={topCard.rank} faceUp={true} highlighted={highlighted} />
       </motion.div>
     </AnimatePresence>
   )

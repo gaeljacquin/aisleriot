@@ -203,7 +203,7 @@ export default function KlondikeBoardBase({ useGame, onHowToPlay }: KlondikeBoar
           {/* Top row: stock + waste | buttons (centered) | foundations */}
           <div className="flex items-center justify-between gap-2">
             {/* Stock + Waste */}
-            <div className="flex flex-shrink-0 items-start gap-2">
+            <div className="flex shrink-0 items-start gap-2">
               <KlondikeStock
                 stockCount={stockCount}
                 stockEmpty={stockEmpty}
@@ -219,7 +219,7 @@ export default function KlondikeBoardBase({ useGame, onHowToPlay }: KlondikeBoar
             </div>
 
             {/* Foundations — floated right */}
-            <div className="flex flex-shrink-0 items-start gap-2">
+            <div className="flex shrink-0 items-start gap-2">
               {foundation.map((f) => (
                 <KlondikeFoundation
                   key={f.id}
@@ -250,7 +250,7 @@ export default function KlondikeBoardBase({ useGame, onHowToPlay }: KlondikeBoar
         {/* Victory message */}
         {isGameOver && (
           <div className="flex flex-col items-center gap-3 py-2">
-            <p className="text-xl font-black tracking-wide text-primary">VICTORY</p>
+            <p className="rounded px-3 py-1.5 text-xl font-black tracking-wide bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">VICTORY</p>
           </div>
         )}
       </div>

@@ -47,7 +47,7 @@ export default function Card({ suit, rank, faceUp, highlighted, onClick, classNa
       className={cn(
         'relative flex h-28 w-20 select-none flex-col rounded-lg border border-slate-200 bg-white shadow-sm',
         isRed ? 'text-red-600' : 'text-slate-900',
-        highlighted && 'ring-2 ring-primary ring-offset-1',
+        highlighted && 'ring-2 ring-amber-400 dark:ring-amber-300 ring-offset-1',
         onClick && 'cursor-pointer hover:brightness-95 active:scale-95',
         className,
       )}
