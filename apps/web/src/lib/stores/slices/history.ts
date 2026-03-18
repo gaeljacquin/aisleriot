@@ -1,6 +1,7 @@
 export interface HistoryConfig {
   maxDepth: number | 'unlimited'
   undoScoreMode: 'revert' | 'penalize'
+  undoPenaltyScore?: number
 }
 
 export interface HistorySlice<TState> {
@@ -15,7 +16,7 @@ export interface HistorySlice<TState> {
   setHistoryConfig: (config: Partial<HistoryConfig>) => void
 }
 
-const UNDO_PENALTY_SCORE = 15
+const DEFAULT_UNDO_PENALTY_SCORE = 15
 
 /** Keys that belong to the history slice and should not be copied when restoring snapshots */
 const HISTORY_KEYS = new Set([
@@ -75,9 +76,10 @@ export function createHistorySlice<TState extends { score: number; usedUndo?: bo
       const newPast = past.slice(0, past.length - 1)
       const currentSnapshot = extractGameState(state)
 
+      const penalty = historyConfig.undoPenaltyScore ?? DEFAULT_UNDO_PENALTY_SCORE
       const restoredScore =
         historyConfig.undoScoreMode === 'penalize'
-          ? Math.max(0, state.score - UNDO_PENALTY_SCORE)
+          ? Math.max(0, state.score - penalty)
           : previous.score
 
       set({

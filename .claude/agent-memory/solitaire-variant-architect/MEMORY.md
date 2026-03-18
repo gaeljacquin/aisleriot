@@ -4,3 +4,4 @@
 
 - [Project Architecture](./patterns.md) — store patterns, lint rules, path aliases, component conventions
 - [User Profile](./user-profile.md) — user preferences and working style
+- [dnd-kit Conventions](./dnd-kit.md) — drag-and-drop wiring for FreeCell-style games

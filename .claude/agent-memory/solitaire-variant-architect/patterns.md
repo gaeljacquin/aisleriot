@@ -78,6 +78,46 @@ function GameComponent() {
 - `tailwindcss` v4
 - **No `immer`** — do NOT use immer middleware
 
+## FreeCell Store Pattern
+
+FreeCell deviates from pure snapshot restore — undo uses `penalize` mode (subtracts `undoPenaltyScore` from current score, does NOT restore previous score). Set via `setHistoryConfig` call after store creation (cannot pass historyConfig to `createHistorySlice` directly).
+
+```ts
+useFreeCellStore.getState().setHistoryConfig({
+  maxDepth: 'unlimited',
+  undoScoreMode: 'penalize',
+  undoPenaltyScore: 5,
+})
+```
+
+FreeCell `moveCard` does NOT accept moves from foundation (cards not draggable from foundation).
+
+## Route Pattern (Updated — with HowToPlay)
+
+```tsx
+function GameComponent() {
+  const [howToPlayOpen, setHowToPlayOpen] = useState(false)
+  return (
+    <main className="flex h-full flex-col px-6 py-10">
+      <div className="relative mb-6 flex items-center">
+        <BackLink label="Game Menu" destination="/new-game" />
+        <h1 className="absolute left-1/2 -translate-x-1/2 text-2xl font-bold text-foreground">
+          Game Name
+        </h1>
+      </div>
+      <div className="flex flex-1 flex-col">
+        <GameBoard onHowToPlay={() => setHowToPlayOpen(true)} />
+      </div>
+      <HowToPlayModal
+        variant={getVariant('game-id')}
+        open={howToPlayOpen}
+        onOpenChange={setHowToPlayOpen}
+      />
+    </main>
+  )
+}
+```
+
 ## Tri Peaks Layout
 
 Absolute-positioned pyramid. Container: 42.25rem × 18rem. Step: 4.25rem (card + gap).
