@@ -14,6 +14,7 @@ interface KlondikeColumnProps {
   id: KlondikeTableauId
   cards: CardType[]
   draggableFrom: number
+  peekTableau?: boolean
   onDoubleClick?: (pileId: KlondikeTableauId) => void
 }
 
@@ -21,6 +22,7 @@ export default function KlondikeColumn({
   id,
   cards,
   draggableFrom,
+  peekTableau,
   onDoubleClick,
 }: KlondikeColumnProps) {
   const droppableData: DroppableZoneData = {
@@ -76,7 +78,12 @@ export default function KlondikeColumn({
               className="absolute"
               style={{ top: i * CARD_OFFSET, left: 0, zIndex: i }}
             >
-              <Card suit={card.suit} rank={card.rank} faceUp={card.faceUp} />
+              <div className="relative">
+                <Card suit={card.suit} rank={card.rank} faceUp={peekTableau ? true : card.faceUp} />
+                {peekTableau && !card.faceUp && (
+                  <div className="absolute inset-0 rounded-lg bg-black/50" />
+                )}
+              </div>
             </div>
           ))}
 

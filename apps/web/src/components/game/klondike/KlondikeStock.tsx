@@ -15,7 +15,7 @@ interface KlondikeStockProps {
  * The stock pile.
  *
  * - Stock has cards: show face-down card back (clickable to flip)
- * - Stock empty + canRedeal: purple-border circle; light purple bg on hover; click to recycle
+ * - Stock empty + canRedeal: green-border circle; light green bg on hover; click to recycle
  * - Stock empty + !canRedeal: red X; light red bg on hover; click is a no-op
  */
 export default function KlondikeStock({
@@ -42,7 +42,7 @@ export default function KlondikeStock({
       className={cn(
         'relative h-28 w-20 cursor-pointer rounded-lg transition-colors',
         canRedeal
-          ? 'hover:bg-purple-100 dark:hover:bg-purple-950/40'
+          ? 'hover:bg-green-100 dark:hover:bg-green-950/40'
           : 'hover:bg-red-100 dark:hover:bg-red-950/40',
       )}
       onClick={canRedeal ? onClick : undefined}
@@ -53,7 +53,7 @@ export default function KlondikeStock({
 
       {canRedeal ? (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="h-12 w-12 rounded-full border-2 border-purple-500" />
+          <div className="h-12 w-12 rounded-full border-2 border-green-500" />
         </div>
       ) : (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">

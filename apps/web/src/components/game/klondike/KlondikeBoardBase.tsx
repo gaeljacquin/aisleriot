@@ -54,6 +54,7 @@ export default function KlondikeBoardBase({ useGame, onHowToPlay }: KlondikeBoar
   const [draggedCards, setDraggedCards] = useState<CardType[] | null>(null)
   const lastDropWasValid = useRef(false)
   const [devMoveAnywhere, setDevMoveAnywhere] = useState(false)
+  const [devPeekTableau, setDevPeekTableau] = useState(false)
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [confirmNewGame, setConfirmNewGame] = useState(false)
 
@@ -110,17 +111,17 @@ export default function KlondikeBoardBase({ useGame, onHowToPlay }: KlondikeBoar
         {/* Score + moves HUD */}
         <div className="flex items-center justify-center gap-5">
           <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
-            <span className="text-xs font-medium text-muted-foreground">Score</span>
-            <span className="text-xl font-bold tabular-nums text-primary">{score}</span>
+            <span className="text-xs font-medium text-black dark:text-muted-foreground">Score</span>
+            <span className="text-xl font-bold tabular-nums text-green-900 dark:text-green-500">{score}</span>
           </div>
           <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
-            <span className="text-xs font-medium text-muted-foreground">Moves</span>
-            <span className="text-xl font-bold tabular-nums">{moveCount}</span>
+            <span className="text-xs font-medium text-black dark:text-muted-foreground">Moves</span>
+            <span className="text-xl font-bold tabular-nums text-black dark:text-foreground">{moveCount}</span>
           </div>
           {redealsLeft !== null && (
             <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
-              <span className="text-xs font-medium text-muted-foreground">Recycles</span>
-              <span className="text-xl font-bold tabular-nums">{redealsLeft}</span>
+              <span className="text-xs font-medium text-black dark:text-muted-foreground">Recycles</span>
+              <span className="text-xl font-bold tabular-nums text-black dark:text-foreground">{redealsLeft}</span>
             </div>
           )}
         </div>
@@ -182,6 +183,18 @@ export default function KlondikeBoardBase({ useGame, onHowToPlay }: KlondikeBoar
             >
               {devMoveAnywhere ? 'Move Anywhere ON' : 'Move Anywhere OFF'} (Dev)
             </button>
+            <button
+              type="button"
+              onClick={() => setDevPeekTableau((v) => !v)}
+              className={cn(
+                'cursor-pointer rounded px-2 py-1 text-xs font-medium',
+                devPeekTableau
+                  ? 'bg-amber-200 text-amber-900 hover:bg-amber-300 dark:bg-amber-800/50 dark:text-amber-300'
+                  : 'bg-amber-100 text-amber-800 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-400',
+              )}
+            >
+              {devPeekTableau ? 'Peek Tableau ON' : 'Peek Tableau OFF'} (Dev)
+            </button>
           </div>
         )}
 
@@ -227,6 +240,7 @@ export default function KlondikeBoardBase({ useGame, onHowToPlay }: KlondikeBoar
                 id={col.id}
                 cards={col.cards}
                 draggableFrom={devMoveAnywhere ? Math.max(0, col.cards.findIndex((c) => c.faceUp)) : draggableFromIndex[col.id]}
+                peekTableau={devPeekTableau}
                 onDoubleClick={(pileId) => onAutoMove(pileId)}
               />
             ))}

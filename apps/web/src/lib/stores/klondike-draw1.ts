@@ -251,8 +251,6 @@ export const useKlondikeDrawOneStore = create<KlondikeStore>()(
           moveCount: state.moveCount + 1,
         }
 
-        nextState = applyCascade(nextState)
-
         if (isGameWon(nextState)) {
           const finalScore = Math.max(0, nextState.score)
           set({ ...nextState, status: 'won', past, future, canUndo, canRedo } as Partial<KlondikeStore>)
@@ -285,8 +283,6 @@ export const useKlondikeDrawOneStore = create<KlondikeStore>()(
           score: state.score + flipScore,
           moveCount: state.moveCount + 1,
         }
-
-        nextState = applyCascade(nextState)
 
         if (isGameWon(nextState)) {
           const finalScore = Math.max(0, nextState.score)

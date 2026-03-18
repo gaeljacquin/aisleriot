@@ -13,8 +13,8 @@ function TriPeaksAlt() {
   return (
     <main className="flex h-full flex-col bg-primary px-6 py-10">
       <div className="relative mb-6 flex items-center">
-        <BackLink label="Game Menu" destination="/new-game" />
-        <h1 className="absolute left-1/2 -translate-x-1/2 text-2xl font-bold text-foreground">Tri Peaks Alt</h1>
+        <BackLink label="Game Menu" destination="/new-game" textColor="text-primary-foreground/70 hover:text-primary-foreground" />
+        <h1 className="absolute left-1/2 -translate-x-1/2 rounded-lg bg-emerald-100 px-4 py-1 text-2xl font-bold text-emerald-900 dark:bg-emerald-950 dark:text-emerald-100">Tri Peaks Alt</h1>
       </div>
 
       <div className="flex flex-1 flex-col">
