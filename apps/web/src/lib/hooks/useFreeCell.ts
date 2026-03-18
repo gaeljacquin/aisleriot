@@ -79,7 +79,7 @@ export function useFreeCell(): UseFreeCell {
 
     if (fromPileId.startsWith('tableau-')) {
       const pile = state.tableau[fromPileId]
-      if (!pile || pile.length === 0) return
+      if (pile.length === 0) return
       fromIndex = pile.length - 1
       card = pile[fromIndex]
     } else if (fromPileId.startsWith('freecell-')) {

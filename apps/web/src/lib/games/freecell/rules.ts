@@ -79,8 +79,8 @@ export function canMoveToFoundation(
 
   if (fromPileId.startsWith('tableau-')) {
     const pile = state.tableau[fromPileId]
-    if (!pile || fromIndex !== pile.length - 1) return false
-    card = pile[fromIndex] ?? null
+    if (fromIndex !== pile.length - 1) return false
+    card = pile[fromIndex]
   } else if (fromPileId.startsWith('freecell-')) {
     const fc = state.freeCells[fromPileId]
     if (fc === null) return false
@@ -90,10 +90,8 @@ export function canMoveToFoundation(
     return false
   }
 
-  if (!card) return false
-
   // Find foundation pile for this card's suit
-  const foundationId = `foundation-${card.suit}` as FreeCellPileId
+  const foundationId = `foundation-${card.suit}`
   const pile = state.foundation[foundationId]
 
   if (pile.length === 0) {
@@ -115,7 +113,7 @@ export function canMoveToFreeCell(
   // Only single cards can go to a free cell
   if (fromPileId.startsWith('tableau-')) {
     const pile = state.tableau[fromPileId]
-    if (!pile || fromIndex !== pile.length - 1) return false
+    if (fromIndex !== pile.length - 1) return false
   } else {
     return false // freecell→freecell or foundation→freecell not allowed
   }
@@ -139,7 +137,7 @@ export function canMoveToTableau(
 
   if (fromPileId.startsWith('tableau-')) {
     const pile = state.tableau[fromPileId]
-    if (!pile || fromIndex < 0 || fromIndex >= pile.length) return false
+    if (fromIndex < 0 || fromIndex >= pile.length) return false
     sequence = pile.slice(fromIndex)
   } else if (fromPileId.startsWith('freecell-')) {
     const card = state.freeCells[fromPileId]
@@ -227,7 +225,7 @@ export function getAutoMoveTargets(state: FreeCellState): FreeCellMove[] {
       moves.push({
         fromPileId: pileId,
         fromIndex,
-        toPileId: `foundation-${card.suit}` as FreeCellPileId,
+        toPileId: `foundation-${card.suit}`,
       })
     }
   }
@@ -243,7 +241,7 @@ export function getAutoMoveTargets(state: FreeCellState): FreeCellMove[] {
       moves.push({
         fromPileId: fcId,
         fromIndex: 0,
-        toPileId: `foundation-${card.suit}` as FreeCellPileId,
+        toPileId: `foundation-${card.suit}`,
       })
     }
   }
@@ -276,7 +274,7 @@ export function draggableFromIndex(
   pileId: FreeCellPileId,
 ): number {
   const pile = state.tableau[pileId]
-  if (!pile || pile.length === 0) return 0
+  if (pile.length === 0) return 0
 
   let seqStart = pile.length - 1
 

@@ -42,8 +42,8 @@ function snapshot(state: FreeCellState): FreeCellState {
 /** Apply all pending auto-cascade moves (mutates nextState in place). */
 function applyCascade(nextState: FreeCellState): FreeCellState {
   let current = nextState
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
+   
+  for (;;) {
     const targets = getAutoMoveTargets(current)
     if (targets.length === 0) break
 
@@ -150,14 +150,10 @@ export const useFreeCellStore = create<FreeCellStore>()(
         if (toPileId.startsWith('foundation-')) {
           // Only single card to foundation
           const card = movedCards[0]
-          if (card) {
-            foundation = { ...foundation, [toPileId]: [...foundation[toPileId], card] }
-          }
+          foundation = { ...foundation, [toPileId]: [...foundation[toPileId], card] }
         } else if (toPileId.startsWith('freecell-')) {
           const card = movedCards[0]
-          if (card) {
-            freeCells = { ...freeCells, [toPileId]: card }
-          }
+          freeCells = { ...freeCells, [toPileId]: card }
         } else if (toPileId.startsWith('tableau-')) {
           const targetPile = tableau[toPileId]
           tableau = { ...tableau, [toPileId]: [...targetPile, ...movedCards] }
@@ -199,7 +195,7 @@ export const useFreeCellStore = create<FreeCellStore>()(
           // Only single cards can go to a free cell
           if (fromPileId.startsWith('tableau-')) {
             const pile = state.tableau[fromPileId]
-            if (!pile || fromIndex !== pile.length - 1) return
+            if (fromIndex !== pile.length - 1) return
           }
         }
         // tableau→tableau: no capacity check, but must be same pile guard
@@ -234,14 +230,10 @@ export const useFreeCellStore = create<FreeCellStore>()(
 
         if (toPileId.startsWith('foundation-')) {
           const card = movedCards[0]
-          if (card) {
-            foundation = { ...foundation, [toPileId]: [...foundation[toPileId], card] }
-          }
+          foundation = { ...foundation, [toPileId]: [...foundation[toPileId], card] }
         } else if (toPileId.startsWith('freecell-')) {
           const card = movedCards[0]
-          if (card) {
-            freeCells = { ...freeCells, [toPileId]: card }
-          }
+          freeCells = { ...freeCells, [toPileId]: card }
         } else if (toPileId.startsWith('tableau-')) {
           const targetPile = tableau[toPileId]
           tableau = { ...tableau, [toPileId]: [...targetPile, ...movedCards] }

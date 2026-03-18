@@ -232,7 +232,7 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
 
         const [autoFlippedTableau, flipScore] = applyAutoFlips(dstTableau)
 
-        let nextState: KlondikeState = {
+        const nextState: KlondikeState = {
           ...state,
           tableau: autoFlippedTableau,
           foundation: dstFoundation,
@@ -265,7 +265,7 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
 
         const [autoFlippedTableau, flipScore] = applyAutoFlips(dstTableau)
 
-        let nextState: KlondikeState = {
+        const nextState: KlondikeState = {
           ...state,
           tableau: autoFlippedTableau,
           foundation: dstFoundation,
