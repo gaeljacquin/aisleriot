@@ -1,18 +1,19 @@
 {
-  "name": "vite-monorepo",
-  "version": "0.0.1",
+  "name": "aisleriot",
   "private": true,
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "turbo format",
-    "typecheck": "turbo typecheck"
+    "typecheck": "turbo typecheck",
+    "add:web": "pnpm --filter ./apps/web add",
+    "add:ui": "pnpm --filter ./packages/ui add"
   },
   "devDependencies": {
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "turbo": "^2.8.17",
+    "turbo": "^2.8.20",
     "typescript": "5.9.3"
   },
   "packageManager": "pnpm@9.0.6",
