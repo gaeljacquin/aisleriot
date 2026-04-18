@@ -7,14 +7,18 @@
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": ["dist/**"]
     },
+    "transit": {
+      "dependsOn": ["^transit"]
+    },
     "lint": {
-      "dependsOn": ["^lint"]
+      "dependsOn": ["transit"],
+      "outputs": []
     },
     "format": {
-      "dependsOn": ["^format"]
+      "dependsOn": ["transit"]
     },
     "typecheck": {
-      "dependsOn": ["^typecheck"]
+      "dependsOn": ["transit"]
     },
     "dev": {
       "cache": false,

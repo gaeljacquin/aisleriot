@@ -11,7 +11,12 @@ import {
   FOUNDATION_IDS,
   FOUNDATION_SUITS,
 } from '#/lib/games/klondike'
-import type { KlondikeState, KlondikeMove, KlondikeTableauId, KlondikeFoundationId } from '#/lib/games/klondike'
+import type {
+  KlondikeState,
+  KlondikeMove,
+  KlondikeTableauId,
+  KlondikeFoundationId,
+} from '#/lib/games/klondike'
 import { createHistorySlice } from './slices/history'
 import { createStatsSlice } from './slices/stats'
 import type { HistorySlice } from './slices/history'
@@ -19,7 +24,8 @@ import type { StatsSlice } from './slices/stats'
 import type { Card } from '#/lib/types'
 import { useKlondikeDraw3SettingsStore } from './klondike-draw3-settings'
 
-export interface KlondikeStore extends KlondikeState, HistorySlice<KlondikeState>, StatsSlice {
+export interface KlondikeStore
+  extends KlondikeState, HistorySlice<KlondikeState>, StatsSlice {
   moveCard: (move: KlondikeMove) => void
   moveCardForce: (move: KlondikeMove) => void
   flipStock: () => void
@@ -75,7 +81,10 @@ function applyCascade(state: KlondikeState): KlondikeState {
       if (pile.length === 0) continue
       const fromIndex = pile.length - 1
       const card = pile[fromIndex]
-      if (canMoveToFoundation(current, pileId, fromIndex) && isSafeToAutoMove(current, card)) {
+      if (
+        canMoveToFoundation(current, pileId, fromIndex) &&
+        isSafeToAutoMove(current, card)
+      ) {
         const foundId = `foundation-${card.suit}` as KlondikeFoundationId
         const newTableau = { ...current.tableau, [pileId]: pile.slice(0, -1) }
         const newFoundation = {
@@ -97,7 +106,10 @@ function applyCascade(state: KlondikeState): KlondikeState {
     if (!moved && current.waste.length > 0) {
       const fromIndex = current.waste.length - 1
       const card = current.waste[fromIndex]
-      if (canMoveToFoundation(current, 'waste', fromIndex) && isSafeToAutoMove(current, card)) {
+      if (
+        canMoveToFoundation(current, 'waste', fromIndex) &&
+        isSafeToAutoMove(current, card)
+      ) {
         const foundId = `foundation-${card.suit}` as KlondikeFoundationId
         const newWaste = current.waste.slice(0, -1)
         const newFoundation = {
@@ -135,12 +147,18 @@ function extractSource(
   if (move.fromPile === 'waste') {
     if (move.fromIndex >= 0 && move.fromIndex < state.waste.length) {
       movedCards = [state.waste[move.fromIndex]]
-      newWaste = [...state.waste.slice(0, move.fromIndex), ...state.waste.slice(move.fromIndex + 1)]
+      newWaste = [
+        ...state.waste.slice(0, move.fromIndex),
+        ...state.waste.slice(move.fromIndex + 1),
+      ]
     }
   } else if (move.fromPile.startsWith('tableau-')) {
     const pile = state.tableau[move.fromPile as KlondikeTableauId]
     movedCards = pile.slice(move.fromIndex)
-    newTableau = { ...newTableau, [move.fromPile]: pile.slice(0, move.fromIndex) }
+    newTableau = {
+      ...newTableau,
+      [move.fromPile]: pile.slice(0, move.fromIndex),
+    }
   } else if (move.fromPile.startsWith('foundation-')) {
     const pile = state.foundation[move.fromPile as KlondikeFoundationId]
     if (pile.length > 0) {
@@ -169,12 +187,18 @@ function applyDestination(
       const card = movedCards[0]
       newFoundation = {
         ...newFoundation,
-        [move.toPile]: [...newFoundation[move.toPile as KlondikeFoundationId], card],
+        [move.toPile]: [
+          ...newFoundation[move.toPile as KlondikeFoundationId],
+          card,
+        ],
       }
     }
   } else if (move.toPile.startsWith('tableau-')) {
     const targetPile = newTableau[move.toPile as KlondikeTableauId]
-    newTableau = { ...newTableau, [move.toPile]: [...targetPile, ...movedCards] }
+    newTableau = {
+      ...newTableau,
+      [move.toPile]: [...targetPile, ...movedCards],
+    }
   }
 
   return { newTableau, newFoundation }
@@ -183,11 +207,13 @@ function applyDestination(
 function scoreForMove(move: KlondikeMove): number {
   if (move.toPile.startsWith('foundation-')) {
     if (move.fromPile === 'waste') return SCORE_DELTAS.wasteToFoundation
-    if (move.fromPile.startsWith('tableau-')) return SCORE_DELTAS.tableauToFoundation
+    if (move.fromPile.startsWith('tableau-'))
+      return SCORE_DELTAS.tableauToFoundation
   }
   if (move.toPile.startsWith('tableau-')) {
     if (move.fromPile === 'waste') return SCORE_DELTAS.wasteToTableau
-    if (move.fromPile.startsWith('foundation-')) return SCORE_DELTAS.foundationToTableau
+    if (move.fromPile.startsWith('foundation-'))
+      return SCORE_DELTAS.foundationToTableau
   }
   return 0
 }
@@ -217,7 +243,12 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
         if (toPile.startsWith('foundation-')) {
           isValid = canMoveToFoundation(state, fromPile, fromIndex)
         } else if (toPile.startsWith('tableau-')) {
-          isValid = canMoveToTableau(state, fromPile, fromIndex, toPile as KlondikeTableauId)
+          isValid = canMoveToTableau(
+            state,
+            fromPile,
+            fromIndex,
+            toPile as KlondikeTableauId,
+          )
         }
         if (!isValid) return
 
@@ -225,14 +256,18 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
         const { past, future, canUndo, canRedo } = get()
 
         const scoreDelta = scoreForMove(move)
-        const { movedCards, newWaste, newTableau: srcTableau, newFoundation: srcFoundation } =
-          extractSource(move, state)
+        const {
+          movedCards,
+          newWaste,
+          newTableau: srcTableau,
+          newFoundation: srcFoundation,
+        } = extractSource(move, state)
         const { newTableau: dstTableau, newFoundation: dstFoundation } =
           applyDestination(move, movedCards, srcTableau, srcFoundation)
 
         const [autoFlippedTableau, flipScore] = applyAutoFlips(dstTableau)
 
-        const nextState: KlondikeState = {
+        const baseNextState: KlondikeState = {
           ...state,
           tableau: autoFlippedTableau,
           foundation: dstFoundation,
@@ -241,12 +276,27 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
           moveCount: state.moveCount + 1,
         }
 
+        const nextState = applyCascade(baseNextState)
+
         if (isGameWon(nextState)) {
           const finalScore = Math.max(0, nextState.score)
-          set({ ...nextState, status: 'won', past, future, canUndo, canRedo } as Partial<KlondikeStore>)
+          set({
+            ...nextState,
+            status: 'won',
+            past,
+            future,
+            canUndo,
+            canRedo,
+          } as Partial<KlondikeStore>)
           get().recordWin(finalScore, !state.usedUndo)
         } else {
-          set({ ...nextState, past, future, canUndo, canRedo } as Partial<KlondikeStore>)
+          set({
+            ...nextState,
+            past,
+            future,
+            canUndo,
+            canRedo,
+          } as Partial<KlondikeStore>)
         }
       },
 
@@ -258,14 +308,18 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
         state.pushHistory(snapshot(state))
         const { past, future, canUndo, canRedo } = get()
 
-        const { movedCards, newWaste, newTableau: srcTableau, newFoundation: srcFoundation } =
-          extractSource(move, state)
+        const {
+          movedCards,
+          newWaste,
+          newTableau: srcTableau,
+          newFoundation: srcFoundation,
+        } = extractSource(move, state)
         const { newTableau: dstTableau, newFoundation: dstFoundation } =
           applyDestination(move, movedCards, srcTableau, srcFoundation)
 
         const [autoFlippedTableau, flipScore] = applyAutoFlips(dstTableau)
 
-        const nextState: KlondikeState = {
+        const baseNextState: KlondikeState = {
           ...state,
           tableau: autoFlippedTableau,
           foundation: dstFoundation,
@@ -274,12 +328,27 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
           moveCount: state.moveCount + 1,
         }
 
+        const nextState = applyCascade(baseNextState)
+
         if (isGameWon(nextState)) {
           const finalScore = Math.max(0, nextState.score)
-          set({ ...nextState, status: 'won', past, future, canUndo, canRedo } as Partial<KlondikeStore>)
+          set({
+            ...nextState,
+            status: 'won',
+            past,
+            future,
+            canUndo,
+            canRedo,
+          } as Partial<KlondikeStore>)
           get().recordWin(finalScore, !state.usedUndo)
         } else {
-          set({ ...nextState, past, future, canUndo, canRedo } as Partial<KlondikeStore>)
+          set({
+            ...nextState,
+            past,
+            future,
+            canUndo,
+            canRedo,
+          } as Partial<KlondikeStore>)
         }
       },
 
@@ -292,7 +361,9 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
 
         if (state.stock.length > 0) {
           const toDraw = Math.min(state.drawCount, state.stock.length)
-          const drawn = state.stock.slice(-toDraw).map((c) => ({ ...c, faceUp: true }))
+          const drawn = state.stock
+            .slice(-toDraw)
+            .map((c) => ({ ...c, faceUp: true }))
           const newStock = state.stock.slice(0, state.stock.length - toDraw)
           set({
             stock: newStock,
@@ -303,9 +374,12 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
             canRedo,
           } as Partial<KlondikeStore>)
         } else if (state.waste.length > 0) {
-          const { redealtCost, redealsAllowed } = useKlondikeDraw3SettingsStore.getState()
+          const { redealtCost, redealsAllowed } =
+            useKlondikeDraw3SettingsStore.getState()
           if (state.redealsUsed >= redealsAllowed) return
-          const newStock = [...state.waste].reverse().map((c) => ({ ...c, faceUp: false }))
+          const newStock = [...state.waste]
+            .reverse()
+            .map((c) => ({ ...c, faceUp: false }))
           set({
             stock: newStock,
             waste: [],

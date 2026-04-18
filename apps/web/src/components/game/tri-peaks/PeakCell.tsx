@@ -18,7 +18,11 @@ interface FlyState {
   endY: number
 }
 
-export default function PeakCell({ cell, isAvailable, onClick }: PeakCellProps) {
+export default function PeakCell({
+  cell,
+  isAvailable,
+  onClick,
+}: PeakCellProps) {
   const cardRef = useRef<HTMLDivElement>(null)
   const wasteRef = useWasteRef()
   const [flyState, setFlyState] = useState<FlyState | null>(null)
@@ -109,11 +113,7 @@ export default function PeakCell({ cell, isAvailable, onClick }: PeakCellProps) 
               onClick(cell.id)
             }}
           >
-            <Card
-              suit={cell.card.suit}
-              rank={cell.card.rank}
-              faceUp={true}
-            />
+            <Card suit={cell.card.suit} rank={cell.card.rank} faceUp={true} />
           </motion.div>,
           document.body,
         )}

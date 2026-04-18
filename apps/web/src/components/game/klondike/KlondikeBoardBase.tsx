@@ -27,7 +27,10 @@ interface KlondikeBoardBaseProps {
   onHowToPlay: () => void
 }
 
-export default function KlondikeBoardBase({ useGame, onHowToPlay }: KlondikeBoardBaseProps) {
+export default function KlondikeBoardBase({
+  useGame,
+  onHowToPlay,
+}: KlondikeBoardBaseProps) {
   const {
     tableau,
     foundation,
@@ -60,7 +63,9 @@ export default function KlondikeBoardBase({ useGame, onHowToPlay }: KlondikeBoar
 
   const sensors = useSensors(
     useSensor(MouseSensor, { activationConstraint: { distance: 8 } }),
-    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 5 } }),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 200, tolerance: 5 },
+    }),
   )
 
   function handleDragStart(event: DragStartEvent) {
@@ -72,7 +77,9 @@ export default function KlondikeBoardBase({ useGame, onHowToPlay }: KlondikeBoar
   }
 
   function handleDragEnd(event: DragEndEvent) {
-    const activeData = event.active.data.current as DraggableCardData | undefined
+    const activeData = event.active.data.current as
+      | DraggableCardData
+      | undefined
     const overData = event.over?.data.current as DroppableZoneData | undefined
 
     if (activeData?.type === 'card' && overData?.type === 'pile') {
@@ -106,22 +113,38 @@ export default function KlondikeBoardBase({ useGame, onHowToPlay }: KlondikeBoar
       : CARD_HEIGHT
 
   return (
-    <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+    <DndContext
+      sensors={sensors}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
       <div className="flex flex-col gap-4">
         {/* Score + moves HUD */}
         <div className="flex items-center justify-center gap-5">
           <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
-            <span className="text-xs font-medium text-black dark:text-muted-foreground">Score</span>
-            <span className="text-xl font-bold tabular-nums text-green-900 dark:text-green-500">{score}</span>
+            <span className="text-xs font-medium text-black dark:text-muted-foreground">
+              Score
+            </span>
+            <span className="text-xl font-bold tabular-nums text-green-900 dark:text-green-500">
+              {score}
+            </span>
           </div>
           <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
-            <span className="text-xs font-medium text-black dark:text-muted-foreground">Moves</span>
-            <span className="text-xl font-bold tabular-nums text-black dark:text-foreground">{moveCount}</span>
+            <span className="text-xs font-medium text-black dark:text-muted-foreground">
+              Moves
+            </span>
+            <span className="text-xl font-bold tabular-nums text-black dark:text-foreground">
+              {moveCount}
+            </span>
           </div>
           {redealsLeft !== null && (
             <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
-              <span className="text-xs font-medium text-black dark:text-muted-foreground">Recycles</span>
-              <span className="text-xl font-bold tabular-nums text-black dark:text-foreground">{redealsLeft}</span>
+              <span className="text-xs font-medium text-black dark:text-muted-foreground">
+                Recycles
+              </span>
+              <span className="text-xl font-bold tabular-nums text-black dark:text-foreground">
+                {redealsLeft}
+              </span>
             </div>
           )}
         </div>
@@ -239,7 +262,14 @@ export default function KlondikeBoardBase({ useGame, onHowToPlay }: KlondikeBoar
                 key={col.id}
                 id={col.id}
                 cards={col.cards}
-                draggableFrom={devMoveAnywhere ? Math.max(0, col.cards.findIndex((c) => c.faceUp)) : draggableFromIndex[col.id]}
+                draggableFrom={
+                  devMoveAnywhere
+                    ? Math.max(
+                        0,
+                        col.cards.findIndex((c) => c.faceUp),
+                      )
+                    : draggableFromIndex[col.id]
+                }
                 peekTableau={devPeekTableau}
                 onDoubleClick={(pileId) => onAutoMove(pileId)}
               />
@@ -250,7 +280,9 @@ export default function KlondikeBoardBase({ useGame, onHowToPlay }: KlondikeBoar
         {/* Victory message */}
         {isGameOver && (
           <div className="flex flex-col items-center gap-3 py-2">
-            <p className="rounded px-3 py-1.5 text-xl font-black tracking-wide bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">VICTORY</p>
+            <p className="rounded px-3 py-1.5 text-xl font-black tracking-wide bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+              VICTORY
+            </p>
           </div>
         )}
       </div>
@@ -275,7 +307,10 @@ export default function KlondikeBoardBase({ useGame, onHowToPlay }: KlondikeBoar
       {/* Drag overlay */}
       <DragOverlay dropAnimation={dropAnimation}>
         {draggedCards && draggedCards.length > 0 && (
-          <div className="relative" style={{ height: overlayHeight, width: 80 }}>
+          <div
+            className="relative"
+            style={{ height: overlayHeight, width: 80 }}
+          >
             {draggedCards.map((card, i) => (
               <div
                 key={card.id}

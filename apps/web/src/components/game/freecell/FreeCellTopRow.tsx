@@ -1,7 +1,10 @@
 import FreeCellFreeCell from './FreeCellFreeCell'
 import FreeCellFoundation from './FreeCellFoundation'
 import type { FreeCellPileId } from '#/lib/games/freecell'
-import type { FreeCellFreeCellEntry, FreeCellFoundationEntry } from '#/lib/hooks/useFreeCell'
+import type {
+  FreeCellFreeCellEntry,
+  FreeCellFoundationEntry,
+} from '#/lib/hooks/useFreeCell'
 
 interface FreeCellTopRowProps {
   freeCells: FreeCellFreeCellEntry[]

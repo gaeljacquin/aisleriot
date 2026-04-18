@@ -1,7 +1,10 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { cn } from '@workspace/ui/lib/utils'
 import Card from '../Card'
-import type { PyramidCell as PyramidCellType, PyramidCellId } from '#/lib/games/pyramid'
+import type {
+  PyramidCell as PyramidCellType,
+  PyramidCellId,
+} from '#/lib/games/pyramid'
 
 interface PyramidCellProps {
   cell: PyramidCellType
@@ -10,7 +13,12 @@ interface PyramidCellProps {
   onClick: (id: PyramidCellId) => void
 }
 
-export default function PyramidCell({ cell, isAvailable, isSelected, onClick }: PyramidCellProps) {
+export default function PyramidCell({
+  cell,
+  isAvailable,
+  isSelected,
+  onClick,
+}: PyramidCellProps) {
   // Removed cells keep their space in the layout
   if (cell.removed) {
     return <div className="h-28 w-20" aria-hidden="true" />
@@ -26,9 +34,7 @@ export default function PyramidCell({ cell, isAvailable, isSelected, onClick }: 
   }
 
   return (
-    <div
-      className={cn('h-28 w-20')}
-    >
+    <div className={cn('h-28 w-20')}>
       <AnimatePresence>
         <motion.div
           key={cell.id + '-available'}

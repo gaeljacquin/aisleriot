@@ -4,7 +4,11 @@ import { cn } from '@workspace/ui/lib/utils'
 import CardSlot from '../CardSlot'
 import Card from '../Card'
 import KlondikeCard from './KlondikeCard'
-import type { KlondikeFoundationId, DroppableZoneData, DraggableCardData } from '#/lib/games/klondike'
+import type {
+  KlondikeFoundationId,
+  DroppableZoneData,
+  DraggableCardData,
+} from '#/lib/games/klondike'
 import type { Card as CardType, Suit } from '#/lib/types'
 
 const SUIT_SYMBOLS: Record<Suit, string> = {
@@ -48,8 +52,12 @@ export default function KlondikeFoundation({
         setIsDraggingTop(true)
       }
     },
-    onDragEnd() { setIsDraggingTop(false) },
-    onDragCancel() { setIsDraggingTop(false) },
+    onDragEnd() {
+      setIsDraggingTop(false)
+    },
+    onDragCancel() {
+      setIsDraggingTop(false)
+    },
   })
 
   const topCard = cards.length > 0 ? cards[cards.length - 1] : null
@@ -78,7 +86,11 @@ export default function KlondikeFoundation({
       {/* Card beneath top — shown while the top card is being dragged */}
       {isDraggingTop && beneathCard && (
         <div className="absolute inset-0">
-          <Card suit={beneathCard.suit} rank={beneathCard.rank} faceUp={beneathCard.faceUp} />
+          <Card
+            suit={beneathCard.suit}
+            rank={beneathCard.rank}
+            faceUp={beneathCard.faceUp}
+          />
         </div>
       )}
 
@@ -93,7 +105,11 @@ export default function KlondikeFoundation({
               dragCards={[topCard]}
             />
           ) : (
-            <Card suit={topCard.suit} rank={topCard.rank} faceUp={topCard.faceUp} />
+            <Card
+              suit={topCard.suit}
+              rank={topCard.rank}
+              faceUp={topCard.faceUp}
+            />
           )}
         </div>
       )}

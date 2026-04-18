@@ -234,10 +234,7 @@ export function getAutoMoveTargets(state: FreeCellState): FreeCellMove[] {
   for (const fcId of FREECELL_IDS) {
     const card = state.freeCells[fcId]
     if (card === null) continue
-    if (
-      canMoveToFoundation(state, fcId, 0) &&
-      isSafeToAutoMove(state, card)
-    ) {
+    if (canMoveToFoundation(state, fcId, 0) && isSafeToAutoMove(state, card)) {
       moves.push({
         fromPileId: fcId,
         fromIndex: 0,

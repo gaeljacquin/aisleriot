@@ -3,7 +3,11 @@ import { useState } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
 import CardSlot from '../CardSlot'
 import FreeCellCard from './FreeCellCard'
-import type { FreeCellPileId, DraggableCardData, DroppableZoneData } from '#/lib/games/freecell'
+import type {
+  FreeCellPileId,
+  DraggableCardData,
+  DroppableZoneData,
+} from '#/lib/games/freecell'
 import type { Card } from '#/lib/types'
 
 interface FreeCellFreeCellProps {

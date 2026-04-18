@@ -22,7 +22,11 @@ export default function FreeCellTableau({
           key={entry.id}
           id={entry.id}
           cards={entry.cards}
-          draggableFrom={devUnlimitedMoves ? 0 : (draggableFromIndex[entry.id] ?? entry.cards.length)}
+          draggableFrom={
+            devUnlimitedMoves
+              ? 0
+              : (draggableFromIndex[entry.id] ?? entry.cards.length)
+          }
           onDoubleClick={onDoubleClick}
         />
       ))}

@@ -1,6 +1,6 @@
 import { create } from 'zustand'
-import { applyThemeMode, getStoredMode  } from '@/lib/theme'
-import type {ThemeMode} from '@/lib/theme';
+import { applyThemeMode, getStoredMode } from '@/lib/theme'
+import type { ThemeMode } from '@/lib/theme'
 
 interface ThemeStore {
   mode: ThemeMode
@@ -21,9 +21,11 @@ export const useThemeStore = create<ThemeStore>((set) => ({
 
 // Keep the resolved theme in sync when the OS preference changes
 if (typeof window !== 'undefined') {
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-    if (useThemeStore.getState().mode === 'auto') {
-      applyThemeMode('auto')
-    }
-  })
+  window
+    .matchMedia('(prefers-color-scheme: dark)')
+    .addEventListener('change', () => {
+      if (useThemeStore.getState().mode === 'auto') {
+        applyThemeMode('auto')
+      }
+    })
 }

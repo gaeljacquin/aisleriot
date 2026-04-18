@@ -6,5 +6,7 @@ interface KlondikeBoardProps {
 }
 
 export default function KlondikeBoard({ onHowToPlay }: KlondikeBoardProps) {
-  return <KlondikeBoardBase useGame={useKlondikeDrawOne} onHowToPlay={onHowToPlay} />
+  return (
+    <KlondikeBoardBase useGame={useKlondikeDrawOne} onHowToPlay={onHowToPlay} />
+  )
 }

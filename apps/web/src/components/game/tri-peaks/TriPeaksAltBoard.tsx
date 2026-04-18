@@ -5,6 +5,10 @@ interface TriPeaksAltBoardProps {
   onHowToPlay: () => void
 }
 
-export default function TriPeaksAltBoard({ onHowToPlay }: TriPeaksAltBoardProps) {
-  return <TriPeaksBoardBase useGame={useTriPeaksAlt} onHowToPlay={onHowToPlay} />
+export default function TriPeaksAltBoard({
+  onHowToPlay,
+}: TriPeaksAltBoardProps) {
+  return (
+    <TriPeaksBoardBase useGame={useTriPeaksAlt} onHowToPlay={onHowToPlay} />
+  )
 }

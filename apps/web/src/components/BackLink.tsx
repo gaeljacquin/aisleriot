@@ -9,7 +9,11 @@ interface BackLinkProps {
   textColor?: string
 }
 
-export default function BackLink({ label = 'Main Menu', destination = '/', textColor }: BackLinkProps) {
+export default function BackLink({
+  label = 'Main Menu',
+  destination = '/',
+  textColor,
+}: BackLinkProps) {
   return (
     <Link
       to={destination}

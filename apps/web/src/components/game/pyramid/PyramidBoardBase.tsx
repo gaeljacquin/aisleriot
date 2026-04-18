@@ -66,7 +66,9 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
   } = game
 
   const wasteRef = useRef<HTMLDivElement>(null)
-  const [selectedCellId, setSelectedCellId] = useState<PyramidCellId | null>(null)
+  const [selectedCellId, setSelectedCellId] = useState<PyramidCellId | null>(
+    null,
+  )
   const [selectedWaste, setSelectedWaste] = useState(false)
   const [devStatus, setDevStatus] = useState<'won' | 'lost' | null>(null)
   const [confirmRestart, setConfirmRestart] = useState(false)
@@ -179,11 +181,17 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
         {/* Score display */}
         <div className="flex items-center justify-center gap-5 mb-3">
           <div className="flex flex-col items-center justify-center rounded-2xl bg-muted/50 px-6 py-3 min-w-20">
-            <span className="text-xs font-medium text-muted-foreground">Score</span>
-            <span className="text-xl font-bold text-primary tabular-nums">{score}</span>
+            <span className="text-xs font-medium text-muted-foreground">
+              Score
+            </span>
+            <span className="text-xl font-bold text-primary tabular-nums">
+              {score}
+            </span>
           </div>
           <div className="flex flex-col items-center justify-center rounded-2xl bg-muted/50 px-6 py-3 min-w-20">
-            <span className="text-xs font-medium text-muted-foreground">Recycles</span>
+            <span className="text-xs font-medium text-muted-foreground">
+              Recycles
+            </span>
             <span
               className={cn(
                 'text-xl font-bold tabular-nums',
@@ -240,7 +248,10 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
                   <Card suit="spades" rank="A" faceUp={false} />
                 </div>
               ) : (
-                <StockEmptyIndicator canRecycle={canRecycle} onClick={handleStockClick} />
+                <StockEmptyIndicator
+                  canRecycle={canRecycle}
+                  onClick={handleStockClick}
+                />
               )}
               <div ref={wasteRef} className="inline-block">
                 <div
@@ -259,7 +270,6 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
               </div>
             </div>
           )}
-
         </div>
 
         {/* Undo + How to Play + Restart + New Game buttons */}

@@ -9,13 +9,24 @@ interface WasteProps {
   animate?: boolean
 }
 
-export default function Waste({ topCard, highlighted, animate = true }: WasteProps) {
+export default function Waste({
+  topCard,
+  highlighted,
+  animate = true,
+}: WasteProps) {
   if (!topCard) {
     return <CardSlot role="waste" />
   }
 
   if (!animate) {
-    return <Card suit={topCard.suit} rank={topCard.rank} faceUp={true} highlighted={highlighted} />
+    return (
+      <Card
+        suit={topCard.suit}
+        rank={topCard.rank}
+        faceUp={true}
+        highlighted={highlighted}
+      />
+    )
   }
 
   return (
@@ -26,7 +37,12 @@ export default function Waste({ topCard, highlighted, animate = true }: WastePro
         animate={{ x: 0, rotateY: 0, opacity: 1 }}
         transition={{ duration: 0.3, ease: 'easeOut' }}
       >
-        <Card suit={topCard.suit} rank={topCard.rank} faceUp={true} highlighted={highlighted} />
+        <Card
+          suit={topCard.suit}
+          rank={topCard.rank}
+          faceUp={true}
+          highlighted={highlighted}
+        />
       </motion.div>
     </AnimatePresence>
   )

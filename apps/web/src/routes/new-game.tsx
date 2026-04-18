@@ -20,7 +20,9 @@ function NewGame() {
 
       <div className="flex flex-1 flex-col items-center justify-center">
         <div className="w-full max-w-sm space-y-10">
-          <h1 className="text-center text-3xl font-bold text-foreground">New Game</h1>
+          <h1 className="text-center text-3xl font-bold text-foreground">
+            New Game
+          </h1>
           <VariantGrid onSelect={handleSelect} showDescription={false} />
         </div>
       </div>

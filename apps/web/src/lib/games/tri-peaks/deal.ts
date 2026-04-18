@@ -1,4 +1,5 @@
-import { createDeck, shuffleDeck } from '#/lib/utils'
+import { createShuffledDeck } from '#/lib/utils'
+import type { Card } from '#/lib/types'
 import type { TriPeaksState, TriPeaksCellId, TriPeaksCell } from './types'
 
 // blockedBy relationships: a cell is available when ALL cells blocking it have been removed.
@@ -46,7 +47,7 @@ function cellId(index: number): TriPeaksCellId {
 
 export function createInitialState(seed?: number): TriPeaksState {
   const resolvedSeed = seed ?? Math.floor(Math.random() * 1_000_000)
-  const shuffled = shuffleDeck(createDeck(), resolvedSeed)
+  const shuffled = createShuffledDeck(resolvedSeed)
 
   const cells: Record<TriPeaksCellId, TriPeaksCell> = {}
 
@@ -61,7 +62,9 @@ export function createInitialState(seed?: number): TriPeaksState {
     }
   }
 
-  const stock = shuffled.slice(PEAK_COUNT).map((c) => ({ ...c, faceUp: false }))
+  const stock = shuffled
+    .slice(PEAK_COUNT)
+    .map((c: Card) => ({ ...c, faceUp: false }))
 
   return {
     cells,

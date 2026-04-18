@@ -91,7 +91,10 @@ export function useFreeCell(): UseFreeCell {
     }
 
     // Prefer foundation if the card can legally and safely go there
-    if (canMoveToFoundation(state, fromPileId, fromIndex) && isSafeToAutoMove(state, card)) {
+    if (
+      canMoveToFoundation(state, fromPileId, fromIndex) &&
+      isSafeToAutoMove(state, card)
+    ) {
       const toPileId: FreeCellPileId = `foundation-${card.suit}`
       state.moveCard({ fromPileId, fromIndex, toPileId })
       return

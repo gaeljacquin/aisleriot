@@ -15,8 +15,15 @@ interface KlondikeWasteProps {
   onDoubleClick?: () => void
 }
 
-export default function KlondikeWaste({ waste, drawCount, moveAnywhere, onDoubleClick }: KlondikeWasteProps) {
-  const [draggingFromIndex, setDraggingFromIndex] = useState<number | null>(null)
+export default function KlondikeWaste({
+  waste,
+  drawCount,
+  moveAnywhere,
+  onDoubleClick,
+}: KlondikeWasteProps) {
+  const [draggingFromIndex, setDraggingFromIndex] = useState<number | null>(
+    null,
+  )
 
   useDndMonitor({
     onDragStart(event) {
@@ -25,8 +32,12 @@ export default function KlondikeWaste({ waste, drawCount, moveAnywhere, onDouble
         setDraggingFromIndex(data.fromIndex)
       }
     },
-    onDragEnd() { setDraggingFromIndex(null) },
-    onDragCancel() { setDraggingFromIndex(null) },
+    onDragEnd() {
+      setDraggingFromIndex(null)
+    },
+    onDragCancel() {
+      setDraggingFromIndex(null)
+    },
   })
 
   if (waste.length === 0) {
@@ -83,12 +94,14 @@ export default function KlondikeWaste({ waste, drawCount, moveAnywhere, onDouble
         const isTop = i === count - 1
         const isDraggingThis = draggingFromIndex === absIndex
         // card to show beneath this one while it's being dragged
-        const beneathCard = isDraggingThis && absIndex > 0 ? waste[absIndex - 1] : null
+        const beneathCard =
+          isDraggingThis && absIndex > 0 ? waste[absIndex - 1] : null
         const left = i * FAN_OFFSET
-        const isDraggable = isTop || (moveAnywhere === true)
+        const isDraggable = isTop || moveAnywhere === true
 
         // Only show beneathCard if it's not already rendered as the previous fan card
-        const showBeneath = beneathCard !== null && absIndex - 1 < waste.length - count
+        const showBeneath =
+          beneathCard !== null && absIndex - 1 < waste.length - count
 
         return (
           <div
@@ -99,7 +112,11 @@ export default function KlondikeWaste({ waste, drawCount, moveAnywhere, onDouble
             {/* Card beneath — shown while this card is being dragged, only if not already in fan */}
             {showBeneath && (
               <div className="absolute inset-0" style={{ zIndex: -1 }}>
-                <Card suit={beneathCard.suit} rank={beneathCard.rank} faceUp={beneathCard.faceUp} />
+                <Card
+                  suit={beneathCard.suit}
+                  rank={beneathCard.rank}
+                  faceUp={beneathCard.faceUp}
+                />
               </div>
             )}
             {isDraggable ? (

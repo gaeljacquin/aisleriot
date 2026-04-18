@@ -8,14 +8,15 @@ interface KlondikeDraw3SettingsStore {
   setRedealsAllowed: (n: number) => void
 }
 
-export const useKlondikeDraw3SettingsStore = create<KlondikeDraw3SettingsStore>()(
-  persist(
-    (set) => ({
-      redealtCost: -100,
-      redealsAllowed: 3,
-      setRedealtCost: (n: number) => set({ redealtCost: n }),
-      setRedealsAllowed: (n: number) => set({ redealsAllowed: n }),
-    }),
-    { name: 'klondike-draw3-settings' },
-  ),
-)
+export const useKlondikeDraw3SettingsStore =
+  create<KlondikeDraw3SettingsStore>()(
+    persist(
+      (set) => ({
+        redealtCost: -100,
+        redealsAllowed: 3,
+        setRedealtCost: (n: number) => set({ redealtCost: n }),
+        setRedealsAllowed: (n: number) => set({ redealsAllowed: n }),
+      }),
+      { name: 'klondike-draw3-settings' },
+    ),
+  )

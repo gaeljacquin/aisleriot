@@ -17,18 +17,10 @@ export default function FreeCellCard({
 }: FreeCellCardProps) {
   return (
     <div
-      className={cn(
-        'transition-opacity',
-        isHidden && 'opacity-0',
-        className,
-      )}
+      className={cn('transition-opacity', isHidden && 'opacity-0', className)}
       onDoubleClick={onDoubleClick}
     >
-      <Card
-        suit={card.suit}
-        rank={card.rank}
-        faceUp={card.faceUp}
-      />
+      <Card suit={card.suit} rank={card.rank} faceUp={card.faceUp} />
     </div>
   )
 }

@@ -14,7 +14,11 @@ import FreeCellTableau from './FreeCellTableau'
 import FreeCellCard from './FreeCellCard'
 import { ConfirmModal } from '#/components/ConfirmModal'
 import { useFreeCell } from '#/lib/hooks/useFreeCell'
-import type { FreeCellPileId, DraggableCardData, DroppableZoneData } from '#/lib/games/freecell'
+import type {
+  FreeCellPileId,
+  DraggableCardData,
+  DroppableZoneData,
+} from '#/lib/games/freecell'
 import type { Card } from '#/lib/types'
 
 const OVERLAY_CARD_OFFSET = 36
@@ -67,7 +71,9 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
   }
 
   function handleDragEnd(event: DragEndEvent) {
-    const activeData = event.active.data.current as DraggableCardData | undefined
+    const activeData = event.active.data.current as
+      | DraggableCardData
+      | undefined
     const overData = event.over?.data.current as DroppableZoneData | undefined
 
     if (activeData?.type === 'card' && overData?.type === 'pile') {
@@ -113,16 +119,26 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
       : CARD_HEIGHT
 
   return (
-    <DndContext sensors={sensors} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+    <DndContext
+      sensors={sensors}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
       <div className="flex flex-col gap-4">
         {/* Score + move count */}
         <div className="flex items-center justify-center gap-5">
           <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
-            <span className="text-xs font-medium text-muted-foreground">Score</span>
-            <span className="text-xl font-bold tabular-nums text-primary">{score}</span>
+            <span className="text-xs font-medium text-muted-foreground">
+              Score
+            </span>
+            <span className="text-xl font-bold tabular-nums text-primary">
+              {score}
+            </span>
           </div>
           <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
-            <span className="text-xs font-medium text-muted-foreground">Moves</span>
+            <span className="text-xs font-medium text-muted-foreground">
+              Moves
+            </span>
             <span className="text-xl font-bold tabular-nums">{moveCount}</span>
           </div>
         </div>
@@ -147,7 +163,8 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
                   : 'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400',
               )}
             >
-              {devUnlimitedMoves ? 'Unlimited Moves ON' : 'Unlimited Moves OFF'} (Dev)
+              {devUnlimitedMoves ? 'Unlimited Moves ON' : 'Unlimited Moves OFF'}{' '}
+              (Dev)
             </button>
           </div>
         )}
@@ -212,7 +229,9 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
         {/* Victory message */}
         {isGameOver && (
           <div className="flex flex-col items-center gap-3 py-2">
-            <p className="rounded px-3 py-1.5 text-xl font-black tracking-wide bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">VICTORY</p>
+            <p className="rounded px-3 py-1.5 text-xl font-black tracking-wide bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
+              VICTORY
+            </p>
           </div>
         )}
       </div>
@@ -237,7 +256,10 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
       {/* Drag overlay */}
       <DragOverlay dropAnimation={dropAnimation}>
         {draggedCards && draggedCards.length > 0 && (
-          <div className="relative" style={{ height: overlayHeight, width: 80 }}>
+          <div
+            className="relative"
+            style={{ height: overlayHeight, width: 80 }}
+          >
             {draggedCards.map((card, i) => (
               <div
                 key={card.id}

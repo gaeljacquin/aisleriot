@@ -1,4 +1,5 @@
-import { createDeck, shuffleDeck } from '#/lib/utils'
+import { createShuffledDeck } from '#/lib/utils'
+import type { Card } from '#/lib/types'
 import type { PyramidState, PyramidCellId, PyramidCell } from './types'
 
 // Pyramid layout: 7 rows, row r has r+1 cards.
@@ -51,9 +52,12 @@ function cellId(index: number): PyramidCellId {
   return `cell-${index}`
 }
 
-export function createInitialState(_recycleLimit: number, seed?: number): PyramidState {
+export function createInitialState(
+  _recycleLimit: number,
+  seed?: number,
+): PyramidState {
   const resolvedSeed = seed ?? Math.floor(Math.random() * 1_000_000)
-  const shuffled = shuffleDeck(createDeck(), resolvedSeed)
+  const shuffled = createShuffledDeck(resolvedSeed)
 
   const cells: Record<PyramidCellId, PyramidCell> = {}
 
@@ -69,7 +73,9 @@ export function createInitialState(_recycleLimit: number, seed?: number): Pyrami
   }
 
   // Remaining 24 cards form the stock; last element = top. Face-down.
-  const stock = shuffled.slice(PYRAMID_COUNT).map((c) => ({ ...c, faceUp: false }))
+  const stock = shuffled
+    .slice(PYRAMID_COUNT)
+    .map((c: Card) => ({ ...c, faceUp: false }))
 
   return {
     cells,

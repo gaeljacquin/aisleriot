@@ -46,11 +46,7 @@ export default function FreeCellFoundation({
       )}
     >
       {topCard ? (
-        <Card
-          suit={topCard.suit}
-          rank={topCard.rank}
-          faceUp={topCard.faceUp}
-        />
+        <Card suit={topCard.suit} rank={topCard.rank} faceUp={topCard.faceUp} />
       ) : (
         <div className="relative h-28 w-20">
           <CardSlot role="foundation" />

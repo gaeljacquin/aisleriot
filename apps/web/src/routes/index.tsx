@@ -3,7 +3,7 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import type { TargetAndTransition } from 'motion/react'
 import { motion } from 'motion/react'
 import { HugeiconsIcon } from '@hugeicons/react'
-import type { IconSvgElement } from '@hugeicons/react';
+import type { IconSvgElement } from '@hugeicons/react'
 import {
   ArrowDown02Icon,
   ArrowRight02Icon,

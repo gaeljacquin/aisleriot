@@ -8,7 +8,9 @@ import { VariantGrid } from '@/components/VariantGrid'
 export const Route = createFileRoute('/how-to-play')({ component: HowToPlay })
 
 function HowToPlay() {
-  const [selectedVariant, setSelectedVariant] = useState<GameVariant | null>(null)
+  const [selectedVariant, setSelectedVariant] = useState<GameVariant | null>(
+    null,
+  )
 
   return (
     <main className="flex h-full flex-col px-6 py-10">
@@ -18,7 +20,9 @@ function HowToPlay() {
 
       <div className="flex flex-1 flex-col items-center justify-center">
         <div className="w-full max-w-sm space-y-10">
-          <h1 className="text-center text-3xl font-bold text-foreground">How to Play</h1>
+          <h1 className="text-center text-3xl font-bold text-foreground">
+            How to Play
+          </h1>
           <VariantGrid onSelect={setSelectedVariant} />
         </div>
       </div>

@@ -9,7 +9,11 @@ import {
   isGameWon,
   SCORE_DELTAS,
 } from '#/lib/games/freecell'
-import type { FreeCellState, FreeCellMove, FreeCellPileId } from '#/lib/games/freecell'
+import type {
+  FreeCellState,
+  FreeCellMove,
+  FreeCellPileId,
+} from '#/lib/games/freecell'
 import { createHistorySlice } from './slices/history'
 import { createStatsSlice } from './slices/stats'
 import type { HistorySlice } from './slices/history'
@@ -17,9 +21,7 @@ import type { StatsSlice } from './slices/stats'
 import type { Card } from '#/lib/types'
 
 export interface FreeCellStore
-  extends FreeCellState,
-    HistorySlice<FreeCellState>,
-    StatsSlice {
+  extends FreeCellState, HistorySlice<FreeCellState>, StatsSlice {
   moveCard: (move: FreeCellMove) => void
   moveCardForce: (move: FreeCellMove) => void
   newGame: (seed?: number) => void
@@ -42,7 +44,7 @@ function snapshot(state: FreeCellState): FreeCellState {
 /** Apply all pending auto-cascade moves (mutates nextState in place). */
 function applyCascade(nextState: FreeCellState): FreeCellState {
   let current = nextState
-   
+
   for (;;) {
     const targets = getAutoMoveTargets(current)
     if (targets.length === 0) break
@@ -124,7 +126,10 @@ export const useFreeCellStore = create<FreeCellStore>()(
           scoreDelta = SCORE_DELTAS.toFoundation
         } else if (toPileId.startsWith('freecell-')) {
           scoreDelta = SCORE_DELTAS.toFreeCell
-        } else if (toPileId.startsWith('tableau-') && fromPileId.startsWith('freecell-')) {
+        } else if (
+          toPileId.startsWith('tableau-') &&
+          fromPileId.startsWith('freecell-')
+        ) {
           scoreDelta = SCORE_DELTAS.fromFreeCellToTableau
         }
 
@@ -150,7 +155,10 @@ export const useFreeCellStore = create<FreeCellStore>()(
         if (toPileId.startsWith('foundation-')) {
           // Only single card to foundation
           const card = movedCards[0]
-          foundation = { ...foundation, [toPileId]: [...foundation[toPileId], card] }
+          foundation = {
+            ...foundation,
+            [toPileId]: [...foundation[toPileId], card],
+          }
         } else if (toPileId.startsWith('freecell-')) {
           const card = movedCards[0]
           freeCells = { ...freeCells, [toPileId]: card }
@@ -174,10 +182,23 @@ export const useFreeCellStore = create<FreeCellStore>()(
         // --- Check win ---
         if (isGameWon(nextState)) {
           const finalScore = Math.max(0, nextState.score)
-          set({ ...nextState, status: 'won', past, future, canUndo, canRedo } as Partial<FreeCellStore>)
+          set({
+            ...nextState,
+            status: 'won',
+            past,
+            future,
+            canUndo,
+            canRedo,
+          } as Partial<FreeCellStore>)
           get().recordWin(finalScore, !state.usedUndo)
         } else {
-          set({ ...nextState, past, future, canUndo, canRedo } as Partial<FreeCellStore>)
+          set({
+            ...nextState,
+            past,
+            future,
+            canUndo,
+            canRedo,
+          } as Partial<FreeCellStore>)
         }
       },
 
@@ -209,7 +230,10 @@ export const useFreeCellStore = create<FreeCellStore>()(
           scoreDelta = SCORE_DELTAS.toFoundation
         } else if (toPileId.startsWith('freecell-')) {
           scoreDelta = SCORE_DELTAS.toFreeCell
-        } else if (toPileId.startsWith('tableau-') && fromPileId.startsWith('freecell-')) {
+        } else if (
+          toPileId.startsWith('tableau-') &&
+          fromPileId.startsWith('freecell-')
+        ) {
           scoreDelta = SCORE_DELTAS.fromFreeCellToTableau
         }
 
@@ -230,7 +254,10 @@ export const useFreeCellStore = create<FreeCellStore>()(
 
         if (toPileId.startsWith('foundation-')) {
           const card = movedCards[0]
-          foundation = { ...foundation, [toPileId]: [...foundation[toPileId], card] }
+          foundation = {
+            ...foundation,
+            [toPileId]: [...foundation[toPileId], card],
+          }
         } else if (toPileId.startsWith('freecell-')) {
           const card = movedCards[0]
           freeCells = { ...freeCells, [toPileId]: card }
@@ -252,10 +279,23 @@ export const useFreeCellStore = create<FreeCellStore>()(
 
         if (isGameWon(nextState)) {
           const finalScore = Math.max(0, nextState.score)
-          set({ ...nextState, status: 'won', past, future, canUndo, canRedo } as Partial<FreeCellStore>)
+          set({
+            ...nextState,
+            status: 'won',
+            past,
+            future,
+            canUndo,
+            canRedo,
+          } as Partial<FreeCellStore>)
           get().recordWin(finalScore, !state.usedUndo)
         } else {
-          set({ ...nextState, past, future, canUndo, canRedo } as Partial<FreeCellStore>)
+          set({
+            ...nextState,
+            past,
+            future,
+            canUndo,
+            canRedo,
+          } as Partial<FreeCellStore>)
         }
       },
 

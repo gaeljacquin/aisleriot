@@ -18,6 +18,9 @@ const config = defineConfig({
     viteReact(),
     VitePWA({
       registerType: 'autoUpdate',
+      workbox: {
+        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+      },
       includeAssets: [
         'favicon.ico',
         'logo.png',

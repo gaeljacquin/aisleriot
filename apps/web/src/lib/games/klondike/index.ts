@@ -7,11 +7,7 @@ export type {
   DraggableCardData,
   DroppableZoneData,
 } from './types'
-export {
-  TABLEAU_IDS,
-  FOUNDATION_IDS,
-  FOUNDATION_SUITS,
-} from './types'
+export { TABLEAU_IDS, FOUNDATION_IDS, FOUNDATION_SUITS } from './types'
 export { createInitialState } from './deal'
 export {
   isValidTableauSequence,

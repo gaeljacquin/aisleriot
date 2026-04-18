@@ -5,6 +5,13 @@ interface KlondikeDraw3BoardProps {
   onHowToPlay: () => void
 }
 
-export default function KlondikeDraw3Board({ onHowToPlay }: KlondikeDraw3BoardProps) {
-  return <KlondikeBoardBase useGame={useKlondikeDrawThree} onHowToPlay={onHowToPlay} />
+export default function KlondikeDraw3Board({
+  onHowToPlay,
+}: KlondikeDraw3BoardProps) {
+  return (
+    <KlondikeBoardBase
+      useGame={useKlondikeDrawThree}
+      onHowToPlay={onHowToPlay}
+    />
+  )
 }
