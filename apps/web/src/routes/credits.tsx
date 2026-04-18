@@ -13,15 +13,7 @@ export const Route = createFileRoute('/credits')({ component: Credits })
 function Credits() {
   return (
     <div className="flex min-h-full flex-col p-8">
-      <motion.div
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.4 }}
-      >
-        <BackLink />
-      </motion.div>
-
-      <div className="flex flex-1 items-center justify-center overflow-auto">
+      <div className="flex flex-1 flex-col items-center justify-center pb-24 overflow-auto">
         <motion.div
           className="mx-auto max-w-4xl space-y-8 py-8"
           initial={{ opacity: 0, y: 20 }}
@@ -61,6 +53,15 @@ function Credits() {
               Thank you for playing!
             </p>
           </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.4 }}
+          className="mt-14"
+        >
+          <BackLink />
         </motion.div>
       </div>
     </div>
