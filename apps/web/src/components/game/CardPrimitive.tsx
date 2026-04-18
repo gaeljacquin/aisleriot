@@ -32,7 +32,12 @@ const RANK_MAP: Record<Rank, string> = {
   K: 'K',
 }
 
-export default function CardPrimitive({ suit, rank, faceUp, className }: CardPrimitiveProps) {
+export default function CardPrimitive({
+  suit,
+  rank,
+  faceUp,
+  className,
+}: CardPrimitiveProps) {
   const cardCode = `${RANK_MAP[rank]}${SUIT_MAP[suit]}`
 
   return (

@@ -9,6 +9,7 @@ import {
   ArrowRight02Icon,
   ArrowUpRight01Icon,
   ArrowDownRight01Icon,
+  ArrowUpLeft01Icon,
 } from '@hugeicons/core-free-icons'
 import { appInfo } from '@workspace/constants'
 
@@ -26,6 +27,7 @@ const menuItems: {
   bg: string
   to: string
   hovered: TargetAndTransition
+  external: boolean
 }[] = [
   {
     label: 'New Game',
@@ -33,6 +35,7 @@ const menuItems: {
     bg: 'bg-primary',
     to: '/new-game',
     hovered: { x: [0, 10, 0], transition },
+    external: false,
   },
   {
     label: 'How to Play',
@@ -40,6 +43,7 @@ const menuItems: {
     bg: 'bg-pink-500',
     to: '/how-to-play',
     hovered: { x: [0, 10, 0], y: [0, 10, 0], transition },
+    external: false,
   },
   {
     label: 'Settings',
@@ -47,6 +51,7 @@ const menuItems: {
     bg: 'bg-orange-500',
     to: '/settings',
     hovered: { x: [0, 10, 0], y: [0, -10, 0], transition },
+    external: false,
   },
   {
     label: 'Credits',
@@ -54,6 +59,15 @@ const menuItems: {
     bg: 'bg-indigo-500',
     to: '/credits',
     hovered: { y: [0, 10, 0], transition },
+    external: false,
+  },
+  {
+    label: 'More Games',
+    arrow: ArrowUpLeft01Icon,
+    bg: 'bg-[#DC143C]',
+    to: 'https://tr.ee/uBF_3IDko-',
+    hovered: { x: [0, -10, 0], y: [0, -10, 0], transition },
+    external: true,
   },
 ]
 
@@ -62,12 +76,14 @@ function MenuItem({
   arrow,
   bg,
   to,
+  external,
   hovered,
 }: (typeof menuItems)[number]) {
   const [isHovered, setIsHovered] = useState(false)
 
   return (
-    <div
+    <motion.div
+      layout
       className="flex items-center gap-4"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -81,10 +97,12 @@ function MenuItem({
       <Link
         to={to}
         className={`flex w-44 items-center justify-center rounded py-3.5 text-base font-bold text-white no-underline hover:text-white ${bg}`}
+        target={external ? '_blank' : undefined}
+        rel={external ? 'noopener noreferrer' : undefined}
       >
         {label}
       </Link>
-    </div>
+    </motion.div>
   )
 }
 

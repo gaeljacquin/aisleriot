@@ -43,9 +43,9 @@ export default function TriPeaksBoardBase({
 
   return (
     <WasteRefContext value={wasteRef}>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col">
         {/* Score + Chain squares */}
-        <div className="flex items-center justify-center gap-5 mb-3">
+        <div className="flex items-center justify-center gap-5 mb-6">
           <div className="flex flex-col items-center justify-center rounded-2xl bg-muted/50 px-6 py-3 min-w-20">
             <span className="text-xs font-medium text-muted-foreground">
               Score
@@ -69,25 +69,47 @@ export default function TriPeaksBoardBase({
           </div>
         </div>
 
-        {/* Dev-only Victory/Game Over toggle buttons */}
-        {import.meta.env.DEV && (
-          <div className="flex items-center justify-center gap-2 -mt-5">
-            <button
-              type="button"
-              onClick={() => setDevStatus(devStatus === 'won' ? null : 'won')}
-              className="cursor-pointer rounded px-2 py-1 text-xs font-medium bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400"
-            >
-              {devStatus === 'won' ? 'Hide Victory' : 'Show Victory'} (Dev)
-            </button>
-            <button
-              type="button"
-              onClick={() => setDevStatus(devStatus === 'lost' ? null : 'lost')}
-              className="cursor-pointer rounded px-2 py-1 text-xs font-medium bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400"
-            >
-              {devStatus === 'lost' ? 'Hide Game Over' : 'Show Game Over'} (Dev)
-            </button>
-          </div>
-        )}
+        {/* Action buttons */}
+        <div className="flex flex-row justify-center px-3 gap-7 mb-10">
+          <button
+            type="button"
+            onClick={onUndo}
+            disabled={!canUndo}
+            className={cn(
+              'cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
+              'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+              !canUndo && 'cursor-not-allowed opacity-40',
+            )}
+          >
+            Undo
+          </button>
+          <button
+            type="button"
+            onClick={onHowToPlay}
+            className="cursor-pointer rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80"
+          >
+            How to Play
+          </button>
+          <button
+            type="button"
+            onClick={() => setConfirmRestart(true)}
+            className="cursor-pointer rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80"
+          >
+            Restart
+          </button>
+          <button
+            type="button"
+            onClick={() => setConfirmNewGame(true)}
+            className={cn(
+              'cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
+              isGameOver
+                ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                : 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+            )}
+          >
+            New Game
+          </button>
+        </div>
 
         {/* Board area — dimmed when game over */}
         <div className={cn('relative', isGameOver && 'opacity-50')}>
@@ -120,44 +142,34 @@ export default function TriPeaksBoardBase({
               />
             </div>
           </div>
-
-          {/* Undo + How to Play + Restart + New Game buttons */}
-          <div className="mt-2 flex items-center justify-evenly gap-7">
-            <button
-              type="button"
-              onClick={onUndo}
-              disabled={!canUndo}
-              className={cn(
-                'cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
-                'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-                !canUndo && 'cursor-not-allowed opacity-40',
-              )}
-            >
-              Undo
-            </button>
-            <button
-              type="button"
-              onClick={onHowToPlay}
-              className="cursor-pointer rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80"
-            >
-              How to Play
-            </button>
-            <button
-              type="button"
-              onClick={() => setConfirmRestart(true)}
-              className="cursor-pointer rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80"
-            >
-              Restart
-            </button>
-            <button
-              type="button"
-              onClick={() => setConfirmNewGame(true)}
-              className="cursor-pointer rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80"
-            >
-              New Game
-            </button>
-          </div>
         </div>
+
+        {/* Dev-only Victory/Game Over toggle buttons */}
+        {import.meta.env.DEV && (
+          <div className="mt-12 flex flex-col items-center gap-3 border-t border-slate-200 dark:border-slate-800 pt-8">
+            <span className="text-xs font-bold text-slate-100 dark:text-slate-400 uppercase tracking-wider">
+              Dev Tools
+            </span>
+            <div className="flex items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => setDevStatus(devStatus === 'won' ? null : 'won')}
+                className="cursor-pointer rounded px-2 py-1 text-xs font-medium bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400"
+              >
+                {devStatus === 'won' ? 'Hide Victory' : 'Show Victory'}
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  setDevStatus(devStatus === 'lost' ? null : 'lost')
+                }
+                className="cursor-pointer rounded px-2 py-1 text-xs font-medium bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400"
+              >
+                {devStatus === 'lost' ? 'Hide Game Over' : 'Show Game Over'}
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* End-game result — shown below board, NOT absolute */}
         {isGameOver && (

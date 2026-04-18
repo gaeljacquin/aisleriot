@@ -25,7 +25,7 @@ export default function BackLink({
         to={destination}
         className={cn(
           'inline-flex items-center gap-2 text-sm font-medium no-underline transition-colors',
-          textColor ?? 'text-muted-foreground hover:text-foreground',
+          textColor,
         )}
       >
         <HugeiconsIcon icon={ArrowLeft02Icon} className="size-4" />
@@ -44,7 +44,11 @@ export default function BackLink({
     >
       <motion.span
         animate={isHovered ? { x: [0, -6, 0] } : { x: 0 }}
-        transition={{ duration: 0.6, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{
+          duration: 0.6,
+          repeat: isHovered ? Infinity : 0,
+          ease: 'easeInOut',
+        }}
         className="flex items-center"
       >
         <HugeiconsIcon icon={ArrowLeft02Icon} className="size-5" />

@@ -118,9 +118,9 @@ export default function KlondikeBoardBase({
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col">
         {/* Score + moves HUD */}
-        <div className="flex items-center justify-center gap-5">
+        <div className="flex items-center justify-center gap-5 mb-6">
           <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
             <span className="text-xs font-medium text-black dark:text-muted-foreground">
               Score
@@ -150,7 +150,7 @@ export default function KlondikeBoardBase({
         </div>
 
         {/* Action buttons */}
-        <div className="flex flex-row justify-center px-3 gap-7">
+        <div className="flex flex-row justify-center px-3 gap-7 mb-10">
           <button
             type="button"
             onClick={onUndo}
@@ -191,42 +191,17 @@ export default function KlondikeBoardBase({
           </button>
         </div>
 
-        {/* Dev toggles */}
-        {import.meta.env.DEV && (
-          <div className="flex items-center justify-center gap-2">
-            <button
-              type="button"
-              onClick={() => setDevMoveAnywhere((v) => !v)}
-              className={cn(
-                'cursor-pointer rounded px-2 py-1 text-xs font-medium',
-                devMoveAnywhere
-                  ? 'bg-blue-200 text-blue-900 hover:bg-blue-300 dark:bg-blue-800/50 dark:text-blue-300'
-                  : 'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400',
-              )}
-            >
-              {devMoveAnywhere ? 'Move Anywhere ON' : 'Move Anywhere OFF'} (Dev)
-            </button>
-            <button
-              type="button"
-              onClick={() => setDevPeekTableau((v) => !v)}
-              className={cn(
-                'cursor-pointer rounded px-2 py-1 text-xs font-medium',
-                devPeekTableau
-                  ? 'bg-amber-200 text-amber-900 hover:bg-amber-300 dark:bg-amber-800/50 dark:text-amber-300'
-                  : 'bg-amber-100 text-amber-800 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-400',
-              )}
-            >
-              {devPeekTableau ? 'Peek Tableau ON' : 'Peek Tableau OFF'} (Dev)
-            </button>
-          </div>
-        )}
-
         {/* Board */}
-        <div className={cn('flex flex-col gap-3', isGameOver && 'opacity-50')}>
-          {/* Top row: stock + waste | buttons (centered) | foundations */}
-          <div className="flex items-center justify-between gap-2">
+        <div
+          className={cn(
+            'mx-auto w-fit flex flex-col gap-5',
+            isGameOver && 'opacity-50',
+          )}
+        >
+          {/* Top row: stock + waste | empty | foundations */}
+          <div className="grid grid-cols-7 gap-10">
             {/* Stock + Waste */}
-            <div className="flex shrink-0 items-start gap-2">
+            <div className="flex gap-10 col-span-2">
               <KlondikeStock
                 stockCount={stockCount}
                 stockEmpty={stockEmpty}
@@ -241,8 +216,11 @@ export default function KlondikeBoardBase({
               />
             </div>
 
-            {/* Foundations — floated right */}
-            <div className="flex shrink-0 items-start gap-2">
+            {/* Empty space (Column 3) */}
+            <div />
+
+            {/* Foundations (Columns 4-7) */}
+            <div className="grid grid-cols-4 gap-10 col-span-4">
               {foundation.map((f) => (
                 <KlondikeFoundation
                   key={f.id}
@@ -256,7 +234,7 @@ export default function KlondikeBoardBase({
           </div>
 
           {/* Tableau */}
-          <div className="flex gap-2">
+          <div className="grid grid-cols-7 gap-10">
             {tableau.map((col) => (
               <KlondikeColumn
                 key={col.id}
@@ -276,6 +254,41 @@ export default function KlondikeBoardBase({
             ))}
           </div>
         </div>
+
+        {/* Dev toggles */}
+        {import.meta.env.DEV && (
+          <div className="mt-12 flex flex-col items-center gap-3 border-t border-slate-200 dark:border-slate-800 pt-8">
+            <span className="text-xs font-bold text-slate-100 dark:text-slate-400 uppercase tracking-wider">
+              Dev Tools
+            </span>
+            <div className="flex items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => setDevMoveAnywhere((v) => !v)}
+                className={cn(
+                  'cursor-pointer rounded px-2 py-1 text-xs font-medium',
+                  devMoveAnywhere
+                    ? 'bg-blue-200 text-blue-900 hover:bg-blue-300 dark:bg-blue-800/50 dark:text-blue-300'
+                    : 'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400',
+                )}
+              >
+                {devMoveAnywhere ? 'Move Anywhere ON' : 'Move Anywhere OFF'}
+              </button>
+              <button
+                type="button"
+                onClick={() => setDevPeekTableau((v) => !v)}
+                className={cn(
+                  'cursor-pointer rounded px-2 py-1 text-xs font-medium',
+                  devPeekTableau
+                    ? 'bg-amber-200 text-amber-900 hover:bg-amber-300 dark:bg-amber-800/50 dark:text-amber-300'
+                    : 'bg-amber-100 text-amber-800 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-400',
+                )}
+              >
+                {devPeekTableau ? 'Peek Tableau ON' : 'Peek Tableau OFF'}
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Victory message */}
         {isGameOver && (
