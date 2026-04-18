@@ -4,6 +4,6 @@ export const appInfo = {
   author: 'Gaël Jacquin',
   description: 'A collection of solitaire card games',
   url: 'https://aisleriot.gaeljacquin.com/',
-  ogImageUrl: 'https://cataas.com/cat',
+  ogImageUrl: '/logo.jpeg',
   authorUrl: 'https://gaeljacquin.com',
 };

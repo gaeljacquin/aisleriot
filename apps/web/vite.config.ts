@@ -24,8 +24,9 @@ const config = defineConfig({
       includeAssets: [
         'favicon.ico',
         'logo.png',
-        'pwa-any-192.png',
-        'pwa-any-512.png',
+        'logo-dark.png',
+        'logo.jpeg',
+        'logo.webp',
       ],
       manifest: {
         short_name: 'Aisleriot',
@@ -37,13 +38,13 @@ const config = defineConfig({
             type: 'image/x-icon',
           },
           {
-            src: '/pwa-any-192.png',
+            src: '/logo.png',
             type: 'image/png',
             sizes: '192x192',
             purpose: 'any',
           },
           {
-            src: '/pwa-any-512.png',
+            src: '/logo.png',
             type: 'image/png',
             sizes: '512x512',
             purpose: 'any',
