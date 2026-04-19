@@ -105,5 +105,6 @@ export function useKlondikeDrawThree(): UseKlondikeResult {
     onNewGame: state.newGame,
     onRestartGame: state.restartGame,
     onUndo: state.undo,
+    currentDealCount: state.currentDealCount,
   }
 }

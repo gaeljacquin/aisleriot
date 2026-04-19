@@ -71,9 +71,8 @@ export default function KlondikeColumn({
       )}
       style={{ minHeight: containerHeight }}
     >
-      {cards.length === 0 ? (
-        <CardSlot role="tableau" />
-      ) : (
+      <CardSlot role="tableau" className="absolute top-0 left-0" />
+      {cards.length > 0 && (
         <>
           {/* Non-draggable face-down cards */}
           {cards.slice(0, draggableFrom).map((card, i) => (

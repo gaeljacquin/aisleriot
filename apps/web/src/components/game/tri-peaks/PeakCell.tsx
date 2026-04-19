@@ -9,6 +9,7 @@ interface PeakCellProps {
   cell: TriPeaksCell
   isAvailable: boolean
   onClick: (id: TriPeaksCellId) => void
+  isValidMove: (id: TriPeaksCellId) => boolean
 }
 
 interface FlyState {
@@ -22,6 +23,7 @@ export default function PeakCell({
   cell,
   isAvailable,
   onClick,
+  isValidMove,
 }: PeakCellProps) {
   const cardRef = useRef<HTMLDivElement>(null)
   const wasteRef = useWasteRef()
@@ -29,6 +31,11 @@ export default function PeakCell({
 
   function handleClick() {
     if (!isAvailable) return
+
+    if (!isValidMove(cell.id)) {
+      onClick(cell.id)
+      return
+    }
 
     const cardEl = cardRef.current
     const wasteEl = wasteRef?.current
@@ -48,9 +55,9 @@ export default function PeakCell({
     })
   }
 
-  // Removed cells keep their space in the layout
+  // Removed cells keep their space in the layout but don't block clicks
   if (cell.removed) {
-    return <div className="h-28 w-20" aria-hidden="true" />
+    return <div className="h-28 w-20 pointer-events-none" aria-hidden="true" />
   }
 
   const isBlocked = !isAvailable
@@ -66,25 +73,14 @@ export default function PeakCell({
   return (
     <>
       <div className="h-28 w-20" ref={cardRef}>
-        <AnimatePresence>
-          {!flyState && (
-            <motion.div
-              key={cell.id + '-available'}
-              initial={{ rotateY: 90, opacity: 0 }}
-              animate={{ rotateY: 0, opacity: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.25, ease: 'easeOut' }}
-            >
-              <Card
-                suit={cell.card.suit}
-                rank={cell.card.rank}
-                faceUp={true}
-                highlighted={isAvailable}
-                onClick={handleClick}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {!flyState && (
+          <Card
+            suit={cell.card.suit}
+            rank={cell.card.rank}
+            faceUp={true}
+            onClick={handleClick}
+          />
+        )}
       </div>
 
       {/* Flying card portal — renders at document.body level with fixed positioning */}

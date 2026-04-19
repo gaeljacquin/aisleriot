@@ -115,7 +115,7 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
               type="button"
               className={cn(
                 'rounded-xl p-3 shadow-md cursor-pointer transition-colors',
-                'bg-teal-600 dark:bg-teal-500 text-primary-foreground hover:bg-primary/90',
+                'bg-teal-600 dark:bg-teal-500 text-primary-foreground hover:bg-teal-700 dark:hover:bg-teal-600',
                 !canAction && 'cursor-not-allowed opacity-40',
               )}
               disabled={!canAction}

@@ -6,6 +6,7 @@ interface PeakGridProps {
   cells: TriPeaksCell[]
   availableCells: TriPeaksCellId[]
   onPlayCard: (id: TriPeaksCellId) => void
+  isValidMove: (id: TriPeaksCellId) => boolean
 }
 
 /**
@@ -88,6 +89,7 @@ export default function PeakGrid({
   cells,
   availableCells,
   onPlayCard,
+  isValidMove,
 }: PeakGridProps) {
   const availableSet = new Set(availableCells)
   const cellMap = new Map(cells.map((c) => [c.id, c]))
@@ -105,7 +107,7 @@ export default function PeakGrid({
         return (
           <div
             key={cellId}
-            className="absolute"
+            className={cn('absolute', cell.removed && 'pointer-events-none')}
             style={{
               left: `${pos.x}rem`,
               top: `${pos.y}rem`,
@@ -116,6 +118,7 @@ export default function PeakGrid({
               cell={cell}
               isAvailable={availableSet.has(cellId)}
               onClick={onPlayCard}
+              isValidMove={isValidMove}
             />
           </div>
         )

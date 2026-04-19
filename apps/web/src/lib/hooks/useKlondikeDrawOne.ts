@@ -48,6 +48,7 @@ export interface UseKlondikeResult {
   onNewGame: () => void
   onRestartGame: () => void
   onUndo: () => void
+  currentDealCount: number
 }
 
 export function useKlondikeDrawOne(): UseKlondikeResult {
@@ -131,5 +132,6 @@ export function useKlondikeDrawOne(): UseKlondikeResult {
     onNewGame: state.newGame,
     onRestartGame: state.restartGame,
     onUndo: state.undo,
+    currentDealCount: state.waste.length > 0 ? 1 : 0,
   }
 }

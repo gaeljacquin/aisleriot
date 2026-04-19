@@ -44,5 +44,6 @@ export function createInitialState(seed?: number): FreeCellState {
     status: 'playing',
     usedUndo: false,
     currentSeed: resolvedSeed,
+    isAutoMoving: false,
   }
 }

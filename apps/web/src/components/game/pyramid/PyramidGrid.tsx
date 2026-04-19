@@ -3,6 +3,7 @@ import type {
   PyramidCell as PyramidCellType,
   PyramidCellId,
 } from '#/lib/games/pyramid'
+import { cn } from '@workspace/ui/lib/utils'
 
 interface PyramidGridProps {
   cells: PyramidCellType[]
@@ -70,7 +71,7 @@ export default function PyramidGrid({
           return (
             <div
               key={cellId}
-              className="absolute"
+              className={cn('absolute', cell.removed && 'pointer-events-none')}
               style={{
                 left: `${x}rem`,
                 top: `${y}rem`,

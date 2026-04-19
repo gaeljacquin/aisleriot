@@ -11,8 +11,8 @@ function TriPeaks() {
   const [howToPlayOpen, setHowToPlayOpen] = useState(false)
 
   return (
-    <main className="flex h-full flex-col bg-primary px-6 py-10">
-      <div className="relative mb-9 flex items-center">
+    <main className="flex h-full flex-col bg-primary px-6 pb-10 pt-16">
+      <div className="relative mb-14 flex items-center">
         <h1 className="absolute left-1/2 -translate-x-1/2 rounded-lg bg-emerald-100 px-4 py-1 text-2xl font-bold text-emerald-900 dark:bg-emerald-950 dark:text-emerald-100">
           Tri Peaks
         </h1>
@@ -20,10 +20,6 @@ function TriPeaks() {
 
       <div className="flex flex-1 flex-col">
         <TriPeaksBoard onHowToPlay={() => setHowToPlayOpen(true)} />
-      </div>
-
-      <div className="mt-12 flex justify-center">
-        <BackLink label="Game Menu" destination="/new-game" />
       </div>
 
       <HowToPlayModal

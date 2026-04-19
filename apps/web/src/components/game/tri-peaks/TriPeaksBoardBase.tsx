@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
-import { Stock, Waste } from '../index'
+import { Stock, Waste, GameControls } from '../index'
 import PeakGrid from './PeakGrid'
 import { WasteRefContext } from './WasteRefContext'
 import { ConfirmModal } from '#/components/ConfirmModal'
@@ -30,22 +30,32 @@ export default function TriPeaksBoardBase({
     onNewGame,
     onRestartGame,
     onUndo,
+    isValidMove,
   } = useGame()
 
   const wasteRef = useRef<HTMLDivElement>(null)
   const lastAction = useRef<'draw' | 'play'>('play')
   const [devStatus, setDevStatus] = useState<'won' | 'lost' | null>(null)
+  const [showDevTools, setShowDevTools] = useState(false)
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [confirmNewGame, setConfirmNewGame] = useState(false)
 
   const effectiveStatus = devStatus ?? status
   const isGameOver = effectiveStatus === 'won' || effectiveStatus === 'lost'
 
+  const handleNewGameClick = () => {
+    if (isGameOver) {
+      onNewGame()
+    } else {
+      setConfirmNewGame(true)
+    }
+  }
+
   return (
     <WasteRefContext value={wasteRef}>
       <div className="flex flex-col">
         {/* Score + Chain squares */}
-        <div className="flex items-center justify-center gap-5 mb-6">
+        <div className="flex items-center justify-center gap-5 mb-10">
           <div className="flex flex-col items-center justify-center rounded-2xl bg-muted/50 px-6 py-3 min-w-20">
             <span className="text-xs font-medium text-muted-foreground">
               Score
@@ -70,46 +80,16 @@ export default function TriPeaksBoardBase({
         </div>
 
         {/* Action buttons */}
-        <div className="flex flex-row justify-center px-3 gap-7 mb-10">
-          <button
-            type="button"
-            onClick={onUndo}
-            disabled={!canUndo}
-            className={cn(
-              'cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
-              'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-              !canUndo && 'cursor-not-allowed opacity-40',
-            )}
-          >
-            Undo
-          </button>
-          <button
-            type="button"
-            onClick={onHowToPlay}
-            className="cursor-pointer rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80"
-          >
-            How to Play
-          </button>
-          <button
-            type="button"
-            onClick={() => setConfirmRestart(true)}
-            className="cursor-pointer rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80"
-          >
-            Restart
-          </button>
-          <button
-            type="button"
-            onClick={() => setConfirmNewGame(true)}
-            className={cn(
-              'cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
-              isGameOver
-                ? 'bg-primary text-primary-foreground hover:bg-primary/90'
-                : 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-            )}
-          >
-            New Game
-          </button>
-        </div>
+        <GameControls
+          onUndo={onUndo}
+          canUndo={canUndo}
+          onHowToPlay={onHowToPlay}
+          onRestart={() => setConfirmRestart(true)}
+          onNewGame={handleNewGameClick}
+          isGameOver={isGameOver}
+          showDevTools={showDevTools}
+          onToggleDevTools={() => setShowDevTools(!showDevTools)}
+        />
 
         {/* Board area — dimmed when game over */}
         <div className={cn('relative', isGameOver && 'opacity-50')}>
@@ -122,6 +102,7 @@ export default function TriPeaksBoardBase({
                 lastAction.current = 'play'
                 onPlayCard(id)
               }}
+              isValidMove={isValidMove}
             />
           </div>
 
@@ -138,14 +119,30 @@ export default function TriPeaksBoardBase({
             <div ref={wasteRef} className="inline-block">
               <Waste
                 topCard={wasteTop}
-                animate={lastAction.current === 'draw'}
+                animate={false}
               />
             </div>
           </div>
         </div>
 
+        {/* End-game result — shown below board, NOT absolute */}
+        {isGameOver && (
+          <div className="flex flex-col items-center gap-3 py-4 mt-4">
+            <p
+              className={cn(
+                'rounded px-3 py-1.5 text-3xl font-black tracking-wide',
+                effectiveStatus === 'won'
+                  ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+                  : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
+              )}
+            >
+              {effectiveStatus === 'won' ? 'VICTORY' : 'GAME OVER'}
+            </p>
+          </div>
+        )}
+
         {/* Dev-only Victory/Game Over toggle buttons */}
-        {import.meta.env.DEV && (
+        {import.meta.env.DEV && showDevTools && (
           <div className="mt-12 flex flex-col items-center gap-3 border-t border-slate-200 dark:border-slate-800 pt-8">
             <span className="text-xs font-bold text-slate-100 dark:text-slate-400 uppercase tracking-wider">
               Dev Tools
@@ -168,29 +165,6 @@ export default function TriPeaksBoardBase({
                 {devStatus === 'lost' ? 'Hide Game Over' : 'Show Game Over'}
               </button>
             </div>
-          </div>
-        )}
-
-        {/* End-game result — shown below board, NOT absolute */}
-        {isGameOver && (
-          <div className="flex flex-col items-center gap-3 py-4">
-            <p
-              className={cn(
-                'rounded px-3 py-1.5 text-3xl font-black tracking-wide',
-                effectiveStatus === 'won'
-                  ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
-                  : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
-              )}
-            >
-              {effectiveStatus === 'won' ? 'VICTORY' : 'GAME OVER'}
-            </p>
-            <button
-              type="button"
-              onClick={() => setConfirmNewGame(true)}
-              className="cursor-pointer mt-1 rounded-lg bg-primary px-6 py-2 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary/90"
-            >
-              Play Again
-            </button>
           </div>
         )}
 

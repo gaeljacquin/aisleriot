@@ -206,8 +206,8 @@ export function isSafeToAutoMove(state: FreeCellState, card: Card): boolean {
 }
 
 /**
- * Returns all moves that are safe to auto-move to foundation
- * (checks tableau tops and occupied freecells).
+ * Returns all moves that are safe to auto-move to foundation.
+ * REFINED: Only Aces are automoved.
  */
 export function getAutoMoveTargets(state: FreeCellState): FreeCellMove[] {
   const moves: FreeCellMove[] = []
@@ -218,9 +218,10 @@ export function getAutoMoveTargets(state: FreeCellState): FreeCellMove[] {
     if (pile.length === 0) continue
     const card = pile[pile.length - 1]
     const fromIndex = pile.length - 1
+    // REFINED: Only automove Aces
     if (
       canMoveToFoundation(state, pileId, fromIndex) &&
-      isSafeToAutoMove(state, card)
+      rankValue(card.rank) === 1
     ) {
       moves.push({
         fromPileId: pileId,
@@ -234,7 +235,8 @@ export function getAutoMoveTargets(state: FreeCellState): FreeCellMove[] {
   for (const fcId of FREECELL_IDS) {
     const card = state.freeCells[fcId]
     if (card === null) continue
-    if (canMoveToFoundation(state, fcId, 0) && isSafeToAutoMove(state, card)) {
+    // REFINED: Only automove Aces
+    if (canMoveToFoundation(state, fcId, 0) && rankValue(card.rank) === 1) {
       moves.push({
         fromPileId: fcId,
         fromIndex: 0,

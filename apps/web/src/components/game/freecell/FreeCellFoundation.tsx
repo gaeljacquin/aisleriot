@@ -45,20 +45,26 @@ export default function FreeCellFoundation({
         isOver && 'ring-2 ring-primary ring-offset-1',
       )}
     >
-      {topCard ? (
-        <Card suit={topCard.suit} rank={topCard.rank} faceUp={topCard.faceUp} />
-      ) : (
-        <div className="relative h-28 w-20">
-          <CardSlot role="foundation" />
-          {/* Suit hint in empty slot */}
-          <div
-            className={cn(
-              'pointer-events-none absolute inset-0 flex items-center justify-center text-3xl opacity-30',
-              isRed ? 'text-red-500' : 'text-slate-700 dark:text-slate-300',
-            )}
-          >
-            {SUIT_SYMBOLS[suit]}
-          </div>
+      <div className="relative h-28 w-20">
+        <CardSlot role="foundation" />
+        {/* Suit hint in empty slot */}
+        <div
+          className={cn(
+            'pointer-events-none absolute inset-0 flex items-center justify-center text-3xl opacity-30',
+            isRed ? 'text-red-500' : 'text-slate-700 dark:text-slate-300',
+          )}
+        >
+          {SUIT_SYMBOLS[suit]}
+        </div>
+      </div>
+
+      {topCard && (
+        <div className="absolute inset-0">
+          <Card
+            suit={topCard.suit}
+            rank={topCard.rank}
+            faceUp={topCard.faceUp}
+          />
         </div>
       )}
     </div>

@@ -94,7 +94,7 @@ export default function KlondikeFoundation({
         </div>
       )}
 
-      {/* Top card — stays mounted (opacity-0 when dragging) so drag stays alive */}
+      {/* Top card — stays mounted (hidden when dragging) so drag stays alive */}
       {topCard && (
         <div className="absolute inset-0">
           {draggable ? (
@@ -103,6 +103,7 @@ export default function KlondikeFoundation({
               pileId={id}
               fromIndex={cards.length - 1}
               dragCards={[topCard]}
+              isHidden={isDraggingTop}
             />
           ) : (
             <Card

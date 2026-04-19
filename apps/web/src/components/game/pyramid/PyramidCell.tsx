@@ -19,9 +19,9 @@ export default function PyramidCell({
   isSelected,
   onClick,
 }: PyramidCellProps) {
-  // Removed cells keep their space in the layout
+  // Removed cells keep their space in the layout but don't block clicks
   if (cell.removed) {
-    return <div className="h-28 w-20" aria-hidden="true" />
+    return <div className="h-28 w-20 pointer-events-none" aria-hidden="true" />
   }
 
   // Blocked — face-up but not interactive
@@ -35,23 +35,13 @@ export default function PyramidCell({
 
   return (
     <div className={cn('h-28 w-20')}>
-      <AnimatePresence>
-        <motion.div
-          key={cell.id + '-available'}
-          initial={{ rotateY: 90, opacity: 0 }}
-          animate={{ rotateY: 0, opacity: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          transition={{ duration: 0.25, ease: 'easeOut' }}
-        >
-          <Card
-            suit={cell.card.suit}
-            rank={cell.card.rank}
-            faceUp={true}
-            highlighted={isSelected}
-            onClick={() => onClick(cell.id)}
-          />
-        </motion.div>
-      </AnimatePresence>
+      <Card
+        suit={cell.card.suit}
+        rank={cell.card.rank}
+        faceUp={true}
+        highlighted={isSelected}
+        onClick={() => onClick(cell.id)}
+      />
     </div>
   )
 }

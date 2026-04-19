@@ -5,6 +5,7 @@ import Card from '../Card'
 import KlondikeCard from './KlondikeCard'
 import type { DraggableCardData } from '#/lib/games/klondike'
 import type { Card as CardType } from '#/lib/types'
+import CardSlot from '../CardSlot'
 
 const FAN_OFFSET = 20 // px horizontal offset between fanned cards in draw-3
 
@@ -13,6 +14,7 @@ interface KlondikeWasteProps {
   drawCount: 1 | 3
   moveAnywhere?: boolean
   onDoubleClick?: () => void
+  currentDealCount: number
 }
 
 export default function KlondikeWaste({
@@ -20,6 +22,7 @@ export default function KlondikeWaste({
   drawCount,
   moveAnywhere,
   onDoubleClick,
+  currentDealCount,
 }: KlondikeWasteProps) {
   const [draggingFromIndex, setDraggingFromIndex] = useState<number | null>(
     null,
@@ -40,68 +43,53 @@ export default function KlondikeWaste({
     },
   })
 
-  if (waste.length === 0) {
-    return (
-      <div className="h-28 w-20 rounded-lg border-2 border-dashed border-slate-300 dark:border-slate-600" />
-    )
-  }
+  // The base slot is always rendered
+  const baseSlot = <CardSlot role="waste" className="absolute inset-0" />
+
+  // FIX: Only show the cards from the current "deal"
+  // currentDealCount is the number of cards from the last flip that are still in the waste
+  const visible = currentDealCount > 0 ? waste.slice(-currentDealCount) : []
+  const containerWidth = 80
 
   if (drawCount === 1) {
-    const top = waste[waste.length - 1]
+    const top = visible.length > 0 ? visible[0] : null
     const isDragging = draggingFromIndex !== null
 
     return (
       <div className="relative h-28 w-20">
-        {/* Card beneath — shown while dragging */}
-        {isDragging && waste.length >= 2 && (
+        {baseSlot}
+
+        {/* Top card — always rendered so drag stays alive; hidden via opacity when dragging */}
+        {top && (
           <div className="absolute inset-0">
-            <Card
-              suit={waste[waste.length - 2].suit}
-              rank={waste[waste.length - 2].rank}
-              faceUp={waste[waste.length - 2].faceUp}
+            <KlondikeCard
+              card={top}
+              pileId="waste"
+              fromIndex={waste.length - 1}
+              dragCards={[top]}
+              isHidden={isDragging}
+              onDoubleClick={onDoubleClick}
             />
           </div>
         )}
-        {/* Top card — always rendered so drag stays alive; hidden via opacity when dragging */}
-        <div className="absolute inset-0">
-          <KlondikeCard
-            card={top}
-            pileId="waste"
-            fromIndex={waste.length - 1}
-            dragCards={[top]}
-            isHidden={isDragging}
-            onDoubleClick={onDoubleClick}
-          />
-        </div>
       </div>
     )
   }
-
-  // Draw-3: fan of up to 3 visible cards
-  // In moveAnywhere mode, all visible cards are independently draggable
-  const visible = waste.slice(-3)
-  const count = visible.length
-  const containerWidth = 80 + (count - 1) * FAN_OFFSET
 
   return (
     <div
       className="relative h-28 flex-shrink-0"
       style={{ width: containerWidth }}
     >
+      {baseSlot}
+
       {visible.map((card, i) => {
-        // absolute index in the full waste array
-        const absIndex = waste.length - count + i
-        const isTop = i === count - 1
+        // absolute index in the full waste array is length - visibleCount + i
+        const absIndex = waste.length - visible.length + i
+        const isTop = i === visible.length - 1
         const isDraggingThis = draggingFromIndex === absIndex
-        // card to show beneath this one while it's being dragged
-        const beneathCard =
-          isDraggingThis && absIndex > 0 ? waste[absIndex - 1] : null
         const left = i * FAN_OFFSET
         const isDraggable = isTop || moveAnywhere === true
-
-        // Only show beneathCard if it's not already rendered as the previous fan card
-        const showBeneath =
-          beneathCard !== null && absIndex - 1 < waste.length - count
 
         return (
           <div
@@ -109,16 +97,6 @@ export default function KlondikeWaste({
             className={cn('absolute', !isDraggable && 'pointer-events-none')}
             style={{ left, top: 0, zIndex: i }}
           >
-            {/* Card beneath — shown while this card is being dragged, only if not already in fan */}
-            {showBeneath && (
-              <div className="absolute inset-0" style={{ zIndex: -1 }}>
-                <Card
-                  suit={beneathCard.suit}
-                  rank={beneathCard.rank}
-                  faceUp={beneathCard.faceUp}
-                />
-              </div>
-            )}
             {isDraggable ? (
               <KlondikeCard
                 card={card}

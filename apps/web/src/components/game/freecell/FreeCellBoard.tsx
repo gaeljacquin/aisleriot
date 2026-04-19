@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   DndContext,
   DragOverlay,
@@ -12,6 +12,7 @@ import { cn } from '@workspace/ui/lib/utils'
 import FreeCellTopRow from './FreeCellTopRow'
 import FreeCellTableau from './FreeCellTableau'
 import FreeCellCard from './FreeCellCard'
+import { GameControls } from '../index'
 import { ConfirmModal } from '#/components/ConfirmModal'
 import { useFreeCell } from '#/lib/hooks/useFreeCell'
 import type {
@@ -44,12 +45,25 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
     onNewGame,
     onRestartGame,
     onUndo,
+    isAutoMoving,
+    triggerAutoMove,
   } = useFreeCell()
+
+  // Handle animated automoves
+  useEffect(() => {
+    if (isAutoMoving && status === 'playing') {
+      const timer = setTimeout(() => {
+        triggerAutoMove()
+      }, 500)
+      return () => clearTimeout(timer)
+    }
+  }, [isAutoMoving, triggerAutoMove, status])
 
   const [draggedCards, setDraggedCards] = useState<Card[] | null>(null)
   const lastDropWasValid = useRef(false)
   const [devStatus, setDevStatus] = useState<'won' | null>(null)
   const [devUnlimitedMoves, setDevUnlimitedMoves] = useState(false)
+  const [showDevTools, setShowDevTools] = useState(false)
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [confirmNewGame, setConfirmNewGame] = useState(false)
 
@@ -106,6 +120,14 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
   const effectiveStatus = devStatus ?? status
   const isGameOver = effectiveStatus === 'won'
 
+  const handleNewGameClick = () => {
+    if (isGameOver) {
+      onNewGame()
+    } else {
+      setConfirmNewGame(true)
+    }
+  }
+
   const dropAnimation = lastDropWasValid.current
     ? null
     : {
@@ -126,7 +148,7 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
     >
       <div className="flex flex-col">
         {/* Score + move count */}
-        <div className="flex items-center justify-center gap-5 mb-6">
+        <div className="flex items-center justify-center gap-5 mb-10">
           <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
             <span className="text-xs font-medium text-muted-foreground">
               Score
@@ -144,46 +166,16 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
         </div>
 
         {/* Action buttons */}
-        <div className="flex flex-row justify-center px-3 gap-7 mb-10">
-          <button
-            type="button"
-            onClick={onUndo}
-            disabled={!canUndo}
-            className={cn(
-              'cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
-              'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-              !canUndo && 'cursor-not-allowed opacity-40',
-            )}
-          >
-            Undo
-          </button>
-          <button
-            type="button"
-            onClick={onHowToPlay}
-            className="cursor-pointer rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80"
-          >
-            How to Play
-          </button>
-          <button
-            type="button"
-            onClick={() => setConfirmRestart(true)}
-            className="cursor-pointer rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80"
-          >
-            Restart
-          </button>
-          <button
-            type="button"
-            onClick={() => setConfirmNewGame(true)}
-            className={cn(
-              'cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
-              isGameOver
-                ? 'bg-primary text-primary-foreground hover:bg-primary/90'
-                : 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-            )}
-          >
-            New Game
-          </button>
-        </div>
+        <GameControls
+          onUndo={onUndo}
+          canUndo={canUndo}
+          onHowToPlay={onHowToPlay}
+          onRestart={() => setConfirmRestart(true)}
+          onNewGame={handleNewGameClick}
+          isGameOver={isGameOver}
+          showDevTools={showDevTools}
+          onToggleDevTools={() => setShowDevTools(!showDevTools)}
+        />
 
         {/* Board — dimmed when won */}
         <div className={cn('flex flex-col gap-3', isGameOver && 'opacity-50')}>
@@ -201,7 +193,7 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
         </div>
 
         {/* Dev-only toggles */}
-        {import.meta.env.DEV && (
+        {import.meta.env.DEV && showDevTools && (
           <div className="mt-12 flex flex-col items-center gap-3 border-t border-slate-200 dark:border-slate-800 pt-8">
             <span className="text-xs font-bold text-slate-100 dark:text-slate-400 uppercase tracking-wider">
               Dev Tools

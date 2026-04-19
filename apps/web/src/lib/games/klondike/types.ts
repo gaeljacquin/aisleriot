@@ -29,6 +29,8 @@ export interface KlondikeState {
   usedUndo: boolean
   currentSeed: number | undefined
   redealsUsed: number
+  currentDealCount: number
+  wasteDeals: number[]
 }
 
 export interface KlondikeMove {

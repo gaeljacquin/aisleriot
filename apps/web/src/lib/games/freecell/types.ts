@@ -20,6 +20,7 @@ export interface FreeCellState {
   status: GameStatus
   usedUndo: boolean
   currentSeed: number | undefined
+  isAutoMoving: boolean
 }
 
 export interface DraggableCardData {

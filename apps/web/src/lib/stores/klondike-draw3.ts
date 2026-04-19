@@ -46,6 +46,8 @@ function snapshot(state: KlondikeState): KlondikeState {
     usedUndo: state.usedUndo,
     currentSeed: state.currentSeed,
     redealsUsed: state.redealsUsed,
+    currentDealCount: state.currentDealCount,
+    wasteDeals: state.wasteDeals,
   }
 }
 
@@ -222,6 +224,8 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
   persist(
     (set, get) => ({
       ...createInitialState(3),
+      currentDealCount: 0,
+      wasteDeals: [],
 
       ...createHistorySlice<KlondikeState>(
         () => get() as KlondikeState & HistorySlice<KlondikeState>,
@@ -262,6 +266,24 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
           newTableau: srcTableau,
           newFoundation: srcFoundation,
         } = extractSource(move, state)
+
+        // Manage currentDealCount and wasteDeals
+        let nextWasteDeals = state.wasteDeals
+        let nextDealCount = state.currentDealCount
+
+        if (move.fromPile === 'waste') {
+          const lastDeal = state.wasteDeals[state.wasteDeals.length - 1]
+          const updatedLastDeal = lastDeal - 1
+
+          if (updatedLastDeal > 0) {
+            nextWasteDeals = [...state.wasteDeals.slice(0, -1), updatedLastDeal]
+            nextDealCount = updatedLastDeal
+          } else {
+            nextWasteDeals = state.wasteDeals.slice(0, -1)
+            nextDealCount = nextWasteDeals[nextWasteDeals.length - 1] ?? 0
+          }
+        }
+
         const { newTableau: dstTableau, newFoundation: dstFoundation } =
           applyDestination(move, movedCards, srcTableau, srcFoundation)
 
@@ -274,9 +296,11 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
           waste: newWaste,
           score: state.score + scoreDelta + flipScore,
           moveCount: state.moveCount + 1,
+          currentDealCount: nextDealCount,
+          wasteDeals: nextWasteDeals,
         }
 
-        const nextState = applyCascade(baseNextState)
+        const nextState = baseNextState // Disabled applyCascade(baseNextState)
 
         if (isGameWon(nextState)) {
           const finalScore = Math.max(0, nextState.score)
@@ -314,6 +338,24 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
           newTableau: srcTableau,
           newFoundation: srcFoundation,
         } = extractSource(move, state)
+
+        // Manage currentDealCount and wasteDeals
+        let nextWasteDeals = state.wasteDeals
+        let nextDealCount = state.currentDealCount
+
+        if (move.fromPile === 'waste') {
+          const lastDeal = state.wasteDeals[state.wasteDeals.length - 1]
+          const updatedLastDeal = lastDeal - 1
+
+          if (updatedLastDeal > 0) {
+            nextWasteDeals = [...state.wasteDeals.slice(0, -1), updatedLastDeal]
+            nextDealCount = updatedLastDeal
+          } else {
+            nextWasteDeals = state.wasteDeals.slice(0, -1)
+            nextDealCount = nextWasteDeals[nextWasteDeals.length - 1] ?? 0
+          }
+        }
+
         const { newTableau: dstTableau, newFoundation: dstFoundation } =
           applyDestination(move, movedCards, srcTableau, srcFoundation)
 
@@ -326,9 +368,11 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
           waste: newWaste,
           score: state.score + flipScore,
           moveCount: state.moveCount + 1,
+          currentDealCount: nextDealCount,
+          wasteDeals: nextWasteDeals,
         }
 
-        const nextState = applyCascade(baseNextState)
+        const nextState = baseNextState // Disabled applyCascade(baseNextState)
 
         if (isGameWon(nextState)) {
           const finalScore = Math.max(0, nextState.score)
@@ -368,6 +412,8 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
           set({
             stock: newStock,
             waste: [...state.waste, ...drawn],
+            currentDealCount: toDraw,
+            wasteDeals: [...state.wasteDeals, toDraw],
             past,
             future,
             canUndo,
@@ -385,6 +431,8 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
             waste: [],
             score: Math.max(0, state.score + redealtCost),
             redealsUsed: state.redealsUsed + 1,
+            currentDealCount: 0,
+            wasteDeals: [],
             past,
             future,
             canUndo,
@@ -397,6 +445,8 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
         const initial = createInitialState(3, seed)
         set({
           ...initial,
+          currentDealCount: 0,
+          wasteDeals: [],
           past: [],
           future: [],
           canUndo: false,
@@ -409,6 +459,8 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
         const initial = createInitialState(3, currentSeed)
         set({
           ...initial,
+          currentDealCount: 0,
+          wasteDeals: [],
           past: [],
           future: [],
           canUndo: false,

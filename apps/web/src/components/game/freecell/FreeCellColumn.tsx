@@ -124,9 +124,8 @@ export default function FreeCellColumn({
       )}
       style={{ minHeight: containerHeight }}
     >
-      {cards.length === 0 ? (
-        <CardSlot role="tableau" />
-      ) : (
+      <CardSlot role="tableau" className="absolute top-0 left-0" />
+      {cards.length > 0 && (
         <>
           {/* Non-draggable cards */}
           {cards.slice(0, draggableFrom).map((card, i) => (

@@ -36,7 +36,10 @@ export default function Card({
         suit={suit}
         rank={rank}
         faceUp={faceUp}
-        className="h-full w-full overflow-hidden rounded-lg shadow-sm border border-slate-200 dark:border-slate-800 bg-white"
+        className={cn(
+          'h-full w-full overflow-hidden rounded-lg border-2 border-slate-800',
+          faceUp ? 'bg-slate-800 shadow-sm' : '',
+        )}
       />
     </div>
   )
