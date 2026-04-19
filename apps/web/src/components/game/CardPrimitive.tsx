@@ -2,8 +2,8 @@
 import ReactCard from 'react-free-playing-cards'
 import type { Suit, Rank } from '#/lib/types'
 import { cn } from '@workspace/ui/lib/utils'
-import { useCardSettingsStore  } from '#/stores/card-settings'
-import type {CardStyle} from '#/stores/card-settings';
+import { useCardSettingsStore } from '#/stores/card-settings'
+import type { CardStyle } from '#/stores/card-settings'
 
 interface CardPrimitiveProps {
   suit: Suit

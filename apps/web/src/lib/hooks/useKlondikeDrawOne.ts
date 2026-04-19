@@ -78,10 +78,7 @@ export function useKlondikeDrawOne(): UseKlondikeResult {
       if (state.waste.length === 0) return
       const fromIndex = state.waste.length - 1
       const card = state.waste[fromIndex]
-      if (
-        canMoveToFoundation(state, 'waste', fromIndex) &&
-        isSafeToAutoMove(state, card)
-      ) {
+      if (canMoveToFoundation(state, 'waste', fromIndex)) {
         state.moveCard({
           fromPile: 'waste',
           fromIndex,
@@ -97,10 +94,7 @@ export function useKlondikeDrawOne(): UseKlondikeResult {
       if (pile.length === 0) return
       const fromIndex = pile.length - 1
       const card = pile[fromIndex]
-      if (
-        canMoveToFoundation(state, pileId, fromIndex) &&
-        isSafeToAutoMove(state, card)
-      ) {
+      if (canMoveToFoundation(state, pileId, fromIndex)) {
         state.moveCard({
           fromPile: pileId,
           fromIndex,
@@ -132,6 +126,6 @@ export function useKlondikeDrawOne(): UseKlondikeResult {
     onNewGame: state.newGame,
     onRestartGame: state.restartGame,
     onUndo: state.undo,
-    currentDealCount: state.waste.length > 0 ? 1 : 0,
+    currentDealCount: state.currentDealCount,
   }
 }
