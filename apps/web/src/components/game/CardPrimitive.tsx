@@ -1,7 +1,9 @@
 // @ts-expect-error - react-free-playing-cards does not have types
-import ReactCard from 'react-free-playing-cards/lib/TcN'
+import ReactCard from 'react-free-playing-cards'
 import type { Suit, Rank } from '#/lib/types'
 import { cn } from '@workspace/ui/lib/utils'
+import { useCardSettingsStore  } from '#/stores/card-settings'
+import type {CardStyle} from '#/stores/card-settings';
 
 interface CardPrimitiveProps {
   suit: Suit
@@ -33,6 +35,13 @@ const RANK_MAP: Record<Rank, string> = {
   K: 'K',
 }
 
+const DECK_TYPE_MAP: Record<CardStyle, string | undefined> = {
+  basic: undefined,
+  'four-color': 'four-color',
+  large: 'big-face',
+  'large-four-color': 'big-face four-color',
+}
+
 export default function CardPrimitive({
   suit,
   rank,
@@ -40,6 +49,7 @@ export default function CardPrimitive({
   className,
 }: CardPrimitiveProps) {
   const cardCode = `${RANK_MAP[rank]}${SUIT_MAP[suit]}`
+  const cardStyle = useCardSettingsStore((s) => s.cardStyle)
 
   if (!faceUp) {
     return (
@@ -61,6 +71,7 @@ export default function CardPrimitive({
     <div className={className} style={{ width: '100%', height: '100%' }}>
       <ReactCard
         card={cardCode}
+        deckType={DECK_TYPE_MAP[cardStyle]}
         back={false}
         height="100%"
         style={{ display: 'block', width: '100%' }}

@@ -29,7 +29,7 @@ export default function GameControls({
 
   return (
     <div className="flex flex-row flex-wrap justify-center gap-4 px-3 mb-10">
-            <Link
+      <Link
         to="/new-game"
         onMouseEnter={() => setIsMenuHovered(true)}
         onMouseLeave={() => setIsMenuHovered(false)}

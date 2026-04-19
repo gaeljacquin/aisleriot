@@ -117,10 +117,7 @@ export default function TriPeaksBoardBase({
               disabled={!canDraw}
             />
             <div ref={wasteRef} className="inline-block">
-              <Waste
-                topCard={wasteTop}
-                animate={false}
-              />
+              <Waste topCard={wasteTop} animate={false} />
             </div>
           </div>
         </div>
