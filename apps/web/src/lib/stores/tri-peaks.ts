@@ -14,7 +14,8 @@ import { createStatsSlice } from './slices/stats'
 import type { HistorySlice } from './slices/history'
 import type { StatsSlice } from './slices/stats'
 
-export interface TriPeaksStore extends TriPeaksState, HistorySlice<TriPeaksState>, StatsSlice {
+export interface TriPeaksStore
+  extends TriPeaksState, HistorySlice<TriPeaksState>, StatsSlice {
   playCard: (cellId: TriPeaksCellId) => void
   draw: () => void
   newGame: (seed?: number) => void

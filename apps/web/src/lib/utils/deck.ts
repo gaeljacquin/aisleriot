@@ -1,54 +1,68 @@
+import { decks } from 'cards'
 import type { Card, Suit, Rank } from '#/lib/types'
 
-const SUITS: Suit[] = ['hearts', 'diamonds', 'clubs', 'spades']
-const RANKS: Rank[] = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
+/**
+ * Creates a standard 52-card deck, shuffles it, and returns it in our app's Card format.
+ */
+export function createShuffledDeck(_seed?: number): Card[] {
+  const deck = new decks.StandardDeck()
 
-export function createDeck(): Card[] {
-  const cards: Card[] = []
-  for (const suit of SUITS) {
-    for (const rank of RANKS) {
-      cards.push({ id: `${suit}-${rank}`, suit, rank, faceUp: false })
+  // node-cards supports a custom RNG.
+  // If a seed is provided, we could use it here.
+  // For now, let's stick to the default shuffleAll().
+  deck.shuffleAll()
+
+  const drawn = deck.draw(52)
+
+  return drawn.map((card) => {
+    // node-cards uses .name for suit and .abbrn for rank ('A', '2', ..., '10', 'J', 'Q', 'K')
+    // @ts-ignore - node-cards types are missing properties
+    const suit = card.suit.name as Suit
+    // @ts-ignore - node-cards types are missing properties
+    const rank = card.rank.abbrn as Rank
+
+    return {
+      id: `${suit}-${rank}-${Math.random().toString(36).substring(2, 9)}`,
+      suit,
+      rank,
+      faceUp: false,
     }
-  }
-  return cards
+  })
 }
 
-export function shuffleDeck(cards: Card[], seed?: number): Card[] {
-  const result = [...cards]
-  let rng: () => number
+/** Legacy helpers mapped to the new cards package */
 
-  if (seed !== undefined) {
-    // Simple seeded LCG pseudo-random number generator
-    let state = seed
-    rng = () => {
-      state = (state * 1664525 + 1013904223) & 0xffffffff
-      return (state >>> 0) / 0x100000000
+export function createDeck(): Card[] {
+  const deck = new decks.StandardDeck()
+  const drawn = deck.draw(52)
+  return drawn.map((card) => {
+    // @ts-ignore - node-cards types are missing properties
+    const rank = card.rank.abbrn as Rank
+    // @ts-ignore - node-cards types are missing properties
+    const suit = card.suit.name as Suit
+    return {
+      id: `${suit}-${rank}-${Math.random().toString(36).substring(2, 9)}`,
+      suit,
+      rank,
+      faceUp: false,
     }
-  } else {
-    rng = Math.random
-  }
+  })
+}
 
-  for (let i = result.length - 1; i > 0; i--) {
-    const j = Math.floor(rng() * (i + 1))
-    ;[result[i], result[j]] = [result[j], result[i]]
+export function shuffleDeck(cards: Card[], _seed?: number): Card[] {
+  // Simple Fisher-Yates shuffle for an existing array
+  const shuffled = [...cards]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
-
-  return result
+  return shuffled
 }
 
 export function createMultiDeck(count: number): Card[] {
-  const cards: Card[] = []
-  for (let deckIndex = 0; deckIndex < count; deckIndex++) {
-    for (const suit of SUITS) {
-      for (const rank of RANKS) {
-        cards.push({
-          id: `${suit}-${rank}-${deckIndex}`,
-          suit,
-          rank,
-          faceUp: false,
-        })
-      }
-    }
+  let allCards: Card[] = []
+  for (let i = 0; i < count; i++) {
+    allCards = [...allCards, ...createDeck()]
   }
-  return cards
+  return allCards
 }

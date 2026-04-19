@@ -9,25 +9,46 @@ interface WasteProps {
   animate?: boolean
 }
 
-export default function Waste({ topCard, highlighted, animate = true }: WasteProps) {
+export default function Waste({
+  topCard,
+  highlighted,
+  animate = true,
+}: WasteProps) {
   if (!topCard) {
     return <CardSlot role="waste" />
   }
 
   if (!animate) {
-    return <Card suit={topCard.suit} rank={topCard.rank} faceUp={true} highlighted={highlighted} />
+    return (
+      <Card
+        suit={topCard.suit}
+        rank={topCard.rank}
+        faceUp={true}
+        highlighted={highlighted}
+      />
+    )
   }
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={topCard.suit + topCard.rank}
-        initial={{ x: -80, rotateY: -90, opacity: 0 }}
-        animate={{ x: 0, rotateY: 0, opacity: 1 }}
-        transition={{ duration: 0.3, ease: 'easeOut' }}
-      >
-        <Card suit={topCard.suit} rank={topCard.rank} faceUp={true} highlighted={highlighted} />
-      </motion.div>
-    </AnimatePresence>
+    <div className="relative h-28 w-20">
+      <CardSlot role="waste" className="absolute inset-0" />
+      <AnimatePresence>
+        <motion.div
+          key={topCard.suit + topCard.rank}
+          className="absolute inset-0"
+          initial={{ x: -80, rotateY: -90, opacity: 0 }}
+          animate={{ x: 0, rotateY: 0, opacity: 1 }}
+          exit={{ opacity: 1, transition: { duration: 0.3 } }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+        >
+          <Card
+            suit={topCard.suit}
+            rank={topCard.rank}
+            faceUp={true}
+            highlighted={highlighted}
+          />
+        </motion.div>
+      </AnimatePresence>
+    </div>
   )
 }

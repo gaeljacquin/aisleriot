@@ -1,5 +1,8 @@
 import { appInfo } from '@workspace/constants'
-import { ToggleGroup, ToggleGroupItem } from '@workspace/ui/components/toggle-group'
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from '@workspace/ui/components/toggle-group'
 import { useThemeStore } from '@/stores/theme'
 import type { ThemeMode } from '@/lib/theme'
 
@@ -22,7 +25,8 @@ export default function Footer() {
     <footer className="container mx-auto px-4 py-5">
       <div className="flex flex-row items-center justify-evenly gap-4 text-center text-sm text-muted-foreground">
         <p>
-          &copy; 2026 {currentYear > 2026 ? <span>- {currentYear} </span> : null}
+          &copy; 2026{' '}
+          {currentYear > 2026 ? <span>- {currentYear} </span> : null}
           <a
             href={`${appInfo.authorUrl}`}
             target="_blank"
@@ -32,7 +36,11 @@ export default function Footer() {
           </a>
           . All rights reserved.
         </p>
-        <ToggleGroup value={[mode]} onValueChange={handleValueChange} variant="outline">
+        <ToggleGroup
+          value={[mode]}
+          onValueChange={handleValueChange}
+          variant="outline"
+        >
           {themeOptions.map(({ value, label }) => (
             <ToggleGroupItem key={value} value={value}>
               {label}

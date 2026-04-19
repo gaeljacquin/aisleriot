@@ -16,13 +16,17 @@ export default function FreeCellTableau({
   onDoubleClick,
 }: FreeCellTableauProps) {
   return (
-    <div className="flex justify-center gap-4">
+    <div className="flex justify-center gap-6">
       {tableau.map((entry) => (
         <FreeCellColumn
           key={entry.id}
           id={entry.id}
           cards={entry.cards}
-          draggableFrom={devUnlimitedMoves ? 0 : (draggableFromIndex[entry.id] ?? entry.cards.length)}
+          draggableFrom={
+            devUnlimitedMoves
+              ? 0
+              : (draggableFromIndex[entry.id] ?? entry.cards.length)
+          }
           onDoubleClick={onDoubleClick}
         />
       ))}

@@ -39,7 +39,9 @@ export function ConfirmModal({
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
+          <DialogClose render={<Button variant="outline" />}>
+            Cancel
+          </DialogClose>
           <Button onClick={handleConfirm}>{confirmLabel}</Button>
         </DialogFooter>
       </DialogContent>

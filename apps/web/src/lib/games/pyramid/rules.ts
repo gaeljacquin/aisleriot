@@ -10,7 +10,10 @@ export function isKing(card: Card): boolean {
   return rankValue(card.rank) === 13
 }
 
-export function isCellAvailable(state: PyramidState, cellId: PyramidCellId): boolean {
+export function isCellAvailable(
+  state: PyramidState,
+  cellId: PyramidCellId,
+): boolean {
   const cell = state.cells[cellId]
   if (cell.removed) return false
   return cell.blockedBy.every((id) => state.cells[id].removed)
@@ -25,7 +28,10 @@ export function getAvailableCells(state: PyramidState): PyramidCellId[] {
     .map((cell) => cell.id)
 }
 
-export function canRemoveAlone(state: PyramidState, cellId: PyramidCellId): boolean {
+export function canRemoveAlone(
+  state: PyramidState,
+  cellId: PyramidCellId,
+): boolean {
   return isCellAvailable(state, cellId) && isKing(state.cells[cellId].card)
 }
 
@@ -40,7 +46,10 @@ export function canPairCells(
   return sumTo13(state.cells[idA].card, state.cells[idB].card)
 }
 
-export function canPairWithWaste(state: PyramidState, cellId: PyramidCellId): boolean {
+export function canPairWithWaste(
+  state: PyramidState,
+  cellId: PyramidCellId,
+): boolean {
   if (!isCellAvailable(state, cellId)) return false
   if (state.waste.length === 0) return false
   const wasteTop = state.waste[state.waste.length - 1]
@@ -96,7 +105,10 @@ export function isGameLost(state: PyramidState, recycleLimit: number): boolean {
 
 // --- Alt variant helpers ---
 
-export function canPairWithStock(state: PyramidState, cellId: PyramidCellId): boolean {
+export function canPairWithStock(
+  state: PyramidState,
+  cellId: PyramidCellId,
+): boolean {
   if (state.stock.length === 0) return false
   if (!isCellAvailable(state, cellId)) return false
   const stockTop = state.stock[state.stock.length - 1]
@@ -116,7 +128,10 @@ export function isStockTopKing(state: PyramidState): boolean {
   return isKing(state.stock[state.stock.length - 1])
 }
 
-export function isGameLostAlt(state: PyramidState, recycleLimit: number): boolean {
+export function isGameLostAlt(
+  state: PyramidState,
+  recycleLimit: number,
+): boolean {
   // Can recycle — not lost
   if (canRecycle(state, recycleLimit)) return false
 

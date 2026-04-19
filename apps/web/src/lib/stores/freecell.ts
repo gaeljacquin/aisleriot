@@ -9,7 +9,11 @@ import {
   isGameWon,
   SCORE_DELTAS,
 } from '#/lib/games/freecell'
-import type { FreeCellState, FreeCellMove, FreeCellPileId } from '#/lib/games/freecell'
+import type {
+  FreeCellState,
+  FreeCellMove,
+  FreeCellPileId,
+} from '#/lib/games/freecell'
 import { createHistorySlice } from './slices/history'
 import { createStatsSlice } from './slices/stats'
 import type { HistorySlice } from './slices/history'
@@ -17,13 +21,12 @@ import type { StatsSlice } from './slices/stats'
 import type { Card } from '#/lib/types'
 
 export interface FreeCellStore
-  extends FreeCellState,
-    HistorySlice<FreeCellState>,
-    StatsSlice {
+  extends FreeCellState, HistorySlice<FreeCellState>, StatsSlice {
   moveCard: (move: FreeCellMove) => void
   moveCardForce: (move: FreeCellMove) => void
   newGame: (seed?: number) => void
   restartGame: () => void
+  triggerAutoMove: () => void
 }
 
 function snapshot(state: FreeCellState): FreeCellState {
@@ -36,52 +39,15 @@ function snapshot(state: FreeCellState): FreeCellState {
     status: state.status,
     usedUndo: state.usedUndo,
     currentSeed: state.currentSeed,
+    isAutoMoving: state.isAutoMoving,
   }
-}
-
-/** Apply all pending auto-cascade moves (mutates nextState in place). */
-function applyCascade(nextState: FreeCellState): FreeCellState {
-  let current = nextState
-   
-  for (;;) {
-    const targets = getAutoMoveTargets(current)
-    if (targets.length === 0) break
-
-    let tableau = { ...current.tableau }
-    let freeCells = { ...current.freeCells }
-    let foundation = { ...current.foundation }
-    let score = current.score
-
-    for (const move of targets) {
-      const { fromPileId, toPileId } = move
-      let card: Card | null = null
-
-      if (fromPileId.startsWith('tableau-')) {
-        const pile = tableau[fromPileId]
-        card = pile[pile.length - 1]
-        tableau = { ...tableau, [fromPileId]: pile.slice(0, pile.length - 1) }
-      } else if (fromPileId.startsWith('freecell-')) {
-        card = freeCells[fromPileId]
-        freeCells = { ...freeCells, [fromPileId]: null }
-      }
-
-      if (card) {
-        const fPile = foundation[toPileId]
-        foundation = { ...foundation, [toPileId]: [...fPile, card] }
-        score += SCORE_DELTAS.toFoundation
-      }
-    }
-
-    current = { ...current, tableau, freeCells, foundation, score }
-  }
-  return current
 }
 
 export const useFreeCellStore = create<FreeCellStore>()(
   persist(
     (set, get) => ({
       // Initial game state
-      ...applyCascade(createInitialState()),
+      ...createInitialState(),
 
       // History slice — penalize undo -5
       ...createHistorySlice<FreeCellState>(
@@ -94,6 +60,61 @@ export const useFreeCellStore = create<FreeCellStore>()(
         () => get() as StatsSlice,
         (partial) => set(partial as Partial<FreeCellStore>),
       ),
+
+      triggerAutoMove: () => {
+        const state = get()
+        if (state.status !== 'playing') return
+
+        const targets = getAutoMoveTargets(state)
+        if (targets.length === 0) {
+          set({ isAutoMoving: false })
+          return
+        }
+
+        // Take the first available move
+        const move = targets[0]
+        const { fromPileId, toPileId } = move
+
+        let tableau = { ...state.tableau }
+        let freeCells = { ...state.freeCells }
+        let foundation = { ...state.foundation }
+        let card: Card | null = null
+
+        if (fromPileId.startsWith('tableau-')) {
+          const pile = tableau[fromPileId]
+          card = pile[pile.length - 1]
+          tableau = { ...tableau, [fromPileId]: pile.slice(0, pile.length - 1) }
+        } else if (fromPileId.startsWith('freecell-')) {
+          card = freeCells[fromPileId]
+          freeCells = { ...freeCells, [fromPileId]: null }
+        }
+
+        if (card) {
+          const fPile = foundation[toPileId]
+          foundation = { ...foundation, [toPileId]: [...fPile, card] }
+
+          const nextState: FreeCellState = {
+            ...state,
+            tableau,
+            freeCells,
+            foundation,
+            score: state.score + SCORE_DELTAS.toFoundation,
+            isAutoMoving: true, // Keep it true to trigger next frame
+          }
+
+          if (isGameWon(nextState)) {
+            const finalScore = Math.max(0, nextState.score)
+            set({
+              ...nextState,
+              status: 'won',
+              isAutoMoving: false,
+            } as Partial<FreeCellStore>)
+            get().recordWin(finalScore, !state.usedUndo)
+          } else {
+            set(nextState as Partial<FreeCellStore>)
+          }
+        }
+      },
 
       moveCard: (move: FreeCellMove) => {
         const state = get()
@@ -124,7 +145,10 @@ export const useFreeCellStore = create<FreeCellStore>()(
           scoreDelta = SCORE_DELTAS.toFoundation
         } else if (toPileId.startsWith('freecell-')) {
           scoreDelta = SCORE_DELTAS.toFreeCell
-        } else if (toPileId.startsWith('tableau-') && fromPileId.startsWith('freecell-')) {
+        } else if (
+          toPileId.startsWith('tableau-') &&
+          fromPileId.startsWith('freecell-')
+        ) {
           scoreDelta = SCORE_DELTAS.fromFreeCellToTableau
         }
 
@@ -150,7 +174,10 @@ export const useFreeCellStore = create<FreeCellStore>()(
         if (toPileId.startsWith('foundation-')) {
           // Only single card to foundation
           const card = movedCards[0]
-          foundation = { ...foundation, [toPileId]: [...foundation[toPileId], card] }
+          foundation = {
+            ...foundation,
+            [toPileId]: [...foundation[toPileId], card],
+          }
         } else if (toPileId.startsWith('freecell-')) {
           const card = movedCards[0]
           freeCells = { ...freeCells, [toPileId]: card }
@@ -159,25 +186,37 @@ export const useFreeCellStore = create<FreeCellStore>()(
           tableau = { ...tableau, [toPileId]: [...targetPile, ...movedCards] }
         }
 
-        let nextState: FreeCellState = {
+        const nextState: FreeCellState = {
           ...state,
           tableau,
           freeCells,
           foundation,
           score: state.score + scoreDelta,
           moveCount: state.moveCount + 1,
+          isAutoMoving: true, // Start auto-moving aces
         }
-
-        // --- Auto-cascade ---
-        nextState = applyCascade(nextState)
 
         // --- Check win ---
         if (isGameWon(nextState)) {
           const finalScore = Math.max(0, nextState.score)
-          set({ ...nextState, status: 'won', past, future, canUndo, canRedo } as Partial<FreeCellStore>)
+          set({
+            ...nextState,
+            status: 'won',
+            isAutoMoving: false,
+            past,
+            future,
+            canUndo,
+            canRedo,
+          } as Partial<FreeCellStore>)
           get().recordWin(finalScore, !state.usedUndo)
         } else {
-          set({ ...nextState, past, future, canUndo, canRedo } as Partial<FreeCellStore>)
+          set({
+            ...nextState,
+            past,
+            future,
+            canUndo,
+            canRedo,
+          } as Partial<FreeCellStore>)
         }
       },
 
@@ -209,7 +248,10 @@ export const useFreeCellStore = create<FreeCellStore>()(
           scoreDelta = SCORE_DELTAS.toFoundation
         } else if (toPileId.startsWith('freecell-')) {
           scoreDelta = SCORE_DELTAS.toFreeCell
-        } else if (toPileId.startsWith('tableau-') && fromPileId.startsWith('freecell-')) {
+        } else if (
+          toPileId.startsWith('tableau-') &&
+          fromPileId.startsWith('freecell-')
+        ) {
           scoreDelta = SCORE_DELTAS.fromFreeCellToTableau
         }
 
@@ -230,7 +272,10 @@ export const useFreeCellStore = create<FreeCellStore>()(
 
         if (toPileId.startsWith('foundation-')) {
           const card = movedCards[0]
-          foundation = { ...foundation, [toPileId]: [...foundation[toPileId], card] }
+          foundation = {
+            ...foundation,
+            [toPileId]: [...foundation[toPileId], card],
+          }
         } else if (toPileId.startsWith('freecell-')) {
           const card = movedCards[0]
           freeCells = { ...freeCells, [toPileId]: card }
@@ -239,31 +284,44 @@ export const useFreeCellStore = create<FreeCellStore>()(
           tableau = { ...tableau, [toPileId]: [...targetPile, ...movedCards] }
         }
 
-        let nextState: FreeCellState = {
+        const nextState: FreeCellState = {
           ...state,
           tableau,
           freeCells,
           foundation,
           score: state.score + scoreDelta,
           moveCount: state.moveCount + 1,
+          isAutoMoving: true,
         }
-
-        nextState = applyCascade(nextState)
 
         if (isGameWon(nextState)) {
           const finalScore = Math.max(0, nextState.score)
-          set({ ...nextState, status: 'won', past, future, canUndo, canRedo } as Partial<FreeCellStore>)
+          set({
+            ...nextState,
+            status: 'won',
+            isAutoMoving: false,
+            past,
+            future,
+            canUndo,
+            canRedo,
+          } as Partial<FreeCellStore>)
           get().recordWin(finalScore, !state.usedUndo)
         } else {
-          set({ ...nextState, past, future, canUndo, canRedo } as Partial<FreeCellStore>)
+          set({
+            ...nextState,
+            past,
+            future,
+            canUndo,
+            canRedo,
+          } as Partial<FreeCellStore>)
         }
       },
 
       newGame: (seed?: number) => {
-        let initial = createInitialState(seed)
-        initial = applyCascade(initial)
+        const initial = createInitialState(seed)
         set({
           ...initial,
+          isAutoMoving: true, // Trigger initial ace moves
           past: [],
           future: [],
           canUndo: false,
@@ -273,10 +331,10 @@ export const useFreeCellStore = create<FreeCellStore>()(
 
       restartGame: () => {
         const { currentSeed } = get()
-        let initial = createInitialState(currentSeed)
-        initial = applyCascade(initial)
+        const initial = createInitialState(currentSeed)
         set({
           ...initial,
+          isAutoMoving: true, // Trigger initial ace moves
           past: [],
           future: [],
           canUndo: false,

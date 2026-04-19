@@ -23,7 +23,10 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
   const altGame = usePyramidAlt()
 
   const onBeforeCellClick = useCallback(
-    (cellId: PyramidCellId, _defaultHandler: (id: PyramidCellId) => void): boolean => {
+    (
+      cellId: PyramidCellId,
+      _defaultHandler: (id: PyramidCellId) => void,
+    ): boolean => {
       if (selectedIsStock) {
         altGame.onRemovePairWithStock(cellId)
         setSelectedIsStock(false)
@@ -43,7 +46,8 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
 
   const renderStockRow = useCallback(
     (ctx: PyramidBoardBaseStockRowContext<UsePyramidAltResult>) => {
-      const canAction = (ctx.canDraw && !ctx.game.stockTopIsKing) || ctx.canRecycle
+      const canAction =
+        (ctx.canDraw && !ctx.game.stockTopIsKing) || ctx.canRecycle
 
       return (
         <div className="mt-6 flex flex-col items-center gap-3">
@@ -52,9 +56,17 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
             <div className="relative h-28 w-20">
               {/* Persistent background: face-down card while stock has cards, empty indicator otherwise */}
               {ctx.stockCount > 0 ? (
-                <Card suit="spades" rank="A" faceUp={false} className="absolute inset-0" />
+                <Card
+                  suit="spades"
+                  rank="A"
+                  faceUp={false}
+                  className="absolute inset-0"
+                />
               ) : (
-                <StockEmptyIndicator canRecycle={ctx.canRecycle} onClick={ctx.onRecycle} />
+                <StockEmptyIndicator
+                  canRecycle={ctx.canRecycle}
+                  onClick={ctx.onRecycle}
+                />
               )}
 
               {/* Animated face-up stockTop overlay */}
@@ -103,7 +115,7 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
               type="button"
               className={cn(
                 'rounded-xl p-3 shadow-md cursor-pointer transition-colors',
-                'bg-teal-600 dark:bg-teal-500 text-primary-foreground hover:bg-primary/90',
+                'bg-teal-600 dark:bg-teal-500 text-primary-foreground hover:bg-teal-700 dark:hover:bg-teal-600',
                 !canAction && 'cursor-not-allowed opacity-40',
               )}
               disabled={!canAction}
@@ -113,10 +125,18 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
                 if (ctx.canDraw && !ctx.game.stockTopIsKing) ctx.onDraw()
                 else if (ctx.canRecycle) ctx.onRecycle()
               }}
-              aria-label={ctx.canDraw && !ctx.game.stockTopIsKing ? 'Draw card' : 'Recycle waste'}
+              aria-label={
+                ctx.canDraw && !ctx.game.stockTopIsKing
+                  ? 'Draw card'
+                  : 'Recycle waste'
+              }
             >
               <HugeiconsIcon
-                icon={!ctx.canDraw && ctx.canRecycle ? Refresh01Icon : ArrowRight02Icon}
+                icon={
+                  !ctx.canDraw && ctx.canRecycle
+                    ? Refresh01Icon
+                    : ArrowRight02Icon
+                }
                 className="size-6"
               />
             </button>

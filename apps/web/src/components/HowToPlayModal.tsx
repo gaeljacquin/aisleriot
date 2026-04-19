@@ -14,7 +14,11 @@ interface HowToPlayModalProps {
   onOpenChange: (open: boolean) => void
 }
 
-export function HowToPlayModal({ variant, open, onOpenChange }: HowToPlayModalProps) {
+export function HowToPlayModal({
+  variant,
+  open,
+  onOpenChange,
+}: HowToPlayModalProps) {
   return (
     <Dialog open={open} onOpenChange={(nextOpen) => onOpenChange(nextOpen)}>
       <DialogContent className="sm:max-w-md">
@@ -24,7 +28,10 @@ export function HowToPlayModal({ variant, open, onOpenChange }: HowToPlayModalPr
         </DialogHeader>
         <ol className="space-y-2.5 pl-4 pt-1">
           {variant?.rules.map((rule, i) => (
-            <li key={i} className="list-decimal text-xs/relaxed text-foreground">
+            <li
+              key={i}
+              className="list-decimal text-xs/relaxed text-foreground"
+            >
               {rule}
             </li>
           ))}

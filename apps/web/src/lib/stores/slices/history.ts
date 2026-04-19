@@ -41,7 +41,9 @@ function extractGameState<TState>(full: TState & HistorySlice<TState>): TState {
   return snapshot
 }
 
-export function createHistorySlice<TState extends { score: number; usedUndo?: boolean }>(
+export function createHistorySlice<
+  TState extends { score: number; usedUndo?: boolean },
+>(
   get: () => TState & HistorySlice<TState>,
   set: (partial: Partial<TState & HistorySlice<TState>>) => void,
 ): HistorySlice<TState> {
@@ -62,9 +64,12 @@ export function createHistorySlice<TState extends { score: number; usedUndo?: bo
       if (maxDepth !== 'unlimited' && newPast.length > maxDepth) {
         newPast = newPast.slice(newPast.length - maxDepth)
       }
-      set({ past: newPast, future: [], canUndo: true, canRedo: false } as Partial<
-        TState & HistorySlice<TState>
-      >)
+      set({
+        past: newPast,
+        future: [],
+        canUndo: true,
+        canRedo: false,
+      } as Partial<TState & HistorySlice<TState>>)
     },
 
     undo: () => {
@@ -76,7 +81,8 @@ export function createHistorySlice<TState extends { score: number; usedUndo?: bo
       const newPast = past.slice(0, past.length - 1)
       const currentSnapshot = extractGameState(state)
 
-      const penalty = historyConfig.undoPenaltyScore ?? DEFAULT_UNDO_PENALTY_SCORE
+      const penalty =
+        historyConfig.undoPenaltyScore ?? DEFAULT_UNDO_PENALTY_SCORE
       const restoredScore =
         historyConfig.undoScoreMode === 'penalize'
           ? Math.max(0, state.score - penalty)

@@ -1,7 +1,11 @@
 import { useDraggable } from '@dnd-kit/core'
 import { cn } from '@workspace/ui/lib/utils'
 import Card from '../Card'
-import type { DraggableCardData, KlondikeTableauId, KlondikeFoundationId } from '#/lib/games/klondike'
+import type {
+  DraggableCardData,
+  KlondikeTableauId,
+  KlondikeFoundationId,
+} from '#/lib/games/klondike'
 import type { Card as CardType } from '#/lib/types'
 
 interface KlondikeCardProps {

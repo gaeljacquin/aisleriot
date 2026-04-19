@@ -1,10 +1,7 @@
-import { createDeck, shuffleDeck } from '#/lib/utils'
+import { createShuffledDeck } from '#/lib/utils'
+import type { Card } from '#/lib/types'
 import type { FreeCellState } from './types'
-import {
-  TABLEAU_IDS,
-  FREECELL_IDS,
-  FOUNDATION_IDS,
-} from './types'
+import { TABLEAU_IDS, FREECELL_IDS, FOUNDATION_IDS } from './types'
 
 /**
  * Standard FreeCell deal:
@@ -14,7 +11,10 @@ import {
  */
 export function createInitialState(seed?: number): FreeCellState {
   const resolvedSeed = seed ?? Math.floor(Math.random() * 1_000_000)
-  const shuffled = shuffleDeck(createDeck(), resolvedSeed).map((c) => ({ ...c, faceUp: true }))
+  const shuffled = createShuffledDeck(resolvedSeed).map((c: Card) => ({
+    ...c,
+    faceUp: true,
+  }))
 
   const tableau: FreeCellState['tableau'] = {}
   let cardIndex = 0
@@ -44,5 +44,6 @@ export function createInitialState(seed?: number): FreeCellState {
     status: 'playing',
     usedUndo: false,
     currentSeed: resolvedSeed,
+    isAutoMoving: false,
   }
 }

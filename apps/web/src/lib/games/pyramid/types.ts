@@ -11,8 +11,8 @@ export interface PyramidCell {
 
 export interface PyramidState {
   cells: Record<PyramidCellId, PyramidCell>
-  stock: Card[]   // top = last element
-  waste: Card[]   // top = last element
+  stock: Card[] // top = last element
+  waste: Card[] // top = last element
   recyclesUsed: number
   score: number
   moveCount: number

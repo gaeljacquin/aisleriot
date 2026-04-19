@@ -14,14 +14,16 @@ function NewGame() {
 
   return (
     <main className="flex h-full flex-col px-6 py-10">
-      <div className="mb-10">
-        <BackLink />
-      </div>
-
-      <div className="flex flex-1 flex-col items-center justify-center">
+      <div className="flex flex-1 flex-col items-center justify-center pb-24">
         <div className="w-full max-w-sm space-y-10">
-          <h1 className="text-center text-3xl font-bold text-foreground">New Game</h1>
+          <h1 className="text-center text-3xl font-bold text-foreground">
+            New Game
+          </h1>
           <VariantGrid onSelect={handleSelect} showDescription={false} />
+        </div>
+
+        <div className="mt-14">
+          <BackLink />
         </div>
       </div>
     </main>

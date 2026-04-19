@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
-import { Card, Waste } from '../index'
+import { Card, Waste, GameControls } from '../index'
 import StockEmptyIndicator from '../StockEmptyIndicator'
 import PyramidGrid from './PyramidGrid'
 import { PyramidWasteRefContext } from './PyramidWasteRefContext'
@@ -66,14 +66,25 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
   } = game
 
   const wasteRef = useRef<HTMLDivElement>(null)
-  const [selectedCellId, setSelectedCellId] = useState<PyramidCellId | null>(null)
+  const [selectedCellId, setSelectedCellId] = useState<PyramidCellId | null>(
+    null,
+  )
   const [selectedWaste, setSelectedWaste] = useState(false)
   const [devStatus, setDevStatus] = useState<'won' | 'lost' | null>(null)
+  const [showDevTools, setShowDevTools] = useState(false)
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [confirmNewGame, setConfirmNewGame] = useState(false)
 
   const effectiveStatus = devStatus ?? status
   const isGameOver = effectiveStatus === 'won' || effectiveStatus === 'lost'
+
+  const handleNewGameClick = () => {
+    if (isGameOver) {
+      onNewGame()
+    } else {
+      setConfirmNewGame(true)
+    }
+  }
 
   function baseCellHandler(cellId: PyramidCellId) {
     if (status !== 'playing') return
@@ -175,15 +186,21 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
 
   return (
     <PyramidWasteRefContext value={wasteRef}>
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col">
         {/* Score display */}
-        <div className="flex items-center justify-center gap-5 mb-3">
+        <div className="flex items-center justify-center gap-5 mb-10">
           <div className="flex flex-col items-center justify-center rounded-2xl bg-muted/50 px-6 py-3 min-w-20">
-            <span className="text-xs font-medium text-muted-foreground">Score</span>
-            <span className="text-xl font-bold text-primary tabular-nums">{score}</span>
+            <span className="text-xs font-medium text-muted-foreground">
+              Score
+            </span>
+            <span className="text-xl font-bold text-primary tabular-nums">
+              {score}
+            </span>
           </div>
           <div className="flex flex-col items-center justify-center rounded-2xl bg-muted/50 px-6 py-3 min-w-20">
-            <span className="text-xs font-medium text-muted-foreground">Recycles</span>
+            <span className="text-xs font-medium text-muted-foreground">
+              Recycles
+            </span>
             <span
               className={cn(
                 'text-xl font-bold tabular-nums',
@@ -195,25 +212,17 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
           </div>
         </div>
 
-        {/* Dev-only Victory/Game Over toggle buttons */}
-        {import.meta.env.DEV && (
-          <div className="flex items-center justify-center gap-2 -mt-5">
-            <button
-              type="button"
-              onClick={() => setDevStatus(devStatus === 'won' ? null : 'won')}
-              className="cursor-pointer rounded px-2 py-1 text-xs font-medium bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400"
-            >
-              {devStatus === 'won' ? 'Hide Victory' : 'Show Victory'} (Dev)
-            </button>
-            <button
-              type="button"
-              onClick={() => setDevStatus(devStatus === 'lost' ? null : 'lost')}
-              className="cursor-pointer rounded px-2 py-1 text-xs font-medium bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400"
-            >
-              {devStatus === 'lost' ? 'Hide Game Over' : 'Show Game Over'} (Dev)
-            </button>
-          </div>
-        )}
+        {/* Action buttons */}
+        <GameControls
+          onUndo={onUndo}
+          canUndo={canUndo}
+          onHowToPlay={onHowToPlay}
+          onRestart={() => setConfirmRestart(true)}
+          onNewGame={handleNewGameClick}
+          isGameOver={isGameOver}
+          showDevTools={showDevTools}
+          onToggleDevTools={() => setShowDevTools(!showDevTools)}
+        />
 
         {/* Board area — dimmed when game over */}
         <div className={cn('relative', isGameOver && 'opacity-50')}>
@@ -240,7 +249,10 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
                   <Card suit="spades" rank="A" faceUp={false} />
                 </div>
               ) : (
-                <StockEmptyIndicator canRecycle={canRecycle} onClick={handleStockClick} />
+                <StockEmptyIndicator
+                  canRecycle={canRecycle}
+                  onClick={handleStockClick}
+                />
               )}
               <div ref={wasteRef} className="inline-block">
                 <div
@@ -259,54 +271,11 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
               </div>
             </div>
           )}
-
-        </div>
-
-        {/* Undo + How to Play + Restart + New Game buttons */}
-        <div className="mt-6 flex items-center justify-evenly gap-8">
-          <button
-            type="button"
-            onClick={onUndo}
-            disabled={!canUndo}
-            className={cn(
-              'cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
-              'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-              !canUndo && 'cursor-not-allowed opacity-40',
-            )}
-          >
-            Undo
-          </button>
-          <button
-            type="button"
-            onClick={onHowToPlay}
-            className="cursor-pointer rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80"
-          >
-            How to Play
-          </button>
-          <button
-            type="button"
-            onClick={() => setConfirmRestart(true)}
-            className="cursor-pointer rounded-lg bg-secondary px-3 py-1.5 text-sm font-medium text-secondary-foreground transition-colors hover:bg-secondary/80"
-          >
-            Restart
-          </button>
-          <button
-            type="button"
-            onClick={() => setConfirmNewGame(true)}
-            className={cn(
-              'cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition-colors',
-              isGameOver
-                ? 'bg-slate-800 dark:bg-slate-500 text-primary-foreground hover:bg-primary'
-                : 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-            )}
-          >
-            {isGameOver ? 'Play Again' : 'New Game'}
-          </button>
         </div>
 
         {/* End-game result */}
         {isGameOver && (
-          <div className="flex flex-col items-center gap-3 py-2">
+          <div className="flex flex-col items-center gap-3 py-2 mt-2">
             <p
               className={cn(
                 'rounded px-3 py-1.5 text-xl font-black tracking-wide',
@@ -317,6 +286,33 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
             >
               {effectiveStatus === 'won' ? 'VICTORY' : 'GAME OVER'}
             </p>
+          </div>
+        )}
+
+        {/* Dev-only Victory/Game Over toggle buttons */}
+        {import.meta.env.DEV && showDevTools && (
+          <div className="mt-12 flex flex-col items-center gap-3 border-t border-slate-200 dark:border-slate-800 pt-4">
+            <span className="text-xs font-bold text-slate-100 dark:text-slate-400 uppercase tracking-wider">
+              Dev Tools
+            </span>
+            <div className="flex items-center justify-center gap-2">
+              <button
+                type="button"
+                onClick={() => setDevStatus(devStatus === 'won' ? null : 'won')}
+                className="cursor-pointer rounded px-2 py-1 text-xs font-medium bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400"
+              >
+                {devStatus === 'won' ? 'Hide Victory' : 'Show Victory'}
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  setDevStatus(devStatus === 'lost' ? null : 'lost')
+                }
+                className="cursor-pointer rounded px-2 py-1 text-xs font-medium bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400"
+              >
+                {devStatus === 'lost' ? 'Hide Game Over' : 'Show Game Over'}
+              </button>
+            </div>
           </div>
         )}
       </div>

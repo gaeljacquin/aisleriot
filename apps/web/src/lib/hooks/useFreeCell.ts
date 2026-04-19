@@ -43,6 +43,8 @@ export interface UseFreeCell {
   onNewGame: () => void
   onRestartGame: () => void
   onUndo: () => void
+  isAutoMoving: boolean
+  triggerAutoMove: () => void
 }
 
 export function useFreeCell(): UseFreeCell {
@@ -91,7 +93,10 @@ export function useFreeCell(): UseFreeCell {
     }
 
     // Prefer foundation if the card can legally and safely go there
-    if (canMoveToFoundation(state, fromPileId, fromIndex) && isSafeToAutoMove(state, card)) {
+    if (
+      canMoveToFoundation(state, fromPileId, fromIndex) &&
+      isSafeToAutoMove(state, card)
+    ) {
       const toPileId: FreeCellPileId = `foundation-${card.suit}`
       state.moveCard({ fromPileId, fromIndex, toPileId })
       return
@@ -121,5 +126,7 @@ export function useFreeCell(): UseFreeCell {
     onNewGame: state.newGame,
     onRestartGame: state.restartGame,
     onUndo: state.undo,
+    isAutoMoving: state.isAutoMoving,
+    triggerAutoMove: state.triggerAutoMove,
   }
 }

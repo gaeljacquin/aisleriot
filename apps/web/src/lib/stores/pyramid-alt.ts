@@ -23,7 +23,8 @@ import type { HistorySlice } from './slices/history'
 import type { StatsSlice } from './slices/stats'
 import { usePyramidSettingsStore } from './pyramid-settings'
 
-export interface PyramidAltStore extends PyramidState, HistorySlice<PyramidState>, StatsSlice {
+export interface PyramidAltStore
+  extends PyramidState, HistorySlice<PyramidState>, StatsSlice {
   removeAlone: (cellId: PyramidCellId) => void
   removePair: (idA: PyramidCellId, idB: PyramidCellId) => void
   removePairWithWaste: (cellId: PyramidCellId) => void
@@ -244,7 +245,9 @@ export const usePyramidAltStore = create<PyramidAltStore>()(
         state.pushHistory(snapshot(state))
 
         // Reverse waste back to stock, face-down
-        const newStock = [...state.waste].reverse().map((c) => ({ ...c, faceUp: false }))
+        const newStock = [...state.waste]
+          .reverse()
+          .map((c) => ({ ...c, faceUp: false }))
 
         const nextState: Partial<PyramidState> = {
           stock: newStock,

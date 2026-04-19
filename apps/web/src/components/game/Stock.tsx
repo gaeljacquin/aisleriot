@@ -16,9 +16,11 @@ export default function Stock({ count, onClick, disabled }: StockProps) {
       disabled={disabled ?? isEmpty}
       aria-label={`Stock pile, ${count} cards remaining`}
       className={cn(
-        'relative flex h-28 w-20 items-center justify-center rounded-lg border border-slate-600',
+        'relative flex h-28 w-20 items-center justify-center rounded-lg border-2 border-slate-800',
         'bg-linear-to-br from-slate-700 to-slate-900 transition-opacity',
-        isEmpty ? 'cursor-not-allowed opacity-40' : 'cursor-pointer hover:brightness-110',
+        isEmpty
+          ? 'cursor-not-allowed opacity-40'
+          : 'cursor-pointer hover:brightness-110',
       )}
     >
       {/* Diamond pattern */}

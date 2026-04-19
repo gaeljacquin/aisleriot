@@ -48,8 +48,13 @@ export function canMoveToTableau(
   let sequence: Card[]
 
   if (fromPile === 'waste') {
-    if (state.waste.length === 0) return false
-    sequence = [state.waste[state.waste.length - 1]]
+    if (
+      state.waste.length === 0 ||
+      fromIndex < 0 ||
+      fromIndex >= state.waste.length
+    )
+      return false
+    sequence = [state.waste[fromIndex]]
   } else if (fromPile.startsWith('tableau-')) {
     const pile = state.tableau[fromPile as KlondikeTableauId]
     if (fromIndex < 0 || fromIndex >= pile.length) return false
@@ -115,8 +120,13 @@ function resolveSourceCard(
   fromIndex: number,
 ): Card | null {
   if (fromPile === 'waste') {
-    if (state.waste.length === 0) return null
-    return state.waste[state.waste.length - 1]
+    if (
+      state.waste.length === 0 ||
+      fromIndex < 0 ||
+      fromIndex >= state.waste.length
+    )
+      return null
+    return state.waste[fromIndex]
   }
   if (fromPile.startsWith('tableau-')) {
     const pile = state.tableau[fromPile as KlondikeTableauId]

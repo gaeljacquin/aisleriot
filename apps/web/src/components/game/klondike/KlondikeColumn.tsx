@@ -4,7 +4,11 @@ import { cn } from '@workspace/ui/lib/utils'
 import CardSlot from '../CardSlot'
 import Card from '../Card'
 import KlondikeCard from './KlondikeCard'
-import type { KlondikeTableauId, DraggableCardData, DroppableZoneData } from '#/lib/games/klondike'
+import type {
+  KlondikeTableauId,
+  DraggableCardData,
+  DroppableZoneData,
+} from '#/lib/games/klondike'
 import type { Card as CardType } from '#/lib/types'
 
 const CARD_OFFSET = 28 // px between stacked cards vertically
@@ -67,9 +71,8 @@ export default function KlondikeColumn({
       )}
       style={{ minHeight: containerHeight }}
     >
-      {cards.length === 0 ? (
-        <CardSlot role="tableau" />
-      ) : (
+      <CardSlot role="tableau" className="absolute top-0 left-0" />
+      {cards.length > 0 && (
         <>
           {/* Non-draggable face-down cards */}
           {cards.slice(0, draggableFrom).map((card, i) => (
@@ -79,7 +82,11 @@ export default function KlondikeColumn({
               style={{ top: i * CARD_OFFSET, left: 0, zIndex: i }}
             >
               <div className="relative">
-                <Card suit={card.suit} rank={card.rank} faceUp={peekTableau ? true : card.faceUp} />
+                <Card
+                  suit={card.suit}
+                  rank={card.rank}
+                  faceUp={peekTableau ? true : card.faceUp}
+                />
                 {peekTableau && !card.faceUp && (
                   <div className="absolute inset-0 rounded-lg bg-black/50" />
                 )}

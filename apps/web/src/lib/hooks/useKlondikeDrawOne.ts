@@ -8,7 +8,11 @@ import {
   FOUNDATION_IDS,
   FOUNDATION_SUITS,
 } from '#/lib/games/klondike'
-import type { KlondikeTableauId, KlondikeFoundationId, KlondikeMove } from '#/lib/games/klondike'
+import type {
+  KlondikeTableauId,
+  KlondikeFoundationId,
+  KlondikeMove,
+} from '#/lib/games/klondike'
 import type { Card, GameStatus, Suit } from '#/lib/types'
 
 export interface KlondikeTableauEntry {
@@ -44,6 +48,7 @@ export interface UseKlondikeResult {
   onNewGame: () => void
   onRestartGame: () => void
   onUndo: () => void
+  currentDealCount: number
 }
 
 export function useKlondikeDrawOne(): UseKlondikeResult {
@@ -60,7 +65,10 @@ export function useKlondikeDrawOne(): UseKlondikeResult {
     suit: FOUNDATION_SUITS[id],
   }))
 
-  const draggableFromIndex: Record<KlondikeTableauId, number> = {} as Record<KlondikeTableauId, number>
+  const draggableFromIndex: Record<KlondikeTableauId, number> = {} as Record<
+    KlondikeTableauId,
+    number
+  >
   for (const id of TABLEAU_IDS) {
     draggableFromIndex[id] = computeDraggableFromIndex(state, id)
   }
@@ -70,8 +78,15 @@ export function useKlondikeDrawOne(): UseKlondikeResult {
       if (state.waste.length === 0) return
       const fromIndex = state.waste.length - 1
       const card = state.waste[fromIndex]
-      if (canMoveToFoundation(state, 'waste', fromIndex) && isSafeToAutoMove(state, card)) {
-        state.moveCard({ fromPile: 'waste', fromIndex, toPile: `foundation-${card.suit}` as KlondikeFoundationId })
+      if (
+        canMoveToFoundation(state, 'waste', fromIndex) &&
+        isSafeToAutoMove(state, card)
+      ) {
+        state.moveCard({
+          fromPile: 'waste',
+          fromIndex,
+          toPile: `foundation-${card.suit}` as KlondikeFoundationId,
+        })
       }
       return
     }
@@ -82,8 +97,15 @@ export function useKlondikeDrawOne(): UseKlondikeResult {
       if (pile.length === 0) return
       const fromIndex = pile.length - 1
       const card = pile[fromIndex]
-      if (canMoveToFoundation(state, pileId, fromIndex) && isSafeToAutoMove(state, card)) {
-        state.moveCard({ fromPile: pileId, fromIndex, toPile: `foundation-${card.suit}` as KlondikeFoundationId })
+      if (
+        canMoveToFoundation(state, pileId, fromIndex) &&
+        isSafeToAutoMove(state, card)
+      ) {
+        state.moveCard({
+          fromPile: pileId,
+          fromIndex,
+          toPile: `foundation-${card.suit}` as KlondikeFoundationId,
+        })
       }
     }
   }
@@ -110,5 +132,6 @@ export function useKlondikeDrawOne(): UseKlondikeResult {
     onNewGame: state.newGame,
     onRestartGame: state.restartGame,
     onUndo: state.undo,
+    currentDealCount: state.waste.length > 0 ? 1 : 0,
   }
 }

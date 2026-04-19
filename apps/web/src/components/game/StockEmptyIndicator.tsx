@@ -14,7 +14,10 @@ interface StockEmptyIndicatorProps {
  * - canRecycle: green circle border, clickable
  * - !canRecycle: red X, not clickable
  */
-export default function StockEmptyIndicator({ canRecycle, onClick }: StockEmptyIndicatorProps) {
+export default function StockEmptyIndicator({
+  canRecycle,
+  onClick,
+}: StockEmptyIndicatorProps) {
   return (
     <div
       className={cn(
@@ -35,7 +38,11 @@ export default function StockEmptyIndicator({ canRecycle, onClick }: StockEmptyI
         </div>
       ) : (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <HugeiconsIcon icon={Cancel01Icon} size={32} className="text-red-500" />
+          <HugeiconsIcon
+            icon={Cancel01Icon}
+            size={32}
+            className="text-red-500"
+          />
         </div>
       )}
     </div>

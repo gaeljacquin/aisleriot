@@ -3,7 +3,11 @@ import { useState } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
 import CardSlot from '../CardSlot'
 import FreeCellCard from './FreeCellCard'
-import type { FreeCellPileId, DraggableCardData, DroppableZoneData } from '#/lib/games/freecell'
+import type {
+  FreeCellPileId,
+  DraggableCardData,
+  DroppableZoneData,
+} from '#/lib/games/freecell'
 import type { Card } from '#/lib/types'
 
 const CARD_OFFSET = 36
@@ -50,8 +54,7 @@ function DraggableCard({
 
   // Hide this card if it's part of a sequence being dragged from above
   const isHidden =
-    isDragging ||
-    (hiddenFromIndex !== null && cardIndex >= hiddenFromIndex)
+    isDragging || (hiddenFromIndex !== null && cardIndex >= hiddenFromIndex)
 
   return (
     <div
@@ -121,9 +124,8 @@ export default function FreeCellColumn({
       )}
       style={{ minHeight: containerHeight }}
     >
-      {cards.length === 0 ? (
-        <CardSlot role="tableau" />
-      ) : (
+      <CardSlot role="tableau" className="absolute top-0 left-0" />
+      {cards.length > 0 && (
         <>
           {/* Non-draggable cards */}
           {cards.slice(0, draggableFrom).map((card, i) => (

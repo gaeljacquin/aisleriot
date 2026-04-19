@@ -49,7 +49,9 @@ export function usePyramid(): UsePyramidResult {
     wasteTop,
     stockCount: storeState.stock.length,
     canDraw: rulesCanDraw(storeState) && storeState.status === 'playing',
-    canRecycle: rulesCanRecycle(storeState, recycleLimit) && storeState.status === 'playing',
+    canRecycle:
+      rulesCanRecycle(storeState, recycleLimit) &&
+      storeState.status === 'playing',
     recyclesRemaining: recycleLimit - storeState.recyclesUsed,
     score: storeState.score,
     status: storeState.status,

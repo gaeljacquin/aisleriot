@@ -3,4 +3,7 @@ export { default as PyramidBoardBase } from './PyramidBoardBase'
 export { default as PyramidAltBoard } from './PyramidAltBoard'
 export { default as PyramidGrid } from './PyramidGrid'
 export { default as PyramidCell } from './PyramidCell'
-export { PyramidWasteRefContext, usePyramidWasteRef } from './PyramidWasteRefContext'
+export {
+  PyramidWasteRefContext,
+  usePyramidWasteRef,
+} from './PyramidWasteRefContext'

@@ -3,7 +3,11 @@ import { useState } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
 import CardSlot from '../CardSlot'
 import FreeCellCard from './FreeCellCard'
-import type { FreeCellPileId, DraggableCardData, DroppableZoneData } from '#/lib/games/freecell'
+import type {
+  FreeCellPileId,
+  DraggableCardData,
+  DroppableZoneData,
+} from '#/lib/games/freecell'
 import type { Card } from '#/lib/types'
 
 interface FreeCellFreeCellProps {
@@ -87,10 +91,11 @@ export default function FreeCellFreeCell({
         isOver && 'ring-2 ring-primary ring-offset-1',
       )}
     >
-      {card ? (
-        <OccupiedFreeCell id={id} card={card} onDoubleClick={onDoubleClick} />
-      ) : (
-        <CardSlot role="freecell" />
+      <CardSlot role="freecell" />
+      {card && (
+        <div className="absolute inset-0">
+          <OccupiedFreeCell id={id} card={card} onDoubleClick={onDoubleClick} />
+        </div>
       )}
     </div>
   )
