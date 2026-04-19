@@ -48,10 +48,7 @@ export function useKlondikeDrawThree(): UseKlondikeResult {
       if (state.waste.length === 0) return
       const fromIndex = state.waste.length - 1
       const card = state.waste[fromIndex]
-      if (
-        canMoveToFoundation(state, 'waste', fromIndex) &&
-        isSafeToAutoMove(state, card)
-      ) {
+      if (canMoveToFoundation(state, 'waste', fromIndex)) {
         state.moveCard({
           fromPile: 'waste',
           fromIndex,
@@ -67,10 +64,7 @@ export function useKlondikeDrawThree(): UseKlondikeResult {
       if (pile.length === 0) return
       const fromIndex = pile.length - 1
       const card = pile[fromIndex]
-      if (
-        canMoveToFoundation(state, pileId, fromIndex) &&
-        isSafeToAutoMove(state, card)
-      ) {
+      if (canMoveToFoundation(state, pileId, fromIndex)) {
         state.moveCard({
           fromPile: pileId,
           fromIndex,

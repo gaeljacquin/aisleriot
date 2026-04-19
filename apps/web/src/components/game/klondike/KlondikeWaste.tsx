@@ -54,10 +54,23 @@ export default function KlondikeWaste({
   if (drawCount === 1) {
     const top = visible.length > 0 ? visible[0] : null
     const isDragging = draggingFromIndex !== null
+    const underCard =
+      isDragging && waste.length > 1 ? waste[waste.length - 2] : null
 
     return (
       <div className="relative h-28 w-20">
         {baseSlot}
+
+        {/* Card under the dragging card — so we don't see an empty slot */}
+        {underCard && (
+          <div className="absolute inset-0">
+            <Card
+              suit={underCard.suit}
+              rank={underCard.rank}
+              faceUp={underCard.faceUp}
+            />
+          </div>
+        )}
 
         {/* Top card — always rendered so drag stays alive; hidden via opacity when dragging */}
         {top && (
@@ -76,12 +89,29 @@ export default function KlondikeWaste({
     )
   }
 
+  // Draw 3
+  const underCard =
+    waste.length > visible.length
+      ? waste[waste.length - visible.length - 1]
+      : null
+
   return (
     <div
       className="relative h-28 flex-shrink-0"
       style={{ width: containerWidth }}
     >
       {baseSlot}
+
+      {/* Card under the current deal — visible if dragging the last card of the deal */}
+      {underCard && (
+        <div className="absolute inset-0">
+          <Card
+            suit={underCard.suit}
+            rank={underCard.rank}
+            faceUp={underCard.faceUp}
+          />
+        </div>
+      )}
 
       {visible.map((card, i) => {
         // absolute index in the full waste array is length - visibleCount + i
