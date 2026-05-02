@@ -23,7 +23,7 @@ export default function Footer() {
 
   return (
     <footer className="container mx-auto px-4 py-5">
-      <div className="flex flex-row items-center justify-evenly gap-4 text-center text-sm text-muted-foreground">
+      <div className="flex flex-row items-center justify-evenly gap-4 text-center text-base text-muted-foreground">
         <p>
           &copy; 2026{' '}
           {currentYear > 2026 ? <span>- {currentYear} </span> : null}

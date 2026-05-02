@@ -18,8 +18,8 @@ function RootComponent() {
 
   return (
     <>
-      <div className="flex h-full flex-col">
-        <div className="flex-1 overflow-y-auto">
+      <div className="flex h-screen flex-col overflow-hidden bg-background">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden">
           <Outlet />
         </div>
         <Footer />

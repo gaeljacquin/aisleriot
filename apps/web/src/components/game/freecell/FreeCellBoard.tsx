@@ -12,7 +12,7 @@ import { cn } from '@workspace/ui/lib/utils'
 import FreeCellTopRow from './FreeCellTopRow'
 import FreeCellTableau from './FreeCellTableau'
 import FreeCellCard from './FreeCellCard'
-// import { GameControls } from '../index'
+import { GameControls } from '../index'
 import { ConfirmModal } from '#/components/ConfirmModal'
 import { useFreeCell } from '#/lib/hooks/useFreeCell'
 import type {
@@ -35,16 +35,16 @@ export default function FreeCellBoard({ onHowToPlay: _onHowToPlay }: FreeCellBoa
     freeCells,
     foundation,
     draggableFromIndex,
-    score: _score,
-    moveCount: _moveCount,
+    score,
+    moveCount,
     status,
-    canUndo: _canUndo,
+    canUndo,
     onMoveCard,
     onMoveCardForce,
     onAutoMove,
     onNewGame,
     onRestartGame,
-    onUndo: _onUndo,
+    onUndo,
     isAutoMoving,
     triggerAutoMove,
   } = useFreeCell()
@@ -61,9 +61,9 @@ export default function FreeCellBoard({ onHowToPlay: _onHowToPlay }: FreeCellBoa
 
   const [draggedCards, setDraggedCards] = useState<Card[] | null>(null)
   const lastDropWasValid = useRef(false)
-  const [devStatus, _setDevStatus] = useState<'won' | null>(null)
-  const [devUnlimitedMoves, _setDevUnlimitedMoves] = useState(false)
-  const [_showDevTools, _setShowDevTools] = useState(false)
+  const [devStatus, setDevStatus] = useState<'won' | null>(null)
+  const [devUnlimitedMoves, setDevUnlimitedMoves] = useState(false)
+  const [showDevTools, setShowDevTools] = useState(false)
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [confirmNewGame, setConfirmNewGame] = useState(false)
 
@@ -120,14 +120,6 @@ export default function FreeCellBoard({ onHowToPlay: _onHowToPlay }: FreeCellBoa
   const effectiveStatus = devStatus ?? status
   const isGameOver = effectiveStatus === 'won'
 
-  // const handleNewGameClick = () => {
-  //   if (isGameOver) {
-  //     onNewGame()
-  //   } else {
-  //     setConfirmNewGame(true)
-  //   }
-  // }
-
   const dropAnimation = lastDropWasValid.current
     ? null
     : {
@@ -146,37 +138,7 @@ export default function FreeCellBoard({ onHowToPlay: _onHowToPlay }: FreeCellBoa
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex flex-col">
-        {/* Score + move count */}
-        {/* <div className="flex items-center justify-center gap-5 mb-10">
-          <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
-            <span className="text-xs font-medium text-muted-foreground">
-              Score
-            </span>
-            <span className="text-xl font-bold tabular-nums text-primary">
-              {score}
-            </span>
-          </div>
-          <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
-            <span className="text-xs font-medium text-muted-foreground">
-              Moves
-            </span>
-            <span className="text-xl font-bold tabular-nums">{moveCount}</span>
-          </div>
-        </div> */}
-
-        {/* Action buttons */}
-        {/* <GameControls
-          onUndo={onUndo}
-          canUndo={canUndo}
-          onHowToPlay={onHowToPlay}
-          onRestart={() => setConfirmRestart(true)}
-          onNewGame={handleNewGameClick}
-          isGameOver={isGameOver}
-          showDevTools={showDevTools}
-          onToggleDevTools={() => setShowDevTools(!showDevTools)}
-        /> */}
-
+      <div className="flex flex-1 flex-col min-h-0">
         {/* Board — dimmed when won */}
         <div className={cn('flex flex-col gap-6', isGameOver && 'opacity-50')}>
           <FreeCellTopRow
@@ -192,39 +154,31 @@ export default function FreeCellBoard({ onHowToPlay: _onHowToPlay }: FreeCellBoa
           />
         </div>
 
-        {/* Dev-only toggles */}
-        {/* {import.meta.env.DEV && showDevTools && (
-          <div className="mt-12 flex flex-col items-center gap-3 border-t border-slate-200 dark:border-slate-800 pt-8">
-            <span className="text-xs font-bold text-slate-100 dark:text-slate-400 uppercase tracking-wider">
-              Dev Tools
-            </span>
-            <div className="flex items-center justify-center gap-2">
-              <button
-                type="button"
-                onClick={() => setDevStatus(devStatus === 'won' ? null : 'won')}
-                className="cursor-pointer rounded px-2 py-1 text-xs font-medium bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400"
-              >
-                {devStatus === 'won' ? 'Hide Victory' : 'Show Victory'}
-              </button>
-              <button
-                type="button"
-                onClick={() => setDevUnlimitedMoves((v) => !v)}
-                className={cn(
-                  'cursor-pointer rounded px-2 py-1 text-xs font-medium',
-                  devUnlimitedMoves
-                    ? 'bg-blue-200 text-blue-900 hover:bg-blue-300 dark:bg-blue-800/50 dark:text-blue-300'
-                    : 'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400',
-                )}
-              >
-                {devUnlimitedMoves
-                  ? 'Unlimited Moves ON'
-                  : 'Unlimited Moves OFF'}
-              </button>
-            </div>
-          </div>
-        )} */}
+        {/* Spacer to push controls to the bottom */}
+        <div className="flex-1" />
+
+        {/* Action buttons + Stats */}
+        <GameControls
+          onUndo={onUndo}
+          canUndo={canUndo}
+          onHowToPlay={_onHowToPlay}
+          onRestart={() => setConfirmRestart(true)}
+          onNewGame={() => setConfirmNewGame(true)}
+          isGameOver={isGameOver}
+          showDevTools={showDevTools}
+          onToggleDevTools={() => setShowDevTools(!showDevTools)}
+          score={score}
+          moveCount={moveCount}
+          variantName="FreeCell"
+          devMoveAnywhere={devUnlimitedMoves}
+          onToggleMoveAnywhere={() => setDevUnlimitedMoves((v) => !v)}
+          devPeekTableau={devStatus === 'won'}
+          onTogglePeekTableau={() => setDevStatus(devStatus === 'won' ? null : 'won')}
+        />
 
         {/* Victory message */}
+
+
         {isGameOver && (
           <div className="flex flex-col items-center gap-3 py-2">
             <p className="rounded px-3 py-1.5 text-xl font-black tracking-wide bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">

@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
-import { Stock, Waste } from '../index'
+import { Stock, Waste, GameControls } from '../index'
 import PeakGrid from './PeakGrid'
 import { WasteRefContext } from './WasteRefContext'
 import { ConfirmModal } from '#/components/ConfirmModal'
@@ -9,11 +9,13 @@ import type { UseTriPeaksResult } from '#/lib/hooks/useTriPeaks'
 interface TriPeaksBoardBaseProps {
   useGame: () => UseTriPeaksResult
   onHowToPlay: () => void
+  variantName: string
 }
 
 export default function TriPeaksBoardBase({
   useGame,
   onHowToPlay: _onHowToPlay,
+  variantName,
 }: TriPeaksBoardBaseProps) {
   const {
     cells,
@@ -21,76 +23,31 @@ export default function TriPeaksBoardBase({
     wasteTop,
     stockCount,
     canDraw,
-    chain: _chain,
-    score: _score,
+    chain,
+    score,
     status,
-    canUndo: _canUndo,
+    canUndo,
     onPlayCard,
     onDraw,
     onNewGame,
     onRestartGame,
-    onUndo: _onUndo,
+    onUndo,
     isValidMove,
   } = useGame()
 
   const wasteRef = useRef<HTMLDivElement>(null)
   const lastAction = useRef<'draw' | 'play'>('play')
-  const [devStatus, _setDevStatus] = useState<'won' | 'lost' | null>(null)
-  const [_showDevTools, _setShowDevTools] = useState(false)
+  const [devStatus, setDevStatus] = useState<'won' | 'lost' | null>(null)
+  const [showDevTools, setShowDevTools] = useState(false)
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [confirmNewGame, setConfirmNewGame] = useState(false)
 
   const effectiveStatus = devStatus ?? status
   const isGameOver = effectiveStatus === 'won' || effectiveStatus === 'lost'
 
-  // const handleNewGameClick = () => {
-  //   if (isGameOver) {
-  //     onNewGame()
-  //   } else {
-  //     setConfirmNewGame(true)
-  //   }
-  // }
-
   return (
     <WasteRefContext value={wasteRef}>
-      <div className="flex flex-col">
-        {/* Score + Chain squares */}
-        {/* <div className="flex items-center justify-center gap-5 mb-10">
-          <div className="flex flex-col items-center justify-center rounded-2xl bg-muted/50 px-6 py-3 min-w-20">
-            <span className="text-xs font-medium text-muted-foreground">
-              Score
-            </span>
-            <span className="text-xl font-bold text-primary tabular-nums">
-              {score}
-            </span>
-          </div>
-          <div className="flex flex-col items-center justify-center rounded-2xl bg-muted/50 px-6 py-3 min-w-20">
-            <span className="text-xs font-medium text-muted-foreground">
-              Chain
-            </span>
-            <span
-              className={cn(
-                'text-xl font-bold tabular-nums',
-                chain > 0 ? 'text-yellow-500' : 'text-foreground',
-              )}
-            >
-              {chain}
-            </span>
-          </div>
-        </div> */}
-
-        {/* Action buttons */}
-        {/* <GameControls
-          onUndo={onUndo}
-          canUndo={canUndo}
-          onHowToPlay={onHowToPlay}
-          onRestart={() => setConfirmRestart(true)}
-          onNewGame={handleNewGameClick}
-          isGameOver={isGameOver}
-          showDevTools={showDevTools}
-          onToggleDevTools={() => setShowDevTools(!showDevTools)}
-        /> */}
-
+      <div className="flex flex-1 flex-col min-h-0">
         {/* Board area — dimmed when game over */}
         <div className={cn('relative', isGameOver && 'opacity-50')}>
           {/* Pyramid */}
@@ -120,7 +77,31 @@ export default function TriPeaksBoardBase({
           </div>
         </div>
 
+        {/* Spacer to push controls to the bottom */}
+        <div className="flex-1" />
+
+        {/* Action buttons + Stats */}
+        <GameControls
+          onUndo={onUndo}
+          canUndo={canUndo}
+          onHowToPlay={_onHowToPlay}
+          onRestart={() => setConfirmRestart(true)}
+          onNewGame={() => setConfirmNewGame(true)}
+          isGameOver={isGameOver}
+          showDevTools={showDevTools}
+          onToggleDevTools={() => setShowDevTools(!showDevTools)}
+          score={score}
+          moveCount={chain} // TriPeaks uses chain as a key stat
+          variantName={variantName}
+          devMoveAnywhere={devStatus === 'won'}
+          onToggleMoveAnywhere={() => setDevStatus(devStatus === 'won' ? null : 'won')}
+          devPeekTableau={devStatus === 'lost'}
+          onTogglePeekTableau={() => setDevStatus(devStatus === 'lost' ? null : 'lost')}
+        />
+
         {/* End-game result — shown below board, NOT absolute */}
+
+
         {isGameOver && (
           <div className="flex flex-col items-center gap-3 py-4 mt-4">
             <p

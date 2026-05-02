@@ -15,9 +15,13 @@ import type { PyramidBoardBaseStockRowContext } from './PyramidBoardBase'
 
 interface PyramidAltBoardProps {
   onHowToPlay: () => void
+  variantName?: string
 }
 
-export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
+export default function PyramidAltBoard({
+  onHowToPlay,
+  variantName = 'Pyramid Alt',
+}: PyramidAltBoardProps) {
   const [selectedIsStock, setSelectedIsStock] = useState(false)
   const [selectedIsWaste, setSelectedIsWaste] = useState(false)
   const altGame = usePyramidAlt()
@@ -194,6 +198,7 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
       onHowToPlay={onHowToPlay}
       renderStockRow={renderStockRow}
       onBeforeCellClick={onBeforeCellClick}
+      variantName={variantName}
     />
   )
 }

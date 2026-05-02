@@ -3,8 +3,18 @@ import TriPeaksBoardBase from './TriPeaksBoardBase'
 
 interface TriPeaksBoardProps {
   onHowToPlay: () => void
+  variantName?: string
 }
 
-export default function TriPeaksBoard({ onHowToPlay }: TriPeaksBoardProps) {
-  return <TriPeaksBoardBase useGame={useTriPeaks} onHowToPlay={onHowToPlay} />
+export default function TriPeaksBoard({
+  onHowToPlay,
+  variantName = 'Tri Peaks',
+}: TriPeaksBoardProps) {
+  return (
+    <TriPeaksBoardBase
+      useGame={useTriPeaks}
+      onHowToPlay={onHowToPlay}
+      variantName={variantName}
+    />
+  )
 }

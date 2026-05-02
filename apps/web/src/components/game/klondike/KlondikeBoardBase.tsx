@@ -14,7 +14,7 @@ import KlondikeFoundation from './KlondikeFoundation'
 import KlondikeWaste from './KlondikeWaste'
 import KlondikeStock from './KlondikeStock'
 import Card from '../Card'
-// import { GameControls } from '../index'
+import { GameControls } from '../index'
 import { ConfirmModal } from '#/components/ConfirmModal'
 import type { UseKlondikeResult } from '#/lib/hooks/useKlondikeDrawOne'
 import type { DraggableCardData, DroppableZoneData } from '#/lib/games/klondike'
@@ -39,28 +39,28 @@ export default function KlondikeBoardBase({
     stockCount,
     stockEmpty,
     canRedeal,
-    redealsLeft: _redealsLeft,
+    redealsLeft,
     drawCount,
     draggableFromIndex,
-    score: _score,
-    moveCount: _moveCount,
+    score,
+    moveCount,
     status,
-    canUndo: _canUndo,
+    canUndo,
     onMoveCard,
     onMoveCardForce,
     onAutoMove,
     onFlipStock,
     onNewGame,
     onRestartGame,
-    onUndo: _onUndo,
+    onUndo,
     currentDealCount,
   } = useGame()
 
   const [draggedCards, setDraggedCards] = useState<CardType[] | null>(null)
   const lastDropWasValid = useRef(false)
-  const [devMoveAnywhere, _setDevMoveAnywhere] = useState(false)
-  const [devPeekTableau, _setDevPeekTableau] = useState(false)
-  const [_showDevTools, _setShowDevTools] = useState(false)
+  const [devMoveAnywhere, setDevMoveAnywhere] = useState(false)
+  const [devPeekTableau, setDevPeekTableau] = useState(false)
+  const [showDevTools, setShowDevTools] = useState(false)
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [confirmNewGame, setConfirmNewGame] = useState(false)
 
@@ -129,49 +129,7 @@ export default function KlondikeBoardBase({
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex flex-col">
-        {/* Score + moves HUD */}
-        {/* <div className="flex items-center justify-center gap-5 mb-10">
-          <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
-            <span className="text-xs font-medium text-black dark:text-muted-foreground">
-              Score
-            </span>
-            <span className="text-xl font-bold tabular-nums text-green-900 dark:text-green-500">
-              {score}
-            </span>
-          </div>
-          <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
-            <span className="text-xs font-medium text-black dark:text-muted-foreground">
-              Moves
-            </span>
-            <span className="text-xl font-bold tabular-nums text-black dark:text-foreground">
-              {moveCount}
-            </span>
-          </div>
-          {redealsLeft !== null && (
-            <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
-              <span className="text-xs font-medium text-black dark:text-muted-foreground">
-                Recycles
-              </span>
-              <span className="text-xl font-bold tabular-nums text-black dark:text-foreground">
-                {redealsLeft}
-              </span>
-            </div>
-          )}
-        </div> */}
-
-        {/* Action buttons */}
-        {/* <GameControls
-          onUndo={onUndo}
-          canUndo={canUndo}
-          onHowToPlay={onHowToPlay}
-          onRestart={() => setConfirmRestart(true)}
-          onNewGame={handleNewGameClick}
-          isGameOver={isGameOver}
-          showDevTools={showDevTools}
-          onToggleDevTools={() => setShowDevTools(!showDevTools)}
-        /> */}
-
+      <div className="flex flex-1 flex-col min-h-0">
         {/* Board */}
         <div
           className={cn(
@@ -237,42 +195,32 @@ export default function KlondikeBoardBase({
           </div>
         </div>
 
-        {/* Dev toggles */}
-        {/* {import.meta.env.DEV && showDevTools && (
-          <div className="mt-12 flex flex-col items-center gap-3 border-t border-slate-200 dark:border-slate-800 pt-8">
-            <span className="text-xs font-bold text-slate-100 dark:text-slate-400 uppercase tracking-wider">
-              Dev Tools
-            </span>
-            <div className="flex items-center justify-center gap-2">
-              <button
-                type="button"
-                onClick={() => setDevMoveAnywhere((v) => !v)}
-                className={cn(
-                  'cursor-pointer rounded px-2 py-1 text-xs font-medium',
-                  devMoveAnywhere
-                    ? 'bg-blue-200 text-blue-900 hover:bg-blue-300 dark:bg-blue-800/50 dark:text-blue-300'
-                    : 'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400',
-                )}
-              >
-                {devMoveAnywhere ? 'Move Anywhere ON' : 'Move Anywhere OFF'}
-              </button>
-              <button
-                type="button"
-                onClick={() => setDevPeekTableau((v) => !v)}
-                className={cn(
-                  'cursor-pointer rounded px-2 py-1 text-xs font-medium',
-                  devPeekTableau
-                    ? 'bg-amber-200 text-amber-900 hover:bg-amber-300 dark:bg-amber-800/50 dark:text-amber-300'
-                    : 'bg-amber-100 text-amber-800 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-400',
-                )}
-              >
-                {devPeekTableau ? 'Peek Tableau ON' : 'Peek Tableau OFF'}
-              </button>
-            </div>
-          </div>
-        )} */}
+        {/* Spacer to push controls to the bottom */}
+        <div className="flex-1" />
+
+        {/* Action buttons + Stats */}
+        <GameControls
+          onUndo={onUndo}
+          canUndo={canUndo}
+          onHowToPlay={_onHowToPlay}
+          onRestart={() => setConfirmRestart(true)}
+          onNewGame={() => setConfirmNewGame(true)}
+          isGameOver={isGameOver}
+          showDevTools={showDevTools}
+          onToggleDevTools={() => setShowDevTools(!showDevTools)}
+          score={score}
+          moveCount={moveCount}
+          redealsLeft={redealsLeft}
+          variantName={drawCount === 1 ? 'Klondike (Draw 1)' : 'Klondike (Draw 3)'}
+          devMoveAnywhere={devMoveAnywhere}
+          onToggleMoveAnywhere={() => setDevMoveAnywhere((v) => !v)}
+          devPeekTableau={devPeekTableau}
+          onTogglePeekTableau={() => setDevPeekTableau((v) => !v)}
+        />
 
         {/* Victory message */}
+
+
         {isGameOver && (
           <div className="flex flex-col items-center gap-3 py-2">
             <p className="rounded px-3 py-1.5 text-xl font-black tracking-wide bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">

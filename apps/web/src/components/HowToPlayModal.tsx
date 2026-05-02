@@ -26,11 +26,11 @@ export function HowToPlayModal({
           <DialogTitle>{variant?.name}</DialogTitle>
           <DialogDescription>{variant?.description}</DialogDescription>
         </DialogHeader>
-        <ol className="space-y-2.5 pl-4 pt-1">
+        <ol className="space-y-3 pl-4 pt-1">
           {variant?.rules.map((rule, i) => (
             <li
               key={i}
-              className="list-decimal text-xs/relaxed text-foreground"
+              className="list-decimal text-sm/relaxed text-foreground"
             >
               {rule}
             </li>
