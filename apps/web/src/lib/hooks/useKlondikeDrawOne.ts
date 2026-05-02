@@ -3,7 +3,7 @@ import {
   draggableFromIndex as computeDraggableFromIndex,
   canMoveToFoundation,
   canRedeal as computeCanRedeal,
-  isSafeToAutoMove,
+  isSafeToAutoMove as _isSafeToAutoMove,
   TABLEAU_IDS,
   FOUNDATION_IDS,
   FOUNDATION_SUITS,

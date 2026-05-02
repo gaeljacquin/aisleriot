@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
-import { Stock, Waste, GameControls } from '../index'
+import { Stock, Waste } from '../index'
 import PeakGrid from './PeakGrid'
 import { WasteRefContext } from './WasteRefContext'
 import { ConfirmModal } from '#/components/ConfirmModal'
@@ -13,7 +13,7 @@ interface TriPeaksBoardBaseProps {
 
 export default function TriPeaksBoardBase({
   useGame,
-  onHowToPlay,
+  onHowToPlay: _onHowToPlay,
 }: TriPeaksBoardBaseProps) {
   const {
     cells,
@@ -21,41 +21,41 @@ export default function TriPeaksBoardBase({
     wasteTop,
     stockCount,
     canDraw,
-    chain,
-    score,
+    chain: _chain,
+    score: _score,
     status,
-    canUndo,
+    canUndo: _canUndo,
     onPlayCard,
     onDraw,
     onNewGame,
     onRestartGame,
-    onUndo,
+    onUndo: _onUndo,
     isValidMove,
   } = useGame()
 
   const wasteRef = useRef<HTMLDivElement>(null)
   const lastAction = useRef<'draw' | 'play'>('play')
-  const [devStatus, setDevStatus] = useState<'won' | 'lost' | null>(null)
-  const [showDevTools, setShowDevTools] = useState(false)
+  const [devStatus, _setDevStatus] = useState<'won' | 'lost' | null>(null)
+  const [_showDevTools, _setShowDevTools] = useState(false)
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [confirmNewGame, setConfirmNewGame] = useState(false)
 
   const effectiveStatus = devStatus ?? status
   const isGameOver = effectiveStatus === 'won' || effectiveStatus === 'lost'
 
-  const handleNewGameClick = () => {
-    if (isGameOver) {
-      onNewGame()
-    } else {
-      setConfirmNewGame(true)
-    }
-  }
+  // const handleNewGameClick = () => {
+  //   if (isGameOver) {
+  //     onNewGame()
+  //   } else {
+  //     setConfirmNewGame(true)
+  //   }
+  // }
 
   return (
     <WasteRefContext value={wasteRef}>
       <div className="flex flex-col">
         {/* Score + Chain squares */}
-        <div className="flex items-center justify-center gap-5 mb-10">
+        {/* <div className="flex items-center justify-center gap-5 mb-10">
           <div className="flex flex-col items-center justify-center rounded-2xl bg-muted/50 px-6 py-3 min-w-20">
             <span className="text-xs font-medium text-muted-foreground">
               Score
@@ -77,10 +77,10 @@ export default function TriPeaksBoardBase({
               {chain}
             </span>
           </div>
-        </div>
+        </div> */}
 
         {/* Action buttons */}
-        <GameControls
+        {/* <GameControls
           onUndo={onUndo}
           canUndo={canUndo}
           onHowToPlay={onHowToPlay}
@@ -89,25 +89,23 @@ export default function TriPeaksBoardBase({
           isGameOver={isGameOver}
           showDevTools={showDevTools}
           onToggleDevTools={() => setShowDevTools(!showDevTools)}
-        />
+        /> */}
 
         {/* Board area — dimmed when game over */}
         <div className={cn('relative', isGameOver && 'opacity-50')}>
-          {/* Pyramid — horizontally scrollable on small screens */}
-          <div className="overflow-x-auto pb-2">
-            <PeakGrid
-              cells={cells}
-              availableCells={availableCells}
-              onPlayCard={(id) => {
-                lastAction.current = 'play'
-                onPlayCard(id)
-              }}
-              isValidMove={isValidMove}
-            />
-          </div>
+          {/* Pyramid */}
+          <PeakGrid
+            cells={cells}
+            availableCells={availableCells}
+            onPlayCard={(id) => {
+              lastAction.current = 'play'
+              onPlayCard(id)
+            }}
+            isValidMove={isValidMove}
+          />
 
           {/* Stock + Waste row */}
-          <div className="mt-10 flex items-center justify-center gap-12">
+          <div className="mt-10 flex items-center justify-center gap-20">
             <Stock
               count={stockCount}
               onClick={() => {
@@ -139,7 +137,7 @@ export default function TriPeaksBoardBase({
         )}
 
         {/* Dev-only Victory/Game Over toggle buttons */}
-        {import.meta.env.DEV && showDevTools && (
+        {/* {import.meta.env.DEV && showDevTools && (
           <div className="mt-12 flex flex-col items-center gap-3 border-t border-slate-200 dark:border-slate-800 pt-8">
             <span className="text-xs font-bold text-slate-100 dark:text-slate-400 uppercase tracking-wider">
               Dev Tools
@@ -163,7 +161,7 @@ export default function TriPeaksBoardBase({
               </button>
             </div>
           </div>
-        )}
+        )} */}
 
         <ConfirmModal
           open={confirmRestart}

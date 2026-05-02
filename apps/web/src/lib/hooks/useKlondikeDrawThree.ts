@@ -3,8 +3,7 @@ import { useKlondikeDraw3SettingsStore } from '#/lib/stores/klondike-draw3-setti
 import {
   draggableFromIndex as computeDraggableFromIndex,
   canMoveToFoundation,
-  isSafeToAutoMove,
-  TABLEAU_IDS,
+  isSafeToAutoMove as _isSafeToAutoMove,  TABLEAU_IDS,
   FOUNDATION_IDS,
   FOUNDATION_SUITS,
 } from '#/lib/games/klondike'

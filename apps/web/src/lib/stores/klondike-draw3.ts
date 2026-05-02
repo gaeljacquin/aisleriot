@@ -6,7 +6,6 @@ import {
   canMoveToTableau,
   autoFlipTop,
   isGameWon,
-  isSafeToAutoMove,
   SCORE_DELTAS,
   FOUNDATION_IDS,
   FOUNDATION_SUITS,
@@ -69,67 +68,6 @@ function applyAutoFlips(
   }
 
   return [newTableau, scoreGain]
-}
-
-function applyCascade(state: KlondikeState): KlondikeState {
-  let current = state
-  let moved = true
-
-  while (moved) {
-    moved = false
-
-    for (const pileId of Object.keys(current.tableau) as KlondikeTableauId[]) {
-      const pile = current.tableau[pileId]
-      if (pile.length === 0) continue
-      const fromIndex = pile.length - 1
-      const card = pile[fromIndex]
-      if (
-        canMoveToFoundation(current, pileId, fromIndex) &&
-        isSafeToAutoMove(current, card)
-      ) {
-        const foundId = `foundation-${card.suit}` as KlondikeFoundationId
-        const newTableau = { ...current.tableau, [pileId]: pile.slice(0, -1) }
-        const newFoundation = {
-          ...current.foundation,
-          [foundId]: [...current.foundation[foundId], card],
-        }
-        const [autoFlippedTableau, flipScore] = applyAutoFlips(newTableau)
-        current = {
-          ...current,
-          tableau: autoFlippedTableau,
-          foundation: newFoundation,
-          score: current.score + SCORE_DELTAS.tableauToFoundation + flipScore,
-        }
-        moved = true
-        break
-      }
-    }
-
-    if (!moved && current.waste.length > 0) {
-      const fromIndex = current.waste.length - 1
-      const card = current.waste[fromIndex]
-      if (
-        canMoveToFoundation(current, 'waste', fromIndex) &&
-        isSafeToAutoMove(current, card)
-      ) {
-        const foundId = `foundation-${card.suit}` as KlondikeFoundationId
-        const newWaste = current.waste.slice(0, -1)
-        const newFoundation = {
-          ...current.foundation,
-          [foundId]: [...current.foundation[foundId], card],
-        }
-        current = {
-          ...current,
-          waste: newWaste,
-          foundation: newFoundation,
-          score: current.score + SCORE_DELTAS.wasteToFoundation,
-        }
-        moved = true
-      }
-    }
-  }
-
-  return current
 }
 
 function extractSource(

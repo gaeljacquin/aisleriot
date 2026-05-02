@@ -45,7 +45,7 @@ export default function FreeCellFoundation({
         isOver && 'ring-2 ring-primary ring-offset-1',
       )}
     >
-      <div className="relative h-28 w-20">
+      <div className="relative h-40 w-28">
         <CardSlot role="foundation" />
         {/* Suit hint in empty slot */}
         <div

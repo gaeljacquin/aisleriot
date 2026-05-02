@@ -68,7 +68,7 @@ export default function KlondikeFoundation({
     <div
       ref={setNodeRef}
       className={cn(
-        'relative h-28 w-20 rounded-lg transition-colors',
+        'relative h-40 w-28 rounded-lg transition-colors',
         isOver && 'ring-2 ring-primary ring-offset-1',
       )}
     >

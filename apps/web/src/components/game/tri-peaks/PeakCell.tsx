@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'motion/react'
+import { motion } from 'motion/react'
 import { createPortal } from 'react-dom'
 import Card from '../Card'
 import { useWasteRef } from './WasteRefContext'
@@ -57,14 +57,14 @@ export default function PeakCell({
 
   // Removed cells keep their space in the layout but don't block clicks
   if (cell.removed) {
-    return <div className="h-28 w-20 pointer-events-none" aria-hidden="true" />
+    return <div className="h-40 w-28 pointer-events-none" aria-hidden="true" />
   }
 
   const isBlocked = !isAvailable
 
   if (isBlocked) {
     return (
-      <div className="h-28 w-20">
+      <div className="h-40 w-28">
         <Card suit={cell.card.suit} rank={cell.card.rank} faceUp={false} />
       </div>
     )
@@ -72,7 +72,7 @@ export default function PeakCell({
 
   return (
     <>
-      <div className="h-28 w-20" ref={cardRef}>
+      <div className="h-40 w-28" ref={cardRef}>
         {!flyState && (
           <Card
             suit={cell.card.suit}
@@ -91,8 +91,8 @@ export default function PeakCell({
               position: 'fixed',
               left: flyState.startX,
               top: flyState.startY,
-              width: '5rem',
-              height: '7rem',
+              width: '7rem',
+              height: '10rem',
               zIndex: 9999,
               pointerEvents: 'none',
             }}

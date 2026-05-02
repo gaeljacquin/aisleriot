@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from '@tanstack/react-router'
 import { motion } from 'motion/react'
 import { HugeiconsIcon } from '@hugeicons/react'
-import { ArrowLeft02Icon, PropertyViewIcon } from '@hugeicons/core-free-icons'
+import { ArrowLeft02Icon } from '@hugeicons/core-free-icons'
 import { cn } from '@workspace/ui/lib/utils'
 
 interface GameControlsProps {
@@ -22,8 +22,8 @@ export default function GameControls({
   onHowToPlay,
   onRestart,
   onNewGame,
-  showDevTools,
-  onToggleDevTools,
+  showDevTools: _showDevTools,
+  onToggleDevTools: _onToggleDevTools,
 }: GameControlsProps) {
   const [isMenuHovered, setIsMenuHovered] = useState(false)
 
@@ -93,7 +93,7 @@ export default function GameControls({
       </button>
 
       {/* Dev Tools Toggle */}
-      {import.meta.env.DEV && onToggleDevTools && (
+      {/* {import.meta.env.DEV && onToggleDevTools && (
         <button
           type="button"
           onClick={onToggleDevTools}
@@ -107,7 +107,7 @@ export default function GameControls({
         >
           <HugeiconsIcon icon={PropertyViewIcon} className="size-4" />
         </button>
-      )}
+      )} */}
     </div>
   )
 }

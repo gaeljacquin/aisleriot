@@ -48,7 +48,6 @@ export function useTriPeaks(): UseTriPeaksResult {
     onNewGame: storeState.newGame,
     onRestartGame: storeState.restartGame,
     onUndo: storeState.undo,
-    isValidMove: (id: TriPeaksCellId) =>
-      canPlayCard(storeState, id, storeState.variant === 'tri-peaks-alt'),
+    isValidMove: (id: TriPeaksCellId) => canPlayCard(storeState, id, false),
   }
 }

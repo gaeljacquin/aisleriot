@@ -10,7 +10,7 @@ export default function CardSlot({ role: _role, className }: CardSlotProps) {
   return (
     <div
       className={cn(
-        'h-28 w-20 rounded-lg border-2 border-dashed border-green-700 bg-green-900',
+        'h-40 w-28 rounded-lg border-2 border-dashed border-green-700 bg-green-900',
         className,
       )}
       aria-label="empty card slot"

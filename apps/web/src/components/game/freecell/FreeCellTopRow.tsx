@@ -18,9 +18,9 @@ export default function FreeCellTopRow({
   onFreeCellDoubleClick,
 }: FreeCellTopRowProps) {
   return (
-    <div className="flex items-center justify-center gap-10">
+    <div className="flex items-center justify-center gap-16">
       {/* Left: 4 free cells */}
-      <div className="flex gap-2">
+      <div className="flex gap-4">
         {freeCells.map((entry) => (
           <FreeCellFreeCell
             key={entry.id}
@@ -32,7 +32,7 @@ export default function FreeCellTopRow({
       </div>
 
       {/* Right: 4 foundations */}
-      <div className="flex gap-2">
+      <div className="flex gap-4">
         {foundation.map((entry) => (
           <FreeCellFoundation
             key={entry.id}

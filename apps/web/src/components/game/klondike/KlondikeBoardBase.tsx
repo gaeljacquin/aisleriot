@@ -14,14 +14,14 @@ import KlondikeFoundation from './KlondikeFoundation'
 import KlondikeWaste from './KlondikeWaste'
 import KlondikeStock from './KlondikeStock'
 import Card from '../Card'
-import { GameControls } from '../index'
+// import { GameControls } from '../index'
 import { ConfirmModal } from '#/components/ConfirmModal'
 import type { UseKlondikeResult } from '#/lib/hooks/useKlondikeDrawOne'
 import type { DraggableCardData, DroppableZoneData } from '#/lib/games/klondike'
 import type { Card as CardType } from '#/lib/types'
 
-const OVERLAY_CARD_OFFSET = 28
-const CARD_HEIGHT = 112
+const OVERLAY_CARD_OFFSET = 40
+const CARD_HEIGHT = 160
 
 interface KlondikeBoardBaseProps {
   useGame: () => UseKlondikeResult
@@ -30,7 +30,7 @@ interface KlondikeBoardBaseProps {
 
 export default function KlondikeBoardBase({
   useGame,
-  onHowToPlay,
+  onHowToPlay: _onHowToPlay,
 }: KlondikeBoardBaseProps) {
   const {
     tableau,
@@ -39,28 +39,28 @@ export default function KlondikeBoardBase({
     stockCount,
     stockEmpty,
     canRedeal,
-    redealsLeft,
+    redealsLeft: _redealsLeft,
     drawCount,
     draggableFromIndex,
-    score,
-    moveCount,
+    score: _score,
+    moveCount: _moveCount,
     status,
-    canUndo,
+    canUndo: _canUndo,
     onMoveCard,
     onMoveCardForce,
     onAutoMove,
     onFlipStock,
     onNewGame,
     onRestartGame,
-    onUndo,
+    onUndo: _onUndo,
     currentDealCount,
   } = useGame()
 
   const [draggedCards, setDraggedCards] = useState<CardType[] | null>(null)
   const lastDropWasValid = useRef(false)
-  const [devMoveAnywhere, setDevMoveAnywhere] = useState(false)
-  const [devPeekTableau, setDevPeekTableau] = useState(false)
-  const [showDevTools, setShowDevTools] = useState(false)
+  const [devMoveAnywhere, _setDevMoveAnywhere] = useState(false)
+  const [devPeekTableau, _setDevPeekTableau] = useState(false)
+  const [_showDevTools, _setShowDevTools] = useState(false)
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [confirmNewGame, setConfirmNewGame] = useState(false)
 
@@ -106,13 +106,13 @@ export default function KlondikeBoardBase({
 
   const isGameOver = status === 'won'
 
-  const handleNewGameClick = () => {
-    if (isGameOver) {
-      onNewGame()
-    } else {
-      setConfirmNewGame(true)
-    }
-  }
+  // const handleNewGameClick = () => {
+  //   if (isGameOver) {
+  //     onNewGame()
+  //   } else {
+  //     setConfirmNewGame(true)
+  //   }
+  // }
 
   const dropAnimation = lastDropWasValid.current
     ? null
@@ -131,7 +131,7 @@ export default function KlondikeBoardBase({
     >
       <div className="flex flex-col">
         {/* Score + moves HUD */}
-        <div className="flex items-center justify-center gap-5 mb-10">
+        {/* <div className="flex items-center justify-center gap-5 mb-10">
           <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
             <span className="text-xs font-medium text-black dark:text-muted-foreground">
               Score
@@ -158,10 +158,10 @@ export default function KlondikeBoardBase({
               </span>
             </div>
           )}
-        </div>
+        </div> */}
 
         {/* Action buttons */}
-        <GameControls
+        {/* <GameControls
           onUndo={onUndo}
           canUndo={canUndo}
           onHowToPlay={onHowToPlay}
@@ -170,19 +170,19 @@ export default function KlondikeBoardBase({
           isGameOver={isGameOver}
           showDevTools={showDevTools}
           onToggleDevTools={() => setShowDevTools(!showDevTools)}
-        />
+        /> */}
 
         {/* Board */}
         <div
           className={cn(
-            'mx-auto w-fit flex flex-col gap-5',
+            'mx-auto w-fit flex flex-col gap-10',
             isGameOver && 'opacity-50',
           )}
         >
           {/* Top row: stock + waste | empty | foundations */}
-          <div className="grid grid-cols-7 gap-10">
+          <div className="grid grid-cols-7 gap-16">
             {/* Stock + Waste */}
-            <div className="flex gap-10 col-span-2">
+            <div className="flex gap-16 col-span-2">
               <KlondikeStock
                 stockCount={stockCount}
                 stockEmpty={stockEmpty}
@@ -202,7 +202,7 @@ export default function KlondikeBoardBase({
             <div />
 
             {/* Foundations (Columns 4-7) */}
-            <div className="grid grid-cols-4 gap-10 col-span-4">
+            <div className="grid grid-cols-4 gap-16 col-span-4">
               {foundation.map((f) => (
                 <KlondikeFoundation
                   key={f.id}
@@ -216,7 +216,7 @@ export default function KlondikeBoardBase({
           </div>
 
           {/* Tableau */}
-          <div className="grid grid-cols-7 gap-10">
+          <div className="grid grid-cols-7 gap-16">
             {tableau.map((col) => (
               <KlondikeColumn
                 key={col.id}
@@ -238,7 +238,7 @@ export default function KlondikeBoardBase({
         </div>
 
         {/* Dev toggles */}
-        {import.meta.env.DEV && showDevTools && (
+        {/* {import.meta.env.DEV && showDevTools && (
           <div className="mt-12 flex flex-col items-center gap-3 border-t border-slate-200 dark:border-slate-800 pt-8">
             <span className="text-xs font-bold text-slate-100 dark:text-slate-400 uppercase tracking-wider">
               Dev Tools
@@ -270,7 +270,7 @@ export default function KlondikeBoardBase({
               </button>
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Victory message */}
         {isGameOver && (
@@ -304,7 +304,7 @@ export default function KlondikeBoardBase({
         {draggedCards && draggedCards.length > 0 && (
           <div
             className="relative"
-            style={{ height: overlayHeight, width: 80 }}
+            style={{ height: overlayHeight, width: 112 }}
           >
             {draggedCards.map((card, i) => (
               <div

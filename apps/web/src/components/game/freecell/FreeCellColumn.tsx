@@ -10,7 +10,7 @@ import type {
 } from '#/lib/games/freecell'
 import type { Card } from '#/lib/types'
 
-const CARD_OFFSET = 36
+const CARD_OFFSET = 48
 
 interface FreeCellColumnProps {
   id: FreeCellPileId
@@ -109,7 +109,7 @@ export default function FreeCellColumn({
     },
   })
 
-  const CARD_HEIGHT = 112
+  const CARD_HEIGHT = 160
   const containerHeight =
     cards.length === 0
       ? CARD_HEIGHT
@@ -119,7 +119,7 @@ export default function FreeCellColumn({
     <div
       ref={setNodeRef}
       className={cn(
-        'relative w-20 rounded-lg transition-colors',
+        'relative w-28 rounded-lg transition-colors',
         isOver && 'ring-2 ring-primary ring-offset-1',
       )}
       style={{ minHeight: containerHeight }}

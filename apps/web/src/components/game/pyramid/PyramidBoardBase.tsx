@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
-import { Card, Waste, GameControls } from '../index'
+import { Card, Waste } from '../index'
 import StockEmptyIndicator from '../StockEmptyIndicator'
 import PyramidGrid from './PyramidGrid'
 import { PyramidWasteRefContext } from './PyramidWasteRefContext'
@@ -38,7 +38,7 @@ interface PyramidBoardBaseProps<T extends UsePyramidResult> {
 
 export default function PyramidBoardBase<T extends UsePyramidResult>({
   useGame,
-  onHowToPlay,
+  onHowToPlay: _onHowToPlay,
   renderStockRow,
   onBeforeCellClick,
 }: PyramidBoardBaseProps<T>) {
@@ -51,9 +51,9 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
     canDraw,
     canRecycle,
     recyclesRemaining,
-    score,
+    score: _score,
     status,
-    canUndo,
+    canUndo: _canUndo,
     onRemoveAlone,
     onRemovePair,
     onRemovePairWithWaste,
@@ -62,7 +62,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
     onRecycle,
     onNewGame,
     onRestartGame,
-    onUndo,
+    onUndo: _onUndo,
   } = game
 
   const wasteRef = useRef<HTMLDivElement>(null)
@@ -70,21 +70,21 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
     null,
   )
   const [selectedWaste, setSelectedWaste] = useState(false)
-  const [devStatus, setDevStatus] = useState<'won' | 'lost' | null>(null)
-  const [showDevTools, setShowDevTools] = useState(false)
+  const [devStatus, _setDevStatus] = useState<'won' | 'lost' | null>(null)
+  const [_showDevTools, _setShowDevTools] = useState(false)
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [confirmNewGame, setConfirmNewGame] = useState(false)
 
   const effectiveStatus = devStatus ?? status
   const isGameOver = effectiveStatus === 'won' || effectiveStatus === 'lost'
 
-  const handleNewGameClick = () => {
-    if (isGameOver) {
-      onNewGame()
-    } else {
-      setConfirmNewGame(true)
-    }
-  }
+  // const handleNewGameClick = () => {
+  //   if (isGameOver) {
+  //     onNewGame()
+  //   } else {
+  //     setConfirmNewGame(true)
+  //   }
+  // }
 
   function baseCellHandler(cellId: PyramidCellId) {
     if (status !== 'playing') return
@@ -188,7 +188,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
     <PyramidWasteRefContext value={wasteRef}>
       <div className="flex flex-col">
         {/* Score display */}
-        <div className="flex items-center justify-center gap-5 mb-10">
+        {/* <div className="flex items-center justify-center gap-5 mb-10">
           <div className="flex flex-col items-center justify-center rounded-2xl bg-muted/50 px-6 py-3 min-w-20">
             <span className="text-xs font-medium text-muted-foreground">
               Score
@@ -210,10 +210,10 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
               {recyclesRemaining}
             </span>
           </div>
-        </div>
+        </div> */}
 
         {/* Action buttons */}
-        <GameControls
+        {/* <GameControls
           onUndo={onUndo}
           canUndo={canUndo}
           onHowToPlay={onHowToPlay}
@@ -222,7 +222,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
           isGameOver={isGameOver}
           showDevTools={showDevTools}
           onToggleDevTools={() => setShowDevTools(!showDevTools)}
-        />
+        /> */}
 
         {/* Board area — dimmed when game over */}
         <div className={cn('relative', isGameOver && 'opacity-50')}>
@@ -238,7 +238,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
           {renderStockRow ? (
             renderStockRow(stockRowCtx)
           ) : (
-            <div className="mt-6 flex items-center justify-center gap-12">
+            <div className="mt-10 flex items-center justify-center gap-20">
               {stockCount > 0 ? (
                 <div
                   className="cursor-pointer"
@@ -290,7 +290,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
         )}
 
         {/* Dev-only Victory/Game Over toggle buttons */}
-        {import.meta.env.DEV && showDevTools && (
+        {/* {import.meta.env.DEV && showDevTools && (
           <div className="mt-12 flex flex-col items-center gap-3 border-t border-slate-200 dark:border-slate-800 pt-4">
             <span className="text-xs font-bold text-slate-100 dark:text-slate-400 uppercase tracking-wider">
               Dev Tools
@@ -314,7 +314,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
               </button>
             </div>
           </div>
-        )}
+        )} */}
       </div>
 
       <ConfirmModal

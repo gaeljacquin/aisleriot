@@ -12,7 +12,7 @@ import { cn } from '@workspace/ui/lib/utils'
 import FreeCellTopRow from './FreeCellTopRow'
 import FreeCellTableau from './FreeCellTableau'
 import FreeCellCard from './FreeCellCard'
-import { GameControls } from '../index'
+// import { GameControls } from '../index'
 import { ConfirmModal } from '#/components/ConfirmModal'
 import { useFreeCell } from '#/lib/hooks/useFreeCell'
 import type {
@@ -22,29 +22,29 @@ import type {
 } from '#/lib/games/freecell'
 import type { Card } from '#/lib/types'
 
-const OVERLAY_CARD_OFFSET = 36
-const CARD_HEIGHT = 112
+const OVERLAY_CARD_OFFSET = 48
+const CARD_HEIGHT = 160
 
 interface FreeCellBoardProps {
   onHowToPlay: () => void
 }
 
-export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
+export default function FreeCellBoard({ onHowToPlay: _onHowToPlay }: FreeCellBoardProps) {
   const {
     tableau,
     freeCells,
     foundation,
     draggableFromIndex,
-    score,
-    moveCount,
+    score: _score,
+    moveCount: _moveCount,
     status,
-    canUndo,
+    canUndo: _canUndo,
     onMoveCard,
     onMoveCardForce,
     onAutoMove,
     onNewGame,
     onRestartGame,
-    onUndo,
+    onUndo: _onUndo,
     isAutoMoving,
     triggerAutoMove,
   } = useFreeCell()
@@ -61,9 +61,9 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
 
   const [draggedCards, setDraggedCards] = useState<Card[] | null>(null)
   const lastDropWasValid = useRef(false)
-  const [devStatus, setDevStatus] = useState<'won' | null>(null)
-  const [devUnlimitedMoves, setDevUnlimitedMoves] = useState(false)
-  const [showDevTools, setShowDevTools] = useState(false)
+  const [devStatus, _setDevStatus] = useState<'won' | null>(null)
+  const [devUnlimitedMoves, _setDevUnlimitedMoves] = useState(false)
+  const [_showDevTools, _setShowDevTools] = useState(false)
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [confirmNewGame, setConfirmNewGame] = useState(false)
 
@@ -120,13 +120,13 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
   const effectiveStatus = devStatus ?? status
   const isGameOver = effectiveStatus === 'won'
 
-  const handleNewGameClick = () => {
-    if (isGameOver) {
-      onNewGame()
-    } else {
-      setConfirmNewGame(true)
-    }
-  }
+  // const handleNewGameClick = () => {
+  //   if (isGameOver) {
+  //     onNewGame()
+  //   } else {
+  //     setConfirmNewGame(true)
+  //   }
+  // }
 
   const dropAnimation = lastDropWasValid.current
     ? null
@@ -148,7 +148,7 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
     >
       <div className="flex flex-col">
         {/* Score + move count */}
-        <div className="flex items-center justify-center gap-5 mb-10">
+        {/* <div className="flex items-center justify-center gap-5 mb-10">
           <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
             <span className="text-xs font-medium text-muted-foreground">
               Score
@@ -163,10 +163,10 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
             </span>
             <span className="text-xl font-bold tabular-nums">{moveCount}</span>
           </div>
-        </div>
+        </div> */}
 
         {/* Action buttons */}
-        <GameControls
+        {/* <GameControls
           onUndo={onUndo}
           canUndo={canUndo}
           onHowToPlay={onHowToPlay}
@@ -175,10 +175,10 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
           isGameOver={isGameOver}
           showDevTools={showDevTools}
           onToggleDevTools={() => setShowDevTools(!showDevTools)}
-        />
+        /> */}
 
         {/* Board — dimmed when won */}
-        <div className={cn('flex flex-col gap-3', isGameOver && 'opacity-50')}>
+        <div className={cn('flex flex-col gap-6', isGameOver && 'opacity-50')}>
           <FreeCellTopRow
             freeCells={freeCells}
             foundation={foundation}
@@ -193,7 +193,7 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
         </div>
 
         {/* Dev-only toggles */}
-        {import.meta.env.DEV && showDevTools && (
+        {/* {import.meta.env.DEV && showDevTools && (
           <div className="mt-12 flex flex-col items-center gap-3 border-t border-slate-200 dark:border-slate-800 pt-8">
             <span className="text-xs font-bold text-slate-100 dark:text-slate-400 uppercase tracking-wider">
               Dev Tools
@@ -222,7 +222,7 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
               </button>
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Victory message */}
         {isGameOver && (
@@ -256,7 +256,7 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
         {draggedCards && draggedCards.length > 0 && (
           <div
             className="relative"
-            style={{ height: overlayHeight, width: 80 }}
+            style={{ height: overlayHeight, width: 112 }}
           >
             {draggedCards.map((card, i) => (
               <div

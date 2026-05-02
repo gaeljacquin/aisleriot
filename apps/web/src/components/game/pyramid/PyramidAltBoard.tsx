@@ -50,10 +50,10 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
         (ctx.canDraw && !ctx.game.stockTopIsKing) || ctx.canRecycle
 
       return (
-        <div className="mt-6 flex flex-col items-center gap-3">
-          <div className="flex items-center justify-center gap-4">
+        <div className="mt-10 flex flex-col items-center gap-6">
+          <div className="flex items-center justify-center gap-8">
             {/* Stock top — face-up, interactive */}
-            <div className="relative h-28 w-20">
+            <div className="relative h-40 w-28">
               {/* Persistent background: face-down card while stock has cards, empty indicator otherwise */}
               {ctx.stockCount > 0 ? (
                 <Card

@@ -22,7 +22,7 @@ export default function Card({
   return (
     <div
       className={cn(
-        'relative flex h-28 w-20 select-none flex-col rounded-lg transition-all duration-200',
+        'relative flex h-40 w-28 select-none flex-col rounded-lg transition-all duration-200',
         highlighted &&
           'ring-4 ring-amber-400 dark:ring-amber-300 ring-offset-2',
         onClick && 'cursor-pointer hover:brightness-105 active:scale-95',

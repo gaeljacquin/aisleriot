@@ -1,5 +1,5 @@
 import { useTriPeaksAltStore as useTriPeaksAltStore } from '#/lib/stores/tri-peaks-alt'
-import { getAvailableCells } from '#/lib/games/tri-peaks'
+import { getAvailableCells, canPlayCard } from '#/lib/games/tri-peaks'
 import type { TriPeaksCell, TriPeaksCellId } from '#/lib/games/tri-peaks'
 import type { Card, GameStatus } from '#/lib/types'
 
@@ -18,6 +18,7 @@ export interface UseTriPeaksAltResult {
   onNewGame: () => void
   onRestartGame: () => void
   onUndo: () => void
+  isValidMove: (id: TriPeaksCellId) => boolean
 }
 
 export function useTriPeaksAlt(): UseTriPeaksAltResult {
@@ -47,5 +48,6 @@ export function useTriPeaksAlt(): UseTriPeaksAltResult {
     onNewGame: storeState.newGame,
     onRestartGame: storeState.restartGame,
     onUndo: storeState.undo,
+    isValidMove: (id: TriPeaksCellId) => canPlayCard(storeState, id, true),
   }
 }
