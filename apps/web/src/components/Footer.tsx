@@ -1,30 +1,13 @@
 import { appInfo } from '@workspace/constants'
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from '@workspace/ui/components/toggle-group'
-import { useThemeStore } from '@/stores/theme'
-import type { ThemeMode } from '@/lib/theme'
-
-const themeOptions: { value: ThemeMode; label: string }[] = [
-  { value: 'light', label: 'Light' },
-  { value: 'auto', label: 'System' },
-  { value: 'dark', label: 'Dark' },
-]
 
 export default function Footer() {
-  const { mode, setMode } = useThemeStore()
   const currentYear = new Date().getFullYear()
 
-  function handleValueChange(vals: string[]) {
-    const next = vals[0]
-    if (next === 'light' || next === 'dark' || next === 'auto') setMode(next)
-  }
-
   return (
-    <footer className="container mx-auto px-4 py-5">
-      <div className="flex flex-row items-center justify-evenly gap-4 text-center text-base text-muted-foreground">
-        <p>
+    <footer className="flex flex-col items-center gap-4 py-6 md:gap-6 md:pt-10">
+      <div className="h-px w-24 bg-linear-to-r from-transparent via-gold/30 to-transparent" />
+      <div className="flex flex-col items-center gap-3">
+        <div className="text-center text-[10px] font-medium uppercase tracking-[0.3em] text-cream-dim/40 mt-2">
           &copy; 2026{' '}
           {currentYear > 2026 ? <span>- {currentYear} </span> : null}
           <a
@@ -35,18 +18,7 @@ export default function Footer() {
             {appInfo.author}
           </a>
           . All rights reserved.
-        </p>
-        <ToggleGroup
-          value={[mode]}
-          onValueChange={handleValueChange}
-          variant="outline"
-        >
-          {themeOptions.map(({ value, label }) => (
-            <ToggleGroupItem key={value} value={value}>
-              {label}
-            </ToggleGroupItem>
-          ))}
-        </ToggleGroup>
+        </div>
       </div>
     </footer>
   )

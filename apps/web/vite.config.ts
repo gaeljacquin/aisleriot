@@ -25,7 +25,8 @@ const config = defineConfig({
         'favicon.ico',
         'logo.png',
         'logo-dark.png',
-        'logo.jpeg',
+        'logo.jpg',
+        'logo-dark.jpg',
         'logo.webp',
       ],
       manifest: {

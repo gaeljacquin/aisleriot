@@ -18,14 +18,3 @@ export const useThemeStore = create<ThemeStore>((set) => ({
     set({ mode })
   },
 }))
-
-// Keep the resolved theme in sync when the OS preference changes
-if (typeof window !== 'undefined') {
-  window
-    .matchMedia('(prefers-color-scheme: dark)')
-    .addEventListener('change', () => {
-      if (useThemeStore.getState().mode === 'auto') {
-        applyThemeMode('auto')
-      }
-    })
-}
