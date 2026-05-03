@@ -12,7 +12,6 @@ import { appInfo } from '@workspace/constants'
 import { cn } from '@workspace/ui/lib/utils'
 import { useThemeStore } from '@/stores/theme'
 import Footer from '@/components/Footer'
-import ThemeToggle from '@/components/ThemeToggle'
 
 export const Route = createFileRoute('/')({ component: Home })
 
@@ -73,16 +72,6 @@ function Home() {
       />
 
       <div className="container relative mx-auto flex h-full flex-col px-4 py-6 md:py-10">
-        {/* Tiny header */}
-        <header className="flex items-center justify-between">
-          <span className="font-serif text-xs uppercase tracking-[0.4em] text-gold/80">
-            {appInfo.title}
-          </span>
-          <div className="flex items-center gap-4">
-            <ThemeToggle size="sm" />
-          </div>
-        </header>
-
         {/* Main Content Area: Vertically Centered */}
         <div className="flex flex-1 flex-col items-center justify-center">
           {/* Hero section */}

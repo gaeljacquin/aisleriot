@@ -8,16 +8,24 @@ import CardPrimitive from '@/components/game/CardPrimitive'
 import type { Suit, Rank } from '@/lib/types/card'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { ArrowLeftBigIcon, ArrowRightBigIcon } from '@hugeicons/core-free-icons'
-import ThemeToggle from '@/components/ThemeToggle'
 
 export const Route = createFileRoute('/settings')({ component: Settings })
 
+const CARDFACETEXT = 'Card Face'
+
 const cardStyleOptions: { value: CardStyle; label: string }[] = [
   { value: 'basic', label: 'Basic' },
-  { value: 'four-color', label: 'Basic four-color' },
-  { value: 'large', label: 'Large face' },
-  { value: 'large-four-color', label: 'Large face four-color' },
+  { value: 'four-color', label: '4-Color' },
+  { value: 'large', label: 'Large' },
+  { value: 'large-four-color', label: 'Large 4-Color' },
 ]
+
+const BACKS = [
+  { id: 'default', label: 'Default' },
+  { id: 'classic', label: 'Crimson' },
+  { id: 'lattice', label: 'Lattice' },
+  { id: 'monogram', label: 'Monogram' },
+] as const
 
 const DEFAULT_SUITS: Suit[] = ['hearts', 'spades', 'diamonds', 'clubs']
 const PREVIEW_RANKS: Rank[] = ['A', 'K', '10', '2']
@@ -28,8 +36,8 @@ function CardStyleToggleGroup() {
   return (
     <div
       role="group"
-      aria-label="Card Face Style"
-      className="grid grid-cols-1 gap-2 sm:grid-cols-2"
+      aria-label={CARDFACETEXT}
+      className="grid grid-cols-2 gap-3 sm:grid-cols-4"
     >
       {cardStyleOptions.map(({ value, label }) => (
         <button
@@ -38,13 +46,78 @@ function CardStyleToggleGroup() {
           onClick={() => setCardStyle(value)}
           aria-pressed={cardStyle === value}
           className={cn(
-            'px-4 py-3 text-sm font-medium transition-all rounded-xl border-2',
+            'flex flex-col items-center gap-2 rounded-xl border p-3 transition-all cursor-pointer',
             cardStyle === value
-              ? 'bg-primary text-primary-foreground border-primary'
-              : 'bg-background text-foreground border-border hover:border-primary/50 hover:bg-muted cursor-pointer',
+              ? 'border-gold bg-felt-light/60 shadow-card'
+              : 'border-gold/20 bg-felt-deep/60 hover:border-gold/50',
           )}
         >
-          {label}
+          <span
+            className={cn(
+              'text-[10px] font-bold uppercase tracking-wider',
+              cardStyle === value ? 'text-gold' : 'text-cream-dim',
+            )}
+          >
+            {label}
+          </span>
+        </button>
+      ))}
+    </div>
+  )
+}
+
+function CardBackToggleGroup() {
+  const { cardBack, setCardBack } = useCardSettingsStore()
+
+  return (
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      {BACKS.map((b) => (
+        <button
+          key={b.id}
+          type="button"
+          onClick={() => setCardBack(b.id)}
+          className={cn(
+            'group flex flex-col items-center gap-2 rounded-xl border p-3 transition-all cursor-pointer',
+            cardBack === b.id
+              ? 'border-gold bg-felt-light/60 shadow-card'
+              : 'border-gold/20 bg-felt-deep/60 hover:border-gold/50',
+          )}
+        >
+          <div
+            className="relative h-16 w-12 overflow-hidden rounded-md border border-gold/40 shadow-sm"
+            style={{
+              backgroundImage:
+                b.id === 'default'
+                  ? 'linear-gradient(135deg, hsl(215 25% 27%), hsl(215 25% 15%))'
+                  : b.id === 'classic'
+                    ? 'linear-gradient(135deg, hsl(354 50% 30%), hsl(354 60% 18%))'
+                    : b.id === 'lattice'
+                      ? 'repeating-linear-gradient(45deg, hsl(44 56% 54% / 0.4) 0 2px, hsl(158 64% 11%) 2px 8px)'
+                      : 'linear-gradient(135deg, hsl(158 64% 11%), hsl(158 70% 5%))',
+            }}
+          >
+            {/* Pattern Overlays for Preview */}
+            {b.id === 'default' && (
+              <div className="pointer-events-none absolute inset-0 opacity-20">
+                <div className="h-full w-full bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,rgba(255,255,255,0.15)_4px,rgba(255,255,255,0.15)_5px)]" />
+              </div>
+            )}
+            {(b.id === 'classic' || b.id === 'monogram') && (
+              <div className="pointer-events-none absolute inset-0 opacity-10">
+                <div className="h-full w-full bg-[radial-gradient(circle_at_center,white_0%,transparent_70%)]" />
+              </div>
+            )}
+          </div>
+          <span
+            className={cn(
+              'text-[10px] font-bold uppercase tracking-wider transition-colors',
+              cardBack === b.id
+                ? 'text-gold'
+                : 'text-cream-dim group-hover:text-cream',
+            )}
+          >
+            {b.label}
+          </span>
         </button>
       ))}
     </div>
@@ -63,16 +136,16 @@ function CardPreview() {
   }
 
   return (
-    <div className="flex items-center justify-center gap-12 pt-4">
+    <div className="flex items-center justify-center gap-8 pt-4">
       <button
         onClick={rotateLeft}
-        className="flex h-12 w-12 items-center justify-center rounded-full bg-muted text-foreground transition-colors hover:bg-primary hover:text-primary-foreground cursor-pointer"
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-felt-light/40 text-cream-dim transition-colors hover:bg-gold hover:text-felt-deep cursor-pointer"
         aria-label="Rotate suits left"
       >
-        <HugeiconsIcon icon={ArrowLeftBigIcon} />
+        <HugeiconsIcon icon={ArrowLeftBigIcon} size={20} />
       </button>
 
-      <div className="flex -space-x-12">
+      <div className="flex -space-x-12 sm:-space-x-16">
         <div className="h-44 w-32 rotate-[-15deg] transition-transform hover:rotate-[-20deg]">
           <CardPrimitive
             suit={suits[0]}
@@ -105,10 +178,10 @@ function CardPreview() {
 
       <button
         onClick={rotateRight}
-        className="flex h-12 w-12 items-center justify-center rounded-full bg-muted text-foreground transition-colors hover:bg-primary hover:text-primary-foreground cursor-pointer"
+        className="flex h-10 w-10 items-center justify-center rounded-full bg-felt-light/40 text-cream-dim transition-colors hover:bg-gold hover:text-felt-deep cursor-pointer"
         aria-label="Rotate suits right"
       >
-        <HugeiconsIcon icon={ArrowRightBigIcon} />
+        <HugeiconsIcon icon={ArrowRightBigIcon} size={20} />
       </button>
     </div>
   )
@@ -116,34 +189,52 @@ function CardPreview() {
 
 function Settings() {
   return (
-    <main className="flex min-h-full flex-col py-10">
-      <div className="flex flex-1 flex-col items-center justify-center pb-24">
-        <div className="w-full max-w-xl space-y-12">
-          <h1 className="text-center text-3xl font-bold text-foreground">
+    <main className="relative flex min-h-full flex-col overflow-y-auto px-6 py-12 sm:py-20">
+      <div className="mx-auto w-full max-w-xl">
+        <header className="mb-12 text-center">
+          <h1 className="font-serif text-4xl font-bold tracking-tight text-gold sm:text-5xl">
             Settings
           </h1>
+        </header>
 
-          <section className="space-y-4">
-            <h2 className="text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Card Face Style
-            </h2>
-            <div className="space-y-8">
-              <CardStyleToggleGroup />
-              <CardPreview />
-            </div>
+        <div className="space-y-12">
+          {/* Card Appearance Section */}
+          <section className="space-y-6">
+            <label className="block text-xs font-bold uppercase tracking-[0.25em] text-cream-dim">
+              {CARDFACETEXT}
+            </label>
+            <CardStyleToggleGroup />
+            <CardPreview />
           </section>
 
-          <section className="space-y-4">
-            <h2 className="text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-              Appearance
-            </h2>
-            <div className="flex justify-center">
-              <ThemeToggle />
+          <div className="h-px w-full bg-linear-to-r from-transparent via-gold/30 to-transparent" />
+
+          {/* Card Back Section */}
+          <section className="space-y-6">
+            <label className="block text-xs font-bold uppercase tracking-[0.25em] text-cream-dim">
+              Card Back
+            </label>
+            <CardBackToggleGroup />
+          </section>
+
+          <div className="h-px w-full bg-linear-to-r from-transparent via-gold/30 to-transparent" />
+
+          {/* Game Settings Section */}
+          <section className="space-y-8">
+            <div className="flex items-center justify-between opacity-40 grayscale pointer-events-none">
+              <div className="space-y-1">
+                <label className="block text-base font-medium text-cream font-serif">
+                  Sound FX
+                </label>
+              </div>
+              <div className="relative inline-flex h-6 w-11 shrink-0 cursor-not-allowed items-center rounded-full bg-muted transition-colors">
+                <span className="inline-block h-4 w-4 translate-x-1 rounded-full bg-cream transition-transform" />
+              </div>
             </div>
           </section>
         </div>
 
-        <div className="mt-14">
+        <div className="mt-20 flex justify-center">
           <BackLink />
         </div>
       </div>

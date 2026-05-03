@@ -3,7 +3,7 @@ import ReactCard from 'react-free-playing-cards'
 import type { Suit, Rank } from '#/lib/types'
 import { cn } from '@workspace/ui/lib/utils'
 import { useCardSettingsStore } from '#/stores/card-settings'
-import type { CardStyle } from '#/stores/card-settings'
+import type { CardStyle, CardBack } from '#/stores/card-settings'
 
 interface CardPrimitiveProps {
   suit: Suit
@@ -42,6 +42,23 @@ const DECK_TYPE_MAP: Record<CardStyle, string | undefined> = {
   'large-four-color': 'big-face four-color',
 }
 
+const CARD_BACK_STYLES: Record<CardBack, React.CSSProperties> = {
+  default: {
+    background: 'linear-gradient(135deg, hsl(215 25% 27%), hsl(215 25% 15%))',
+  },
+  classic: {
+    background: 'linear-gradient(135deg, hsl(354 50% 30%), hsl(354 60% 18%))',
+  },
+  lattice: {
+    background:
+      'repeating-linear-gradient(45deg, hsl(44 56% 54% / 0.4) 0 2px, hsl(158 64% 11%) 2px 8px)',
+    backgroundColor: 'hsl(158 64% 11%)',
+  },
+  monogram: {
+    background: 'linear-gradient(135deg, hsl(158 64% 11%), hsl(158 70% 5%))',
+  },
+}
+
 export default function CardPrimitive({
   suit,
   rank,
@@ -49,20 +66,28 @@ export default function CardPrimitive({
   className,
 }: CardPrimitiveProps) {
   const cardCode = `${RANK_MAP[rank]}${SUIT_MAP[suit]}`
-  const cardStyle = useCardSettingsStore((s) => s.cardStyle)
+  const { cardStyle, cardBack } = useCardSettingsStore()
 
   if (!faceUp) {
     return (
       <div
         className={cn(
-          'relative h-full w-full rounded-lg border-2 border-slate-800 bg-linear-to-br from-slate-700 to-slate-900 shadow-sm',
+          'relative h-full w-full rounded-lg border-2 border-slate-800 shadow-sm',
           className,
         )}
+        style={CARD_BACK_STYLES[cardBack]}
       >
-        {/* Diamond pattern */}
-        <div className="pointer-events-none absolute inset-0 rounded-lg opacity-20">
-          <div className="h-full w-full rounded-lg bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,rgba(255,255,255,0.15)_4px,rgba(255,255,255,0.15)_5px)]" />
-        </div>
+        {/* Pattern Overlays */}
+        {cardBack === 'default' && (
+          <div className="pointer-events-none absolute inset-0 rounded-lg opacity-20">
+            <div className="h-full w-full rounded-lg bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,rgba(255,255,255,0.15)_4px,rgba(255,255,255,0.15)_5px)]" />
+          </div>
+        )}
+        {(cardBack === 'classic' || cardBack === 'monogram') && (
+          <div className="pointer-events-none absolute inset-0 rounded-lg opacity-10">
+            <div className="h-full w-full rounded-lg bg-[radial-gradient(circle_at_center,white_0%,transparent_70%)]" />
+          </div>
+        )}
       </div>
     )
   }

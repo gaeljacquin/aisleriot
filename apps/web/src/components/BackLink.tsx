@@ -34,11 +34,11 @@ export default function BackLink({
     )
   }
 
-  // Otherwise, use the new Red Button style (for non-game pages)
+  // Otherwise, use the new high-fidelity style (for non-game pages)
   return (
     <Link
       to={destination}
-      className="flex w-44 items-center justify-center gap-4 rounded py-3.5 text-base font-bold text-white no-underline transition-colors bg-[#DC143C] hover:bg-[#B21031]"
+      className="group relative flex w-48 items-center justify-center gap-4 rounded-xl border border-gold/40 bg-felt-light/40 py-4 text-base font-bold text-cream no-underline transition-all hover:border-gold hover:shadow-card-lift"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -49,7 +49,7 @@ export default function BackLink({
           repeat: isHovered ? Infinity : 0,
           ease: 'easeInOut',
         }}
-        className="flex items-center"
+        className="flex items-center text-gold"
       >
         <HugeiconsIcon icon={ArrowLeft02Icon} className="size-5" />
       </motion.span>
