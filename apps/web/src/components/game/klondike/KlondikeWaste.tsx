@@ -58,7 +58,13 @@ export default function KlondikeWaste({
       isDragging && waste.length > 1 ? waste[waste.length - 2] : null
 
     return (
-      <div className="relative h-40 w-28">
+      <div
+        className="relative"
+        style={{
+          width: 'var(--card-width, 7rem)',
+          height: 'var(--card-height, 10rem)',
+        }}
+      >
         {baseSlot}
 
         {/* Card under the dragging card — so we don't see an empty slot */}
@@ -97,8 +103,14 @@ export default function KlondikeWaste({
 
   return (
     <div
-      className="relative h-40 flex-shrink-0"
-      style={{ width: containerWidth }}
+      className="relative flex-shrink-0"
+      style={{
+        width:
+          visible.length > 1
+            ? `calc(${visible.length - 1} * 1.75rem + var(--card-width, 7rem))`
+            : 'var(--card-width, 7rem)',
+        height: 'var(--card-height, 10rem)',
+      }}
     >
       {baseSlot}
 

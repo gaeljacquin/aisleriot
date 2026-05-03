@@ -1,14 +1,28 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useMemo } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
-import { Card, Waste, GameControls } from '../index'
+import { Waste, Stock } from '../index'
 import StockEmptyIndicator from '../StockEmptyIndicator'
 import PyramidGrid from './PyramidGrid'
 import { PyramidWasteRefContext } from './PyramidWasteRefContext'
+import { TopBar } from '@/components/layout/TopBar'
+import { ActionRail } from '@/components/layout/ActionRail'
+import { DevRail } from '@/components/layout/DevRail'
 import { ConfirmModal } from '#/components/ConfirmModal'
 import { isKing } from '#/lib/games/pyramid'
+import { getVariant } from '@workspace/constants'
+import type { GameVariantId } from '@workspace/constants'
 import type { PyramidCellId } from '#/lib/games/pyramid'
 import type { Card as CardType } from '#/lib/types'
 import type { UsePyramidResult } from '#/lib/hooks/usePyramid'
+import {
+  PlusSignIcon,
+  UndoIcon,
+  Refresh04Icon,
+  BookOpen01Icon,
+  TouchIcon,
+  ChampionIcon,
+  Cancel01Icon,
+} from '@hugeicons/core-free-icons'
 
 export interface PyramidBoardBaseStockRowContext<T extends UsePyramidResult> {
   stockCount: number
@@ -26,25 +40,95 @@ export interface PyramidBoardBaseStockRowContext<T extends UsePyramidResult> {
   game: T
 }
 
+function PyramidTable({
+  cells,
+  availableCells,
+  selectedId,
+  onCellClick,
+}: {
+  cells: any[]
+  availableCells: PyramidCellId[]
+  selectedId: PyramidCellId | null
+  onCellClick: (id: PyramidCellId) => void
+}) {
+  return (
+    <PyramidGrid
+      cells={cells}
+      availableCells={availableCells}
+      selectedCellId={selectedId}
+      onCellClick={onCellClick}
+    />
+  )
+}
+
+function PyramidStockRow({
+  stockCount,
+  canDraw,
+  canRecycle,
+  onDraw,
+  onRecycle,
+  wasteTop,
+  onWasteClick,
+  wasteRef,
+}: {
+  stockCount: number
+  canDraw: boolean
+  canRecycle: boolean
+  onDraw: () => void
+  onRecycle: () => void
+  wasteTop: CardType | null
+  onWasteClick: () => void
+  wasteRef: React.RefObject<HTMLDivElement | null>
+}) {
+  return (
+    <div className="mt-10 flex items-center justify-center gap-20">
+      <div
+        className="relative"
+        style={{
+          width: 'var(--card-width, 7rem)',
+          height: 'var(--card-height, 10rem)',
+        }}
+      >
+        {stockCount > 0 ? (
+          <Stock count={stockCount} onClick={onDraw} disabled={!canDraw} />
+        ) : (
+          <StockEmptyIndicator canRecycle={canRecycle} onClick={onRecycle} />
+        )}
+      </div>
+
+      <div ref={wasteRef} className="inline-block">
+        <div
+          className={cn(
+            'cursor-default',
+            wasteTop !== null && 'cursor-pointer',
+          )}
+          onClick={onWasteClick}
+        >
+          <Waste topCard={wasteTop} animate={false} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 interface PyramidBoardBaseProps<T extends UsePyramidResult> {
   useGame: () => T
   onHowToPlay: () => void
+  variantId: GameVariantId
   renderStockRow?: (ctx: PyramidBoardBaseStockRowContext<T>) => React.ReactNode
   onBeforeCellClick?: (
     cellId: PyramidCellId,
-    defaultHandler: (cellId: PyramidCellId) => void,
+    defaultHandler: (id: PyramidCellId) => void,
   ) => boolean
-  variantName: string
 }
 
 export default function PyramidBoardBase<T extends UsePyramidResult>({
   useGame,
-  onHowToPlay: _onHowToPlay,
+  onHowToPlay,
+  variantId,
   renderStockRow,
   onBeforeCellClick,
-  variantName,
 }: PyramidBoardBaseProps<T>) {
-  const game = useGame()
   const {
     cells,
     availableCells,
@@ -65,214 +149,199 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
     onNewGame,
     onRestartGame,
     onUndo,
-  } = game
+    devSetStatus,
+  } = useGame()
 
+  const variant = getVariant(variantId)
   const wasteRef = useRef<HTMLDivElement>(null)
   const [selectedCellId, setSelectedCellId] = useState<PyramidCellId | null>(
     null,
   )
-  const [selectedWaste, setSelectedWaste] = useState(false)
-  const [devStatus, setDevStatus] = useState<'won' | 'lost' | null>(null)
-  const [showDevTools, setShowDevTools] = useState(false)
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [confirmNewGame, setConfirmNewGame] = useState(false)
 
-  const effectiveStatus = devStatus ?? status
-  const isGameOver = effectiveStatus === 'won' || effectiveStatus === 'lost'
+  const selectedId = selectedCellId
 
-  function baseCellHandler(cellId: PyramidCellId) {
-    if (status !== 'playing') return
-
-    const cell = cells.find((c) => c.id === cellId)
-    if (!cell) return
-
-    // King removes alone
-    if (isKing(cell.card)) {
-      onRemoveAlone(cellId)
-      setSelectedCellId(null)
-      setSelectedWaste(false)
-      return
-    }
-
-    // Waste was selected first — try to pair with this cell
-    if (selectedWaste) {
-      onRemovePairWithWaste(cellId)
-      setSelectedWaste(false)
-      setSelectedCellId(null)
-      return
-    }
-
-    // No selection yet — select this cell
-    if (selectedCellId === null) {
-      setSelectedCellId(cellId)
-      return
-    }
-
-    // Deselect if same cell tapped again
-    if (selectedCellId === cellId) {
-      setSelectedCellId(null)
-      return
-    }
-
-    // Attempt pair
-    onRemovePair(selectedCellId, cellId)
-    setSelectedCellId(null)
-  }
-
-  function handleCellClick(cellId: PyramidCellId) {
+  const handleCellClick = (id: PyramidCellId) => {
     if (onBeforeCellClick) {
-      const intercepted = onBeforeCellClick(cellId, baseCellHandler)
-      if (intercepted) return
+      const handled = onBeforeCellClick(id, (innerId) => {
+        setSelectedCellId(innerId)
+      })
+      if (handled) return
     }
-    baseCellHandler(cellId)
+
+    if (selectedCellId === id) {
+      setSelectedCellId(null)
+      return
+    }
+
+    const card = cells.find((c) => c.id === id)?.card
+    if (!card) return
+
+    if (isKing(card)) {
+      onRemoveAlone(id)
+      setSelectedCellId(null)
+      return
+    }
+
+    if (selectedCellId) {
+      onRemovePair(selectedCellId, id)
+      setSelectedCellId(null)
+    } else {
+      setSelectedCellId(id)
+    }
   }
 
-  function handleWasteTopClick() {
-    if (status !== 'playing') return
+  const handleWasteTopClick = () => {
     if (!wasteTop) return
 
     if (isKing(wasteTop)) {
       onRemoveWasteKing()
       setSelectedCellId(null)
-      setSelectedWaste(false)
       return
     }
 
-    if (selectedCellId !== null) {
+    if (selectedCellId) {
       onRemovePairWithWaste(selectedCellId)
       setSelectedCellId(null)
-      setSelectedWaste(false)
-      return
-    }
-
-    // Toggle waste selection
-    setSelectedWaste((prev) => !prev)
-  }
-
-  function handleStockClick() {
-    if (canDraw) {
-      onDraw()
-    } else if (canRecycle) {
-      onRecycle()
     }
   }
 
-  function clearSelection() {
-    setSelectedCellId(null)
-    setSelectedWaste(false)
-  }
+  const clearSelection = () => setSelectedCellId(null)
 
-  const stockRowCtx: PyramidBoardBaseStockRowContext<T> = {
-    stockCount,
-    wasteTop,
-    canDraw,
-    canRecycle,
-    recyclesRemaining,
-    wasteRef,
-    selectedCellId,
-    clearSelection,
-    handleStockClick,
-    handleWasteTopClick,
-    onDraw,
-    onRecycle,
-    game,
-  }
+  const stats = useMemo(
+    () => [
+      { label: 'Score', value: score },
+      { label: 'Recycles', value: recyclesRemaining },
+    ],
+    [score, recyclesRemaining],
+  )
+
+  const actions = [
+    {
+      icon: PlusSignIcon,
+      label: 'New',
+      onClick: () => setConfirmNewGame(true),
+    },
+    {
+      icon: UndoIcon,
+      label: 'Undo',
+      onClick: onUndo,
+      disabled: !canUndo || (status !== 'playing' && status !== 'idle'),
+    },
+    {
+      icon: Refresh04Icon,
+      label: 'Reset',
+      onClick: () => setConfirmRestart(true),
+    },
+    { icon: BookOpen01Icon, label: 'Rules', onClick: onHowToPlay },
+  ]
+
+  const [devMoveAnywhere, setDevMoveAnywhere] = useState(false)
+
+  const devActions = [
+    {
+      icon: TouchIcon,
+      label: 'Moves',
+      onClick: () => setDevMoveAnywhere(!devMoveAnywhere),
+      active: devMoveAnywhere,
+    },
+    {
+      icon: ChampionIcon,
+      label: 'Win',
+      onClick: () => devSetStatus(status === 'won' ? 'playing' : 'won'),
+      active: status === 'won',
+    },
+    {
+      icon: Cancel01Icon,
+      label: 'Lose',
+      onClick: () => devSetStatus(status === 'lost' ? 'playing' : 'lost'),
+      active: status === 'lost',
+    },
+  ]
 
   return (
     <PyramidWasteRefContext value={wasteRef}>
-      <div className="flex flex-1 flex-col min-h-0">
-        {/* Board area — dimmed when game over */}
-        <div className={cn('relative', isGameOver && 'opacity-50')}>
-          {/* Pyramid grid */}
-          <PyramidGrid
-            cells={cells}
-            availableCells={availableCells}
-            selectedCellId={selectedCellId}
-            onCellClick={handleCellClick}
-          />
-
-          {/* Stock + Waste row — custom or default */}
-          {renderStockRow ? (
-            renderStockRow(stockRowCtx)
-          ) : (
-            <div className="mt-10 flex items-center justify-center gap-20">
-              {stockCount > 0 ? (
-                <div
-                  className="cursor-pointer"
-                  onClick={handleStockClick}
-                  role="button"
-                  aria-label={`Stock pile, ${stockCount} cards remaining`}
-                >
-                  <Card suit="spades" rank="A" faceUp={false} />
-                </div>
-              ) : (
-                <StockEmptyIndicator
-                  canRecycle={canRecycle}
-                  onClick={handleStockClick}
-                />
-              )}
-              <div ref={wasteRef} className="inline-block">
-                <div
-                  className={cn(
-                    'cursor-default',
-                    wasteTop !== null && 'cursor-pointer',
-                  )}
-                  onClick={handleWasteTopClick}
-                >
-                  <Waste
-                    topCard={wasteTop}
-                    highlighted={selectedWaste}
-                    animate={false}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* Spacer to push controls to the bottom */}
-        <div className="flex-1" />
-
-        {/* Action buttons + Stats */}
-        <GameControls
-          onUndo={onUndo}
-          canUndo={canUndo}
-          onHowToPlay={_onHowToPlay}
-          onRestart={() => setConfirmRestart(true)}
-          onNewGame={() => setConfirmNewGame(true)}
-          isGameOver={isGameOver}
-          showDevTools={showDevTools}
-          onToggleDevTools={() => setShowDevTools(!showDevTools)}
-          score={score}
-          moveCount={score} // Pyramid uses score as a proxy for progress
-          redealsLeft={recyclesRemaining}
-          variantName={variantName}
-          devMoveAnywhere={devStatus === 'won'}
-          onToggleMoveAnywhere={() =>
-            setDevStatus(devStatus === 'won' ? null : 'won')
-          }
-          devPeekTableau={devStatus === 'lost'}
-          onTogglePeekTableau={() =>
-            setDevStatus(devStatus === 'lost' ? null : 'lost')
-          }
+      <div className="flex h-full flex-col">
+        <TopBar
+          title={variant.name}
+          subtitle={variant.subtitle}
+          stats={stats}
+          status={status}
+          className="mb-8"
         />
 
-        {/* End-game result */}
+        {/* Rail + Board Container */}
+        <div className="flex flex-1 gap-4 sm:gap-8 min-h-0">
+          {/* Side Rails - Action & Dev (Left side) */}
+          <aside className="hidden flex-col gap-4 py-8 pl-2 sm:pl-4 md:flex">
+            <ActionRail actions={actions} />
+            <DevRail actions={devActions} />
+          </aside>
 
-        {isGameOver && (
-          <div className="flex flex-col items-center gap-3 py-2 mt-2">
-            <p
+          {/* Main Felt Board */}
+          <div className="flex-1 overflow-auto felt-scroll px-0 py-4 sm:py-8">
+            <div
               className={cn(
-                'rounded px-3 py-1.5 text-xl font-black tracking-wide',
-                effectiveStatus === 'won'
-                  ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
-                  : 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
+                'mx-auto w-fit flex flex-col gap-10',
+                status !== 'playing' && status !== 'idle' && 'opacity-50',
               )}
             >
-              {effectiveStatus === 'won' ? 'VICTORY' : 'GAME OVER'}
-            </p>
+              {/* Pyramid Table */}
+              <div className="flex justify-center">
+                <PyramidTable
+                  cells={cells}
+                  availableCells={availableCells}
+                  selectedId={selectedId}
+                  onCellClick={handleCellClick}
+                />
+              </div>
+
+              {renderStockRow ? (
+                renderStockRow({
+                  game: useGame(),
+                  stockCount,
+                  canDraw,
+                  canRecycle,
+                  onDraw,
+                  onRecycle,
+                  wasteTop,
+                  selectedCellId: selectedId,
+                  handleWasteTopClick,
+                  clearSelection,
+                  wasteRef,
+                  recyclesRemaining,
+                  handleStockClick: onDraw,
+                })
+              ) : (
+                <PyramidStockRow
+                  stockCount={stockCount}
+                  canDraw={canDraw}
+                  canRecycle={canRecycle}
+                  onDraw={onDraw}
+                  onRecycle={onRecycle}
+                  wasteTop={wasteTop}
+                  onWasteClick={handleWasteTopClick}
+                  wasteRef={wasteRef}
+                />
+              )}
+            </div>
           </div>
-        )}
+        </div>
+
+        {/* Mobile Action Rails */}
+        <div className="mt-4 flex flex-col gap-2 md:hidden">
+          <ActionRail
+            actions={actions}
+            orientation="horizontal"
+            className="justify-between"
+          />
+          <DevRail
+            actions={devActions}
+            orientation="horizontal"
+            className="justify-center"
+          />
+        </div>
       </div>
 
       <ConfirmModal

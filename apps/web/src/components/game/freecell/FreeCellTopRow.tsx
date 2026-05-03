@@ -18,9 +18,12 @@ export default function FreeCellTopRow({
   onFreeCellDoubleClick,
 }: FreeCellTopRowProps) {
   return (
-    <div className="flex items-center justify-center gap-16">
+    <div
+      className="flex items-center justify-center"
+      style={{ gap: 'calc(var(--card-gap-free, 1rem) * 2)' }}
+    >
       {/* Left: 4 free cells */}
-      <div className="flex gap-4">
+      <div className="flex" style={{ gap: 'var(--card-gap-free, 1rem)' }}>
         {freeCells.map((entry) => (
           <FreeCellFreeCell
             key={entry.id}
@@ -32,7 +35,7 @@ export default function FreeCellTopRow({
       </div>
 
       {/* Right: 4 foundations */}
-      <div className="flex gap-4">
+      <div className="flex" style={{ gap: 'var(--card-gap-free, 1rem)' }}>
         {foundation.map((entry) => (
           <FreeCellFoundation
             key={entry.id}

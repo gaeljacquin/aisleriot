@@ -13,6 +13,7 @@ import { createHistorySlice } from './slices/history'
 import { createStatsSlice } from './slices/stats'
 import type { HistorySlice } from './slices/history'
 import type { StatsSlice } from './slices/stats'
+import type { GameStatus } from '#/lib/types'
 
 export interface TriPeaksStore
   extends TriPeaksState, HistorySlice<TriPeaksState>, StatsSlice {
@@ -20,6 +21,7 @@ export interface TriPeaksStore
   draw: () => void
   newGame: (seed?: number) => void
   restartGame: () => void
+  devSetStatus: (status: GameStatus) => void
 }
 
 export const useTriPeaksStore = create<TriPeaksStore>()(
@@ -130,6 +132,14 @@ export const useTriPeaksStore = create<TriPeaksStore>()(
         } else {
           set(nextState as Partial<TriPeaksStore>)
         }
+      },
+
+      devSetStatus: (status: GameStatus) => {
+        if (status === 'won') {
+          const s = get()
+          s.recordWin(s.score, !s.usedUndo)
+        }
+        set({ status } as Partial<TriPeaksStore>)
       },
 
       newGame: (seed?: number) => {

@@ -34,49 +34,43 @@ interface PeakGridProps {
  * Container: 83.5rem × 28rem
  */
 
-const STEP = 8.5 // rem (7rem card + 1.5rem gap)
-
 const CELL_POSITIONS: Array<{ x: number; y: number }> = [
   // Row 0: peak tops (y=0)
-  { x: 1.5 * STEP, y: 0 }, // 0: peak 0 top
-  { x: 4.5 * STEP, y: 0 }, // 1: peak 1 top
-  { x: 7.5 * STEP, y: 0 }, // 2: peak 2 top
+  { x: 1.5, y: 0 }, // 0: peak 0 top
+  { x: 4.5, y: 0 }, // 1: peak 1 top
+  { x: 7.5, y: 0 }, // 2: peak 2 top
 
-  // Row 1: two cards per peak (y=6)
-  { x: 1 * STEP, y: 6 }, // 3: peak 0 left
-  { x: 2 * STEP, y: 6 }, // 4: peak 0 right
-  { x: 4 * STEP, y: 6 }, // 5: peak 1 left
-  { x: 5 * STEP, y: 6 }, // 6: peak 1 right
-  { x: 7 * STEP, y: 6 }, // 7: peak 2 left
-  { x: 8 * STEP, y: 6 }, // 8: peak 2 right
+  // Row 1: two cards per peak (y=1)
+  { x: 1, y: 1 }, // 3: peak 0 left
+  { x: 2, y: 1 }, // 4: peak 0 right
+  { x: 4, y: 1 }, // 5: peak 1 left
+  { x: 5, y: 1 }, // 6: peak 1 right
+  { x: 7, y: 1 }, // 7: peak 2 left
+  { x: 8, y: 1 }, // 8: peak 2 right
 
-  // Row 2: nine cards, offset 0.5 step from left (y=12)
-  { x: 0.5 * STEP, y: 12 }, // 9
-  { x: 1.5 * STEP, y: 12 }, // 10
-  { x: 2.5 * STEP, y: 12 }, // 11
-  { x: 3.5 * STEP, y: 12 }, // 12
-  { x: 4.5 * STEP, y: 12 }, // 13
-  { x: 5.5 * STEP, y: 12 }, // 14
-  { x: 6.5 * STEP, y: 12 }, // 15
-  { x: 7.5 * STEP, y: 12 }, // 16
-  { x: 8.5 * STEP, y: 12 }, // 17
+  // Row 2: nine cards, offset 0.5 step from left (y=2)
+  { x: 0.5, y: 2 }, // 9
+  { x: 1.5, y: 2 }, // 10
+  { x: 2.5, y: 2 }, // 11
+  { x: 3.5, y: 2 }, // 12
+  { x: 4.5, y: 2 }, // 13
+  { x: 5.5, y: 2 }, // 14
+  { x: 6.5, y: 2 }, // 15
+  { x: 7.5, y: 2 }, // 16
+  { x: 8.5, y: 2 }, // 17
 
-  // Row 3: ten bottom cards, flush left (y=18)
-  { x: 0 * STEP, y: 18 }, // 18
-  { x: 1 * STEP, y: 18 }, // 19
-  { x: 2 * STEP, y: 18 }, // 20
-  { x: 3 * STEP, y: 18 }, // 21
-  { x: 4 * STEP, y: 18 }, // 22
-  { x: 5 * STEP, y: 18 }, // 23
-  { x: 6 * STEP, y: 18 }, // 24
-  { x: 7 * STEP, y: 18 }, // 25
-  { x: 8 * STEP, y: 18 }, // 26
-  { x: 9 * STEP, y: 18 }, // 27
+  // Row 3: ten bottom cards, flush left (y=3)
+  { x: 0, y: 3 }, // 18
+  { x: 1, y: 3 }, // 19
+  { x: 2, y: 3 }, // 20
+  { x: 3, y: 3 }, // 21
+  { x: 4, y: 3 }, // 22
+  { x: 5, y: 3 }, // 23
+  { x: 6, y: 3 }, // 24
+  { x: 7, y: 3 }, // 25
+  { x: 8, y: 3 }, // 26
+  { x: 9, y: 3 }, // 27
 ]
-
-// Container dimensions
-const CONTAINER_W = 83.5
-const CONTAINER_H = 28
 
 function getZIndex(idx: number): number {
   if (idx <= 2) return 1 // row 0
@@ -96,8 +90,12 @@ export default function PeakGrid({
 
   return (
     <div
-      className={cn('relative mx-auto')}
-      style={{ width: `${CONTAINER_W}rem`, height: `${CONTAINER_H}rem` }}
+      className={cn('relative')}
+      style={{
+        width: 'calc(var(--card-step-x, 8.5rem) * 9 + var(--card-width, 7rem))',
+        height:
+          'calc(var(--card-step-y, 6rem) * 3 + var(--card-height, 10rem))',
+      }}
     >
       {CELL_POSITIONS.map((pos, idx) => {
         const cellId = `cell-${idx}`
@@ -109,8 +107,8 @@ export default function PeakGrid({
             key={cellId}
             className={cn('absolute', cell.removed && 'pointer-events-none')}
             style={{
-              left: `${pos.x}rem`,
-              top: `${pos.y}rem`,
+              left: `calc(${pos.x} * var(--card-step-x, 8.5rem))`,
+              top: `calc(${pos.y} * var(--card-step-y, 6rem))`,
               zIndex: getZIndex(idx),
             }}
           >

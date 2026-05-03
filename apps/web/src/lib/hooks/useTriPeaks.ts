@@ -19,6 +19,7 @@ export interface UseTriPeaksResult {
   onRestartGame: () => void
   onUndo: () => void
   isValidMove: (id: TriPeaksCellId) => boolean
+  devSetStatus: (status: GameStatus) => void
 }
 
 export function useTriPeaks(): UseTriPeaksResult {
@@ -49,5 +50,6 @@ export function useTriPeaks(): UseTriPeaksResult {
     onRestartGame: storeState.restartGame,
     onUndo: storeState.undo,
     isValidMove: (id: TriPeaksCellId) => canPlayCard(storeState, id, false),
+    devSetStatus: storeState.devSetStatus,
   }
 }

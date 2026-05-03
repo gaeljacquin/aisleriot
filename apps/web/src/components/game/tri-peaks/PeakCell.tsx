@@ -57,14 +57,28 @@ export default function PeakCell({
 
   // Removed cells keep their space in the layout but don't block clicks
   if (cell.removed) {
-    return <div className="h-40 w-28 pointer-events-none" aria-hidden="true" />
+    return (
+      <div
+        className="pointer-events-none"
+        style={{
+          width: 'var(--card-width, 7rem)',
+          height: 'var(--card-height, 10rem)',
+        }}
+        aria-hidden="true"
+      />
+    )
   }
 
   const isBlocked = !isAvailable
 
   if (isBlocked) {
     return (
-      <div className="h-40 w-28">
+      <div
+        style={{
+          width: 'var(--card-width, 7rem)',
+          height: 'var(--card-height, 10rem)',
+        }}
+      >
         <Card suit={cell.card.suit} rank={cell.card.rank} faceUp={false} />
       </div>
     )
@@ -72,7 +86,13 @@ export default function PeakCell({
 
   return (
     <>
-      <div className="h-40 w-28" ref={cardRef}>
+      <div
+        ref={cardRef}
+        style={{
+          width: 'var(--card-width, 7rem)',
+          height: 'var(--card-height, 10rem)',
+        }}
+      >
         {!flyState && (
           <Card
             suit={cell.card.suit}
@@ -87,12 +107,13 @@ export default function PeakCell({
       {flyState &&
         createPortal(
           <motion.div
+            className="tri-peaks-container"
             style={{
               position: 'fixed',
               left: flyState.startX,
               top: flyState.startY,
-              width: '7rem',
-              height: '10rem',
+              width: 'var(--card-width, 7rem)',
+              height: 'var(--card-height, 10rem)',
               zIndex: 9999,
               pointerEvents: 'none',
             }}

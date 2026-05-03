@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useMemo } from 'react'
 import {
   DndContext,
   DragOverlay,
@@ -12,15 +12,27 @@ import { cn } from '@workspace/ui/lib/utils'
 import FreeCellTopRow from './FreeCellTopRow'
 import FreeCellTableau from './FreeCellTableau'
 import FreeCellCard from './FreeCellCard'
-import { GameControls } from '../index'
+import { TopBar } from '@/components/layout/TopBar'
+import { ActionRail } from '@/components/layout/ActionRail'
+import { DevRail } from '@/components/layout/DevRail'
 import { ConfirmModal } from '#/components/ConfirmModal'
 import { useFreeCell } from '#/lib/hooks/useFreeCell'
+import { getVariant } from '@workspace/constants'
 import type {
   FreeCellPileId,
   DraggableCardData,
   DroppableZoneData,
 } from '#/lib/games/freecell'
-import type { Card } from '#/lib/types'
+import type { Card as CardType } from '#/lib/types'
+import {
+  PlusSignIcon,
+  UndoIcon,
+  Refresh04Icon,
+  BookOpen01Icon,
+  TouchIcon,
+  ChampionIcon,
+  Cancel01Icon,
+} from '@hugeicons/core-free-icons'
 
 const OVERLAY_CARD_OFFSET = 48
 const CARD_HEIGHT = 160
@@ -29,9 +41,7 @@ interface FreeCellBoardProps {
   onHowToPlay: () => void
 }
 
-export default function FreeCellBoard({
-  onHowToPlay: _onHowToPlay,
-}: FreeCellBoardProps) {
+export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
   const {
     tableau,
     freeCells,
@@ -49,7 +59,10 @@ export default function FreeCellBoard({
     onUndo,
     isAutoMoving,
     triggerAutoMove,
+    devSetStatus,
   } = useFreeCell()
+
+  const variant = getVariant('freecell')
 
   // Handle animated automoves
   useEffect(() => {
@@ -61,11 +74,9 @@ export default function FreeCellBoard({
     }
   }, [isAutoMoving, triggerAutoMove, status])
 
-  const [draggedCards, setDraggedCards] = useState<Card[] | null>(null)
+  const [draggedCards, setDraggedCards] = useState<CardType[] | null>(null)
   const lastDropWasValid = useRef(false)
-  const [devStatus, setDevStatus] = useState<'won' | null>(null)
   const [devUnlimitedMoves, setDevUnlimitedMoves] = useState(false)
-  const [showDevTools, setShowDevTools] = useState(false)
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [confirmNewGame, setConfirmNewGame] = useState(false)
 
@@ -119,8 +130,7 @@ export default function FreeCellBoard({
     onAutoMove(pileId)
   }
 
-  const effectiveStatus = devStatus ?? status
-  const isGameOver = effectiveStatus === 'won'
+  const isGameOver = status === 'won'
 
   const dropAnimation = lastDropWasValid.current
     ? null
@@ -134,103 +144,218 @@ export default function FreeCellBoard({
       ? (draggedCards.length - 1) * OVERLAY_CARD_OFFSET + CARD_HEIGHT
       : CARD_HEIGHT
 
+  const stats = useMemo(
+    () => [
+      { label: 'Score', value: score },
+      { label: 'Moves', value: moveCount },
+    ],
+    [score, moveCount],
+  )
+
+  const actions = [
+    {
+      icon: PlusSignIcon,
+      label: 'New',
+      onClick: () => setConfirmNewGame(true),
+    },
+    {
+      icon: UndoIcon,
+      label: 'Undo',
+      onClick: onUndo,
+      disabled: !canUndo || isGameOver,
+    },
+    {
+      icon: Refresh04Icon,
+      label: 'Reset',
+      onClick: () => setConfirmRestart(true),
+    },
+    { icon: BookOpen01Icon, label: 'Rules', onClick: onHowToPlay },
+  ]
+
+  const devActions = [
+    {
+      icon: TouchIcon,
+      label: 'Moves',
+      onClick: () => setDevUnlimitedMoves(!devUnlimitedMoves),
+      active: devUnlimitedMoves,
+    },
+    {
+      icon: ChampionIcon,
+      label: 'Win',
+      onClick: () => devSetStatus(status === 'won' ? 'playing' : 'won'),
+      active: status === 'won',
+    },
+    {
+      icon: Cancel01Icon,
+      label: 'Lose',
+      onClick: () => devSetStatus(status === 'lost' ? 'playing' : 'lost'),
+      active: status === 'lost',
+    },
+  ]
+
   return (
     <DndContext
       sensors={sensors}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex flex-1 flex-col min-h-0">
-        {/* Board — dimmed when won */}
-        <div className={cn('flex flex-col gap-6', isGameOver && 'opacity-50')}>
-          <FreeCellTopRow
-            freeCells={freeCells}
-            foundation={foundation}
-            onFreeCellDoubleClick={handleFreeCellDoubleClick}
+      <div className="h-full freecell-container">
+        <style>{`
+          .freecell-container {
+            --card-width: 7rem;
+            --card-height: 10rem;
+            --card-gap-free: 1rem;
+            --card-offset-free: 3rem;
+            --rail-gap: 1.5rem;
+            --row-gap: 3rem;
+          }
+
+          @media (max-width: 1400px) {
+            .freecell-container {
+              --card-width: 6rem;
+              --card-height: 8.5rem;
+              --card-gap-free: 0.75rem;
+              --card-offset-free: 2.5rem;
+              --rail-gap: 1rem;
+              --row-gap: 2.5rem;
+            }
+          }
+
+          @media (max-width: 1200px) {
+            .freecell-container {
+              --card-width: 5.25rem;
+              --card-height: 7.5rem;
+              --card-gap-free: 0.5rem;
+              --card-offset-free: 2.2rem;
+              --rail-gap: 1.25rem;
+              --row-gap: 2rem;
+            }
+          }
+
+          @media (max-width: 1000px) {
+            .freecell-container {
+              --card-width: 4.5rem;
+              --card-height: 6.4rem;
+              --card-gap-free: 0.375rem;
+              --card-offset-free: 1.8rem;
+              --rail-gap: 1rem;
+              --row-gap: 1.5rem;
+            }
+          }
+
+          @media (max-width: 800px) {
+            .freecell-container {
+              --card-width: 3.75rem;
+              --card-height: 5.35rem;
+              --card-gap-free: 0.25rem;
+              --card-offset-free: 1.5rem;
+              --rail-gap: 0.75rem;
+              --row-gap: 1.25rem;
+            }
+          }
+        `}</style>
+
+        <div className="flex h-full flex-col">
+          <TopBar
+            title={variant.name}
+            subtitle={variant.subtitle}
+            stats={stats}
+            status={status}
+            className="mb-8"
           />
-          <FreeCellTableau
-            tableau={tableau}
-            draggableFromIndex={draggableFromIndex}
-            devUnlimitedMoves={devUnlimitedMoves}
-            onDoubleClick={handleTableauDoubleClick}
-          />
+
+          {/* Board Container */}
+          <div className="flex-1 overflow-auto felt-scroll px-0 py-4 sm:py-8">
+            <div
+              className={cn(
+                'mx-auto w-fit flex flex-col items-center',
+                isGameOver && 'opacity-50',
+              )}
+              style={{ gap: 'var(--row-gap)' }}
+            >
+              {/* Top Row with Split Rails */}
+              <div
+                className="flex items-center justify-center"
+                style={{ gap: 'var(--rail-gap)' }}
+              >
+                <ActionRail
+                  actions={actions.slice(0, 3)}
+                  orientation="vertical"
+                  showBackLink={false}
+                  showDivider={false}
+                  showSettingsLink={false}
+                  className="hidden md:flex"
+                />
+
+                <FreeCellTopRow
+                  freeCells={freeCells}
+                  foundation={foundation}
+                  onFreeCellDoubleClick={handleFreeCellDoubleClick}
+                />
+
+                <ActionRail
+                  actions={actions.slice(3)}
+                  orientation="vertical"
+                  className="hidden md:flex"
+                />
+              </div>
+
+              <FreeCellTableau
+                tableau={tableau}
+                draggableFromIndex={draggableFromIndex}
+                devUnlimitedMoves={devUnlimitedMoves}
+                onDoubleClick={handleTableauDoubleClick}
+              />
+
+              {/* Mobile Action Rails */}
+              <div className="flex flex-col gap-2 md:hidden w-full">
+                <ActionRail
+                  actions={actions}
+                  orientation="horizontal"
+                  className="justify-between"
+                />
+                <DevRail
+                  actions={devActions}
+                  orientation="horizontal"
+                  className="justify-center"
+                />
+              </div>
+
+              {/* Centered Dev Rail (Desktop) */}
+              <div className="hidden md:flex justify-center mt-4">
+                <DevRail actions={devActions} orientation="horizontal" />
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Spacer to push controls to the bottom */}
-        <div className="flex-1" />
-
-        {/* Action buttons + Stats */}
-        <GameControls
-          onUndo={onUndo}
-          canUndo={canUndo}
-          onHowToPlay={_onHowToPlay}
-          onRestart={() => setConfirmRestart(true)}
-          onNewGame={() => setConfirmNewGame(true)}
-          isGameOver={isGameOver}
-          showDevTools={showDevTools}
-          onToggleDevTools={() => setShowDevTools(!showDevTools)}
-          score={score}
-          moveCount={moveCount}
-          variantName="FreeCell"
-          devMoveAnywhere={devUnlimitedMoves}
-          onToggleMoveAnywhere={() => setDevUnlimitedMoves((v) => !v)}
-          devPeekTableau={devStatus === 'won'}
-          onTogglePeekTableau={() =>
-            setDevStatus(devStatus === 'won' ? null : 'won')
-          }
-        />
-
-        {/* Victory message */}
-
-        {isGameOver && (
-          <div className="flex flex-col items-center gap-3 py-2">
-            <p className="rounded px-3 py-1.5 text-xl font-black tracking-wide bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-              VICTORY
-            </p>
-          </div>
-        )}
+        {/* Drag overlay */}
+        <DragOverlay dropAnimation={dropAnimation}>
+          {draggedCards && draggedCards.length > 0 && (
+            <div
+              className="relative freecell-container"
+              style={{
+                width: 'var(--card-width)',
+                height: `calc(((${draggedCards.length} - 1) * var(--card-offset-free)) + var(--card-height))`,
+              }}
+            >
+              {draggedCards.map((card, i) => (
+                <div
+                  key={card.id}
+                  style={{
+                    position: i === 0 ? 'relative' : 'absolute',
+                    top: `calc(${i} * var(--card-offset-free))`,
+                    left: 0,
+                    zIndex: i,
+                  }}
+                >
+                  <FreeCellCard card={card} />
+                </div>
+              ))}
+            </div>
+          )}
+        </DragOverlay>
       </div>
-
-      <ConfirmModal
-        open={confirmRestart}
-        onOpenChange={setConfirmRestart}
-        title="Restart Game?"
-        description="Replay the same deal from the beginning."
-        confirmLabel="Restart"
-        onConfirm={onRestartGame}
-      />
-      <ConfirmModal
-        open={confirmNewGame}
-        onOpenChange={setConfirmNewGame}
-        title="New Game?"
-        description="Start a fresh game with a new deal."
-        confirmLabel="New Game"
-        onConfirm={onNewGame}
-      />
-
-      {/* Drag overlay */}
-      <DragOverlay dropAnimation={dropAnimation}>
-        {draggedCards && draggedCards.length > 0 && (
-          <div
-            className="relative"
-            style={{ height: overlayHeight, width: 112 }}
-          >
-            {draggedCards.map((card, i) => (
-              <div
-                key={card.id}
-                style={{
-                  position: i === 0 ? 'relative' : 'absolute',
-                  top: i === 0 ? 0 : i * OVERLAY_CARD_OFFSET,
-                  left: 0,
-                  zIndex: i,
-                }}
-              >
-                <FreeCellCard card={card} />
-              </div>
-            ))}
-          </div>
-        )}
-      </DragOverlay>
     </DndContext>
   )
 }

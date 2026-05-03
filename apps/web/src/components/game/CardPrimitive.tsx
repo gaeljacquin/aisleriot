@@ -61,28 +61,122 @@ const RANK_MAP: Record<Rank, string> = {
   K: 'K',
 }
 
-const DECK_COMPONENTS: Record<CardStyle, React.ElementType> = {
+const DECK_COMPONENTS: Record<
+  Exclude<CardStyle, 'minimal'>,
+  React.ElementType
+> = {
   basic: TcN,
   large: TcB,
   'four-color': FcN,
   'large-four-color': FcB,
 }
 
-const CARD_BACK_STYLES: Record<CardBack, React.CSSProperties> = {
-  default: {
-    background: 'linear-gradient(135deg, hsl(215 25% 27%), hsl(215 25% 15%))',
-  },
-  classic: {
-    background: 'linear-gradient(135deg, hsl(354 50% 30%), hsl(354 60% 18%))',
-  },
-  lattice: {
-    background:
-      'repeating-linear-gradient(45deg, hsl(44 56% 54% / 0.4) 0 2px, hsl(158 64% 11%) 2px 8px)',
-    backgroundColor: 'hsl(158 64% 11%)',
-  },
-  monogram: {
-    background: 'linear-gradient(135deg, hsl(158 64% 11%), hsl(158 70% 5%))',
-  },
+const SUIT_GLYPH: Record<Suit, string> = {
+  spades: '♠',
+  hearts: '♥',
+  diamonds: '♦',
+  clubs: '♣',
+}
+
+function MinimalCard({ suit, rank }: { suit: Suit; rank: Rank }) {
+  const isRed = suit === 'hearts' || suit === 'diamonds'
+  const glyph = SUIT_GLYPH[suit]
+  const colorClass = isRed ? 'text-rose-600' : 'text-slate-900'
+
+  return (
+    <div className="relative h-full w-full rounded-lg border border-gold/40 bg-white p-1 text-slate-900 shadow-sm transition-transform duration-200">
+      {/* corner top-left */}
+      <div
+        className={cn(
+          'absolute left-1 top-1 flex flex-col items-center leading-none',
+          colorClass,
+        )}
+      >
+        <span className="font-serif font-bold text-[1em]">{rank}</span>
+        <span className="text-[0.8em]">{glyph}</span>
+      </div>
+      {/* corner bottom-right (rotated) */}
+      <div
+        className={cn(
+          'absolute bottom-1 right-1 flex rotate-180 flex-col items-center leading-none',
+          colorClass,
+        )}
+      >
+        <span className="font-serif font-bold text-[1em]">{rank}</span>
+        <span className="text-[0.8em]">{glyph}</span>
+      </div>
+      {/* center pip */}
+      <div
+        className={cn(
+          'absolute inset-0 grid place-items-center opacity-90',
+          colorClass,
+        )}
+      >
+        <span className="text-[2.2em] leading-none drop-shadow-sm">
+          {glyph}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+export const CARD_BACK_STYLES: Record<CardBack, string> = {
+  default: 'linear-gradient(135deg, hsl(215 25% 27%), hsl(215 25% 15%))',
+  classic: 'linear-gradient(135deg, hsl(354 50% 30%), hsl(354 60% 18%))',
+  lattice: 'hsl(158 64% 11%)',
+  monogram: 'linear-gradient(135deg, hsl(158 64% 11%), hsl(158 70% 5%))',
+  royal: 'linear-gradient(135deg, hsl(354 45% 28%), hsl(354 55% 18%))',
+}
+
+export function CardBackComponent({
+  className,
+  backOverride,
+}: {
+  className?: string
+  backOverride?: CardBack
+}) {
+  const { cardBack: globalBack } = useCardSettingsStore()
+  const back = backOverride ?? globalBack
+
+  return (
+    <div
+      className={cn(
+        'relative h-full w-full rounded-lg border-2 border-slate-800 shadow-sm overflow-hidden',
+        className,
+      )}
+      style={{ background: CARD_BACK_STYLES[back] }}
+    >
+      {/* Pattern Overlays */}
+      {back === 'default' && (
+        <div className="pointer-events-none absolute inset-0 opacity-20">
+          <div className="h-full w-full bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,rgba(255,255,255,0.15)_4px,rgba(255,255,255,0.15)_5px)]" />
+        </div>
+      )}
+      {(back === 'classic' || back === 'monogram') && (
+        <div className="pointer-events-none absolute inset-0 opacity-10">
+          <div className="h-full w-full bg-[radial-gradient(circle_at_center,white_0%,transparent_70%)]" />
+        </div>
+      )}
+      {back === 'lattice' && (
+        <div
+          className="absolute inset-0 opacity-40"
+          style={{
+            backgroundImage:
+              'repeating-linear-gradient(45deg, hsl(44 56% 54% / 0.4) 0 2px, transparent 2px 8px)',
+          }}
+        />
+      )}
+      {back === 'royal' && (
+        <div
+          className="absolute inset-1 rounded-sm border border-gold/40"
+          style={{
+            backgroundImage:
+              'repeating-linear-gradient(45deg, hsl(44 56% 54% / 0.18) 0 2px, transparent 2px 8px), repeating-linear-gradient(-45deg, hsl(44 56% 54% / 0.18) 0 2px, transparent 2px 8px)',
+          }}
+        />
+      )}
+    </div>
+  )
 }
 
 export default function CardPrimitive({
@@ -92,28 +186,16 @@ export default function CardPrimitive({
   className,
 }: CardPrimitiveProps) {
   const cardCode = `${RANK_MAP[rank]}${SUIT_MAP[suit]}`
-  const { cardStyle, cardBack } = useCardSettingsStore()
+  const { cardStyle } = useCardSettingsStore()
 
   if (!faceUp) {
+    return <CardBackComponent className={className} />
+  }
+
+  if (cardStyle === 'minimal') {
     return (
-      <div
-        className={cn(
-          'relative h-full w-full rounded-lg border-2 border-slate-800 shadow-sm',
-          className,
-        )}
-        style={CARD_BACK_STYLES[cardBack]}
-      >
-        {/* Pattern Overlays */}
-        {cardBack === 'default' && (
-          <div className="pointer-events-none absolute inset-0 rounded-lg opacity-20">
-            <div className="h-full w-full rounded-lg bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,rgba(255,255,255,0.15)_4px,rgba(255,255,255,0.15)_5px)]" />
-          </div>
-        )}
-        {(cardBack === 'classic' || cardBack === 'monogram') && (
-          <div className="pointer-events-none absolute inset-0 rounded-lg opacity-10">
-            <div className="h-full w-full rounded-lg bg-[radial-gradient(circle_at_center,white_0%,transparent_70%)]" />
-          </div>
-        )}
+      <div className={className} style={{ width: '100%', height: '100%' }}>
+        <MinimalCard suit={suit} rank={rank} />
       </div>
     )
   }

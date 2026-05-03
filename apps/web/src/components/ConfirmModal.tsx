@@ -7,7 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@workspace/ui/components/dialog'
-import { Button } from '@workspace/ui/components/button'
 
 interface ConfirmModalProps {
   open: boolean
@@ -33,16 +32,32 @@ export function ConfirmModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton={false}>
-        <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
+      <DialogContent
+        showCloseButton={false}
+        className="max-w-[400px] border border-gold/40 bg-felt-deep/95 p-8 shadow-card-lift backdrop-blur-md"
+      >
+        <DialogHeader className="mb-6 text-center">
+          <DialogTitle className="font-serif text-3xl font-bold tracking-tight text-gold">
+            {title}
+          </DialogTitle>
+          <DialogDescription className="font-serif text-base text-cream-dim">
+            {description}
+          </DialogDescription>
         </DialogHeader>
-        <DialogFooter>
-          <DialogClose render={<Button variant="outline" />}>
+        <DialogFooter className="flex-row justify-center gap-4 sm:justify-center">
+          <DialogClose
+            render={
+              <button className="h-12 flex-1 rounded-xl border border-gold/20 bg-felt-light/40 font-serif font-bold text-cream-dim transition-all hover:bg-gold/10 hover:text-gold cursor-pointer" />
+            }
+          >
             Cancel
           </DialogClose>
-          <Button onClick={handleConfirm}>{confirmLabel}</Button>
+          <button
+            onClick={handleConfirm}
+            className="h-12 flex-1 rounded-xl border border-gold/40 bg-gold font-serif font-bold text-felt-deep shadow-sm transition-all hover:bg-gold-soft hover:shadow-card cursor-pointer"
+          >
+            {confirmLabel}
+          </button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

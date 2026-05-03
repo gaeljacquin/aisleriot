@@ -26,7 +26,7 @@ export const gameVariants: GameVariant[] = [
   },
   {
     id: 'klondike-draw-3',
-    name: 'Klondike',
+    name: 'Klondike Alt',
     subtitle: 'Draw 3',
     blurb: 'The classic with bite. Three cards turn from the stock; only the top card is in play.',
     color: 'bg-cyan-100 dark:bg-cyan-950',

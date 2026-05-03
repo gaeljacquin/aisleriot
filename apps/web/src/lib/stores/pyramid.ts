@@ -19,6 +19,7 @@ import { createStatsSlice } from './slices/stats'
 import type { HistorySlice } from './slices/history'
 import type { StatsSlice } from './slices/stats'
 import { usePyramidSettingsStore } from './pyramid-settings'
+import type { GameStatus } from '#/lib/types'
 
 export interface PyramidStore
   extends PyramidState, HistorySlice<PyramidState>, StatsSlice {
@@ -30,6 +31,7 @@ export interface PyramidStore
   recycle: () => void
   newGame: (seed?: number) => void
   restartGame: () => void
+  devSetStatus: (status: GameStatus) => void
 }
 
 function snapshot(state: PyramidState): PyramidState {
@@ -281,6 +283,13 @@ export const usePyramidStore = create<PyramidStore>()(
           canUndo: false,
           canRedo: false,
         } as Partial<PyramidStore>)
+      },
+
+      devSetStatus: (status: GameStatus) => {
+        if (status === 'won') {
+          get().recordWin(get().score, !get().usedUndo)
+        }
+        set({ status } as Partial<PyramidStore>)
       },
     }),
     {

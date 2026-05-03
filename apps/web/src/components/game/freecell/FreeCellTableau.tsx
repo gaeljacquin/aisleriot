@@ -16,7 +16,10 @@ export default function FreeCellTableau({
   onDoubleClick,
 }: FreeCellTableauProps) {
   return (
-    <div className="flex justify-center gap-10">
+    <div
+      className="flex justify-center"
+      style={{ gap: 'var(--card-gap-free, 1rem)' }}
+    >
       {tableau.map((entry) => (
         <FreeCellColumn
           key={entry.id}

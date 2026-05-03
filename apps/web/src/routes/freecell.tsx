@@ -11,10 +11,8 @@ function FreeCell() {
   const [howToPlayOpen, setHowToPlayOpen] = useState(false)
 
   return (
-    <main className="flex h-full flex-col bg-primary px-6 pb-10 pt-16">
-      <div className="flex flex-1 flex-col">
-        <FreeCellBoard onHowToPlay={() => setHowToPlayOpen(true)} />
-      </div>
+    <main className="flex h-screen flex-col overflow-hidden p-6 sm:p-8">
+      <FreeCellBoard onHowToPlay={() => setHowToPlayOpen(true)} />
 
       <HowToPlayModal
         variant={getVariant('freecell')}

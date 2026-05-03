@@ -45,6 +45,7 @@ export interface UseFreeCell {
   onUndo: () => void
   isAutoMoving: boolean
   triggerAutoMove: () => void
+  devSetStatus: (status: GameStatus) => void
 }
 
 export function useFreeCell(): UseFreeCell {
@@ -128,5 +129,6 @@ export function useFreeCell(): UseFreeCell {
     onUndo: state.undo,
     isAutoMoving: state.isAutoMoving,
     triggerAutoMove: state.triggerAutoMove,
+    devSetStatus: state.devSetStatus,
   }
 }

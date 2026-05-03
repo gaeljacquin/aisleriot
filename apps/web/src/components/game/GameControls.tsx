@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { Link } from '@tanstack/react-router'
+import { Link, useLocation } from '@tanstack/react-router'
 import { motion } from 'motion/react'
 import { HugeiconsIcon } from '@hugeicons/react'
-import { ArrowLeft02Icon } from '@hugeicons/core-free-icons'
+import { ArrowLeft02Icon, Settings01Icon } from '@hugeicons/core-free-icons'
 import { cn } from '@workspace/ui/lib/utils'
 
 interface GameControlsProps {
@@ -45,6 +45,7 @@ export default function GameControls({
   onTogglePeekTableau,
 }: GameControlsProps) {
   const [isReturnHovered, setIsReturnHovered] = useState(false)
+  const location = useLocation()
 
   return (
     <div className="flex flex-col items-center pb-4">
@@ -144,6 +145,15 @@ export default function GameControls({
           >
             New Game
           </button>
+
+          <Link
+            to="/settings"
+            search={{ returnTo: location.pathname }}
+            className="cursor-pointer rounded-xl bg-secondary px-6 py-3 text-lg font-bold text-secondary-foreground transition-all hover:bg-secondary/80 active:scale-95 no-underline flex items-center gap-2"
+          >
+            <HugeiconsIcon icon={Settings01Icon} className="size-5" />
+            Settings
+          </Link>
         </div>
 
         {/* Dev Tools Section */}

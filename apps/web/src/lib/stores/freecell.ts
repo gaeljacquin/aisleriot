@@ -18,7 +18,7 @@ import { createHistorySlice } from './slices/history'
 import { createStatsSlice } from './slices/stats'
 import type { HistorySlice } from './slices/history'
 import type { StatsSlice } from './slices/stats'
-import type { Card } from '#/lib/types'
+import type { Card, GameStatus } from '#/lib/types'
 
 export interface FreeCellStore
   extends FreeCellState, HistorySlice<FreeCellState>, StatsSlice {
@@ -27,6 +27,7 @@ export interface FreeCellStore
   newGame: (seed?: number) => void
   restartGame: () => void
   triggerAutoMove: () => void
+  devSetStatus: (status: GameStatus) => void
 }
 
 function snapshot(state: FreeCellState): FreeCellState {
@@ -340,6 +341,13 @@ export const useFreeCellStore = create<FreeCellStore>()(
           canUndo: false,
           canRedo: false,
         } as Partial<FreeCellStore>)
+      },
+
+      devSetStatus: (status: GameStatus) => {
+        if (status === 'won') {
+          get().recordWin(get().score, !get().usedUndo)
+        }
+        set({ status } as Partial<FreeCellStore>)
       },
     }),
     {

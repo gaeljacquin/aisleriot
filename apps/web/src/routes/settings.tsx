@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
+import { z } from 'zod'
 import { cn } from '@workspace/ui/lib/utils'
 import BackLink from '@/components/BackLink'
 import { useCardSettingsStore } from '@/stores/card-settings'
@@ -9,7 +10,14 @@ import type { Suit, Rank } from '@/lib/types/card'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { ArrowLeftBigIcon, ArrowRightBigIcon } from '@hugeicons/core-free-icons'
 
-export const Route = createFileRoute('/settings')({ component: Settings })
+const settingsSearchSchema = z.object({
+  returnTo: z.string().optional(),
+})
+
+export const Route = createFileRoute('/settings')({
+  validateSearch: (search) => settingsSearchSchema.parse(search),
+  component: Settings,
+})
 
 const CARDFACETEXT = 'Card Face'
 
@@ -18,6 +26,7 @@ const cardStyleOptions: { value: CardStyle; label: string }[] = [
   { value: 'four-color', label: '4-Color' },
   { value: 'large', label: 'Large' },
   { value: 'large-four-color', label: 'Large 4-Color' },
+  { value: 'minimal', label: 'Minimal' },
 ]
 
 const BACKS = [
@@ -25,6 +34,7 @@ const BACKS = [
   { id: 'classic', label: 'Crimson' },
   { id: 'lattice', label: 'Lattice' },
   { id: 'monogram', label: 'Monogram' },
+  { id: 'royal', label: 'Royal Lattice' },
 ] as const
 
 const DEFAULT_SUITS: Suit[] = ['hearts', 'spades', 'diamonds', 'clubs']
@@ -92,8 +102,10 @@ function CardBackToggleGroup() {
                   : b.id === 'classic'
                     ? 'linear-gradient(135deg, hsl(354 50% 30%), hsl(354 60% 18%))'
                     : b.id === 'lattice'
-                      ? 'repeating-linear-gradient(45deg, hsl(44 56% 54% / 0.4) 0 2px, hsl(158 64% 11%) 2px 8px)'
-                      : 'linear-gradient(135deg, hsl(158 64% 11%), hsl(158 70% 5%))',
+                      ? 'hsl(158 64% 11%)'
+                      : b.id === 'monogram'
+                        ? 'linear-gradient(135deg, hsl(158 64% 11%), hsl(158 70% 5%))'
+                        : 'linear-gradient(135deg, hsl(354 45% 28%), hsl(354 55% 18%))',
             }}
           >
             {/* Pattern Overlays for Preview */}
@@ -106,6 +118,24 @@ function CardBackToggleGroup() {
               <div className="pointer-events-none absolute inset-0 opacity-10">
                 <div className="h-full w-full bg-[radial-gradient(circle_at_center,white_0%,transparent_70%)]" />
               </div>
+            )}
+            {b.id === 'lattice' && (
+              <div
+                className="pointer-events-none absolute inset-0 opacity-40"
+                style={{
+                  backgroundImage:
+                    'repeating-linear-gradient(45deg, hsl(44 56% 54% / 0.4) 0 2px, transparent 2px 8px)',
+                }}
+              />
+            )}
+            {b.id === 'royal' && (
+              <div
+                className="pointer-events-none absolute inset-1 rounded-sm border border-gold/40"
+                style={{
+                  backgroundImage:
+                    'repeating-linear-gradient(45deg, hsl(44 56% 54% / 0.18) 0 2px, transparent 2px 8px), repeating-linear-gradient(-45deg, hsl(44 56% 54% / 0.18) 0 2px, transparent 2px 8px)',
+                }}
+              />
             )}
           </div>
           <span
@@ -188,6 +218,8 @@ function CardPreview() {
 }
 
 function Settings() {
+  const { returnTo } = Route.useSearch()
+
   return (
     <main className="relative flex min-h-full flex-col overflow-y-auto px-6 py-12 sm:py-20">
       <div className="mx-auto w-full max-w-xl">
@@ -218,24 +250,13 @@ function Settings() {
           </section>
 
           <div className="h-px w-full bg-linear-to-r from-transparent via-gold/30 to-transparent" />
-
-          {/* Game Settings Section */}
-          <section className="space-y-8">
-            <div className="flex items-center justify-between opacity-40 grayscale pointer-events-none">
-              <div className="space-y-1">
-                <label className="block text-base font-medium text-cream font-serif">
-                  Sound FX
-                </label>
-              </div>
-              <div className="relative inline-flex h-6 w-11 shrink-0 cursor-not-allowed items-center rounded-full bg-muted transition-colors">
-                <span className="inline-block h-4 w-4 translate-x-1 rounded-full bg-cream transition-transform" />
-              </div>
-            </div>
-          </section>
         </div>
 
         <div className="mt-20 flex justify-center">
-          <BackLink />
+          <BackLink
+            destination={returnTo}
+            label={returnTo && returnTo !== '/' ? 'Back to Game' : 'Main Menu'}
+          />
         </div>
       </div>
     </main>

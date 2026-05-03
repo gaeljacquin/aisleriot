@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { Card } from '#/lib/types'
+import type { Card, GameStatus } from '#/lib/types'
 import {
   isGameWon,
   canMoveToFoundation,
@@ -36,6 +36,7 @@ interface KlondikeStore
   flipStock: () => void
   newGame: (seed?: number) => void
   restartGame: () => void
+  devSetStatus: (status: GameStatus) => void
 }
 
 function snapshot(state: KlondikeState): KlondikeState {
@@ -413,6 +414,13 @@ export const useKlondikeDrawOneStore = create<KlondikeStore>()(
           canUndo: false,
           canRedo: false,
         } as Partial<KlondikeStore>)
+      },
+
+      devSetStatus: (status: GameStatus) => {
+        if (status === 'won') {
+          get().recordWin(get().score, !get().usedUndo)
+        }
+        set({ status } as Partial<KlondikeStore>)
       },
     }),
     {

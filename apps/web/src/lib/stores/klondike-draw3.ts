@@ -20,7 +20,7 @@ import { createHistorySlice } from './slices/history'
 import { createStatsSlice } from './slices/stats'
 import type { HistorySlice } from './slices/history'
 import type { StatsSlice } from './slices/stats'
-import type { Card } from '#/lib/types'
+import type { Card, GameStatus } from '#/lib/types'
 import { useKlondikeDraw3SettingsStore } from './klondike-draw3-settings'
 
 export interface KlondikeStore
@@ -30,6 +30,7 @@ export interface KlondikeStore
   flipStock: () => void
   newGame: (seed?: number) => void
   restartGame: () => void
+  devSetStatus: (status: GameStatus) => void
 }
 
 function snapshot(state: KlondikeState): KlondikeState {
@@ -404,6 +405,13 @@ export const useKlondikeDrawThreeStore = create<KlondikeStore>()(
           canUndo: false,
           canRedo: false,
         } as Partial<KlondikeStore>)
+      },
+
+      devSetStatus: (status: GameStatus) => {
+        if (status === 'won') {
+          get().recordWin(get().score, !get().usedUndo)
+        }
+        set({ status } as Partial<KlondikeStore>)
       },
     }),
     {

@@ -44,14 +44,18 @@ export default function FreeCellFoundation({
         'relative rounded-lg transition-colors',
         isOver && 'ring-2 ring-primary ring-offset-1',
       )}
+      style={{
+        width: 'var(--card-width, 7rem)',
+        height: 'var(--card-height, 10rem)',
+      }}
     >
-      <div className="relative h-40 w-28">
+      <div className="relative h-full w-full">
         <CardSlot role="foundation" />
         {/* Suit hint in empty slot */}
         <div
           className={cn(
-            'pointer-events-none absolute inset-0 flex items-center justify-center text-3xl opacity-30',
-            isRed ? 'text-red-500' : 'text-slate-700 dark:text-slate-300',
+            'pointer-events-none absolute inset-0 flex items-center justify-center text-3xl opacity-60',
+            isRed ? 'text-red-300' : 'text-slate-300',
           )}
         >
           {SUIT_SYMBOLS[suit]}

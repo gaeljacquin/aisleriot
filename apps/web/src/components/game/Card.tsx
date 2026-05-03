@@ -22,12 +22,16 @@ export default function Card({
   return (
     <div
       className={cn(
-        'relative flex h-40 w-28 select-none flex-col rounded-lg transition-all duration-200',
+        'relative flex select-none flex-col rounded-lg transition-all duration-200',
         highlighted &&
           'ring-4 ring-amber-400 dark:ring-amber-300 ring-offset-2',
         onClick && 'cursor-pointer hover:brightness-105 active:scale-95',
         className,
       )}
+      style={{
+        width: 'var(--card-width, 7rem)',
+        height: 'var(--card-height, 10rem)',
+      }}
       onClick={onClick}
       role={onClick ? 'button' : undefined}
       aria-label={faceUp ? `${rank} of ${suit}` : 'Face-down card'}
