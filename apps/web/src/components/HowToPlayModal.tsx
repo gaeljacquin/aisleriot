@@ -27,7 +27,7 @@ export function HowToPlayModal({
             {variant?.name}
           </DialogTitle>
           <DialogDescription className="font-serif text-cream-dim">
-            {variant?.description}
+            {variant?.blurb}
           </DialogDescription>
         </DialogHeader>
         <ol className="space-y-4 pl-4 pt-1 font-serif">
