@@ -13,16 +13,22 @@ function HowToPlay() {
   )
 
   return (
-    <main className="flex h-full flex-col px-6 py-10">
-      <div className="flex flex-1 flex-col items-center justify-center pb-24">
-        <div className="w-full max-w-sm space-y-10">
-          <h1 className="text-center text-3xl font-bold text-foreground">
+    <main className="relative flex min-h-full flex-col overflow-y-auto px-6 py-12 sm:py-20">
+      <div className="mx-auto w-full max-w-xl">
+        <header className="mb-12 text-center">
+          <h1 className="font-serif text-4xl font-bold tracking-tight text-gold sm:text-5xl">
             How to Play
           </h1>
+          <p className="mt-3 font-serif text-sm text-cream-dim">
+            Master the rules of each variant.
+          </p>
+        </header>
+
+        <div className="w-full space-y-10">
           <VariantGrid onSelect={setSelectedVariant} />
         </div>
 
-        <div className="mt-14">
+        <div className="mt-20 flex justify-center">
           <BackLink />
         </div>
       </div>

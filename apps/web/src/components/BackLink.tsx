@@ -29,7 +29,7 @@ export default function BackLink({
         )}
       >
         <HugeiconsIcon icon={ArrowLeft02Icon} className="size-4" />
-        {label}
+        <span className="font-serif">{label}</span>
       </Link>
     )
   }
@@ -53,7 +53,7 @@ export default function BackLink({
       >
         <HugeiconsIcon icon={ArrowLeft02Icon} className="size-5" />
       </motion.span>
-      {label}
+      <span className="font-serif">{label}</span>
     </Link>
   )
 }
