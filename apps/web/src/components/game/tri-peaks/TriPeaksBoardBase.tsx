@@ -94,13 +94,16 @@ export default function TriPeaksBoardBase({
           moveCount={chain} // TriPeaks uses chain as a key stat
           variantName={variantName}
           devMoveAnywhere={devStatus === 'won'}
-          onToggleMoveAnywhere={() => setDevStatus(devStatus === 'won' ? null : 'won')}
+          onToggleMoveAnywhere={() =>
+            setDevStatus(devStatus === 'won' ? null : 'won')
+          }
           devPeekTableau={devStatus === 'lost'}
-          onTogglePeekTableau={() => setDevStatus(devStatus === 'lost' ? null : 'lost')}
+          onTogglePeekTableau={() =>
+            setDevStatus(devStatus === 'lost' ? null : 'lost')
+          }
         />
 
         {/* End-game result — shown below board, NOT absolute */}
-
 
         {isGameOver && (
           <div className="flex flex-col items-center gap-3 py-4 mt-4">

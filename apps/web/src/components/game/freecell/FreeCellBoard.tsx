@@ -29,7 +29,9 @@ interface FreeCellBoardProps {
   onHowToPlay: () => void
 }
 
-export default function FreeCellBoard({ onHowToPlay: _onHowToPlay }: FreeCellBoardProps) {
+export default function FreeCellBoard({
+  onHowToPlay: _onHowToPlay,
+}: FreeCellBoardProps) {
   const {
     tableau,
     freeCells,
@@ -173,11 +175,12 @@ export default function FreeCellBoard({ onHowToPlay: _onHowToPlay }: FreeCellBoa
           devMoveAnywhere={devUnlimitedMoves}
           onToggleMoveAnywhere={() => setDevUnlimitedMoves((v) => !v)}
           devPeekTableau={devStatus === 'won'}
-          onTogglePeekTableau={() => setDevStatus(devStatus === 'won' ? null : 'won')}
+          onTogglePeekTableau={() =>
+            setDevStatus(devStatus === 'won' ? null : 'won')
+          }
         />
 
         {/* Victory message */}
-
 
         {isGameOver && (
           <div className="flex flex-col items-center gap-3 py-2">

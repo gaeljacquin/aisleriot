@@ -248,9 +248,13 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
           redealsLeft={recyclesRemaining}
           variantName={variantName}
           devMoveAnywhere={devStatus === 'won'}
-          onToggleMoveAnywhere={() => setDevStatus(devStatus === 'won' ? null : 'won')}
+          onToggleMoveAnywhere={() =>
+            setDevStatus(devStatus === 'won' ? null : 'won')
+          }
           devPeekTableau={devStatus === 'lost'}
-          onTogglePeekTableau={() => setDevStatus(devStatus === 'lost' ? null : 'lost')}
+          onTogglePeekTableau={() =>
+            setDevStatus(devStatus === 'lost' ? null : 'lost')
+          }
         />
 
         {/* End-game result */}
@@ -270,7 +274,6 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
           </div>
         )}
       </div>
-
 
       <ConfirmModal
         open={confirmRestart}

@@ -211,7 +211,9 @@ export default function KlondikeBoardBase({
           score={score}
           moveCount={moveCount}
           redealsLeft={redealsLeft}
-          variantName={drawCount === 1 ? 'Klondike (Draw 1)' : 'Klondike (Draw 3)'}
+          variantName={
+            drawCount === 1 ? 'Klondike (Draw 1)' : 'Klondike (Draw 3)'
+          }
           devMoveAnywhere={devMoveAnywhere}
           onToggleMoveAnywhere={() => setDevMoveAnywhere((v) => !v)}
           devPeekTableau={devPeekTableau}
@@ -219,7 +221,6 @@ export default function KlondikeBoardBase({
         />
 
         {/* Victory message */}
-
 
         {isGameOver && (
           <div className="flex flex-col items-center gap-3 py-2">
