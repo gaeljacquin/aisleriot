@@ -100,7 +100,16 @@ export default function PyramidAltBoard({
                             setSelectedIsWaste(false)
                             ctx.clearSelection()
                           } else if (ctx.selectedCellId !== null) {
-                            // A pyramid cell is selected — clicking stock should deselect it, not select stock
+                            // Try to pair with selected pyramid cell
+                            altGame.onRemovePairWithStock(ctx.selectedCellId)
+                            ctx.clearSelection()
+                            setSelectedIsStock(false)
+                            setSelectedIsWaste(false)
+                          } else if (selectedIsWaste) {
+                            // Try to pair with selected waste card
+                            altGame.onRemovePairStockWithWaste()
+                            setSelectedIsWaste(false)
+                            setSelectedIsStock(false)
                             ctx.clearSelection()
                           } else {
                             setSelectedIsWaste(false)
@@ -158,12 +167,16 @@ export default function PyramidAltBoard({
                     ctx.game.onRemoveWasteKing()
                     setSelectedIsStock(false)
                     setSelectedIsWaste(false)
+                    ctx.clearSelection()
                   } else if (selectedIsStock && ctx.game.stockTop) {
                     ctx.game.onRemovePairStockWithWaste()
                     setSelectedIsStock(false)
+                    setSelectedIsWaste(false)
+                    ctx.clearSelection()
                   } else if (ctx.selectedCellId !== null) {
                     ctx.handleWasteTopClick()
                     setSelectedIsWaste(false)
+                    setSelectedIsStock(false)
                   } else if (selectedIsWaste) {
                     // Deselect on second click
                     setSelectedIsWaste(false)
