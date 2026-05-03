@@ -23,15 +23,16 @@ export function HowToPlayModal({
     <Dialog open={open} onOpenChange={(nextOpen) => onOpenChange(nextOpen)}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>{variant?.name}</DialogTitle>
-          <DialogDescription>{variant?.description}</DialogDescription>
+          <DialogTitle className="font-serif text-2xl font-bold text-gold">
+            {variant?.name}
+          </DialogTitle>
+          <DialogDescription className="font-serif text-cream-dim">
+            {variant?.description}
+          </DialogDescription>
         </DialogHeader>
-        <ol className="space-y-3 pl-4 pt-1">
+        <ol className="space-y-4 pl-4 pt-1 font-serif">
           {variant?.rules.map((rule, i) => (
-            <li
-              key={i}
-              className="list-decimal text-sm/relaxed text-foreground"
-            >
+            <li key={i} className="list-decimal text-sm/relaxed text-cream">
               {rule}
             </li>
           ))}

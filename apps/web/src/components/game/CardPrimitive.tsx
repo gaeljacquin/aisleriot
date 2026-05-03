@@ -1,9 +1,35 @@
-// @ts-expect-error - react-free-playing-cards does not have types
-import ReactCard from 'react-free-playing-cards'
+import { lazy, Suspense } from 'react'
 import type { Suit, Rank } from '#/lib/types'
 import { cn } from '@workspace/ui/lib/utils'
 import { useCardSettingsStore } from '#/stores/card-settings'
 import type { CardStyle, CardBack } from '#/stores/card-settings'
+
+// Lazy load the different deck types from the library's sub-paths
+// react-free-playing-cards does not have types, but the default export is the card component
+// @ts-expect-error - no types
+const TcN = lazy(() =>
+  import('react-free-playing-cards/lib/TcN').then((m) => ({
+    default: m.default?.default || m.default || m,
+  })),
+)
+// @ts-expect-error - no types
+const TcB = lazy(() =>
+  import('react-free-playing-cards/lib/TcB').then((m) => ({
+    default: m.default?.default || m.default || m,
+  })),
+)
+// @ts-expect-error - no types
+const FcN = lazy(() =>
+  import('react-free-playing-cards/lib/FcN').then((m) => ({
+    default: m.default?.default || m.default || m,
+  })),
+)
+// @ts-expect-error - no types
+const FcB = lazy(() =>
+  import('react-free-playing-cards/lib/FcB').then((m) => ({
+    default: m.default?.default || m.default || m,
+  })),
+)
 
 interface CardPrimitiveProps {
   suit: Suit
@@ -35,11 +61,11 @@ const RANK_MAP: Record<Rank, string> = {
   K: 'K',
 }
 
-const DECK_TYPE_MAP: Record<CardStyle, string | undefined> = {
-  basic: undefined,
-  'four-color': 'four-color',
-  large: 'big-face',
-  'large-four-color': 'big-face four-color',
+const DECK_COMPONENTS: Record<CardStyle, React.ElementType> = {
+  basic: TcN,
+  large: TcB,
+  'four-color': FcN,
+  'large-four-color': FcB,
 }
 
 const CARD_BACK_STYLES: Record<CardBack, React.CSSProperties> = {
@@ -92,15 +118,23 @@ export default function CardPrimitive({
     )
   }
 
+  const DeckComponent = DECK_COMPONENTS[cardStyle]
+
   return (
     <div className={className} style={{ width: '100%', height: '100%' }}>
-      <ReactCard
-        card={cardCode}
-        deckType={DECK_TYPE_MAP[cardStyle]}
-        back={false}
-        height="100%"
-        style={{ display: 'block', width: '100%' }}
-      />
+      <Suspense
+        fallback={
+          <div className="h-full w-full rounded-lg bg-white opacity-50" />
+        }
+      >
+        <DeckComponent
+          card={cardCode}
+          back={false}
+          height="100%"
+          // @ts-expect-error - style prop mismatch
+          style={{ display: 'block', width: '100%' }}
+        />
+      </Suspense>
     </div>
   )
 }
