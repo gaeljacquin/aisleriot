@@ -19,7 +19,7 @@ export const Route = createFileRoute('/settings')({
   component: Settings,
 })
 
-const CARDFACETEXT = 'Card Face'
+const CARDSTYLETEXT = 'Card Style'
 
 const cardStyleOptions: { value: CardStyle; label: string }[] = [
   { value: 'basic', label: 'Basic' },
@@ -46,7 +46,7 @@ function CardStyleToggleGroup() {
   return (
     <div
       role="group"
-      aria-label={CARDFACETEXT}
+      aria-label={CARDSTYLETEXT}
       className="grid grid-cols-2 gap-3 sm:grid-cols-4"
     >
       {cardStyleOptions.map(({ value, label }) => (
@@ -233,7 +233,7 @@ function Settings() {
           {/* Card Appearance Section */}
           <section className="space-y-6">
             <label className="block text-xs font-bold uppercase tracking-[0.25em] text-cream-dim">
-              {CARDFACETEXT}
+              {CARDSTYLETEXT}
             </label>
             <CardStyleToggleGroup />
             <CardPreview />

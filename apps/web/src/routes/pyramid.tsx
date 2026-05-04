@@ -11,7 +11,7 @@ function Pyramid() {
   const [howToPlayOpen, setHowToPlayOpen] = useState(false)
 
   return (
-    <main className="flex h-screen flex-col overflow-hidden p-6 sm:p-8">
+    <main className="flex h-screen flex-col overflow-hidden">
       <PyramidBoard onHowToPlay={() => setHowToPlayOpen(true)} />
 
       <HowToPlayModal

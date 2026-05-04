@@ -213,8 +213,9 @@ export default function CardPrimitive({
           card={cardCode}
           back={false}
           height="100%"
+          width="100%"
           // @ts-expect-error - style prop mismatch
-          style={{ display: 'block', width: '100%' }}
+          style={{ display: 'block', width: '100%', height: '100%' }}
         />
       </Suspense>
     </div>

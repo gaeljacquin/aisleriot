@@ -5,7 +5,6 @@ import PeakGrid from './PeakGrid'
 import { WasteRefContext } from './WasteRefContext'
 import { TopBar } from '@/components/layout/TopBar'
 import { ActionRail } from '@/components/layout/ActionRail'
-import { DevRail } from '@/components/layout/DevRail'
 import { ConfirmModal } from '#/components/ConfirmModal'
 import { getVariant } from '@workspace/constants'
 import type { GameVariantId } from '@workspace/constants'
@@ -82,7 +81,7 @@ export default function TriPeaksBoardBase({
       label: 'Reset',
       onClick: () => setConfirmRestart(true),
     },
-    { icon: BookOpen01Icon, label: 'Rules', onClick: onHowToPlay },
+    { icon: BookOpen01Icon, label: 'How to Play', onClick: onHowToPlay },
   ]
 
   const [devMoveAnywhere, setDevMoveAnywhere] = useState(false)
@@ -112,52 +111,32 @@ export default function TriPeaksBoardBase({
     <WasteRefContext value={wasteRef}>
       <style>{`
         .tri-peaks-container {
-          --card-width: 7rem;
-          --card-height: 10rem;
-          --card-gap-tri: 1rem;
+          --card-width: 7.5rem;
+          --card-height: 10.7rem;
+          --card-gap-tri: 1.25rem;
           --card-overlap-tri: 4rem;
-          --card-step-x: calc(var(--card-width) + var(--card-gap-tri));
-          --card-step-y: calc(var(--card-height) - var(--card-overlap-tri));
+          --card-step-x: 8.5rem;
+          --card-step-y: 6.7rem;
           --rail-gap: 4rem;
         }
 
-        @media (max-width: 1400px) {
+        @media (max-width: 1536px) {
           .tri-peaks-container {
-            --card-width: 6rem;
-            --card-height: 8.5rem;
-            --card-gap-tri: 0.75rem;
-            --card-overlap-tri: 3.5rem;
-            --rail-gap: 3rem;
+            --card-width: clamp(3rem, min(8vw, 13vh), 7.2rem);
+            --card-height: calc(var(--card-width) * 1.428);
+            --card-step-x: calc(var(--card-width) * 1.13);
+            --card-step-y: calc(var(--card-height) * 0.58);
+            --rail-gap: 3vmin;
           }
         }
 
-        @media (max-width: 1200px) {
+        @media (max-width: 640px) {
           .tri-peaks-container {
-            --card-width: 5.25rem;
-            --card-height: 7.5rem;
-            --card-gap-tri: 0.5rem;
-            --card-overlap-tri: 3rem;
-            --rail-gap: 2.5rem;
-          }
-        }
-
-        @media (max-width: 1000px) {
-          .tri-peaks-container {
-            --card-width: 4.5rem;
-            --card-height: 6.4rem;
-            --card-gap-tri: 0.25rem;
-            --card-overlap-tri: 2.5rem;
-            --rail-gap: 2rem;
-          }
-        }
-
-        @media (max-width: 800px) {
-          .tri-peaks-container {
-            --card-width: 3.75rem;
-            --card-height: 5.35rem;
-            --card-gap-tri: 0.125rem;
-            --card-overlap-tri: 2rem;
-            --rail-gap: 1.5rem;
+            --card-width: clamp(1.8rem, min(8.5vw, 12vh), 3.8rem);
+            --card-height: calc(var(--card-width) * 1.428);
+            --card-step-x: calc(var(--card-width) * 1.08);
+            --card-step-y: calc(var(--card-height) * 0.55);
+            --rail-gap: 2vmin;
           }
         }
       `}</style>
@@ -167,11 +146,11 @@ export default function TriPeaksBoardBase({
           subtitle={variant.subtitle}
           stats={stats}
           status={status}
-          className="mb-8"
+          className="mb-4 px-6 pt-6 sm:px-8 sm:pt-8"
         />
 
         {/* Board Container */}
-        <div className="flex-1 overflow-auto felt-scroll px-0 py-4 sm:py-8">
+        <div className="flex-1 overflow-hidden felt-scroll px-4 sm:px-8 py-1 sm:py-2">
           <div
             className={cn(
               'mx-auto w-fit flex flex-col items-center gap-8',
@@ -186,21 +165,15 @@ export default function TriPeaksBoardBase({
               isValidMove={(id) => devMoveAnywhere || isValidMove(id)}
             />
 
-            {/* Stock + Waste row + Split Rails */}
+            {/* Stock + Waste row */}
             <div
               className="mt-6 flex items-center justify-center"
               style={{ gap: 'var(--rail-gap)' }}
             >
-              <ActionRail
-                actions={actions.slice(0, 3)}
-                orientation="vertical"
-                showBackLink={false}
-                showDivider={false}
-                showSettingsLink={false}
-                className="hidden md:flex"
-              />
-
-              <div className="flex items-center gap-4 sm:gap-8">
+              <div
+                className="flex items-center"
+                style={{ gap: 'var(--rail-gap)' }}
+              >
                 <Stock
                   count={stockCount}
                   onClick={onDraw}
@@ -210,33 +183,17 @@ export default function TriPeaksBoardBase({
                   <Waste topCard={wasteTop} animate={false} />
                 </div>
               </div>
-
-              <ActionRail
-                actions={actions.slice(3)}
-                orientation="vertical"
-                className="hidden md:flex"
-              />
-            </div>
-
-            {/* Mobile Action Rails */}
-            <div className="flex flex-col gap-2 md:hidden w-full">
-              <ActionRail
-                actions={actions}
-                orientation="horizontal"
-                className="justify-between"
-              />
-              <DevRail
-                actions={devActions}
-                orientation="horizontal"
-                className="justify-center"
-              />
-            </div>
-
-            {/* Centered Dev Rail (Desktop) */}
-            <div className="hidden md:flex justify-center mt-4">
-              <DevRail actions={devActions} orientation="horizontal" />
             </div>
           </div>
+        </div>
+
+        {/* Bottom Action Rail - pinned to bottom */}
+        <div className="flex w-full justify-center pb-6 pt-2">
+          <ActionRail
+            actions={actions}
+            devActions={devActions}
+            className="max-w-fit"
+          />
         </div>
       </div>
 

@@ -24,12 +24,6 @@ const menuItems = [
     primary: true,
   },
   {
-    label: 'How to Play',
-    subtitle: 'Learn the rules',
-    icon: Book02Icon,
-    to: '/how-to-play' as const,
-  },
-  {
     label: 'Settings',
     subtitle: "Personalize to your heart's content",
     icon: Settings02Icon,
@@ -85,7 +79,7 @@ function Home() {
             <h1 className="font-serif text-5xl leading-none text-cream md:text-7xl">
               Aisle<span className="font-light italic text-gold">riot</span>
             </h1>
-            <p className="mt-2 max-w-md text-sm leading-relaxed text-cream-dim font-serif">
+            <p className="mt-2 max-w-md text-md leading-relaxed text-cream-dim font-serif">
               A Solitaire Suite
             </p>
           </section>

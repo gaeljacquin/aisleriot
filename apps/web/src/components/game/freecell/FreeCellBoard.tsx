@@ -14,7 +14,6 @@ import FreeCellTableau from './FreeCellTableau'
 import FreeCellCard from './FreeCellCard'
 import { TopBar } from '@/components/layout/TopBar'
 import { ActionRail } from '@/components/layout/ActionRail'
-import { DevRail } from '@/components/layout/DevRail'
 import { ConfirmModal } from '#/components/ConfirmModal'
 import { useFreeCell } from '#/lib/hooks/useFreeCell'
 import { getVariant } from '@workspace/constants'
@@ -33,9 +32,6 @@ import {
   ChampionIcon,
   Cancel01Icon,
 } from '@hugeicons/core-free-icons'
-
-const OVERLAY_CARD_OFFSET = 48
-const CARD_HEIGHT = 160
 
 interface FreeCellBoardProps {
   onHowToPlay: () => void
@@ -139,11 +135,6 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
         easing: 'cubic-bezier(0.18, 0.67, 0.6, 1.22)',
       }
 
-  const overlayHeight =
-    draggedCards && draggedCards.length > 1
-      ? (draggedCards.length - 1) * OVERLAY_CARD_OFFSET + CARD_HEIGHT
-      : CARD_HEIGHT
-
   const stats = useMemo(
     () => [
       { label: 'Score', value: score },
@@ -169,7 +160,7 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
       label: 'Reset',
       onClick: () => setConfirmRestart(true),
     },
-    { icon: BookOpen01Icon, label: 'Rules', onClick: onHowToPlay },
+    { icon: BookOpen01Icon, label: 'How to Play', onClick: onHowToPlay },
   ]
 
   const devActions = [
@@ -202,55 +193,34 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
       <div className="h-full freecell-container">
         <style>{`
           .freecell-container {
-            --card-width: 7rem;
-            --card-height: 10rem;
-            --card-gap-free: 1rem;
+            /* Default for extra large screens (> 1536px) */
+            --card-width: 7.5rem;
+            --card-height: 10.7rem;
+            --card-gap-free: 1.25rem;
             --card-offset-free: 3rem;
-            --rail-gap: 1.5rem;
-            --row-gap: 3rem;
+            --rail-gap: 2rem;
+            --row-gap: 4rem;
           }
 
-          @media (max-width: 1400px) {
+          @media (max-width: 1536px) {
             .freecell-container {
-              --card-width: 6rem;
-              --card-height: 8.5rem;
-              --card-gap-free: 0.75rem;
-              --card-offset-free: 2.5rem;
-              --rail-gap: 1rem;
-              --row-gap: 2.5rem;
+              --card-width: clamp(5rem, 9.5vw, 7rem);
+              --card-height: calc(var(--card-width) * 1.428);
+              --card-gap-free: 1.25vw;
+              --card-offset-free: 4vw;
+              --rail-gap: 2.5vw;
+              --row-gap: 4vw;
             }
           }
 
-          @media (max-width: 1200px) {
+          @media (max-width: 640px) {
             .freecell-container {
-              --card-width: 5.25rem;
-              --card-height: 7.5rem;
-              --card-gap-free: 0.5rem;
-              --card-offset-free: 2.2rem;
-              --rail-gap: 1.25rem;
-              --row-gap: 2rem;
-            }
-          }
-
-          @media (max-width: 1000px) {
-            .freecell-container {
-              --card-width: 4.5rem;
-              --card-height: 6.4rem;
-              --card-gap-free: 0.375rem;
-              --card-offset-free: 1.8rem;
-              --rail-gap: 1rem;
-              --row-gap: 1.5rem;
-            }
-          }
-
-          @media (max-width: 800px) {
-            .freecell-container {
-              --card-width: 3.75rem;
-              --card-height: 5.35rem;
-              --card-gap-free: 0.25rem;
-              --card-offset-free: 1.5rem;
-              --rail-gap: 0.75rem;
-              --row-gap: 1.25rem;
+              --card-width: clamp(4rem, 11vw, 5rem);
+              --card-height: calc(var(--card-width) * 1.428);
+              --card-gap-free: 1vw;
+              --card-offset-free: 5vw;
+              --rail-gap: 2vw;
+              --row-gap: 3vw;
             }
           }
         `}</style>
@@ -261,44 +231,24 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
             subtitle={variant.subtitle}
             stats={stats}
             status={status}
-            className="mb-8"
+            className="mb-8 px-6 pt-6 sm:px-8 sm:pt-8"
           />
 
           {/* Board Container */}
-          <div className="flex-1 overflow-auto felt-scroll px-0 py-4 sm:py-8">
+          <div className="flex-1 overflow-auto felt-scroll px-4 sm:px-8 py-4 sm:py-8">
             <div
               className={cn(
-                'mx-auto w-fit flex flex-col items-center',
+                'mx-auto w-full lg:w-fit flex flex-col items-center',
                 isGameOver && 'opacity-50',
               )}
               style={{ gap: 'var(--row-gap)' }}
             >
-              {/* Top Row with Split Rails */}
-              <div
-                className="flex items-center justify-center"
-                style={{ gap: 'var(--rail-gap)' }}
-              >
-                <ActionRail
-                  actions={actions.slice(0, 3)}
-                  orientation="vertical"
-                  showBackLink={false}
-                  showDivider={false}
-                  showSettingsLink={false}
-                  className="hidden md:flex"
-                />
-
-                <FreeCellTopRow
-                  freeCells={freeCells}
-                  foundation={foundation}
-                  onFreeCellDoubleClick={handleFreeCellDoubleClick}
-                />
-
-                <ActionRail
-                  actions={actions.slice(3)}
-                  orientation="vertical"
-                  className="hidden md:flex"
-                />
-              </div>
+              {/* Top Row */}
+              <FreeCellTopRow
+                freeCells={freeCells}
+                foundation={foundation}
+                onFreeCellDoubleClick={handleFreeCellDoubleClick}
+              />
 
               <FreeCellTableau
                 tableau={tableau}
@@ -306,28 +256,42 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
                 devUnlimitedMoves={devUnlimitedMoves}
                 onDoubleClick={handleTableauDoubleClick}
               />
-
-              {/* Mobile Action Rails */}
-              <div className="flex flex-col gap-2 md:hidden w-full">
-                <ActionRail
-                  actions={actions}
-                  orientation="horizontal"
-                  className="justify-between"
-                />
-                <DevRail
-                  actions={devActions}
-                  orientation="horizontal"
-                  className="justify-center"
-                />
-              </div>
-
-              {/* Centered Dev Rail (Desktop) */}
-              <div className="hidden md:flex justify-center mt-4">
-                <DevRail actions={devActions} orientation="horizontal" />
-              </div>
             </div>
           </div>
+
+          {/* Bottom Action Rail - pinned to bottom */}
+          <div className="flex w-full justify-center pb-6 pt-2">
+            <ActionRail
+              actions={actions}
+              devActions={devActions}
+              className="max-w-fit"
+            />
+          </div>
         </div>
+
+        <ConfirmModal
+          open={confirmRestart}
+          onOpenChange={setConfirmRestart}
+          onConfirm={() => {
+            onRestartGame()
+            setConfirmRestart(false)
+          }}
+          title="Restart Game?"
+          description="Are you sure you want to restart this game? All progress will be lost."
+          confirmLabel="Restart"
+        />
+
+        <ConfirmModal
+          open={confirmNewGame}
+          onOpenChange={setConfirmNewGame}
+          onConfirm={() => {
+            onNewGame()
+            setConfirmNewGame(false)
+          }}
+          title="New Game?"
+          description="Are you sure you want to start a new game? Current progress will be lost."
+          confirmLabel="New Game"
+        />
 
         {/* Drag overlay */}
         <DragOverlay dropAnimation={dropAnimation}>

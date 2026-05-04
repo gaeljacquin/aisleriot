@@ -48,8 +48,14 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
         (ctx.canDraw && !ctx.game.stockTopIsKing) || ctx.canRecycle
 
       return (
-        <div className="mt-10 flex flex-col items-center gap-6">
-          <div className="flex items-center justify-center gap-8">
+        <div
+          className="flex flex-col items-center gap-6"
+          style={{ marginTop: 'var(--stock-row-mt, 2.5rem)' }}
+        >
+          <div
+            className="flex items-center justify-center"
+            style={{ gap: 'var(--pyramid-gap, 2rem)' }}
+          >
             <div
               className="relative"
               style={{

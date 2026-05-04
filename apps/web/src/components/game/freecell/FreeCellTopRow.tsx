@@ -20,7 +20,7 @@ export default function FreeCellTopRow({
   return (
     <div
       className="flex items-center justify-center"
-      style={{ gap: 'calc(var(--card-gap-free, 1rem) * 2)' }}
+      style={{ gap: 'var(--rail-gap, 2rem)' }}
     >
       {/* Left: 4 free cells */}
       <div className="flex" style={{ gap: 'var(--card-gap-free, 1rem)' }}>

@@ -4,6 +4,7 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import { appInfo } from '@workspace/constants'
+import { TooltipProvider } from '@workspace/ui/components/tooltip'
 import '@workspace/ui/globals.css'
 
 export const Route = createRootRoute({
@@ -16,7 +17,7 @@ function RootComponent() {
   }, [])
 
   return (
-    <>
+    <TooltipProvider>
       <div className="flex h-screen flex-col overflow-hidden bg-background">
         <div className="flex-1 overflow-y-auto overflow-x-hidden">
           <Outlet />
@@ -33,6 +34,6 @@ function RootComponent() {
           },
         ]}
       />
-    </>
+    </TooltipProvider>
   )
 }

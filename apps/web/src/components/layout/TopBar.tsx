@@ -1,5 +1,6 @@
 import { cn } from '@workspace/ui/lib/utils'
 import ThemeToggle from '@/components/ThemeToggle'
+import ViewportDebugger from '@/components/ViewportDebugger'
 
 import type { GameStatus } from '#/lib/types'
 
@@ -78,6 +79,7 @@ export function TopBar({
       </div>
 
       <div className="flex items-center justify-between gap-6 sm:justify-end">
+        <ViewportDebugger />
         {stats && (
           <div className="flex flex-wrap gap-2">
             {stats.map((stat) => (

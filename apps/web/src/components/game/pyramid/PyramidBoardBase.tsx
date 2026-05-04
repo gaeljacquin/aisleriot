@@ -6,7 +6,6 @@ import PyramidGrid from './PyramidGrid'
 import { PyramidWasteRefContext } from './PyramidWasteRefContext'
 import { TopBar } from '@/components/layout/TopBar'
 import { ActionRail } from '@/components/layout/ActionRail'
-import { DevRail } from '@/components/layout/DevRail'
 import { ConfirmModal } from '#/components/ConfirmModal'
 import { isKing } from '#/lib/games/pyramid'
 import { getVariant } from '@workspace/constants'
@@ -81,7 +80,10 @@ function PyramidStockRow({
   wasteRef: React.RefObject<HTMLDivElement | null>
 }) {
   return (
-    <div className="mt-10 flex items-center justify-center gap-20">
+    <div
+      className="flex items-center justify-center"
+      style={{ gap: 'calc(var(--pyramid-gap, 2rem) * 2)' }}
+    >
       <div
         className="relative"
         style={{
@@ -234,7 +236,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
       label: 'Reset',
       onClick: () => setConfirmRestart(true),
     },
-    { icon: BookOpen01Icon, label: 'Rules', onClick: onHowToPlay },
+    { icon: BookOpen01Icon, label: 'How to Play', onClick: onHowToPlay },
   ]
 
   const [devMoveAnywhere, setDevMoveAnywhere] = useState(false)
@@ -262,84 +264,103 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
 
   return (
     <PyramidWasteRefContext value={wasteRef}>
-      <div className="flex h-full flex-col">
+      <style>{`
+        .pyramid-container {
+          --card-width: 7.5rem;
+          --card-height: 10.7rem;
+          --card-step-x: 8.25rem;
+          --card-step-y: 6.5rem;
+          --pyramid-gap: 2rem;
+          --stock-row-mt: 2rem;
+        }
+
+        @media (max-width: 1536px) {
+          .pyramid-container {
+            --card-width: clamp(3.5rem, min(10vw, 11vh), 7.5rem);
+            --card-height: calc(var(--card-width) * 1.428);
+            --card-step-x: calc(var(--card-width) * 1.12);
+            --card-step-y: calc(var(--card-height) * 0.62);
+            --pyramid-gap: 1.5vmin;
+            --stock-row-mt: 1.5vmin;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .pyramid-container {
+            --card-width: clamp(2rem, min(12vw, 10vh), 4.5rem);
+            --card-height: calc(var(--card-width) * 1.428);
+            --card-step-x: var(--card-width);
+            --card-step-y: calc(var(--card-height) * 0.55);
+            --pyramid-gap: 1vmin;
+            --stock-row-mt: 1vmin;
+          }
+        }
+      `}</style>
+      <div className="flex h-full flex-col pyramid-container">
         <TopBar
           title={variant.name}
           subtitle={variant.subtitle}
           stats={stats}
           status={status}
-          className="mb-8"
+          className="mb-4 px-6 pt-6 sm:px-8 sm:pt-8"
         />
 
-        {/* Rail + Board Container */}
-        <div className="flex flex-1 gap-4 sm:gap-8 min-h-0">
-          {/* Side Rails - Action & Dev (Left side) */}
-          <aside className="hidden flex-col gap-4 py-8 pl-2 sm:pl-4 md:flex">
-            <ActionRail actions={actions} />
-            <DevRail actions={devActions} />
-          </aside>
-
-          {/* Main Felt Board */}
-          <div className="flex-1 overflow-auto felt-scroll px-0 py-4 sm:py-8">
-            <div
-              className={cn(
-                'mx-auto w-fit flex flex-col gap-10',
-                status !== 'playing' && status !== 'idle' && 'opacity-50',
-              )}
-            >
-              {/* Pyramid Table */}
-              <div className="flex justify-center">
-                <PyramidTable
-                  cells={cells}
-                  availableCells={availableCells}
-                  selectedId={selectedId}
-                  onCellClick={handleCellClick}
-                />
-              </div>
-
-              {renderStockRow ? (
-                renderStockRow({
-                  game: useGame(),
-                  stockCount,
-                  canDraw,
-                  canRecycle,
-                  onDraw,
-                  onRecycle,
-                  wasteTop,
-                  selectedCellId: selectedId,
-                  handleWasteTopClick,
-                  clearSelection,
-                  wasteRef,
-                  recyclesRemaining,
-                  handleStockClick: onDraw,
-                })
-              ) : (
-                <PyramidStockRow
-                  stockCount={stockCount}
-                  canDraw={canDraw}
-                  canRecycle={canRecycle}
-                  onDraw={onDraw}
-                  onRecycle={onRecycle}
-                  wasteTop={wasteTop}
-                  onWasteClick={handleWasteTopClick}
-                  wasteRef={wasteRef}
-                />
-              )}
+        {/* Board Container */}
+        <div className="flex-1 overflow-hidden felt-scroll px-4 sm:px-8 py-1 sm:py-2">
+          <div
+            className={cn(
+              'mx-auto w-fit flex flex-col',
+              status !== 'playing' && status !== 'idle' && 'opacity-50',
+            )}
+            style={{ gap: 'var(--stock-row-mt)' }}
+          >
+            {/* Pyramid Table */}
+            <div className="flex justify-center">
+              <PyramidTable
+                cells={cells}
+                availableCells={availableCells}
+                selectedId={selectedId}
+                onCellClick={handleCellClick}
+              />
             </div>
+
+            {renderStockRow ? (
+              renderStockRow({
+                game: useGame(),
+                stockCount,
+                canDraw,
+                canRecycle,
+                onDraw,
+                onRecycle,
+                wasteTop,
+                selectedCellId: selectedId,
+                handleWasteTopClick,
+                clearSelection,
+                wasteRef,
+                recyclesRemaining,
+                handleStockClick: onDraw,
+              })
+            ) : (
+              <PyramidStockRow
+                stockCount={stockCount}
+                canDraw={canDraw}
+                canRecycle={canRecycle}
+                onDraw={onDraw}
+                onRecycle={onRecycle}
+                wasteTop={wasteTop}
+                onWasteClick={handleWasteTopClick}
+                wasteRef={wasteRef}
+              />
+            )}
           </div>
         </div>
 
-        {/* Mobile Action Rails */}
-        <div className="mt-4 flex flex-col gap-2 md:hidden">
+        {/* Bottom Action Rail - pinned to bottom */}
+        <div className="flex w-full justify-center pb-6 pt-2">
           <ActionRail
             actions={actions}
-            orientation="horizontal"
-            className="justify-between"
-          />
-          <DevRail
-            actions={devActions}
-            orientation="horizontal"
-            className="justify-center"
+            devActions={devActions}
+            className="max-w-fit"
           />
         </div>
       </div>

@@ -92,9 +92,10 @@ export default function PeakGrid({
     <div
       className={cn('relative')}
       style={{
-        width: 'calc(var(--card-step-x, 8.5rem) * 9 + var(--card-width, 7rem))',
+        width:
+          'calc(var(--card-step-x, 8.75rem) * 9 + var(--card-width, 7.5rem))',
         height:
-          'calc(var(--card-step-y, 6rem) * 3 + var(--card-height, 10rem))',
+          'calc(var(--card-step-y, 6.7rem) * 3 + var(--card-height, 10.7rem))',
       }}
     >
       {CELL_POSITIONS.map((pos, idx) => {
@@ -107,8 +108,8 @@ export default function PeakGrid({
             key={cellId}
             className={cn('absolute', cell.removed && 'pointer-events-none')}
             style={{
-              left: `calc(${pos.x} * var(--card-step-x, 8.5rem))`,
-              top: `calc(${pos.y} * var(--card-step-y, 6rem))`,
+              left: `calc(${pos.x} * var(--card-step-x, 8.75rem))`,
+              top: `calc(${pos.y} * var(--card-step-y, 6.7rem))`,
               zIndex: getZIndex(idx),
             }}
           >

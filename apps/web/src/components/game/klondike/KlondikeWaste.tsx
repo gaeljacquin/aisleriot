@@ -49,7 +49,6 @@ export default function KlondikeWaste({
   // FIX: Only show the cards from the current "deal"
   // currentDealCount is the number of cards from the last flip that are still in the waste
   const visible = currentDealCount > 0 ? waste.slice(-currentDealCount) : []
-  const containerWidth = 112
 
   if (drawCount === 1) {
     const top = visible.length > 0 ? visible[0] : null

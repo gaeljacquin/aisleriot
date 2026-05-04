@@ -12,7 +12,7 @@ function SolitaireDraw3() {
   const [howToPlayOpen, setHowToPlayOpen] = useState(false)
 
   return (
-    <main className="flex h-screen flex-col overflow-hidden p-6 sm:p-8">
+    <main className="flex h-screen flex-col overflow-hidden">
       <KlondikeDraw3Board onHowToPlay={() => setHowToPlayOpen(true)} />
 
       <HowToPlayModal

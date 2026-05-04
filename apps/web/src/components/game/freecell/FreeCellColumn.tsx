@@ -10,8 +10,6 @@ import type {
 } from '#/lib/games/freecell'
 import type { Card } from '#/lib/types'
 
-const CARD_OFFSET = 48
-
 interface FreeCellColumnProps {
   id: FreeCellPileId
   cards: Card[]

@@ -16,7 +16,6 @@ import KlondikeStock from './KlondikeStock'
 import Card from '../Card'
 import { TopBar } from '@/components/layout/TopBar'
 import { ActionRail } from '@/components/layout/ActionRail'
-import { DevRail } from '@/components/layout/DevRail'
 import { ConfirmModal } from '#/components/ConfirmModal'
 import { getVariant } from '@workspace/constants'
 import type { UseKlondikeResult } from '#/lib/hooks/useKlondikeDrawOne'
@@ -159,7 +158,7 @@ export default function KlondikeBoardBase({
       label: 'Reset',
       onClick: () => setConfirmRestart(true),
     },
-    { icon: BookOpen01Icon, label: 'Rules', onClick: onHowToPlay },
+    { icon: BookOpen01Icon, label: 'How to Play', onClick: onHowToPlay },
   ]
 
   const devActions = [
@@ -195,102 +194,127 @@ export default function KlondikeBoardBase({
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex h-full flex-col">
+      <style>{`
+        .klondike-container {
+          --card-width: 7.5rem;
+          --card-height: 10.7rem;
+          --card-gap-klon: 2rem;
+        }
+
+        @media (max-width: 1536px) {
+          .klondike-container {
+            --card-width: clamp(5rem, 9vw, 7rem);
+            --card-height: calc(var(--card-width) * 1.428);
+            --card-gap-klon: 2vw;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .klondike-container {
+            --card-width: clamp(4rem, 11vw, 5rem);
+            --card-height: calc(var(--card-width) * 1.428);
+            --card-gap-klon: 1.5vw;
+          }
+        }
+      `}</style>
+
+      <div className="flex h-full flex-col klondike-container">
         <TopBar
           title={variant.name}
           subtitle={variant.subtitle}
           stats={stats}
           status={status}
-          className="mb-8"
+          className="mb-8 px-6 pt-6 sm:px-8 sm:pt-8"
         />
 
-        {/* Rail + Board Container */}
-        <div className="flex flex-1 gap-4 sm:gap-8 min-h-0">
-          {/* Side Rails - Action & Dev (Left side) */}
-          <aside className="hidden flex-col gap-4 py-8 pl-2 sm:pl-4 md:flex">
-            <ActionRail actions={actions} />
-            <DevRail actions={devActions} />
-          </aside>
-
-          {/* Main Felt Board */}
-          <div className="flex-1 overflow-auto felt-scroll px-0 py-4 sm:py-8">
+        {/* Board Container */}
+        <div className="flex-1 overflow-auto felt-scroll px-4 sm:px-8 py-4 sm:py-8">
+          <div
+            className={cn(
+              'mx-auto w-fit flex flex-col gap-10',
+              isGameOver && 'opacity-50',
+            )}
+          >
+            {/* Top row: stock | waste | empty | foundations */}
             <div
-              className={cn(
-                'mx-auto w-fit flex flex-col gap-10',
-                isGameOver && 'opacity-50',
-              )}
+              className="grid grid-cols-7"
+              style={{
+                gap: 'var(--card-gap-klon)',
+                gridTemplateColumns: 'repeat(7, var(--card-width))',
+              }}
             >
-              {/* Top row: stock + waste | empty | foundations */}
-              <div className="grid grid-cols-7 gap-12">
-                {/* Stock + Waste */}
-                <div className="flex gap-12 col-span-2">
-                  <KlondikeStock
-                    stockCount={stockCount}
-                    stockEmpty={stockEmpty}
-                    canRedeal={canRedeal}
-                    onClick={onFlipStock}
-                  />
-                  <KlondikeWaste
-                    waste={waste}
-                    drawCount={drawCount}
-                    moveAnywhere={devMoveAnywhere}
-                    onDoubleClick={() => onAutoMove('waste')}
-                    currentDealCount={currentDealCount}
-                  />
-                </div>
+              <KlondikeStock
+                stockCount={stockCount}
+                stockEmpty={stockEmpty}
+                canRedeal={canRedeal}
+                onClick={onFlipStock}
+              />
+              <KlondikeWaste
+                waste={waste}
+                drawCount={drawCount}
+                moveAnywhere={devMoveAnywhere}
+                onDoubleClick={() => onAutoMove('waste')}
+                currentDealCount={currentDealCount}
+              />
 
-                {/* Empty space (Column 3) */}
-                <div />
+              {/* Empty space (Column 3) */}
+              <div />
 
-                {/* Foundations (Columns 4-7) */}
-                <div className="grid grid-cols-4 gap-12 col-span-4">
-                  {foundation.map((f) => (
-                    <KlondikeFoundation
-                      key={f.id}
-                      id={f.id}
-                      cards={f.cards}
-                      suit={f.suit}
-                      draggable={true}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              {/* Tableau */}
-              <div className="grid grid-cols-7 gap-12">
-                {tableau.map((col) => (
-                  <KlondikeColumn
-                    key={col.id}
-                    id={col.id}
-                    cards={col.cards}
-                    draggableFrom={
-                      devMoveAnywhere
-                        ? Math.max(
-                            0,
-                            col.cards.findIndex((c) => c.faceUp),
-                          )
-                        : draggableFromIndex[col.id]
-                    }
-                    peekTableau={devPeekTableau}
-                    onDoubleClick={(pileId) => onAutoMove(pileId)}
+              {/* Foundations (Columns 4-7) */}
+              <div
+                className="grid grid-cols-4 col-span-4"
+                style={{
+                  gap: 'var(--card-gap-klon)',
+                  gridTemplateColumns: 'repeat(4, var(--card-width))',
+                }}
+              >
+                {foundation.map((f) => (
+                  <KlondikeFoundation
+                    key={f.id}
+                    id={f.id}
+                    cards={f.cards}
+                    suit={f.suit}
+                    draggable={true}
                   />
                 ))}
               </div>
             </div>
+
+            {/* Tableau */}
+            <div
+              className="grid grid-cols-7"
+              style={{
+                gap: 'var(--card-gap-klon)',
+                gridTemplateColumns: 'repeat(7, var(--card-width))',
+              }}
+            >
+              {tableau.map((col) => (
+                <KlondikeColumn
+                  key={col.id}
+                  id={col.id}
+                  cards={col.cards}
+                  draggableFrom={
+                    devMoveAnywhere
+                      ? Math.max(
+                          0,
+                          col.cards.findIndex((c) => c.faceUp),
+                        )
+                      : draggableFromIndex[col.id]
+                  }
+                  peekTableau={devPeekTableau}
+                  onDoubleClick={(pileId) => onAutoMove(pileId)}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Mobile Action Rails */}
-        <div className="mt-4 flex flex-col gap-2 md:hidden">
+        {/* Bottom Action Rail - pinned to bottom */}
+        <div className="flex w-full justify-center pb-6 pt-2">
           <ActionRail
             actions={actions}
-            orientation="horizontal"
-            className="justify-between"
-          />
-          <DevRail
-            actions={devActions}
-            orientation="horizontal"
-            className="justify-center"
+            devActions={devActions}
+            className="max-w-fit"
           />
         </div>
       </div>
