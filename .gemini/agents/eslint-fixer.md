@@ -1,6 +1,6 @@
 ---
 name: eslint-fixer
-description: "Use this agent to find and fix ESLint errors and warnings across the monorepo. Run after large refactors, adding new rules, or when CI lint checks are failing.\n\n<example>\nuser: \"There are a bunch of ESLint warnings in CI\"\nassistant: \"I'll use the eslint-fixer agent to scan and resolve all ESLint issues.\"\n</example>"
+description: "An ESLint expert that finds and fixes ESLint errors and warnings in the project, prioritizing auto-fixes and ensuring adherence to project-specific linting rules."
 model: auto-pro
 ---
 

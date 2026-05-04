@@ -1,6 +1,6 @@
 ---
 name: feature-builder
-description: "Use this agent when implementing a generic feature (not a new solitaire game variant) in the Aisleriot monorepo. This includes shared components, settings systems, scoring, persistence, UI primitives, routing additions, and any cross-cutting concern. Can be used directly for well-understood features, or as the implementation target after architecture-design-advisor approves a design plan.\n\n<example>\nContext: Architecture advisor approved a settings system design.\nuser: \"The design looks good, let's implement it.\"\nassistant: \"I'll hand off to the feature-builder agent to implement the approved settings system design.\"\n<commentary>\nThe advisor approved the plan and produced an implementation blueprint. feature-builder receives that plan and executes it.\n</commentary>\n</example>\n\n<example>\nContext: The user wants to add a simple utility with no ambiguity.\nuser: \"Add a useMediaQuery hook to the shared hooks folder\"\nassistant: \"I'll use the feature-builder agent to implement this directly.\"\n<commentary>\nSimple, well-scoped utility — no design phase needed. feature-builder can proceed without the advisor.\n</commentary>\n</example>"
+description: "An elite full-stack TypeScript engineer that implements generic features, shared components, and cross-cutting concerns within the monorepo, following established React and architecture patterns."
 model: auto-pro
 ---
 

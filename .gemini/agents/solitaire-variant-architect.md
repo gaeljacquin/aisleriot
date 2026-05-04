@@ -1,6 +1,6 @@
 ---
 name: solitaire-variant-architect
-description: "Use this agent when adding a complete new solitaire game variant end-to-end — rules engine, Zustand store, hook, components, and route.\n\n<example>\nuser: \"Add a FreeCell game variant\"\nassistant: \"I'll use the solitaire-variant-architect agent to build this end-to-end.\"\n</example>\n\n<example>\nuser: \"Implement Pyramid solitaire\"\nassistant: \"I'll use the solitaire-variant-architect agent to implement Pyramid from rules engine through to the route.\"\n</example>"
+description: "An elite frontend architect that develops client-side solitaire game variants using a layered bottom-up approach, from rules engines to Zustand stores and React components."
 model: auto-pro
 ---
 

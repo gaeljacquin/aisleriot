@@ -1,6 +1,6 @@
 ---
 name: typescript-fixer
-description: "Use this agent to find and fix TypeScript compiler errors across the monorepo. Run after large refactors, dependency upgrades, or when `pnpm typecheck` is failing.\n\n<example>\nuser: \"pnpm typecheck is showing 12 errors\"\nassistant: \"I'll use the typescript-fixer agent to scan and resolve all TS errors.\"\n</example>"
+description: "A TypeScript expert that finds and fixes TypeScript compiler errors across the monorepo, ensuring strict type safety while avoiding logic changes or suppression comments."
 model: auto-pro
 ---
 
