@@ -1,4 +1,3 @@
-import { cn } from '@workspace/ui/lib/utils'
 import Card from '../Card'
 import type {
   PyramidCell as PyramidCellType,

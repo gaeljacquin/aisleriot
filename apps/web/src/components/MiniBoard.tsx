@@ -28,15 +28,11 @@ export function MiniBoard({ id }: MiniBoardProps) {
         </div>
         <div className="flex justify-between gap-1">
           {[0, 1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="flex flex-col -space-y-[18px]">
+            <div key={i} className="flex flex-col -space-y-4.5">
               {Array.from({ length: i + 1 }).map((_, j) => (
                 <div
                   key={j}
-                  className={cn(
-                    cls,
-                    'h-6 w-[18px]',
-                    j < i ? cardBack : cardFace,
-                  )}
+                  className={cn(cls, 'h-6 w-4.5', j < i ? cardBack : cardFace)}
                 />
               ))}
             </div>
@@ -50,35 +46,31 @@ export function MiniBoard({ id }: MiniBoardProps) {
     return (
       <div className="flex w-full flex-col items-center gap-0">
         {/* The 28-card peaks layout - precisely spread */}
-        <div className="relative h-[47px] w-full max-w-[160px]">
+        <div className="relative h-11.75 w-full max-w-40">
           {/* Row 1: 3 Peaks (portrait orientation) */}
           <div
             className={cn(
               cls,
-              'absolute left-[15.2%] top-0 h-[20px] w-[14px]',
+              'absolute left-[15.2%] top-0 h-5 w-3.5',
               cardBack,
             )}
           />
           <div
             className={cn(
               cls,
-              'absolute left-[45.6%] top-0 h-[20px] w-[14px]',
+              'absolute left-[45.6%] top-0 h-5 w-3.5',
               cardBack,
             )}
           />
           <div
-            className={cn(
-              cls,
-              'absolute left-[76%] top-0 h-[20px] w-[14px]',
-              cardBack,
-            )}
+            className={cn(cls, 'absolute left-[76%] top-0 h-5 w-3.5', cardBack)}
           />
 
           {/* Row 2: 6 cards */}
           <div
             className={cn(
               cls,
-              'absolute left-[10.1%] top-[9px] h-[20px] w-[14px]',
+              'absolute left-[10.1%] top-2.25 h-5 w-3.5',
               cardBack,
             )}
           />
@@ -221,7 +213,7 @@ export function MiniBoard({ id }: MiniBoardProps) {
         <div className="flex justify-between gap-0.5">
           {Array.from({ length: 8 }).map((_, i) => (
             <div key={i} className="flex flex-col -space-y-4">
-              {Array.from({ length: i < 4 ? 7 : 6 }).map((_, j) => (
+              {Array.from({ length: i < 4 ? 7 : 6 }).map((__, j) => (
                 <div key={j} className={cn(cls, 'h-5 w-4', cardFace)} />
               ))}
             </div>
@@ -237,7 +229,7 @@ export function MiniBoard({ id }: MiniBoardProps) {
       <div className="flex flex-col items-center -space-y-[18px]">
         {Array.from({ length: 7 }).map((_, row) => (
           <div key={row} className="flex gap-0.5">
-            {Array.from({ length: row + 1 }).map((_, i) => (
+            {Array.from({ length: row + 1 }).map((__, i) => (
               <div key={i} className={cn(cls, 'h-6 w-5', cardFace)} />
             ))}
           </div>

@@ -6,25 +6,21 @@ import type { CardStyle, CardBack } from '#/stores/card-settings'
 
 // Lazy load the different deck types from the library's sub-paths
 // react-free-playing-cards does not have types, but the default export is the card component
-// @ts-expect-error - no types
 const TcN = lazy(() =>
   import('react-free-playing-cards/lib/TcN').then((m) => ({
     default: m.default?.default || m.default || m,
   })),
 )
-// @ts-expect-error - no types
 const TcB = lazy(() =>
   import('react-free-playing-cards/lib/TcB').then((m) => ({
     default: m.default?.default || m.default || m,
   })),
 )
-// @ts-expect-error - no types
 const FcN = lazy(() =>
   import('react-free-playing-cards/lib/FcN').then((m) => ({
     default: m.default?.default || m.default || m,
   })),
 )
-// @ts-expect-error - no types
 const FcB = lazy(() =>
   import('react-free-playing-cards/lib/FcB').then((m) => ({
     default: m.default?.default || m.default || m,
@@ -214,7 +210,6 @@ export default function CardPrimitive({
           back={false}
           height="100%"
           width="100%"
-          // @ts-expect-error - style prop mismatch
           style={{ display: 'block', width: '100%', height: '100%' }}
         />
       </Suspense>

@@ -4,7 +4,10 @@
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
-    "lint": "turbo lint",
+    "lint": "turbo lint --filter '!@workspace/ui'",
+    "lint:web": "turbo lint --filter @workspace/web",
+    "test": "turbo test",
+    "test:web": "turbo test --filter @workspace/web",
     "format": "turbo format",
     "format:write": "turbo format -- --write",
     "typecheck": "turbo typecheck",
@@ -14,10 +17,10 @@
   "devDependencies": {
     "prettier": "^3.8.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "turbo": "^2.8.20",
+    "turbo": "^2.9.8",
     "typescript": "5.9.3"
   },
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@10.33.2",
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild",

@@ -2,7 +2,6 @@ import { createFileRoute, Link } from '@tanstack/react-router'
 import { HugeiconsIcon } from '@hugeicons/react'
 import {
   PlayIcon,
-  Book02Icon,
   Settings02Icon,
   UserGroupIcon,
   ArrowRight01Icon,
