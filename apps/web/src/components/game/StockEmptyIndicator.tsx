@@ -21,11 +21,15 @@ export default function StockEmptyIndicator({
   return (
     <div
       className={cn(
-        'relative h-28 w-20 rounded-lg transition-colors',
+        'relative rounded-lg transition-colors',
         canRecycle
           ? 'cursor-pointer hover:bg-green-100 dark:hover:bg-green-950/40'
           : 'hover:bg-red-100 dark:hover:bg-red-950/40',
       )}
+      style={{
+        width: 'var(--card-width, 7rem)',
+        height: 'var(--card-height, 10rem)',
+      }}
       onClick={canRecycle ? onClick : undefined}
       role={canRecycle ? 'button' : undefined}
       aria-label={canRecycle ? 'Recycle waste to stock' : 'No more recycles'}
@@ -34,13 +38,13 @@ export default function StockEmptyIndicator({
 
       {canRecycle ? (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="h-12 w-12 rounded-full border-2 border-green-500" />
+          <div className="h-16 w-16 rounded-full border-2 border-green-500" />
         </div>
       ) : (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
           <HugeiconsIcon
             icon={Cancel01Icon}
-            size={32}
+            size={40}
             className="text-red-500"
           />
         </div>

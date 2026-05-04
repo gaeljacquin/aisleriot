@@ -1,129 +1,142 @@
-import { useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
-import type { TargetAndTransition } from 'motion/react'
-import { motion } from 'motion/react'
 import { HugeiconsIcon } from '@hugeicons/react'
-import type { IconSvgElement } from '@hugeicons/react'
 import {
-  ArrowDown02Icon,
+  PlayIcon,
+  Settings02Icon,
+  UserGroupIcon,
+  ArrowRight01Icon,
   ArrowRight02Icon,
-  ArrowUpRight01Icon,
-  ArrowDownRight01Icon,
-  ArrowUpLeft01Icon,
 } from '@hugeicons/core-free-icons'
 import { appInfo } from '@workspace/constants'
+import { cn } from '@workspace/ui/lib/utils'
+import { useThemeStore } from '@/stores/theme'
+import Footer from '@/components/Footer'
 
 export const Route = createFileRoute('/')({ component: Home })
 
-const transition = {
-  duration: 0.6,
-  repeat: Infinity,
-  ease: 'easeInOut' as const,
-}
-
-const menuItems: {
-  label: string
-  arrow: IconSvgElement
-  bg: string
-  to: string
-  hovered: TargetAndTransition
-  external: boolean
-}[] = [
+const menuItems = [
   {
     label: 'New Game',
-    arrow: ArrowRight02Icon,
-    bg: 'bg-primary',
-    to: '/new-game',
-    hovered: { x: [0, 10, 0], transition },
-    external: false,
-  },
-  {
-    label: 'How to Play',
-    arrow: ArrowDownRight01Icon,
-    bg: 'bg-pink-500',
-    to: '/how-to-play',
-    hovered: { x: [0, 10, 0], y: [0, 10, 0], transition },
-    external: false,
+    subtitle: 'Select a variant',
+    icon: PlayIcon,
+    to: '/new-game' as const,
+    primary: true,
   },
   {
     label: 'Settings',
-    arrow: ArrowUpRight01Icon,
-    bg: 'bg-orange-500',
-    to: '/settings',
-    hovered: { x: [0, 10, 0], y: [0, -10, 0], transition },
-    external: false,
+    subtitle: "Personalize to your heart's content",
+    icon: Settings02Icon,
+    to: '/settings' as const,
   },
   {
     label: 'Credits',
-    arrow: ArrowDown02Icon,
-    bg: 'bg-indigo-500',
-    to: '/credits',
-    hovered: { y: [0, 10, 0], transition },
-    external: false,
+    subtitle: 'whoami',
+    icon: UserGroupIcon,
+    to: '/credits' as const,
   },
   {
     label: 'More Games',
-    arrow: ArrowUpLeft01Icon,
-    bg: 'bg-[#DC143C]',
+    subtitle: "Let's have fun!",
+    icon: ArrowRight01Icon,
     to: 'https://tr.ee/uBF_3IDko-',
-    hovered: { x: [0, -10, 0], y: [0, -10, 0], transition },
     external: true,
   },
 ]
 
-function MenuItem({
-  label,
-  arrow,
-  bg,
-  to,
-  external,
-  hovered,
-}: (typeof menuItems)[number]) {
-  const [isHovered, setIsHovered] = useState(false)
-
-  return (
-    <motion.div
-      layout
-      className="flex items-center gap-4"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <motion.span
-        className="inline-block w-6 text-center text-base font-medium text-foreground"
-        animate={isHovered ? hovered : { x: 0, y: 0 }}
-      >
-        <HugeiconsIcon icon={arrow} />
-      </motion.span>
-      <Link
-        to={to}
-        className={`flex w-44 items-center justify-center rounded py-3.5 text-base font-bold text-white no-underline hover:text-white ${bg}`}
-        target={external ? '_blank' : undefined}
-        rel={external ? 'noopener noreferrer' : undefined}
-      >
-        {label}
-      </Link>
-    </motion.div>
-  )
-}
-
 function Home() {
+  const { mode } = useThemeStore()
+
+  // Use the JPEG versions as requested.
+  const logoSrc = mode === 'dark' ? '/logo-dark.jpg' : '/logo.jpg'
+
   return (
-    <main className="flex h-full flex-col items-center justify-center">
-      <img
-        src="/logo.png"
-        alt={appInfo.title}
-        className="mb-14 w-60 rounded-xl object-contain dark:hidden"
-      />
-      <img
-        src="/logo-dark.png"
-        alt={appInfo.title}
-        className="mb-14 hidden w-60 rounded-xl object-contain dark:block"
+    <main
+      className="relative h-screen overflow-hidden bg-background transition-colors duration-300"
+      style={{
+        backgroundImage: 'var(--bg-gradient-felt), var(--image-noise)',
+        backgroundAttachment: 'fixed',
+        backgroundSize: 'cover, 180px 180px',
+      }}
+    >
+      {/* Subtle vignette */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,var(--color-felt-shadow)/0.7)]"
       />
 
-      <div className="flex flex-col gap-6">
-        {menuItems.map((item) => (
-          <MenuItem key={item.label} {...item} />
-        ))}
+      <div className="container relative mx-auto flex h-full flex-col px-4 py-6 md:py-10">
+        {/* Main Content Area: Vertically Centered */}
+        <div className="flex flex-1 flex-col items-center justify-center">
+          {/* Hero section */}
+          <section className="flex flex-col items-center text-center">
+            <img
+              src={logoSrc}
+              alt={appInfo.title}
+              className="mb-4 h-40 w-auto object-contain rounded-lg md:h-52"
+            />
+
+            <h1 className="font-serif text-5xl leading-none text-cream md:text-7xl">
+              Aisle<span className="font-light italic text-gold">riot</span>
+            </h1>
+            <p className="mt-2 max-w-md text-md leading-relaxed text-cream-dim font-serif">
+              A Solitaire Suite
+            </p>
+          </section>
+
+          {/* Menu Grid - pulled up by being in the same centered container */}
+          <section className="mx-auto mt-6 grid w-full max-w-md gap-3 md:mt-8 md:gap-4">
+            {menuItems.map((item, i) => (
+              <Link
+                key={item.label}
+                to={item.to}
+                className={cn(
+                  'group relative flex items-center gap-4 rounded-xl border px-5 py-3 transition-all duration-300 md:py-4',
+                  'hover:-translate-y-0.5 hover:shadow-card-lift',
+                  item.primary
+                    ? 'border-gold/70 bg-linear-to-br from-gold-soft via-gold to-gold-deep text-felt-deep'
+                    : 'border-gold/30 bg-felt-light/40 text-cream hover:border-gold/60',
+                )}
+                target={item.external ? '_blank' : undefined}
+                rel={item.external ? 'noopener noreferrer' : undefined}
+                style={{ animationDelay: `${i * 80}ms` }}
+              >
+                <div
+                  className={cn(
+                    'grid h-10 w-10 shrink-0 place-items-center rounded-lg border',
+                    item.primary
+                      ? 'border-felt-deep/20 bg-felt-deep/10'
+                      : 'border-gold/20 bg-felt-deep/40 text-gold',
+                  )}
+                >
+                  <HugeiconsIcon
+                    icon={item.icon}
+                    className="h-5 w-5"
+                    strokeWidth={1.5}
+                  />
+                </div>
+                <div className="flex-1 text-left">
+                  <div className="font-serif text-lg font-medium leading-tight">
+                    {item.label}
+                  </div>
+                  {/* <div
+                    className={cn(
+                      'text-xs font-medium',
+                      item.primary ? 'text-felt-deep/60' : 'text-cream-dim/80',
+                    )}
+                  >
+                    {item.subtitle}
+                  </div> */}
+                </div>
+                <HugeiconsIcon
+                  icon={ArrowRight02Icon}
+                  className="h-4 w-4 opacity-40 transition-transform group-hover:translate-x-1 group-hover:opacity-80"
+                />
+              </Link>
+            ))}
+          </section>
+        </div>
+
+        <Footer />
       </div>
     </main>
   )

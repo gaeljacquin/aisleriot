@@ -11,8 +11,7 @@ import type {
 } from '#/lib/games/klondike'
 import type { Card as CardType } from '#/lib/types'
 
-const CARD_OFFSET = 28 // px between stacked cards vertically
-const CARD_HEIGHT = 112 // h-28 = 7rem
+const CARD_OFFSET = 40 // px between stacked cards vertically
 
 interface KlondikeColumnProps {
   id: KlondikeTableauId
@@ -59,17 +58,20 @@ export default function KlondikeColumn({
 
   const containerHeight =
     cards.length === 0
-      ? CARD_HEIGHT
-      : (cards.length - 1) * CARD_OFFSET + CARD_HEIGHT
+      ? 'var(--card-height, 10rem)'
+      : `calc((${cards.length} - 1) * 2.5rem + var(--card-height, 10rem))`
 
   return (
     <div
       ref={setNodeRef}
       className={cn(
-        'relative w-20 rounded-lg transition-colors',
+        'relative rounded-lg transition-colors',
         isOver && 'ring-2 ring-primary ring-offset-1',
       )}
-      style={{ minHeight: containerHeight }}
+      style={{
+        minHeight: containerHeight,
+        width: 'var(--card-width, 7rem)',
+      }}
     >
       <CardSlot role="tableau" className="absolute top-0 left-0" />
       {cards.length > 0 && (

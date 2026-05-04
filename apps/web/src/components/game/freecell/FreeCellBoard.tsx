@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useMemo } from 'react'
 import {
   DndContext,
   DragOverlay,
@@ -12,18 +12,26 @@ import { cn } from '@workspace/ui/lib/utils'
 import FreeCellTopRow from './FreeCellTopRow'
 import FreeCellTableau from './FreeCellTableau'
 import FreeCellCard from './FreeCellCard'
-import { GameControls } from '../index'
+import { TopBar } from '@/components/layout/TopBar'
+import { ActionRail } from '@/components/layout/ActionRail'
 import { ConfirmModal } from '#/components/ConfirmModal'
 import { useFreeCell } from '#/lib/hooks/useFreeCell'
+import { getVariant } from '@workspace/constants'
 import type {
   FreeCellPileId,
   DraggableCardData,
   DroppableZoneData,
 } from '#/lib/games/freecell'
-import type { Card } from '#/lib/types'
-
-const OVERLAY_CARD_OFFSET = 36
-const CARD_HEIGHT = 112
+import type { Card as CardType } from '#/lib/types'
+import {
+  PlusSignIcon,
+  UndoIcon,
+  Refresh04Icon,
+  BookOpen01Icon,
+  TouchIcon,
+  ChampionIcon,
+  Cancel01Icon,
+} from '@hugeicons/core-free-icons'
 
 interface FreeCellBoardProps {
   onHowToPlay: () => void
@@ -47,7 +55,10 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
     onUndo,
     isAutoMoving,
     triggerAutoMove,
+    devSetStatus,
   } = useFreeCell()
+
+  const variant = getVariant('freecell')
 
   // Handle animated automoves
   useEffect(() => {
@@ -59,11 +70,9 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
     }
   }, [isAutoMoving, triggerAutoMove, status])
 
-  const [draggedCards, setDraggedCards] = useState<Card[] | null>(null)
+  const [draggedCards, setDraggedCards] = useState<CardType[] | null>(null)
   const lastDropWasValid = useRef(false)
-  const [devStatus, setDevStatus] = useState<'won' | null>(null)
   const [devUnlimitedMoves, setDevUnlimitedMoves] = useState(false)
-  const [showDevTools, setShowDevTools] = useState(false)
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [confirmNewGame, setConfirmNewGame] = useState(false)
 
@@ -117,16 +126,7 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
     onAutoMove(pileId)
   }
 
-  const effectiveStatus = devStatus ?? status
-  const isGameOver = effectiveStatus === 'won'
-
-  const handleNewGameClick = () => {
-    if (isGameOver) {
-      onNewGame()
-    } else {
-      setConfirmNewGame(true)
-    }
-  }
+  const isGameOver = status === 'won'
 
   const dropAnimation = lastDropWasValid.current
     ? null
@@ -135,10 +135,54 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
         easing: 'cubic-bezier(0.18, 0.67, 0.6, 1.22)',
       }
 
-  const overlayHeight =
-    draggedCards && draggedCards.length > 1
-      ? (draggedCards.length - 1) * OVERLAY_CARD_OFFSET + CARD_HEIGHT
-      : CARD_HEIGHT
+  const stats = useMemo(
+    () => [
+      { label: 'Score', value: score },
+      { label: 'Moves', value: moveCount },
+    ],
+    [score, moveCount],
+  )
+
+  const actions = [
+    {
+      icon: PlusSignIcon,
+      label: 'New',
+      onClick: () => setConfirmNewGame(true),
+    },
+    {
+      icon: UndoIcon,
+      label: 'Undo',
+      onClick: onUndo,
+      disabled: !canUndo || isGameOver,
+    },
+    {
+      icon: Refresh04Icon,
+      label: 'Reset',
+      onClick: () => setConfirmRestart(true),
+    },
+    { icon: BookOpen01Icon, label: 'How to Play', onClick: onHowToPlay },
+  ]
+
+  const devActions = [
+    {
+      icon: TouchIcon,
+      label: 'Moves',
+      onClick: () => setDevUnlimitedMoves(!devUnlimitedMoves),
+      active: devUnlimitedMoves,
+    },
+    {
+      icon: ChampionIcon,
+      label: 'Win',
+      onClick: () => devSetStatus(status === 'won' ? 'playing' : 'won'),
+      active: status === 'won',
+    },
+    {
+      icon: Cancel01Icon,
+      label: 'Lose',
+      onClick: () => devSetStatus(status === 'lost' ? 'playing' : 'lost'),
+      active: status === 'lost',
+    },
+  ]
 
   return (
     <DndContext
@@ -146,134 +190,136 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex flex-col">
-        {/* Score + move count */}
-        <div className="flex items-center justify-center gap-5 mb-10">
-          <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
-            <span className="text-xs font-medium text-muted-foreground">
-              Score
-            </span>
-            <span className="text-xl font-bold tabular-nums text-primary">
-              {score}
-            </span>
-          </div>
-          <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
-            <span className="text-xs font-medium text-muted-foreground">
-              Moves
-            </span>
-            <span className="text-xl font-bold tabular-nums">{moveCount}</span>
-          </div>
-        </div>
+      <div className="h-full freecell-container">
+        <style>{`
+          .freecell-container {
+            /* Default for extra large screens (> 1536px) */
+            --card-width: 7.5rem;
+            --card-height: 10.7rem;
+            --card-gap-free: 1.25rem;
+            --card-offset-free: 3rem;
+            --rail-gap: 2rem;
+            --row-gap: 4rem;
+          }
 
-        {/* Action buttons */}
-        <GameControls
-          onUndo={onUndo}
-          canUndo={canUndo}
-          onHowToPlay={onHowToPlay}
-          onRestart={() => setConfirmRestart(true)}
-          onNewGame={handleNewGameClick}
-          isGameOver={isGameOver}
-          showDevTools={showDevTools}
-          onToggleDevTools={() => setShowDevTools(!showDevTools)}
-        />
+          @media (max-width: 1536px) {
+            .freecell-container {
+              --card-width: clamp(5rem, 9.5vw, 7rem);
+              --card-height: calc(var(--card-width) * 1.428);
+              --card-gap-free: 1.25vw;
+              --card-offset-free: 4vw;
+              --rail-gap: 2.5vw;
+              --row-gap: 4vw;
+            }
+          }
 
-        {/* Board — dimmed when won */}
-        <div className={cn('flex flex-col gap-3', isGameOver && 'opacity-50')}>
-          <FreeCellTopRow
-            freeCells={freeCells}
-            foundation={foundation}
-            onFreeCellDoubleClick={handleFreeCellDoubleClick}
+          @media (max-width: 640px) {
+            .freecell-container {
+              --card-width: clamp(4rem, 11vw, 5rem);
+              --card-height: calc(var(--card-width) * 1.428);
+              --card-gap-free: 1vw;
+              --card-offset-free: 5vw;
+              --rail-gap: 2vw;
+              --row-gap: 3vw;
+            }
+          }
+        `}</style>
+
+        <div className="flex h-full flex-col">
+          <TopBar
+            title={variant.name}
+            subtitle={variant.subtitle}
+            stats={stats}
+            status={status}
+            className="mb-8 px-6 pt-6 sm:px-8 sm:pt-8"
           />
-          <FreeCellTableau
-            tableau={tableau}
-            draggableFromIndex={draggableFromIndex}
-            devUnlimitedMoves={devUnlimitedMoves}
-            onDoubleClick={handleTableauDoubleClick}
-          />
-        </div>
 
-        {/* Dev-only toggles */}
-        {import.meta.env.DEV && showDevTools && (
-          <div className="mt-12 flex flex-col items-center gap-3 border-t border-slate-200 dark:border-slate-800 pt-8">
-            <span className="text-xs font-bold text-slate-100 dark:text-slate-400 uppercase tracking-wider">
-              Dev Tools
-            </span>
-            <div className="flex items-center justify-center gap-2">
-              <button
-                type="button"
-                onClick={() => setDevStatus(devStatus === 'won' ? null : 'won')}
-                className="cursor-pointer rounded px-2 py-1 text-xs font-medium bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400"
-              >
-                {devStatus === 'won' ? 'Hide Victory' : 'Show Victory'}
-              </button>
-              <button
-                type="button"
-                onClick={() => setDevUnlimitedMoves((v) => !v)}
-                className={cn(
-                  'cursor-pointer rounded px-2 py-1 text-xs font-medium',
-                  devUnlimitedMoves
-                    ? 'bg-blue-200 text-blue-900 hover:bg-blue-300 dark:bg-blue-800/50 dark:text-blue-300'
-                    : 'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400',
-                )}
-              >
-                {devUnlimitedMoves
-                  ? 'Unlimited Moves ON'
-                  : 'Unlimited Moves OFF'}
-              </button>
+          {/* Board Container */}
+          <div className="flex-1 overflow-auto felt-scroll px-4 sm:px-8 py-4 sm:py-8">
+            <div
+              className={cn(
+                'mx-auto w-full lg:w-fit flex flex-col items-center',
+                isGameOver && 'opacity-50',
+              )}
+              style={{ gap: 'var(--row-gap)' }}
+            >
+              {/* Top Row */}
+              <FreeCellTopRow
+                freeCells={freeCells}
+                foundation={foundation}
+                onFreeCellDoubleClick={handleFreeCellDoubleClick}
+              />
+
+              <FreeCellTableau
+                tableau={tableau}
+                draggableFromIndex={draggableFromIndex}
+                devUnlimitedMoves={devUnlimitedMoves}
+                onDoubleClick={handleTableauDoubleClick}
+              />
             </div>
           </div>
-        )}
 
-        {/* Victory message */}
-        {isGameOver && (
-          <div className="flex flex-col items-center gap-3 py-2">
-            <p className="rounded px-3 py-1.5 text-xl font-black tracking-wide bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-              VICTORY
-            </p>
+          {/* Bottom Action Rail - pinned to bottom */}
+          <div className="flex w-full justify-center pb-6 pt-2">
+            <ActionRail
+              actions={actions}
+              devActions={devActions}
+              className="max-w-fit"
+            />
           </div>
-        )}
+        </div>
+
+        <ConfirmModal
+          open={confirmRestart}
+          onOpenChange={setConfirmRestart}
+          onConfirm={() => {
+            onRestartGame()
+            setConfirmRestart(false)
+          }}
+          title="Restart Game?"
+          description="Are you sure you want to restart this game? All progress will be lost."
+          confirmLabel="Restart"
+        />
+
+        <ConfirmModal
+          open={confirmNewGame}
+          onOpenChange={setConfirmNewGame}
+          onConfirm={() => {
+            onNewGame()
+            setConfirmNewGame(false)
+          }}
+          title="New Game?"
+          description="Are you sure you want to start a new game? Current progress will be lost."
+          confirmLabel="New Game"
+        />
+
+        {/* Drag overlay */}
+        <DragOverlay dropAnimation={dropAnimation}>
+          {draggedCards && draggedCards.length > 0 && (
+            <div
+              className="relative freecell-container"
+              style={{
+                width: 'var(--card-width)',
+                height: `calc(((${draggedCards.length} - 1) * var(--card-offset-free)) + var(--card-height))`,
+              }}
+            >
+              {draggedCards.map((card, i) => (
+                <div
+                  key={card.id}
+                  style={{
+                    position: i === 0 ? 'relative' : 'absolute',
+                    top: `calc(${i} * var(--card-offset-free))`,
+                    left: 0,
+                    zIndex: i,
+                  }}
+                >
+                  <FreeCellCard card={card} />
+                </div>
+              ))}
+            </div>
+          )}
+        </DragOverlay>
       </div>
-
-      <ConfirmModal
-        open={confirmRestart}
-        onOpenChange={setConfirmRestart}
-        title="Restart Game?"
-        description="Replay the same deal from the beginning."
-        confirmLabel="Restart"
-        onConfirm={onRestartGame}
-      />
-      <ConfirmModal
-        open={confirmNewGame}
-        onOpenChange={setConfirmNewGame}
-        title="New Game?"
-        description="Start a fresh game with a new deal."
-        confirmLabel="New Game"
-        onConfirm={onNewGame}
-      />
-
-      {/* Drag overlay */}
-      <DragOverlay dropAnimation={dropAnimation}>
-        {draggedCards && draggedCards.length > 0 && (
-          <div
-            className="relative"
-            style={{ height: overlayHeight, width: 80 }}
-          >
-            {draggedCards.map((card, i) => (
-              <div
-                key={card.id}
-                style={{
-                  position: i === 0 ? 'relative' : 'absolute',
-                  top: i === 0 ? 0 : i * OVERLAY_CARD_OFFSET,
-                  left: 0,
-                  zIndex: i,
-                }}
-              >
-                <FreeCellCard card={card} />
-              </div>
-            ))}
-          </div>
-        )}
-      </DragOverlay>
     </DndContext>
   )
 }

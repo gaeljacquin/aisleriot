@@ -3,7 +3,7 @@ import { useKlondikeDraw3SettingsStore } from '#/lib/stores/klondike-draw3-setti
 import {
   draggableFromIndex as computeDraggableFromIndex,
   canMoveToFoundation,
-  isSafeToAutoMove,
+  isSafeToAutoMove as _isSafeToAutoMove,
   TABLEAU_IDS,
   FOUNDATION_IDS,
   FOUNDATION_SUITS,
@@ -100,5 +100,6 @@ export function useKlondikeDrawThree(): UseKlondikeResult {
     onRestartGame: state.restartGame,
     onUndo: state.undo,
     currentDealCount: state.currentDealCount,
+    devSetStatus: state.devSetStatus,
   }
 }

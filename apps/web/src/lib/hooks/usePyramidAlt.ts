@@ -54,6 +54,7 @@ export function usePyramidAlt(): UsePyramidAltResult {
     onNewGame: storeState.newGame,
     onRestartGame: storeState.restartGame,
     onUndo: storeState.undo,
+    devSetStatus: storeState.devSetStatus,
     stockTop,
     stockTopIsKing: isStockTopKing(storeState),
     onRemoveAloneFromStock: storeState.removeAloneFromStock,

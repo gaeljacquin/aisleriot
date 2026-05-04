@@ -33,8 +33,6 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
         return true
       }
       if (selectedIsWaste) {
-        // Pair waste top with this cell via the base handler (selectedCellId is null here,
-        // so we can't use handleWasteTopClick directly — call the store action instead)
         altGame.onRemovePairWithWaste(cellId)
         setSelectedIsWaste(false)
         return true
@@ -50,11 +48,21 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
         (ctx.canDraw && !ctx.game.stockTopIsKing) || ctx.canRecycle
 
       return (
-        <div className="mt-6 flex flex-col items-center gap-3">
-          <div className="flex items-center justify-center gap-4">
-            {/* Stock top — face-up, interactive */}
-            <div className="relative h-28 w-20">
-              {/* Persistent background: face-down card while stock has cards, empty indicator otherwise */}
+        <div
+          className="flex flex-col items-center gap-6"
+          style={{ marginTop: 'var(--stock-row-mt, 2.5rem)' }}
+        >
+          <div
+            className="flex items-center justify-center"
+            style={{ gap: 'var(--pyramid-gap, 2rem)' }}
+          >
+            <div
+              className="relative"
+              style={{
+                width: 'var(--card-width, 7rem)',
+                height: 'var(--card-height, 10rem)',
+              }}
+            >
               {ctx.stockCount > 0 ? (
                 <Card
                   suit="spades"
@@ -69,7 +77,6 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
                 />
               )}
 
-              {/* Animated face-up stockTop overlay */}
               {ctx.stockCount > 0 && ctx.game.stockTop && (
                 <div className="absolute inset-0">
                   <AnimatePresence mode="wait">
@@ -96,7 +103,14 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
                             setSelectedIsWaste(false)
                             ctx.clearSelection()
                           } else if (ctx.selectedCellId !== null) {
-                            // A pyramid cell is selected — clicking stock should deselect it, not select stock
+                            altGame.onRemovePairWithStock(ctx.selectedCellId)
+                            ctx.clearSelection()
+                            setSelectedIsStock(false)
+                            setSelectedIsWaste(false)
+                          } else if (selectedIsWaste) {
+                            altGame.onRemovePairStockWithWaste()
+                            setSelectedIsWaste(false)
+                            setSelectedIsStock(false)
                             ctx.clearSelection()
                           } else {
                             setSelectedIsWaste(false)
@@ -110,13 +124,12 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
               )}
             </div>
 
-            {/* Draw / Recycle button */}
             <button
               type="button"
               className={cn(
-                'rounded-xl p-3 shadow-md cursor-pointer transition-colors',
-                'bg-teal-600 dark:bg-teal-500 text-primary-foreground hover:bg-teal-700 dark:hover:bg-teal-600',
-                !canAction && 'cursor-not-allowed opacity-40',
+                'rounded-full p-4 border border-gold/30 bg-gold/10 shadow-sm cursor-pointer transition-all',
+                'text-gold hover:bg-gold/20 hover:border-gold/50 hover:scale-110 active:scale-95',
+                !canAction && 'cursor-not-allowed opacity-20 hover:scale-100',
               )}
               disabled={!canAction}
               onClick={() => {
@@ -141,7 +154,6 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
               />
             </button>
 
-            {/* Waste pile */}
             <div ref={ctx.wasteRef} className="inline-block">
               <div
                 className={cn(
@@ -154,14 +166,17 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
                     ctx.game.onRemoveWasteKing()
                     setSelectedIsStock(false)
                     setSelectedIsWaste(false)
+                    ctx.clearSelection()
                   } else if (selectedIsStock && ctx.game.stockTop) {
                     ctx.game.onRemovePairStockWithWaste()
                     setSelectedIsStock(false)
+                    setSelectedIsWaste(false)
+                    ctx.clearSelection()
                   } else if (ctx.selectedCellId !== null) {
                     ctx.handleWasteTopClick()
                     setSelectedIsWaste(false)
+                    setSelectedIsStock(false)
                   } else if (selectedIsWaste) {
-                    // Deselect on second click
                     setSelectedIsWaste(false)
                   } else {
                     setSelectedIsStock(false)
@@ -185,7 +200,7 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
         </div>
       )
     },
-    [selectedIsStock, selectedIsWaste],
+    [selectedIsStock, selectedIsWaste, altGame],
   )
 
   return (
@@ -194,6 +209,7 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
       onHowToPlay={onHowToPlay}
       renderStockRow={renderStockRow}
       onBeforeCellClick={onBeforeCellClick}
+      variantId="pyramid-alt"
     />
   )
 }

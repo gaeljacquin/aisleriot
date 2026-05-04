@@ -68,9 +68,13 @@ export default function KlondikeFoundation({
     <div
       ref={setNodeRef}
       className={cn(
-        'relative h-28 w-20 rounded-lg transition-colors',
+        'relative rounded-lg transition-colors',
         isOver && 'ring-2 ring-primary ring-offset-1',
       )}
+      style={{
+        width: 'var(--card-width, 7rem)',
+        height: 'var(--card-height, 10rem)',
+      }}
     >
       {/* Always-visible empty slot with suit hint */}
       <CardSlot role="foundation" />

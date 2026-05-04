@@ -1,4 +1,5 @@
 import { cn } from '@workspace/ui/lib/utils'
+import { CardBackComponent } from './CardPrimitive'
 
 interface StockProps {
   count: number
@@ -16,17 +17,17 @@ export default function Stock({ count, onClick, disabled }: StockProps) {
       disabled={disabled ?? isEmpty}
       aria-label={`Stock pile, ${count} cards remaining`}
       className={cn(
-        'relative flex h-28 w-20 items-center justify-center rounded-lg border-2 border-slate-800',
-        'bg-linear-to-br from-slate-700 to-slate-900 transition-opacity',
+        'group relative flex items-center justify-center rounded-lg transition-all p-0',
         isEmpty
           ? 'cursor-not-allowed opacity-40'
-          : 'cursor-pointer hover:brightness-110',
+          : 'cursor-pointer hover:shadow-card-lift active:scale-95',
       )}
+      style={{
+        width: 'var(--card-width, 7rem)',
+        height: 'var(--card-height, 10rem)',
+      }}
     >
-      {/* Diamond pattern */}
-      <div className="pointer-events-none absolute inset-0 rounded-lg opacity-20">
-        <div className="h-full w-full rounded-lg bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,rgba(255,255,255,0.15)_4px,rgba(255,255,255,0.15)_5px)]" />
-      </div>
+      <CardBackComponent className="group-hover:brightness-110 transition-all" />
     </button>
   )
 }

@@ -1,11 +1,10 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { Card } from '#/lib/types'
+import type { Card, GameStatus } from '#/lib/types'
 import {
   isGameWon,
   canMoveToFoundation,
   canMoveToTableau,
-  isSafeToAutoMove,
 } from '../games/klondike/rules'
 import { createInitialState } from '../games/klondike/deal'
 import type {
@@ -37,6 +36,7 @@ interface KlondikeStore
   flipStock: () => void
   newGame: (seed?: number) => void
   restartGame: () => void
+  devSetStatus: (status: GameStatus) => void
 }
 
 function snapshot(state: KlondikeState): KlondikeState {
@@ -76,70 +76,6 @@ function applyAutoFlips(
     }
   }
   return [newTableau, scoreGain]
-}
-
-/**
- * Auto-cascade: move cards to foundation only when it is safe to do so.
- */
-function applyCascade(state: KlondikeState): KlondikeState {
-  let current = state
-  let moved = true
-
-  while (moved) {
-    moved = false
-
-    for (const pileId of Object.keys(current.tableau) as KlondikeTableauId[]) {
-      const pile = current.tableau[pileId]
-      if (pile.length === 0) continue
-      const fromIndex = pile.length - 1
-      const card = pile[fromIndex]
-      if (
-        canMoveToFoundation(current, pileId, fromIndex) &&
-        isSafeToAutoMove(current, card)
-      ) {
-        const foundId = `foundation-${card.suit}` as KlondikeFoundationId
-        const newTableau = { ...current.tableau, [pileId]: pile.slice(0, -1) }
-        const newFoundation = {
-          ...current.foundation,
-          [foundId]: [...current.foundation[foundId], card],
-        }
-        const [autoFlippedTableau, flipScore] = applyAutoFlips(newTableau)
-        current = {
-          ...current,
-          tableau: autoFlippedTableau,
-          foundation: newFoundation,
-          score: current.score + SCORE_DELTAS.tableauToFoundation + flipScore,
-        }
-        moved = true
-        break
-      }
-    }
-
-    if (!moved && current.waste.length > 0) {
-      const fromIndex = current.waste.length - 1
-      const card = current.waste[fromIndex]
-      if (
-        canMoveToFoundation(current, 'waste', fromIndex) &&
-        isSafeToAutoMove(current, card)
-      ) {
-        const foundId = `foundation-${card.suit}` as KlondikeFoundationId
-        const newWaste = current.waste.slice(0, -1)
-        const newFoundation = {
-          ...current.foundation,
-          [foundId]: [...current.foundation[foundId], card],
-        }
-        current = {
-          ...current,
-          waste: newWaste,
-          foundation: newFoundation,
-          score: current.score + SCORE_DELTAS.wasteToFoundation,
-        }
-        moved = true
-      }
-    }
-  }
-
-  return current
 }
 
 /** Extract the moved cards and updated source piles from a move. */
@@ -478,6 +414,13 @@ export const useKlondikeDrawOneStore = create<KlondikeStore>()(
           canUndo: false,
           canRedo: false,
         } as Partial<KlondikeStore>)
+      },
+
+      devSetStatus: (status: GameStatus) => {
+        if (status === 'won') {
+          get().recordWin(get().score, !get().usedUndo)
+        }
+        set({ status } as Partial<KlondikeStore>)
       },
     }),
     {

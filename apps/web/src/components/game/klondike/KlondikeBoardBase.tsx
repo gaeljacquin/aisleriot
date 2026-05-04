@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useMemo } from 'react'
 import {
   DndContext,
   DragOverlay,
@@ -14,14 +14,26 @@ import KlondikeFoundation from './KlondikeFoundation'
 import KlondikeWaste from './KlondikeWaste'
 import KlondikeStock from './KlondikeStock'
 import Card from '../Card'
-import { GameControls } from '../index'
+import { TopBar } from '@/components/layout/TopBar'
+import { ActionRail } from '@/components/layout/ActionRail'
 import { ConfirmModal } from '#/components/ConfirmModal'
+import { getVariant } from '@workspace/constants'
 import type { UseKlondikeResult } from '#/lib/hooks/useKlondikeDrawOne'
 import type { DraggableCardData, DroppableZoneData } from '#/lib/games/klondike'
 import type { Card as CardType } from '#/lib/types'
+import {
+  PlusSignIcon,
+  UndoIcon,
+  Refresh04Icon,
+  BookOpen01Icon,
+  ViewIcon,
+  TouchIcon,
+  ChampionIcon,
+  Cancel01Icon,
+} from '@hugeicons/core-free-icons'
 
-const OVERLAY_CARD_OFFSET = 28
-const CARD_HEIGHT = 112
+const OVERLAY_CARD_OFFSET = 40
+const CARD_HEIGHT = 160
 
 interface KlondikeBoardBaseProps {
   useGame: () => UseKlondikeResult
@@ -54,13 +66,16 @@ export default function KlondikeBoardBase({
     onRestartGame,
     onUndo,
     currentDealCount,
+    devSetStatus,
   } = useGame()
+
+  const variantId = drawCount === 1 ? 'klondike-draw-1' : 'klondike-draw-3'
+  const variant = getVariant(variantId)
 
   const [draggedCards, setDraggedCards] = useState<CardType[] | null>(null)
   const lastDropWasValid = useRef(false)
   const [devMoveAnywhere, setDevMoveAnywhere] = useState(false)
   const [devPeekTableau, setDevPeekTableau] = useState(false)
-  const [showDevTools, setShowDevTools] = useState(false)
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [confirmNewGame, setConfirmNewGame] = useState(false)
 
@@ -106,14 +121,6 @@ export default function KlondikeBoardBase({
 
   const isGameOver = status === 'won'
 
-  const handleNewGameClick = () => {
-    if (isGameOver) {
-      onNewGame()
-    } else {
-      setConfirmNewGame(true)
-    }
-  }
-
   const dropAnimation = lastDropWasValid.current
     ? null
     : { duration: 300, easing: 'cubic-bezier(0.18, 0.67, 0.6, 1.22)' }
@@ -123,66 +130,119 @@ export default function KlondikeBoardBase({
       ? (draggedCards.length - 1) * OVERLAY_CARD_OFFSET + CARD_HEIGHT
       : CARD_HEIGHT
 
+  const stats = useMemo(
+    () => [
+      { label: 'Score', value: score },
+      { label: 'Moves', value: moveCount },
+      ...(redealsLeft !== null
+        ? [{ label: 'Recycles', value: redealsLeft }]
+        : []),
+    ],
+    [score, moveCount, redealsLeft],
+  )
+
+  const actions = [
+    {
+      icon: PlusSignIcon,
+      label: 'New',
+      onClick: () => setConfirmNewGame(true),
+    },
+    {
+      icon: UndoIcon,
+      label: 'Undo',
+      onClick: onUndo,
+      disabled: !canUndo || isGameOver,
+    },
+    {
+      icon: Refresh04Icon,
+      label: 'Reset',
+      onClick: () => setConfirmRestart(true),
+    },
+    { icon: BookOpen01Icon, label: 'How to Play', onClick: onHowToPlay },
+  ]
+
+  const devActions = [
+    {
+      icon: TouchIcon,
+      label: 'Moves',
+      onClick: () => setDevMoveAnywhere(!devMoveAnywhere),
+      active: devMoveAnywhere,
+    },
+    {
+      icon: ViewIcon,
+      label: 'Peek',
+      onClick: () => setDevPeekTableau(!devPeekTableau),
+      active: devPeekTableau,
+    },
+    {
+      icon: ChampionIcon,
+      label: 'Win',
+      onClick: () => devSetStatus(status === 'won' ? 'playing' : 'won'),
+      active: status === 'won',
+    },
+    {
+      icon: Cancel01Icon,
+      label: 'Lose',
+      onClick: () => devSetStatus(status === 'lost' ? 'playing' : 'lost'),
+      active: status === 'lost',
+    },
+  ]
+
   return (
     <DndContext
       sensors={sensors}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex flex-col">
-        {/* Score + moves HUD */}
-        <div className="flex items-center justify-center gap-5 mb-10">
-          <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
-            <span className="text-xs font-medium text-black dark:text-muted-foreground">
-              Score
-            </span>
-            <span className="text-xl font-bold tabular-nums text-green-900 dark:text-green-500">
-              {score}
-            </span>
-          </div>
-          <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
-            <span className="text-xs font-medium text-black dark:text-muted-foreground">
-              Moves
-            </span>
-            <span className="text-xl font-bold tabular-nums text-black dark:text-foreground">
-              {moveCount}
-            </span>
-          </div>
-          {redealsLeft !== null && (
-            <div className="flex min-w-20 flex-col items-center rounded-2xl bg-muted/50 px-6 py-3">
-              <span className="text-xs font-medium text-black dark:text-muted-foreground">
-                Recycles
-              </span>
-              <span className="text-xl font-bold tabular-nums text-black dark:text-foreground">
-                {redealsLeft}
-              </span>
-            </div>
-          )}
-        </div>
+      <style>{`
+        .klondike-container {
+          --card-width: 7.5rem;
+          --card-height: 10.7rem;
+          --card-gap-klon: 2rem;
+        }
 
-        {/* Action buttons */}
-        <GameControls
-          onUndo={onUndo}
-          canUndo={canUndo}
-          onHowToPlay={onHowToPlay}
-          onRestart={() => setConfirmRestart(true)}
-          onNewGame={handleNewGameClick}
-          isGameOver={isGameOver}
-          showDevTools={showDevTools}
-          onToggleDevTools={() => setShowDevTools(!showDevTools)}
+        @media (max-width: 1536px) {
+          .klondike-container {
+            --card-width: clamp(5rem, 9vw, 7rem);
+            --card-height: calc(var(--card-width) * 1.428);
+            --card-gap-klon: 2vw;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .klondike-container {
+            --card-width: clamp(4rem, 11vw, 5rem);
+            --card-height: calc(var(--card-width) * 1.428);
+            --card-gap-klon: 1.5vw;
+          }
+        }
+      `}</style>
+
+      <div className="flex h-full flex-col klondike-container">
+        <TopBar
+          title={variant.name}
+          subtitle={variant.subtitle}
+          stats={stats}
+          status={status}
+          className="mb-8 px-6 pt-6 sm:px-8 sm:pt-8"
         />
 
-        {/* Board */}
-        <div
-          className={cn(
-            'mx-auto w-fit flex flex-col gap-5',
-            isGameOver && 'opacity-50',
-          )}
-        >
-          {/* Top row: stock + waste | empty | foundations */}
-          <div className="grid grid-cols-7 gap-10">
-            {/* Stock + Waste */}
-            <div className="flex gap-10 col-span-2">
+        {/* Board Container */}
+        <div className="flex-1 overflow-auto felt-scroll px-4 sm:px-8 py-4 sm:py-8">
+          <div
+            className={cn(
+              'mx-auto w-fit flex flex-col gap-10',
+              isGameOver && 'opacity-50',
+            )}
+          >
+            {/* Top row: stock | waste | empty | foundations */}
+            <div
+              className="grid grid-cols-7"
+              style={{
+                gap: 'var(--card-gap-klon)',
+                gridTemplateColumns: 'repeat(7, var(--card-width))',
+              }}
+            >
               <KlondikeStock
                 stockCount={stockCount}
                 stockEmpty={stockEmpty}
@@ -196,90 +256,67 @@ export default function KlondikeBoardBase({
                 onDoubleClick={() => onAutoMove('waste')}
                 currentDealCount={currentDealCount}
               />
+
+              {/* Empty space (Column 3) */}
+              <div />
+
+              {/* Foundations (Columns 4-7) */}
+              <div
+                className="grid grid-cols-4 col-span-4"
+                style={{
+                  gap: 'var(--card-gap-klon)',
+                  gridTemplateColumns: 'repeat(4, var(--card-width))',
+                }}
+              >
+                {foundation.map((f) => (
+                  <KlondikeFoundation
+                    key={f.id}
+                    id={f.id}
+                    cards={f.cards}
+                    suit={f.suit}
+                    draggable={true}
+                  />
+                ))}
+              </div>
             </div>
 
-            {/* Empty space (Column 3) */}
-            <div />
-
-            {/* Foundations (Columns 4-7) */}
-            <div className="grid grid-cols-4 gap-10 col-span-4">
-              {foundation.map((f) => (
-                <KlondikeFoundation
-                  key={f.id}
-                  id={f.id}
-                  cards={f.cards}
-                  suit={f.suit}
-                  draggable={true}
+            {/* Tableau */}
+            <div
+              className="grid grid-cols-7"
+              style={{
+                gap: 'var(--card-gap-klon)',
+                gridTemplateColumns: 'repeat(7, var(--card-width))',
+              }}
+            >
+              {tableau.map((col) => (
+                <KlondikeColumn
+                  key={col.id}
+                  id={col.id}
+                  cards={col.cards}
+                  draggableFrom={
+                    devMoveAnywhere
+                      ? Math.max(
+                          0,
+                          col.cards.findIndex((c) => c.faceUp),
+                        )
+                      : draggableFromIndex[col.id]
+                  }
+                  peekTableau={devPeekTableau}
+                  onDoubleClick={(pileId) => onAutoMove(pileId)}
                 />
               ))}
             </div>
           </div>
-
-          {/* Tableau */}
-          <div className="grid grid-cols-7 gap-10">
-            {tableau.map((col) => (
-              <KlondikeColumn
-                key={col.id}
-                id={col.id}
-                cards={col.cards}
-                draggableFrom={
-                  devMoveAnywhere
-                    ? Math.max(
-                        0,
-                        col.cards.findIndex((c) => c.faceUp),
-                      )
-                    : draggableFromIndex[col.id]
-                }
-                peekTableau={devPeekTableau}
-                onDoubleClick={(pileId) => onAutoMove(pileId)}
-              />
-            ))}
-          </div>
         </div>
 
-        {/* Dev toggles */}
-        {import.meta.env.DEV && showDevTools && (
-          <div className="mt-12 flex flex-col items-center gap-3 border-t border-slate-200 dark:border-slate-800 pt-8">
-            <span className="text-xs font-bold text-slate-100 dark:text-slate-400 uppercase tracking-wider">
-              Dev Tools
-            </span>
-            <div className="flex items-center justify-center gap-2">
-              <button
-                type="button"
-                onClick={() => setDevMoveAnywhere((v) => !v)}
-                className={cn(
-                  'cursor-pointer rounded px-2 py-1 text-xs font-medium',
-                  devMoveAnywhere
-                    ? 'bg-blue-200 text-blue-900 hover:bg-blue-300 dark:bg-blue-800/50 dark:text-blue-300'
-                    : 'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400',
-                )}
-              >
-                {devMoveAnywhere ? 'Move Anywhere ON' : 'Move Anywhere OFF'}
-              </button>
-              <button
-                type="button"
-                onClick={() => setDevPeekTableau((v) => !v)}
-                className={cn(
-                  'cursor-pointer rounded px-2 py-1 text-xs font-medium',
-                  devPeekTableau
-                    ? 'bg-amber-200 text-amber-900 hover:bg-amber-300 dark:bg-amber-800/50 dark:text-amber-300'
-                    : 'bg-amber-100 text-amber-800 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-400',
-                )}
-              >
-                {devPeekTableau ? 'Peek Tableau ON' : 'Peek Tableau OFF'}
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Victory message */}
-        {isGameOver && (
-          <div className="flex flex-col items-center gap-3 py-2">
-            <p className="rounded px-3 py-1.5 text-xl font-black tracking-wide bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-              VICTORY
-            </p>
-          </div>
-        )}
+        {/* Bottom Action Rail - pinned to bottom */}
+        <div className="flex w-full justify-center pb-6 pt-2">
+          <ActionRail
+            actions={actions}
+            devActions={devActions}
+            className="max-w-fit"
+          />
+        </div>
       </div>
 
       <ConfirmModal
@@ -304,7 +341,7 @@ export default function KlondikeBoardBase({
         {draggedCards && draggedCards.length > 0 && (
           <div
             className="relative"
-            style={{ height: overlayHeight, width: 80 }}
+            style={{ height: overlayHeight, width: 112 }}
           >
             {draggedCards.map((card, i) => (
               <div

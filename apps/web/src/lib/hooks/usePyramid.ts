@@ -28,6 +28,7 @@ export interface UsePyramidResult {
   onNewGame: () => void
   onRestartGame: () => void
   onUndo: () => void
+  devSetStatus: (status: GameStatus) => void
 }
 
 export function usePyramid(): UsePyramidResult {
@@ -65,5 +66,6 @@ export function usePyramid(): UsePyramidResult {
     onNewGame: storeState.newGame,
     onRestartGame: storeState.restartGame,
     onUndo: storeState.undo,
+    devSetStatus: storeState.devSetStatus,
   }
 }

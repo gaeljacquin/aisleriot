@@ -9,6 +9,10 @@ export default function TriPeaksAltBoard({
   onHowToPlay,
 }: TriPeaksAltBoardProps) {
   return (
-    <TriPeaksBoardBase useGame={useTriPeaksAlt} onHowToPlay={onHowToPlay} />
+    <TriPeaksBoardBase
+      useGame={useTriPeaksAlt}
+      onHowToPlay={onHowToPlay}
+      variantId="tri-peaks-alt"
+    />
   )
 }

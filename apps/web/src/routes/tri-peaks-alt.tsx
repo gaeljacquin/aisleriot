@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { getVariant } from '@workspace/constants'
-import BackLink from '@/components/BackLink'
 import { HowToPlayModal } from '@/components/HowToPlayModal'
 import { TriPeaksAltBoard } from '@/components/game/tri-peaks'
 
@@ -13,16 +12,8 @@ function TriPeaksAlt() {
   const [howToPlayOpen, setHowToPlayOpen] = useState(false)
 
   return (
-    <main className="flex h-full flex-col bg-primary px-6 pb-10 pt-16">
-      <div className="relative mb-14 flex items-center">
-        <h1 className="absolute left-1/2 -translate-x-1/2 rounded-lg bg-emerald-100 px-4 py-1 text-2xl font-bold text-emerald-900 dark:bg-emerald-950 dark:text-emerald-100">
-          Tri Peaks Alt
-        </h1>
-      </div>
-
-      <div className="flex flex-1 flex-col">
-        <TriPeaksAltBoard onHowToPlay={() => setHowToPlayOpen(true)} />
-      </div>
+    <main className="flex h-screen flex-col overflow-hidden">
+      <TriPeaksAltBoard onHowToPlay={() => setHowToPlayOpen(true)} />
 
       <HowToPlayModal
         variant={getVariant('tri-peaks-alt')}

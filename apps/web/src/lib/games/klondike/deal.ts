@@ -54,5 +54,7 @@ export function createInitialState(
     usedUndo: false,
     currentSeed: resolvedSeed,
     redealsUsed: 0,
+    currentDealCount: 0,
+    wasteDeals: [],
   }
 }

@@ -6,5 +6,11 @@ interface PyramidBoardProps {
 }
 
 export default function PyramidBoard({ onHowToPlay }: PyramidBoardProps) {
-  return <PyramidBoardBase useGame={usePyramid} onHowToPlay={onHowToPlay} />
+  return (
+    <PyramidBoardBase
+      useGame={usePyramid}
+      onHowToPlay={onHowToPlay}
+      variantId="pyramid"
+    />
+  )
 }

@@ -10,8 +10,6 @@ import type {
 } from '#/lib/games/freecell'
 import type { Card } from '#/lib/types'
 
-const CARD_OFFSET = 36
-
 interface FreeCellColumnProps {
   id: FreeCellPileId
   cards: Card[]
@@ -33,7 +31,7 @@ function DraggableCard({
   card: Card
   cardIndex: number
   allCards: Card[]
-  top: number
+  top: number | string
   zIndex: number
   hiddenFromIndex: number | null // if set, cards at this index and above are hidden
   onDoubleClick?: (pileId: FreeCellPileId) => void
@@ -109,20 +107,22 @@ export default function FreeCellColumn({
     },
   })
 
-  const CARD_HEIGHT = 112
   const containerHeight =
     cards.length === 0
-      ? CARD_HEIGHT
-      : (cards.length - 1) * CARD_OFFSET + CARD_HEIGHT
+      ? 'var(--card-height, 10rem)'
+      : `calc(((${cards.length} - 1) * var(--card-offset-free, 3rem)) + var(--card-height, 10rem))`
 
   return (
     <div
       ref={setNodeRef}
       className={cn(
-        'relative w-20 rounded-lg transition-colors',
+        'relative rounded-lg transition-colors',
         isOver && 'ring-2 ring-primary ring-offset-1',
       )}
-      style={{ minHeight: containerHeight }}
+      style={{
+        width: 'var(--card-width, 7rem)',
+        minHeight: containerHeight,
+      }}
     >
       <CardSlot role="tableau" className="absolute top-0 left-0" />
       {cards.length > 0 && (
@@ -132,7 +132,11 @@ export default function FreeCellColumn({
             <div
               key={card.id}
               className="absolute"
-              style={{ top: i * CARD_OFFSET, left: 0, zIndex: i }}
+              style={{
+                top: `calc(${i} * var(--card-offset-free, 3rem))`,
+                left: 0,
+                zIndex: i,
+              }}
             >
               <FreeCellCard card={card} />
             </div>
@@ -148,7 +152,7 @@ export default function FreeCellColumn({
                 card={card}
                 cardIndex={absIdx}
                 allCards={cards}
-                top={absIdx * CARD_OFFSET}
+                top={`calc(${absIdx} * var(--card-offset-free, 3rem))`}
                 zIndex={absIdx}
                 hiddenFromIndex={activeDragFrom}
                 onDoubleClick={

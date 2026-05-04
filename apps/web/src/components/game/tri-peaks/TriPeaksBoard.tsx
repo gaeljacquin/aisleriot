@@ -6,5 +6,11 @@ interface TriPeaksBoardProps {
 }
 
 export default function TriPeaksBoard({ onHowToPlay }: TriPeaksBoardProps) {
-  return <TriPeaksBoardBase useGame={useTriPeaks} onHowToPlay={onHowToPlay} />
+  return (
+    <TriPeaksBoardBase
+      useGame={useTriPeaks}
+      onHowToPlay={onHowToPlay}
+      variantId="tri-peaks"
+    />
+  )
 }

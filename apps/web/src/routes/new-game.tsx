@@ -13,17 +13,19 @@ function NewGame() {
   }
 
   return (
-    <main className="flex h-full flex-col px-6 py-10">
-      <div className="flex flex-1 flex-col items-center justify-center pb-24">
-        <div className="w-full max-w-sm space-y-10">
-          <h1 className="text-center text-3xl font-bold text-foreground">
+    <main className="relative flex min-h-full flex-col overflow-y-auto px-6 py-12 sm:py-20">
+      <div className="mx-auto w-full max-w-6xl">
+        <header className="relative mb-12 flex items-center justify-center">
+          <div className="absolute left-0">
+            <BackLink variant="compact" label="Main Menu" />
+          </div>
+          <h1 className="font-serif text-4xl font-bold tracking-tight text-gold sm:text-5xl">
             New Game
           </h1>
-          <VariantGrid onSelect={handleSelect} showDescription={false} />
-        </div>
+        </header>
 
-        <div className="mt-14">
-          <BackLink />
+        <div className="w-full">
+          <VariantGrid onSelect={handleSelect} />
         </div>
       </div>
     </main>

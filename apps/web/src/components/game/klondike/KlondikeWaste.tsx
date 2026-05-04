@@ -7,7 +7,7 @@ import type { DraggableCardData } from '#/lib/games/klondike'
 import type { Card as CardType } from '#/lib/types'
 import CardSlot from '../CardSlot'
 
-const FAN_OFFSET = 20 // px horizontal offset between fanned cards in draw-3
+const FAN_OFFSET = 28 // px horizontal offset between fanned cards in draw-3
 
 interface KlondikeWasteProps {
   waste: CardType[]
@@ -49,7 +49,6 @@ export default function KlondikeWaste({
   // FIX: Only show the cards from the current "deal"
   // currentDealCount is the number of cards from the last flip that are still in the waste
   const visible = currentDealCount > 0 ? waste.slice(-currentDealCount) : []
-  const containerWidth = 80
 
   if (drawCount === 1) {
     const top = visible.length > 0 ? visible[0] : null
@@ -58,7 +57,13 @@ export default function KlondikeWaste({
       isDragging && waste.length > 1 ? waste[waste.length - 2] : null
 
     return (
-      <div className="relative h-28 w-20">
+      <div
+        className="relative"
+        style={{
+          width: 'var(--card-width, 7rem)',
+          height: 'var(--card-height, 10rem)',
+        }}
+      >
         {baseSlot}
 
         {/* Card under the dragging card — so we don't see an empty slot */}
@@ -97,8 +102,14 @@ export default function KlondikeWaste({
 
   return (
     <div
-      className="relative h-28 flex-shrink-0"
-      style={{ width: containerWidth }}
+      className="relative flex-shrink-0"
+      style={{
+        width:
+          visible.length > 1
+            ? `calc(${visible.length - 1} * 1.75rem + var(--card-width, 7rem))`
+            : 'var(--card-width, 7rem)',
+        height: 'var(--card-height, 10rem)',
+      }}
     >
       {baseSlot}
 

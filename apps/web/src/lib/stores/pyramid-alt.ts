@@ -22,6 +22,7 @@ import { createStatsSlice } from './slices/stats'
 import type { HistorySlice } from './slices/history'
 import type { StatsSlice } from './slices/stats'
 import { usePyramidSettingsStore } from './pyramid-settings'
+import type { GameStatus } from '#/lib/types'
 
 export interface PyramidAltStore
   extends PyramidState, HistorySlice<PyramidState>, StatsSlice {
@@ -36,6 +37,7 @@ export interface PyramidAltStore
   removeAloneFromStock: () => void
   removePairWithStock: (cellId: PyramidCellId) => void
   removePairStockWithWaste: () => void
+  devSetStatus: (status: GameStatus) => void
 }
 
 function snapshot(state: PyramidState): PyramidState {
@@ -385,6 +387,14 @@ export const usePyramidAltStore = create<PyramidAltStore>()(
         } else {
           set(nextState as Partial<PyramidAltStore>)
         }
+      },
+
+      devSetStatus: (status: GameStatus) => {
+        if (status === 'won') {
+          const s = get()
+          s.recordWin(s.score, !s.usedUndo)
+        }
+        set({ status } as Partial<PyramidAltStore>)
       },
     }),
     {
