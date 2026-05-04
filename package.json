@@ -12,7 +12,8 @@
     "format:write": "turbo format -- --write",
     "typecheck": "turbo typecheck",
     "add:web": "pnpm --filter ./apps/web add",
-    "add:ui": "pnpm --filter ./packages/ui add"
+    "add:ui": "pnpm --filter ./packages/ui add",
+    "preview:web": "pnpm --filter @workspace/web preview"
   },
   "devDependencies": {
     "prettier": "^3.8.1",
