@@ -62,13 +62,13 @@ export const usePyramidAltStore = create<PyramidAltStore>()(
 
       // History slice
       ...createHistorySlice<PyramidState>(
-        () => get() as PyramidState & HistorySlice<PyramidState>,
+        () => get(),
         (partial) => set(partial as Partial<PyramidAltStore>),
       ),
 
       // Stats slice
       ...createStatsSlice(
-        () => get() as StatsSlice,
+        () => get(),
         (partial) => set(partial as Partial<PyramidAltStore>),
       ),
 

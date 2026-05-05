@@ -32,13 +32,13 @@ export const useTriPeaksAltStore = create<TriPeaksAltStore>()(
 
       // History slice
       ...createHistorySlice<TriPeaksState>(
-        () => get() as TriPeaksState & HistorySlice<TriPeaksState>,
+        () => get(),
         (partial) => set(partial as Partial<TriPeaksAltStore>),
       ),
 
       // Stats slice
       ...createStatsSlice(
-        () => get() as StatsSlice,
+        () => get(),
         (partial) => set(partial as Partial<TriPeaksAltStore>),
       ),
 

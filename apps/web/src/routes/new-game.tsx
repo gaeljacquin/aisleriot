@@ -9,7 +9,7 @@ function NewGame() {
   const navigate = useNavigate()
 
   function handleSelect(variant: GameVariant) {
-    navigate({ to: `/${variant.id}` as '/klondike-draw-1' })
+    navigate({ to: `/${variant.id}` })
   }
 
   return (

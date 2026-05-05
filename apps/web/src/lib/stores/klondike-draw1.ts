@@ -177,12 +177,12 @@ export const useKlondikeDrawOneStore = create<KlondikeStore>()(
       wasteDeals: [],
 
       ...createHistorySlice<KlondikeState>(
-        () => get() as KlondikeState & HistorySlice<KlondikeState>,
+        () => get(),
         (partial) => set(partial as Partial<KlondikeStore>),
       ),
 
       ...createStatsSlice(
-        () => get() as StatsSlice,
+        () => get(),
         (partial) => set(partial as Partial<KlondikeStore>),
       ),
 

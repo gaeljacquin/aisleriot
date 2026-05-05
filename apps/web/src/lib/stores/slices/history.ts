@@ -33,7 +33,7 @@ const HISTORY_KEYS = new Set([
 
 function extractGameState<TState>(full: TState & HistorySlice<TState>): TState {
   const snapshot = {} as TState
-  for (const key of Object.keys(full as object) as (keyof typeof full)[]) {
+  for (const key of Object.keys(full) as (keyof typeof full)[]) {
     if (!HISTORY_KEYS.has(key as string)) {
       snapshot[key as keyof TState] = full[key as keyof TState]
     }

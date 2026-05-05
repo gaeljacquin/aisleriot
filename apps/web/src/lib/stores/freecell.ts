@@ -52,13 +52,13 @@ export const useFreeCellStore = create<FreeCellStore>()(
 
       // History slice — penalize undo -5
       ...createHistorySlice<FreeCellState>(
-        () => get() as FreeCellState & HistorySlice<FreeCellState>,
+        () => get(),
         (partial) => set(partial as Partial<FreeCellStore>),
       ),
 
       // Stats slice
       ...createStatsSlice(
-        () => get() as StatsSlice,
+        () => get(),
         (partial) => set(partial as Partial<FreeCellStore>),
       ),
 

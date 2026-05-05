@@ -52,7 +52,7 @@ export function useKlondikeDrawThree(): UseKlondikeResult {
         state.moveCard({
           fromPile: 'waste',
           fromIndex,
-          toPile: `foundation-${card.suit}` as KlondikeFoundationId,
+          toPile: `foundation-${card.suit}`,
         })
       }
       return
@@ -68,7 +68,7 @@ export function useKlondikeDrawThree(): UseKlondikeResult {
         state.moveCard({
           fromPile: pileId,
           fromIndex,
-          toPile: `foundation-${card.suit}` as KlondikeFoundationId,
+          toPile: `foundation-${card.suit}`,
         })
       }
     }
