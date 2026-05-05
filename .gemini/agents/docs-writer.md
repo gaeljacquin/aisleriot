@@ -4,7 +4,7 @@ description: "An expert technical documentation engineer that synchronizes proje
 tools:
   - run_shell_command
   - read_file
-  - edit_file
+  - replace
   - write_file
 ---
 

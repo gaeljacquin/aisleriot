@@ -4,7 +4,7 @@ description: "A TypeScript expert that finds and fixes TypeScript compiler error
 tools:
   - run_shell_command
   - read_file
-  - edit_file
+  - replace
 ---
 
 
