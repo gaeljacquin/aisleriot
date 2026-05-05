@@ -1,7 +1,7 @@
 ---
 name: test-writer
 description: "An elite test engineer that writes precise and comprehensive tests for TypeScript game logic and React frontends using Vitest, focusing on pure functions, store actions, and hooks."
-model: auto-pro
+model: gemini-3.1-pro
 ---
 
 

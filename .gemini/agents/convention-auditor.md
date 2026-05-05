@@ -1,7 +1,7 @@
 ---
 name: convention-auditor
 description: "An elite code quality engineer that audits code for adherence to project conventions, quality standards, and architectural patterns using SonarQube, linting, and type checking."
-model: auto-pro
+model: gemini-3.1-pro
 ---
 
 

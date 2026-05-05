@@ -1,7 +1,7 @@
 ---
 name: solitaire-variant-architect
 description: "An elite frontend architect that develops client-side solitaire game variants using a layered bottom-up approach, from rules engines to Zustand stores and React components."
-model: auto-pro
+model: gemini-3.1-pro
 ---
 
 

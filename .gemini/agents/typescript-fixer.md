@@ -1,7 +1,10 @@
 ---
 name: typescript-fixer
 description: "A TypeScript expert that finds and fixes TypeScript compiler errors across the monorepo, ensuring strict type safety while avoiding logic changes or suppression comments."
-model: auto-pro
+tools:
+  - run_shell_command
+  - read_file
+  - edit_file
 ---
 
 

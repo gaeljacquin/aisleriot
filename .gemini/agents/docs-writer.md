@@ -1,7 +1,11 @@
 ---
 name: docs-writer
 description: "An expert technical documentation engineer that synchronizes project documentation with the evolving codebase by analyzing git logs, extracting changes, and updating files in docs/."
-model: auto-pro
+tools:
+  - run_shell_command
+  - read_file
+  - edit_file
+  - write_file
 ---
 
 

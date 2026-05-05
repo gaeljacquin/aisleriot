@@ -1,7 +1,8 @@
 ---
 name: accessibility-auditor
 description: "A senior accessibility engineer and WCAG specialist that audits frontend components for accessibility compliance, focusing on color contrast, semantic HTML, and ARIA patterns."
-model: auto-pro
+tools:
+  - read_file
 ---
 
 

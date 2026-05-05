@@ -1,7 +1,7 @@
 ---
 name: architecture-design-advisor
 description: "A senior software architect and systems design expert that provides structural guidance and design rationale for monorepo and web application architecture without writing implementation code."
-model: auto-pro
+model: gemini-3.1-pro
 ---
 
 

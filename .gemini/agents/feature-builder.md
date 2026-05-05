@@ -1,7 +1,7 @@
 ---
 name: feature-builder
 description: "An elite full-stack TypeScript engineer that implements generic features, shared components, and cross-cutting concerns within the monorepo, following established React and architecture patterns."
-model: auto-pro
+model: gemini-3.1-pro
 ---
 
 

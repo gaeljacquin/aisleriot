@@ -1,7 +1,10 @@
 ---
 name: eslint-fixer
 description: "An ESLint expert that finds and fixes ESLint errors and warnings in the project, prioritizing auto-fixes and ensuring adherence to project-specific linting rules."
-model: auto-pro
+tools:
+  - run_shell_command
+  - read_file
+  - edit_file
 ---
 
 
