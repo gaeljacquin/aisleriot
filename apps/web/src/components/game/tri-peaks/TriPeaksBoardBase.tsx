@@ -78,7 +78,7 @@ export default function TriPeaksBoardBase({
     },
     {
       icon: Refresh04Icon,
-      label: 'Reset',
+      label: 'Restart',
       onClick: () => setConfirmRestart(true),
     },
     { icon: BookOpen01Icon, label: 'How to Play', onClick: onHowToPlay },

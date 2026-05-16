@@ -131,9 +131,9 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
   const dropAnimation = lastDropWasValid.current
     ? null
     : {
-        duration: 300,
-        easing: 'cubic-bezier(0.18, 0.67, 0.6, 1.22)',
-      }
+      duration: 300,
+      easing: 'cubic-bezier(0.18, 0.67, 0.6, 1.22)',
+    }
 
   const stats = useMemo(
     () => [
@@ -157,7 +157,7 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
     },
     {
       icon: Refresh04Icon,
-      label: 'Reset',
+      label: 'Restart',
       onClick: () => setConfirmRestart(true),
     },
     { icon: BookOpen01Icon, label: 'How to Play', onClick: onHowToPlay },

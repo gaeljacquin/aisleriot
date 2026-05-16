@@ -2,32 +2,36 @@ import { decks } from 'cards'
 import type { Card, Suit, Rank } from '#/lib/types'
 
 /**
- * Creates a standard 52-card deck, shuffles it, and returns it in our app's Card format.
+ * Creates a standard 52-card deck, shuffles it deterministically if a seed is provided,
+ * and returns it in our app's Card format.
  */
-export function createShuffledDeck(_seed?: number): Card[] {
+export function createShuffledDeck(seed?: number): Card[] {
   const deck = new decks.StandardDeck()
-
-  // node-cards supports a custom RNG.
-  // If a seed is provided, we could use it here.
-  // For now, let's stick to the default shuffleAll().
-  deck.shuffleAll()
-
   const drawn = deck.draw(52)
 
-  return drawn.map((card) => {
-    // node-cards uses .name for suit and .abbrn for rank ('A', '2', ..., '10', 'J', 'Q', 'K')
+  const cards = drawn.map((card) => {
     // @ts-ignore - node-cards types are missing properties
     const suit = card.suit.name as Suit
     // @ts-ignore - node-cards types are missing properties
     const rank = card.rank.abbrn as Rank
 
     return {
-      id: `${suit}-${rank}-${Math.random().toString(36).substring(2, 9)}`,
       suit,
       rank,
       faceUp: false,
     }
   })
+
+  // Deterministic shuffle if seed is provided
+  const result = seed !== undefined ? shuffleDeck(cards, seed) : shuffleDeck(cards)
+
+  // Generate deterministic IDs based on the final order and seed
+  return result.map((card, index) => ({
+    ...card,
+    id: seed !== undefined 
+      ? `${card.suit}-${card.rank}-${seed}-${index}`
+      : `${card.suit}-${card.rank}-${Math.random().toString(36).substring(2, 9)}`
+  }))
 }
 
 /** Legacy helpers mapped to the new cards package */
@@ -49,11 +53,23 @@ export function createDeck(): Card[] {
   })
 }
 
-export function shuffleDeck(cards: Card[], _seed?: number): Card[] {
-  // Simple Fisher-Yates shuffle for an existing array
-  const shuffled = [...cards]
+export function shuffleDeck<T>(items: T[], seed?: number): T[] {
+  const shuffled = [...items]
+  
+  // Simple deterministic pseudo-random generator if seed is provided
+  let random: () => number
+  if (seed !== undefined) {
+    let s = seed
+    random = () => {
+      s = (s * 16807) % 2147483647
+      return (s - 1) / 2147483646
+    }
+  } else {
+    random = Math.random
+  }
+
   for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
+    const j = Math.floor(random() * (i + 1))
     ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
   }
   return shuffled

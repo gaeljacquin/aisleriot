@@ -155,7 +155,7 @@ export default function KlondikeBoardBase({
     },
     {
       icon: Refresh04Icon,
-      label: 'Reset',
+      label: 'Restart',
       onClick: () => setConfirmRestart(true),
     },
     { icon: BookOpen01Icon, label: 'How to Play', onClick: onHowToPlay },
@@ -296,9 +296,9 @@ export default function KlondikeBoardBase({
                   draggableFrom={
                     devMoveAnywhere
                       ? Math.max(
-                          0,
-                          col.cards.findIndex((c) => c.faceUp),
-                        )
+                        0,
+                        col.cards.findIndex((c) => c.faceUp),
+                      )
                       : draggableFromIndex[col.id]
                   }
                   peekTableau={devPeekTableau}
