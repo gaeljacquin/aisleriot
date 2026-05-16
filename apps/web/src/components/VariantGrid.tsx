@@ -13,7 +13,7 @@ interface VariantGridProps {
 
 export function VariantGrid({ onSelect }: VariantGridProps) {
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
       {gameVariants.map((variant) => (
         <button
           key={variant.id}
@@ -37,7 +37,7 @@ export function VariantGrid({ onSelect }: VariantGridProps) {
             />
           </div>
 
-          <div className="flex h-28 items-center justify-center rounded-md border border-gold/10 bg-felt-deep/50 p-3">
+          <div className="flex h-40 items-center justify-center rounded-md border border-gold/10 bg-felt-deep/50 p-3">
             <div className="flex w-full items-center justify-center overflow-hidden">
               <MiniBoard id={variant.id} />
             </div>
