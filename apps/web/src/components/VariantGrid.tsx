@@ -1,9 +1,6 @@
 import { HugeiconsIcon } from '@hugeicons/react'
 import {
   ArrowRight02Icon,
-  ChampionIcon,
-  Clock01Icon,
-  Refresh01Icon,
 } from '@hugeicons/core-free-icons'
 import { cn } from '@workspace/ui/lib/utils'
 import { gameVariants } from '@workspace/constants'
@@ -29,12 +26,9 @@ export function VariantGrid({ onSelect }: VariantGridProps) {
         >
           <div className="flex items-start justify-between gap-4">
             <div>
-              <h2 className="font-serif text-2xl text-cream md:text-3xl">
+              <h2 className="font-serif text-lg text-cream md:text-xl">
                 {variant.name}
               </h2>
-              <p className="mt-0.5 font-serif text-[11px] uppercase tracking-[0.25em] text-gold/80">
-                {variant.subtitle}
-              </p>
             </div>
             <HugeiconsIcon
               icon={ArrowRight02Icon}
@@ -48,34 +42,6 @@ export function VariantGrid({ onSelect }: VariantGridProps) {
               <MiniBoard id={variant.id} />
             </div>
           </div>
-
-          <p className="font-serif text-sm leading-relaxed text-cream-dim">
-            {variant.blurb}
-          </p>
-
-          <div className="h-px w-full bg-linear-to-r from-transparent via-gold/20 to-transparent" />
-
-          <dl className="grid grid-cols-3 gap-2 text-center">
-            <div>
-              <dt className="flex items-center justify-center gap-1 font-serif text-[10px] uppercase tracking-wider text-cream-dim">
-                <HugeiconsIcon icon={Refresh01Icon} className="h-3 w-3" />{' '}
-                Played
-              </dt>
-              <dd className="mt-1 font-serif text-base text-cream">?</dd>
-            </div>
-            <div>
-              <dt className="flex items-center justify-center gap-1 font-serif text-[10px] uppercase tracking-wider text-cream-dim">
-                <HugeiconsIcon icon={ChampionIcon} className="h-3 w-3" /> Win %
-              </dt>
-              <dd className="mt-1 font-serif text-base text-gold">N/A</dd>
-            </div>
-            <div>
-              <dt className="flex items-center justify-center gap-1 font-serif text-[10px] uppercase tracking-wider text-cream-dim">
-                <HugeiconsIcon icon={Clock01Icon} className="h-3 w-3" /> Best
-              </dt>
-              <dd className="mt-1 font-serif text-base text-cream">0:00</dd>
-            </div>
-          </dl>
         </button>
       ))}
     </div>
