@@ -44,7 +44,7 @@ These standards apply across the entire monorepo.
 - **Avoid Negated Conditions**: When using ternary or conditional operators, avoid negating the condition if an `else` branch (or `null` branch) is present.
   - **Bad**: `!isGameOver ? <Game /> : null`
   - **Good**: `isGameOver ? null : <Game />` or `!isGameOver && <Game />`
-  - **Rationale**: Negated conditions are harder to read and are flagged by SonarQube (rule S1264).
+  - **Rationale**: Negated conditions are harder to read.
 - **Conditional classNames**: Always use the `cn()` utility. Put conditionals on a separate line from the base classes.
   - **Correct**: `className={cn('base-class', isActive && 'active')}`
   - **Wrong**: `` className={`base-class ${isActive ? 'active' : ''}`} ``

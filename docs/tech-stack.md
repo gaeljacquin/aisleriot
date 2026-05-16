@@ -24,12 +24,16 @@ docs/         # Developer documentation
 
 ## Getting Started
 
-```bash
-pnpm install
-pnpm dev        # Start dev server at http://localhost:3000
-```
+1. **Prerequisite**: Install Docker and VS Code (with the "Dev Containers" extension).
+2. **Open in DevContainer**: Open the project folder in VS Code and click "Reopen in Container" when prompted.
+3. **Environment**: The DevContainer automatically runs `pnpm install` and sets up the environment.
+
+### CRITICAL: No Bare Metal
+**Do not run `pnpm install` or `pnpm update` on your host machine (bare metal).** Always use the DevContainer terminal for these commands for security.
 
 ## Commands
+
+Run all commands from the root or within specific app/package directories inside the DevContainer terminal:
 
 ```bash
 pnpm dev        # Start all apps in dev mode
