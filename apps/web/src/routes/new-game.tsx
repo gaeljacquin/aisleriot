@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import type { GameVariant } from '@workspace/constants'
 import BackLink from '@/components/BackLink'
 import { VariantGrid } from '@/components/VariantGrid'
+import ThemeToggle from '@/components/ThemeToggle'
 
 export const Route = createFileRoute('/new-game')({ component: NewGame })
 
@@ -22,6 +23,9 @@ function NewGame() {
           <h1 className="font-serif text-4xl font-bold tracking-tight text-gold sm:text-5xl">
             New Game
           </h1>
+          <div className="absolute right-0">
+            <ThemeToggle />
+          </div>
         </header>
 
         <div className="w-full">
