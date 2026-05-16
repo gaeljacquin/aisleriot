@@ -21,7 +21,10 @@ import {
   TouchIcon,
   ChampionIcon,
   Cancel01Icon,
+  ViewIcon,
 } from '@hugeicons/core-free-icons'
+import { useDevModeStore } from '#/stores/dev-mode'
+import { BoardLabel } from '../BoardLabel'
 
 export interface PyramidBoardBaseStockRowContext<T extends UsePyramidResult> {
   stockCount: number
@@ -69,44 +72,68 @@ function PyramidStockRow({
   wasteTop,
   onWasteClick,
   wasteRef,
+  wasteHighlighted,
 }: {
   stockCount: number
   canDraw: boolean
   canRecycle: boolean
   onDraw: () => void
   onRecycle: () => void
-  wasteTop: CardType | null
+  wasteTop: null | CardType
   onWasteClick: () => void
   wasteRef: React.RefObject<HTMLDivElement | null>
+  wasteHighlighted?: boolean
 }) {
   return (
-    <div
-      className="flex items-center justify-center"
-      style={{ gap: 'calc(var(--pyramid-gap, 2rem) * 2)' }}
-    >
-      <div
-        className="relative"
-        style={{
-          width: 'var(--card-width, 7rem)',
-          height: 'var(--card-height, 10rem)',
-        }}
-      >
-        {stockCount > 0 ? (
-          <Stock count={stockCount} onClick={onDraw} disabled={!canDraw} />
-        ) : (
-          <StockEmptyIndicator canRecycle={canRecycle} onClick={onRecycle} />
-        )}
-      </div>
+    <div className="flex justify-center" style={{ margin: '0 auto' }}>
+      <div className="flex items-center gap-6 md:gap-10">
+        <div className="flex items-center gap-2">
+          <BoardLabel
+            label="Stock"
+            className="[writing-mode:vertical-lr] rotate-180"
+          />
+          <div
+            className="relative"
+            style={{
+              width: 'var(--card-width, 7rem)',
+              height: 'var(--card-height, 10rem)',
+            }}
+          >
+            {stockCount > 0 ? (
+              <Stock count={stockCount} onClick={onDraw} disabled={!canDraw} />
+            ) : (
+              <StockEmptyIndicator
+                canRecycle={canRecycle}
+                onClick={onRecycle}
+              />
+            )}
+          </div>
+        </div>
 
-      <div ref={wasteRef} className="inline-block">
-        <div
-          className={cn(
-            'cursor-default',
-            wasteTop !== null && 'cursor-pointer',
-          )}
-          onClick={onWasteClick}
-        >
-          <Waste topCard={wasteTop} animate={false} />
+        <div className="flex items-center gap-2">
+          <div
+            ref={wasteRef}
+            className={cn(
+              'relative rounded-lg cursor-default',
+              wasteTop !== null && 'cursor-pointer',
+            )}
+            style={{
+              width: 'var(--card-width, 7rem)',
+              height: 'var(--card-height, 10rem)',
+            }}
+            onClick={onWasteClick}
+          >
+            <Waste
+              topCard={wasteTop}
+              animate={false}
+              highlighted={wasteHighlighted}
+            />
+          </div>
+          <BoardLabel
+            label="Waste"
+            color="gold"
+            className="[writing-mode:vertical-lr]"
+          />
         </div>
       </div>
     </div>
@@ -159,6 +186,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
   const [selectedCellId, setSelectedCellId] = useState<PyramidCellId | null>(
     null,
   )
+  const [selectedIsWaste, setSelectedIsWaste] = useState(false)
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [confirmNewGame, setConfirmNewGame] = useState(false)
 
@@ -168,6 +196,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
     if (onBeforeCellClick) {
       const handled = onBeforeCellClick(id, (innerId) => {
         setSelectedCellId(innerId)
+        setSelectedIsWaste(false)
       })
       if (handled) return
     }
@@ -177,12 +206,21 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
       return
     }
 
-    const card = cells.find((c) => c.id === id)?.card
-    if (!card) return
+    const cell = cells.find((c) => c.id === id)
+    const card = cell?.card
+    if (!card || cell.removed) return
+
+    // If waste was selected, pair with it
+    if (selectedIsWaste) {
+      onRemovePairWithWaste(id)
+      setSelectedIsWaste(false)
+      return
+    }
 
     if (isKing(card)) {
       onRemoveAlone(id)
       setSelectedCellId(null)
+      setSelectedIsWaste(false)
       return
     }
 
@@ -200,16 +238,23 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
     if (isKing(wasteTop)) {
       onRemoveWasteKing()
       setSelectedCellId(null)
+      setSelectedIsWaste(false)
       return
     }
 
     if (selectedCellId) {
       onRemovePairWithWaste(selectedCellId)
       setSelectedCellId(null)
+      setSelectedIsWaste(false)
+    } else {
+      setSelectedIsWaste(!selectedIsWaste)
     }
   }
 
-  const clearSelection = () => setSelectedCellId(null)
+  const clearSelection = () => {
+    setSelectedCellId(null)
+    setSelectedIsWaste(false)
+  }
 
   const stats = useMemo(
     () => [
@@ -223,25 +268,42 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
     {
       icon: PlusSignIcon,
       label: 'New',
-      onClick: () => setConfirmNewGame(true),
+      onClick: () => {
+        setConfirmNewGame(true)
+        setSelectedIsWaste(false)
+      },
     },
     {
       icon: UndoIcon,
       label: 'Undo',
-      onClick: onUndo,
+      onClick: () => {
+        onUndo()
+        setSelectedIsWaste(false)
+      },
       disabled: !canUndo || (status !== 'playing' && status !== 'idle'),
     },
     {
       icon: Refresh04Icon,
       label: 'Restart',
-      onClick: () => setConfirmRestart(true),
+      onClick: () => {
+        setConfirmRestart(true)
+        setSelectedIsWaste(false)
+      },
     },
     { icon: BookOpen01Icon, label: 'How to Play', onClick: onHowToPlay },
   ]
 
   const [devMoveAnywhere, setDevMoveAnywhere] = useState(false)
 
+  const { isDevMode, toggleDevMode } = useDevModeStore()
+
   const devActions = [
+    {
+      icon: ViewIcon,
+      label: 'Debug',
+      onClick: toggleDevMode,
+      active: isDevMode,
+    },
     {
       icon: TouchIcon,
       label: 'Moves',
@@ -350,6 +412,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
                 wasteTop={wasteTop}
                 onWasteClick={handleWasteTopClick}
                 wasteRef={wasteRef}
+                wasteHighlighted={selectedIsWaste}
               />
             )}
           </div>

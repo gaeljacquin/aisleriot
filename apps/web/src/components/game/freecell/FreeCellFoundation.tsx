@@ -50,16 +50,7 @@ export default function FreeCellFoundation({
       }}
     >
       <div className="relative h-full w-full">
-        <CardSlot role="foundation" />
-        {/* Suit hint in empty slot */}
-        <div
-          className={cn(
-            'pointer-events-none absolute inset-0 flex items-center justify-center text-3xl opacity-60',
-            isRed ? 'text-red-300' : 'text-slate-300',
-          )}
-        >
-          {SUIT_SYMBOLS[suit]}
-        </div>
+        <CardSlot role="foundation" label={SUIT_SYMBOLS[suit]} />
       </div>
 
       {topCard && (

@@ -44,7 +44,7 @@ export default function KlondikeWaste({
   })
 
   // The base slot is always rendered
-  const baseSlot = <CardSlot role="waste" className="absolute inset-0" />
+  const baseSlot = <CardSlot role="waste" className="absolute top-0 left-0" />
 
   // FIX: Only show the cards from the current "deal"
   // currentDealCount is the number of cards from the last flip that are still in the waste
@@ -115,7 +115,7 @@ export default function KlondikeWaste({
 
       {/* Card under the current deal — visible if dragging the last card of the deal */}
       {underCard && (
-        <div className="absolute inset-0">
+        <div className="absolute top-0 left-0">
           <Card
             suit={underCard.suit}
             rank={underCard.rank}

@@ -31,6 +31,8 @@ import {
   ChampionIcon,
   Cancel01Icon,
 } from '@hugeicons/core-free-icons'
+import { useDevModeStore } from '#/stores/dev-mode'
+import { BoardLabel } from '../BoardLabel'
 
 const OVERLAY_CARD_OFFSET = 40
 const CARD_HEIGHT = 160
@@ -68,6 +70,8 @@ export default function KlondikeBoardBase({
     currentDealCount,
     devSetStatus,
   } = useGame()
+
+  const { isDevMode, toggleDevMode } = useDevModeStore()
 
   const variantId = drawCount === 1 ? 'klondike-draw-1' : 'klondike-draw-3'
   const variant = getVariant(variantId)
@@ -163,13 +167,19 @@ export default function KlondikeBoardBase({
 
   const devActions = [
     {
+      icon: ViewIcon,
+      label: 'Debug',
+      onClick: toggleDevMode,
+      active: isDevMode,
+    },
+    {
       icon: TouchIcon,
       label: 'Moves',
       onClick: () => setDevMoveAnywhere(!devMoveAnywhere),
       active: devMoveAnywhere,
     },
     {
-      icon: ViewIcon,
+      icon: Refresh04Icon,
       label: 'Peek',
       onClick: () => setDevPeekTableau(!devPeekTableau),
       active: devPeekTableau,
@@ -235,7 +245,6 @@ export default function KlondikeBoardBase({
               isGameOver && 'opacity-50',
             )}
           >
-            {/* Top row: stock | waste | empty | foundations */}
             <div
               className="grid grid-cols-7"
               style={{
@@ -243,68 +252,80 @@ export default function KlondikeBoardBase({
                 gridTemplateColumns: 'repeat(7, var(--card-width))',
               }}
             >
-              <KlondikeStock
-                stockCount={stockCount}
-                stockEmpty={stockEmpty}
-                canRedeal={canRedeal}
-                onClick={onFlipStock}
-              />
-              <KlondikeWaste
-                waste={waste}
-                drawCount={drawCount}
-                moveAnywhere={devMoveAnywhere}
-                onDoubleClick={() => onAutoMove('waste')}
-                currentDealCount={currentDealCount}
-              />
+              <div className="flex flex-col items-start gap-2">
+                <BoardLabel label="Stock" className="w-full" />
+                <KlondikeStock
+                  stockCount={stockCount}
+                  stockEmpty={stockEmpty}
+                  canRedeal={canRedeal}
+                  onClick={onFlipStock}
+                />
+              </div>
+              <div className="flex flex-col items-start gap-2">
+                <BoardLabel label="Waste" color="gold" className="w-full" />
+                <KlondikeWaste
+                  waste={waste}
+                  drawCount={drawCount}
+                  moveAnywhere={devMoveAnywhere}
+                  onDoubleClick={() => onAutoMove('waste')}
+                  currentDealCount={currentDealCount}
+                />
+              </div>
 
               {/* Empty space (Column 3) */}
               <div />
 
               {/* Foundations (Columns 4-7) */}
-              <div
-                className="grid grid-cols-4 col-span-4"
-                style={{
-                  gap: 'var(--card-gap-klon)',
-                  gridTemplateColumns: 'repeat(4, var(--card-width))',
-                }}
-              >
-                {foundation.map((f) => (
-                  <KlondikeFoundation
-                    key={f.id}
-                    id={f.id}
-                    cards={f.cards}
-                    suit={f.suit}
-                    draggable={true}
-                  />
-                ))}
+              <div className="col-span-4 flex flex-col items-center gap-2">
+                <BoardLabel label="Foundations" />
+                <div
+                  className="grid grid-cols-4 w-full"
+                  style={{
+                    gap: 'var(--card-gap-klon)',
+                    gridTemplateColumns: 'repeat(4, var(--card-width))',
+                  }}
+                >
+                  {foundation.map((f) => (
+                    <KlondikeFoundation
+                      key={f.id}
+                      id={f.id}
+                      cards={f.cards}
+                      suit={f.suit}
+                      draggable={true}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* Tableau */}
-            <div
-              className="grid grid-cols-7"
-              style={{
-                gap: 'var(--card-gap-klon)',
-                gridTemplateColumns: 'repeat(7, var(--card-width))',
-              }}
-            >
-              {tableau.map((col) => (
-                <KlondikeColumn
-                  key={col.id}
-                  id={col.id}
-                  cards={col.cards}
-                  draggableFrom={
-                    devMoveAnywhere
-                      ? Math.max(
-                        0,
-                        col.cards.findIndex((c) => c.faceUp),
-                      )
-                      : draggableFromIndex[col.id]
-                  }
-                  peekTableau={devPeekTableau}
-                  onDoubleClick={(pileId) => onAutoMove(pileId)}
-                />
-              ))}
+            <div className="flex flex-col items-center gap-2">
+              <BoardLabel label="Tableau" />
+              <div
+                className="grid grid-cols-7"
+                style={{
+                  gap: 'var(--card-gap-klon)',
+                  gridTemplateColumns: 'repeat(7, var(--card-width))',
+                }}
+              >
+                {tableau.map((col) => (
+                  <KlondikeColumn
+                    key={col.id}
+                    id={col.id}
+                    cards={col.cards}
+                    draggableFrom={
+                      devMoveAnywhere
+                        ? Math.max(
+                            0,
+                            col.cards.findIndex((c) => c.faceUp),
+                          )
+                        : draggableFromIndex[col.id]
+                    }
+                    peekTableau={devPeekTableau}
+                    onDoubleClick={(pileId) => onAutoMove(pileId)}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>

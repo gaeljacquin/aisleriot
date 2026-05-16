@@ -17,7 +17,10 @@ import {
   TouchIcon,
   ChampionIcon,
   Cancel01Icon,
+  ViewIcon,
 } from '@hugeicons/core-free-icons'
+import { useDevModeStore } from '#/stores/dev-mode'
+import { BoardLabel } from '../BoardLabel'
 
 interface TriPeaksBoardBaseProps {
   useGame: () => UseTriPeaksResult
@@ -56,6 +59,8 @@ export default function TriPeaksBoardBase({
 
   const isGameOver = status === 'won' || status === 'lost'
 
+  const { isDevMode, toggleDevMode } = useDevModeStore()
+
   const stats = useMemo(
     () => [
       { label: 'Score', value: score },
@@ -87,6 +92,12 @@ export default function TriPeaksBoardBase({
   const [devMoveAnywhere, setDevMoveAnywhere] = useState(false)
 
   const devActions = [
+    {
+      icon: ViewIcon,
+      label: 'Debug',
+      onClick: toggleDevMode,
+      active: isDevMode,
+    },
     {
       icon: TouchIcon,
       label: 'Moves',
@@ -170,16 +181,24 @@ export default function TriPeaksBoardBase({
               className="mt-6 flex items-center justify-center"
               style={{ gap: 'var(--rail-gap)' }}
             >
-              <div
-                className="flex items-center"
-                style={{ gap: 'var(--rail-gap)' }}
-              >
+              <div className="flex flex-col items-center gap-2">
+                <BoardLabel label="Stock" />
                 <Stock
                   count={stockCount}
                   onClick={onDraw}
                   disabled={!canDraw}
                 />
-                <div ref={wasteRef} className="inline-block">
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <BoardLabel label="Waste" color="gold" />
+                <div
+                  ref={wasteRef}
+                  className="relative"
+                  style={{
+                    width: 'var(--card-width, 7rem)',
+                    height: 'var(--card-height, 10rem)',
+                  }}
+                >
                   <Waste topCard={wasteTop} animate={false} />
                 </div>
               </div>

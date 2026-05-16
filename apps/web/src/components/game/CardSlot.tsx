@@ -1,16 +1,24 @@
 import { cn } from '@workspace/ui/lib/utils'
 import type { PileRole } from '#/lib/types'
+import { useDevModeStore } from '#/stores/dev-mode'
 
 interface CardSlotProps {
   role: PileRole
+  label?: string
   className?: string
 }
 
-export default function CardSlot({ role: _role, className }: CardSlotProps) {
+export default function CardSlot({
+  role: _role,
+  label,
+  className,
+}: CardSlotProps) {
+  const { isDevMode } = useDevModeStore()
+
   return (
     <div
       className={cn(
-        'rounded-lg border-2 border-dashed border-green-700 bg-green-900',
+        'relative flex shrink-0 items-center justify-center rounded-lg border-2 border-dashed border-green-700 bg-green-900',
         className,
       )}
       style={{
@@ -18,6 +26,16 @@ export default function CardSlot({ role: _role, className }: CardSlotProps) {
         height: 'var(--card-height, 10rem)',
       }}
       aria-label="empty card slot"
-    />
+    >
+      {label && (
+        <span
+          className={cn(
+            'font-display tracking-wide uppercase text-green-600 pointer-events-none select-none',
+          )}
+        >
+          {label}
+        </span>
+      )}
+    </div>
   )
 }

@@ -31,7 +31,10 @@ import {
   TouchIcon,
   ChampionIcon,
   Cancel01Icon,
+  ViewIcon,
 } from '@hugeicons/core-free-icons'
+import { useDevModeStore } from '#/stores/dev-mode'
+import { BoardLabel } from '../BoardLabel'
 
 interface FreeCellBoardProps {
   onHowToPlay: () => void
@@ -57,6 +60,8 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
     triggerAutoMove,
     devSetStatus,
   } = useFreeCell()
+
+  const { isDevMode, toggleDevMode } = useDevModeStore()
 
   const variant = getVariant('freecell')
 
@@ -131,9 +136,9 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
   const dropAnimation = lastDropWasValid.current
     ? null
     : {
-      duration: 300,
-      easing: 'cubic-bezier(0.18, 0.67, 0.6, 1.22)',
-    }
+        duration: 300,
+        easing: 'cubic-bezier(0.18, 0.67, 0.6, 1.22)',
+      }
 
   const stats = useMemo(
     () => [
@@ -164,6 +169,12 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
   ]
 
   const devActions = [
+    {
+      icon: ViewIcon,
+      label: 'Debug',
+      onClick: toggleDevMode,
+      active: isDevMode,
+    },
     {
       icon: TouchIcon,
       label: 'Moves',
@@ -250,12 +261,15 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
                 onFreeCellDoubleClick={handleFreeCellDoubleClick}
               />
 
-              <FreeCellTableau
-                tableau={tableau}
-                draggableFromIndex={draggableFromIndex}
-                devUnlimitedMoves={devUnlimitedMoves}
-                onDoubleClick={handleTableauDoubleClick}
-              />
+              <div className="flex flex-col items-center gap-2">
+                <BoardLabel label="Tableau" />
+                <FreeCellTableau
+                  tableau={tableau}
+                  draggableFromIndex={draggableFromIndex}
+                  devUnlimitedMoves={devUnlimitedMoves}
+                  onDoubleClick={handleTableauDoubleClick}
+                />
+              </div>
             </div>
           </div>
 

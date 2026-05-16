@@ -23,14 +23,16 @@ export function createShuffledDeck(seed?: number): Card[] {
   })
 
   // Deterministic shuffle if seed is provided
-  const result = seed !== undefined ? shuffleDeck(cards, seed) : shuffleDeck(cards)
+  const result =
+    seed !== undefined ? shuffleDeck(cards, seed) : shuffleDeck(cards)
 
   // Generate deterministic IDs based on the final order and seed
   return result.map((card, index) => ({
     ...card,
-    id: seed !== undefined 
-      ? `${card.suit}-${card.rank}-${seed}-${index}`
-      : `${card.suit}-${card.rank}-${Math.random().toString(36).substring(2, 9)}`
+    id:
+      seed !== undefined
+        ? `${card.suit}-${card.rank}-${seed}-${index}`
+        : `${card.suit}-${card.rank}-${Math.random().toString(36).substring(2, 9)}`,
   }))
 }
 
@@ -55,7 +57,7 @@ export function createDeck(): Card[] {
 
 export function shuffleDeck<T>(items: T[], seed?: number): T[] {
   const shuffled = [...items]
-  
+
   // Simple deterministic pseudo-random generator if seed is provided
   let random: () => number
   if (seed !== undefined) {
