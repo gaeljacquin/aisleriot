@@ -6,7 +6,7 @@ Aisleriot is a Turborepo monorepo with a Vite + TanStack Router web app — a co
 
 - **Development Environment**: All development must happen within the DevContainer (`.devcontainer/`).
 - **Package manager**: `pnpm` (unified for root and all apps/packages).
-- **CRITICAL RULE**: Never run `pnpm install`, `pnpm update`, or any package modification commands on bare metal. These MUST be run inside the DevContainer for security.
+- **CRITICAL RULE**: Never run `pnpm install`, `pnpm update`, or any package modification commands on bare metal. These MUST be run inside the DevContainer for security. When using `run_shell_command`, only execute these if the `DEVCONTAINER` environment variable is set to `true`.
 - Commands:
   - `pnpm dev` (or `turbo dev`) — start dev server at http://localhost:3000
   - `pnpm build` (or `turbo build`) — build all apps and packages

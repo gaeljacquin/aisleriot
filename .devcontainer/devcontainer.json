@@ -40,6 +40,9 @@
       }
     }
   },
+  "remoteEnv": {
+    "DEVCONTAINER": "true"
+  },
   "remoteUser": "root",
   "postCreateCommand": "pnpm install"
 }
