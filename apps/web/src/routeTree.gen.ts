@@ -17,6 +17,7 @@ import { Route as PyramidRouteImport } from './routes/pyramid'
 import { Route as NewGameRouteImport } from './routes/new-game'
 import { Route as KlondikeDraw3RouteImport } from './routes/klondike-draw-3'
 import { Route as KlondikeDraw1RouteImport } from './routes/klondike-draw-1'
+import { Route as GrandfathersClockRouteImport } from './routes/grandfathers-clock'
 import { Route as FreecellRouteImport } from './routes/freecell'
 import { Route as CreditsRouteImport } from './routes/credits'
 import { Route as AboutRouteImport } from './routes/about'
@@ -62,6 +63,11 @@ const KlondikeDraw1Route = KlondikeDraw1RouteImport.update({
   path: '/klondike-draw-1',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GrandfathersClockRoute = GrandfathersClockRouteImport.update({
+  id: '/grandfathers-clock',
+  path: '/grandfathers-clock',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FreecellRoute = FreecellRouteImport.update({
   id: '/freecell',
   path: '/freecell',
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/credits': typeof CreditsRoute
   '/freecell': typeof FreecellRoute
+  '/grandfathers-clock': typeof GrandfathersClockRoute
   '/klondike-draw-1': typeof KlondikeDraw1Route
   '/klondike-draw-3': typeof KlondikeDraw3Route
   '/new-game': typeof NewGameRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/credits': typeof CreditsRoute
   '/freecell': typeof FreecellRoute
+  '/grandfathers-clock': typeof GrandfathersClockRoute
   '/klondike-draw-1': typeof KlondikeDraw1Route
   '/klondike-draw-3': typeof KlondikeDraw3Route
   '/new-game': typeof NewGameRoute
@@ -117,6 +125,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/credits': typeof CreditsRoute
   '/freecell': typeof FreecellRoute
+  '/grandfathers-clock': typeof GrandfathersClockRoute
   '/klondike-draw-1': typeof KlondikeDraw1Route
   '/klondike-draw-3': typeof KlondikeDraw3Route
   '/new-game': typeof NewGameRoute
@@ -133,6 +142,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/credits'
     | '/freecell'
+    | '/grandfathers-clock'
     | '/klondike-draw-1'
     | '/klondike-draw-3'
     | '/new-game'
@@ -147,6 +157,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/credits'
     | '/freecell'
+    | '/grandfathers-clock'
     | '/klondike-draw-1'
     | '/klondike-draw-3'
     | '/new-game'
@@ -161,6 +172,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/credits'
     | '/freecell'
+    | '/grandfathers-clock'
     | '/klondike-draw-1'
     | '/klondike-draw-3'
     | '/new-game'
@@ -176,6 +188,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   CreditsRoute: typeof CreditsRoute
   FreecellRoute: typeof FreecellRoute
+  GrandfathersClockRoute: typeof GrandfathersClockRoute
   KlondikeDraw1Route: typeof KlondikeDraw1Route
   KlondikeDraw3Route: typeof KlondikeDraw3Route
   NewGameRoute: typeof NewGameRoute
@@ -244,6 +257,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KlondikeDraw1RouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/grandfathers-clock': {
+      id: '/grandfathers-clock'
+      path: '/grandfathers-clock'
+      fullPath: '/grandfathers-clock'
+      preLoaderRoute: typeof GrandfathersClockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/freecell': {
       id: '/freecell'
       path: '/freecell'
@@ -280,6 +300,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   CreditsRoute: CreditsRoute,
   FreecellRoute: FreecellRoute,
+  GrandfathersClockRoute: GrandfathersClockRoute,
   KlondikeDraw1Route: KlondikeDraw1Route,
   KlondikeDraw3Route: KlondikeDraw3Route,
   NewGameRoute: NewGameRoute,

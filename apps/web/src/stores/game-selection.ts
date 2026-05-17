@@ -12,7 +12,8 @@ export const useGameSelectionStore = create<GameSelectionState>()(
     (set) => ({
       showAllGames: false,
       setShowAllGames: (showAllGames) => set({ showAllGames }),
-      toggleShowAllGames: () => set((state) => ({ showAllGames: !state.showAllGames })),
+      toggleShowAllGames: () =>
+        set((state) => ({ showAllGames: !state.showAllGames })),
     }),
     {
       name: 'game-selection-storage',

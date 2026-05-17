@@ -83,9 +83,7 @@ function NewGame() {
                     />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <p>
-                      {showAllGames ? 'Most Popular' : 'All'}
-                    </p>
+                    <p>{showAllGames ? 'Most Popular' : 'All'}</p>
                   </TooltipContent>
                 </Tooltip>
 
@@ -143,7 +141,7 @@ function NewGame() {
                               className={cn(
                                 'font-serif text-sm leading-tight',
                                 !isSelected && 'hover:cursor-pointer',
-                                variant.placeholder && 'line-through'
+                                variant.placeholder && 'line-through',
                               )}
                             >
                               {variant.name}

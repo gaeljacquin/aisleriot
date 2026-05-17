@@ -139,16 +139,17 @@ const gameVariantsUnordered: GameVariant[] = [
   {
     id: "grandfathers-clock",
     name: "Grandfather's Clock",
-    subtitle: "Lorem ipsum dolor",
-    blurb: "Lorem ipsum dolor sit amet.",
-    color: "bg-purple-100 dark:bg-purple-950",
+    subtitle: "Build the clock",
+    blurb:
+      "Arrange cards in a circular clock face. Build foundations up by suit to match the hour.",
+    color: "bg-amber-100 dark:bg-amber-950",
     rules: [
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-      "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-      "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "The goal is to move all cards to the 12 foundation piles (the 'Clock'), built up by suit to their respective 'hour' rank (Ace for 1, 10 for 10, Jack for 11, Queen for 12).",
+      "Foundations are seeded with specific cards (e.g., 9 of Clubs at 12 o'clock). Ranking is continuous: King builds to Ace.",
+      "The tableau has 8 columns of 5 cards each. Build down in rank regardless of suit. Ace wraps to King.",
+      "Only one card can be moved at a time.",
+      "Empty tableau columns can be filled with any available card.",
     ],
-    placeholder: true,
   },
 ]
 
