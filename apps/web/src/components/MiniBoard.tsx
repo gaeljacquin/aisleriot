@@ -1,5 +1,6 @@
 import { cn } from '@workspace/ui/lib/utils'
-import type { GameVariantId, Suit, Rank } from '@workspace/constants'
+import type { GameVariantId } from '@workspace/constants'
+import type { Suit, Rank } from '#/lib/types'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { ArrowRight02Icon } from '@hugeicons/core-free-icons'
 import { PREVIEW_DEALS } from '#/lib/games/preview-deals'
@@ -24,7 +25,7 @@ function MiniCard({
 }) {
   return (
     <div
-      className={cn('relative rounded-sm overflow-hidden', className)}
+      className={cn('relative rounded-[1px] overflow-hidden', className)}
       style={style}
     >
       <CardPrimitive
@@ -71,7 +72,7 @@ export function MiniBoard({ id }: MiniBoardProps) {
             {deal.foundations.map((card: any, i: number) => (
               <div
                 key={i}
-                className="h-9 w-6.5 rounded-sm border border-gold/10 bg-white/5"
+                className="h-9 w-6.5 rounded-[1px] border border-gold/10 bg-white/5"
               >
                 {card && (
                   <MiniCard
@@ -188,7 +189,7 @@ export function MiniBoard({ id }: MiniBoardProps) {
             {deal.freecells.map((card: any, i: number) => (
               <div
                 key={i}
-                className="h-9 w-7 rounded-sm border border-gold/10 bg-white/5"
+                className="h-9 w-7 rounded-[1px] border border-gold/10 bg-white/5"
               >
                 {card && <MiniCard {...card} className="h-full w-full" />}
               </div>
@@ -198,7 +199,7 @@ export function MiniBoard({ id }: MiniBoardProps) {
             {deal.foundations.map((card: any, i: number) => (
               <div
                 key={i}
-                className="h-9 w-7 rounded-sm border border-gold/10 bg-white/5"
+                className="h-9 w-7 rounded-[1px] border border-gold/10 bg-white/5"
               >
                 {card && <MiniCard {...card} className="h-full w-full" />}
               </div>

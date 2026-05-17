@@ -4,7 +4,6 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { ArrowRight02Icon, Refresh01Icon } from '@hugeicons/core-free-icons'
 import { cn } from '@workspace/ui/lib/utils'
 import Card from '../Card'
-import CardSlot from '../CardSlot'
 import StockEmptyIndicator from '../StockEmptyIndicator'
 import PyramidBoardBase from './PyramidBoardBase'
 import { usePyramidAlt } from '#/lib/hooks/usePyramidAlt'
@@ -13,6 +12,7 @@ import { isKing } from '#/lib/games/pyramid'
 import type { PyramidCellId } from '#/lib/games/pyramid'
 import type { PyramidBoardBaseStockRowContext } from './PyramidBoardBase'
 import { BoardLabel } from '../BoardLabel'
+import Waste from '../Waste'
 
 interface PyramidAltBoardProps {
   onHowToPlay: () => void
