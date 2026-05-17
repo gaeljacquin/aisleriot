@@ -11,29 +11,36 @@ interface VariantCardProps {
 }
 
 export function VariantCard({ variant, onClick, className }: VariantCardProps) {
+  const isPlaceholder = !!variant.placeholder
+  const canClick = onClick && !isPlaceholder
+
   return (
     <button
       type="button"
+      disabled={isPlaceholder}
       className={cn(
         'group relative flex w-full flex-col gap-5 rounded-2xl border p-6 text-left transition-all duration-300',
         'border-gold/20 bg-felt-light/40 shadow-card',
-        onClick &&
+        canClick &&
           'cursor-pointer hover:-translate-y-1 hover:border-gold/40 hover:bg-felt-light/60 hover:shadow-card-lift',
+        isPlaceholder && 'cursor-not-allowed opacity-80',
         className,
       )}
-      onClick={onClick}
+      onClick={canClick ? onClick : undefined}
     >
       <div className="flex items-start justify-between gap-4">
-        <div>
+        <div className="flex items-center gap-2">
           <h2 className="font-serif text-lg text-cream md:text-xl">
             {variant.name}
           </h2>
         </div>
-        <HugeiconsIcon
-          icon={ArrowRight02Icon}
-          className="h-5 w-5 text-gold/60 transition-all group-hover:translate-x-1 group-hover:text-gold"
-          strokeWidth={1.75}
-        />
+        {!isPlaceholder && (
+          <HugeiconsIcon
+            icon={ArrowRight02Icon}
+            className="h-5 w-5 text-gold/60 transition-all group-hover:translate-x-1 group-hover:text-gold"
+            strokeWidth={1.75}
+          />
+        )}
       </div>
 
       <div className="flex h-48 items-center justify-center rounded-md border border-gold/10 bg-felt-deep/50 p-3">
@@ -65,6 +72,14 @@ export function VariantCard({ variant, onClick, className }: VariantCardProps) {
           <dd className="mt-1 font-serif text-base text-cream">0:00</dd>
         </div>
       </dl>
+
+      {isPlaceholder && (
+        <div className="absolute inset-x-0 bottom-4 flex justify-center">
+          <span className="rounded-full bg-gold/10 px-3 py-1 font-serif text-[10px] uppercase tracking-widest text-gold ring-1 ring-gold/30">
+            Coming Soon
+          </span>
+        </div>
+      )}
     </button>
   )
 }
