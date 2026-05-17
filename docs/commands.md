@@ -1,6 +1,6 @@
 # Dev Commands
 
-> **CRITICAL**: All commands listed below MUST be executed within the **DevContainer** terminal. Never run package modification commands (`install`, `update`) on bare metal. The environment is considered safe if the `DEVCONTAINER` environment variable is set.
+> **CRITICAL**: All commands listed below MUST be executed within the **DevBox** terminal. Never run package modification commands (`install`, `update`) on bare metal. The environment is considered safe if the `DEVBOX` environment variable is set.
 
 ## Running the App
 

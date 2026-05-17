@@ -41,7 +41,7 @@
     }
   },
   "remoteEnv": {
-    "DEVCONTAINER": "true"
+    "DEVBOX": "true"
   },
   "remoteUser": "root",
   "postCreateCommand": "pnpm install"
