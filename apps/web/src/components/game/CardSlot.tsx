@@ -1,6 +1,5 @@
 import { cn } from '@workspace/ui/lib/utils'
 import type { PileRole } from '#/lib/types'
-import { useDevModeStore } from '#/stores/dev-mode'
 
 interface CardSlotProps {
   role: PileRole
@@ -13,8 +12,6 @@ export default function CardSlot({
   label,
   className,
 }: CardSlotProps) {
-  const { isDevMode } = useDevModeStore()
-
   return (
     <div
       className={cn(

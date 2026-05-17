@@ -1,28 +1,21 @@
 import { useDroppable } from '@dnd-kit/core'
 import { cn } from '@workspace/ui/lib/utils'
 import CardSlot from '../CardSlot'
-import Card from '../Card'
-import type { FreeCellPileId, DroppableZoneData } from '#/lib/games/freecell'
-import type { Card as CardType, Suit } from '#/lib/types'
+import { GrandfathersClockCard } from './GrandfathersClockCard'
+import type { DroppableZoneData } from '#/lib/games/grandfathers-clock'
+import type { Card as CardType } from '#/lib/types'
 
-const SUIT_SYMBOLS: Record<Suit, string> = {
-  hearts: '♥',
-  diamonds: '♦',
-  clubs: '♣',
-  spades: '♠',
-}
-
-interface FreeCellFoundationProps {
-  id: FreeCellPileId
+interface GrandfathersClockFoundationProps {
+  id: string
   cards: CardType[]
-  suit: Suit
+  label?: string
 }
 
-export default function FreeCellFoundation({
+export default function GrandfathersClockFoundation({
   id,
   cards,
-  suit,
-}: FreeCellFoundationProps) {
+  label,
+}: GrandfathersClockFoundationProps) {
   const droppableData: DroppableZoneData = {
     type: 'pile',
     pileId: id,
@@ -44,21 +37,17 @@ export default function FreeCellFoundation({
         isOver && 'ring-2 ring-primary ring-offset-1',
       )}
       style={{
-        width: 'var(--card-width, 7rem)',
-        height: 'var(--card-height, 10rem)',
+        width: 'var(--card-width)',
+        height: 'var(--card-height)',
       }}
     >
       <div className="relative h-full w-full">
-        <CardSlot role="foundation" label={SUIT_SYMBOLS[suit]} />
+        <CardSlot role="foundation" label={label} />
       </div>
 
       {topCard && (
         <div className="absolute inset-0">
-          <Card
-            suit={topCard.suit}
-            rank={topCard.rank}
-            faceUp={topCard.faceUp}
-          />
+          <GrandfathersClockCard card={topCard} />
         </div>
       )}
     </div>

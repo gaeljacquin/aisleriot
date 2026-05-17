@@ -1,4 +1,5 @@
-import type { GameVariantId, Suit, Rank } from '@workspace/constants'
+import type { GameVariantId } from '@workspace/constants'
+import type { Suit, Rank } from '#/lib/types'
 
 export interface PreviewCard {
   suit: Suit
@@ -365,5 +366,79 @@ export const PREVIEW_DEALS: Record<string, any> = {
     ],
     stock: { faceUp: false },
     waste: { suit: 'clubs', rank: 'J', faceUp: true },
+  },
+  'grandfathers-clock': {
+    foundation: [
+      { suit: 'hearts', rank: '10', faceUp: true }, // 1
+      { suit: 'spades', rank: 'J', faceUp: true }, // 2
+      { suit: 'diamonds', rank: 'Q', faceUp: true }, // 3
+      { suit: 'clubs', rank: 'K', faceUp: true }, // 4
+      { suit: 'hearts', rank: '2', faceUp: true }, // 5
+      { suit: 'spades', rank: '3', faceUp: true }, // 6
+      { suit: 'diamonds', rank: '4', faceUp: true }, // 7
+      { suit: 'clubs', rank: '5', faceUp: true }, // 8
+      { suit: 'hearts', rank: '6', faceUp: true }, // 9
+      { suit: 'spades', rank: '7', faceUp: true }, // 10
+      { suit: 'diamonds', rank: '8', faceUp: true }, // 11
+      { suit: 'clubs', rank: '9', faceUp: true }, // 12
+    ],
+    tableau: [
+      [
+        { suit: 'hearts', rank: 'A', faceUp: true },
+        { suit: 'spades', rank: '2', faceUp: true },
+        { suit: 'clubs', rank: '3', faceUp: true },
+        { suit: 'diamonds', rank: '4', faceUp: true },
+        { suit: 'hearts', rank: '5', faceUp: true },
+      ],
+      [
+        { suit: 'spades', rank: '6', faceUp: true },
+        { suit: 'clubs', rank: '7', faceUp: true },
+        { suit: 'diamonds', rank: '8', faceUp: true },
+        { suit: 'hearts', rank: '9', faceUp: true },
+        { suit: 'spades', rank: '10', faceUp: true },
+      ],
+      [
+        { suit: 'clubs', rank: 'J', faceUp: true },
+        { suit: 'diamonds', rank: 'Q', faceUp: true },
+        { suit: 'hearts', rank: 'K', faceUp: true },
+        { suit: 'spades', rank: 'A', faceUp: true },
+        { suit: 'clubs', rank: '2', faceUp: true },
+      ],
+      [
+        { suit: 'diamonds', rank: '3', faceUp: true },
+        { suit: 'hearts', rank: '4', faceUp: true },
+        { suit: 'spades', rank: '5', faceUp: true },
+        { suit: 'clubs', rank: '6', faceUp: true },
+        { suit: 'diamonds', rank: '7', faceUp: true },
+      ],
+      [
+        { suit: 'hearts', rank: '8', faceUp: true },
+        { suit: 'spades', rank: '9', faceUp: true },
+        { suit: 'clubs', rank: '10', faceUp: true },
+        { suit: 'diamonds', rank: 'J', faceUp: true },
+        { suit: 'hearts', rank: 'Q', faceUp: true },
+      ],
+      [
+        { suit: 'spades', rank: 'K', faceUp: true },
+        { suit: 'clubs', rank: 'A', faceUp: true },
+        { suit: 'diamonds', rank: '2', faceUp: true },
+        { suit: 'hearts', rank: '3', faceUp: true },
+        { suit: 'spades', rank: '4', faceUp: true },
+      ],
+      [
+        { suit: 'clubs', rank: '5', faceUp: true },
+        { suit: 'diamonds', rank: '6', faceUp: true },
+        { suit: 'hearts', rank: '7', faceUp: true },
+        { suit: 'spades', rank: '8', faceUp: true },
+        { suit: 'clubs', rank: '9', faceUp: true },
+      ],
+      [
+        { suit: 'diamonds', rank: '10', faceUp: true },
+        { suit: 'hearts', rank: 'J', faceUp: true },
+        { suit: 'spades', rank: 'Q', faceUp: true },
+        { suit: 'clubs', rank: 'K', faceUp: true },
+        { suit: 'diamonds', rank: 'A', faceUp: true },
+      ],
+    ],
   },
 }

@@ -1,11 +1,15 @@
-export type GameVariantId =
-  | "klondike-draw-1"
-  | "klondike-draw-3"
-  | "freecell"
-  | "pyramid"
-  | "pyramid-alt"
-  | "tri-peaks"
-  | "tri-peaks-alt"
+const gameVariantIds = [
+  "klondike-draw-1",
+  "klondike-draw-3",
+  "freecell",
+  "pyramid",
+  "pyramid-alt",
+  "tri-peaks",
+  "tri-peaks-alt",
+  "grandfathers-clock",
+]
+
+export type GameVariantId = (typeof gameVariantIds)[number]
 
 export interface GameVariant {
   id: GameVariantId
@@ -14,6 +18,8 @@ export interface GameVariant {
   blurb: string
   rules: string[]
   color: string
+  most_popular?: boolean
+  placeholder?: boolean
 }
 
 const gameVariantsUnordered: GameVariant[] = [
@@ -31,6 +37,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "An empty tableau column may only be filled with a King or a sequence starting with a King.",
       "When the stock is empty, click the recycling indicator to flip the waste pile back into the stock.",
     ],
+    most_popular: true,
   },
   {
     id: "klondike-draw-3",
@@ -46,6 +53,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "An empty tableau column may only be filled with a King or a sequence starting with a King.",
       "When the stock is empty, click the recycling indicator to flip the waste pile back into the stock. A -100 score penalty applies per recycle.",
     ],
+    most_popular: true,
   },
   {
     id: "pyramid",
@@ -61,6 +69,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "Click the stock to draw a card to the waste pile. The top waste card can be paired with an available pyramid card. When the stock is empty you may recycle the waste back into the stock a limited number of times.",
       "The game is won when the pyramid is completely cleared.",
     ],
+    most_popular: true,
   },
   {
     id: "pyramid-alt",
@@ -77,6 +86,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "Use the arrow button to draw the stock top to the waste without pairing. When the stock is empty, recycle the waste back into the stock (limited times).",
       "The game is won when the pyramid is completely cleared.",
     ],
+    most_popular: true,
   },
   {
     id: "tri-peaks",
@@ -92,6 +102,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "When no moves are available, draw a card from the stock to the discard pile to continue the chain.",
       "Building long chains without drawing from the stock earns bonus points.",
     ],
+    most_popular: true,
   },
   {
     id: "tri-peaks-alt",
@@ -107,6 +118,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "When no moves are available, draw a card from the stock to the discard pile to continue the chain.",
       "Building long chains without drawing from the stock earns bonus points.",
     ],
+    most_popular: true,
   },
   {
     id: "freecell",
@@ -121,6 +133,22 @@ const gameVariantsUnordered: GameVariant[] = [
       "Four free cells act as temporary holding spots — you may move any single card to an empty free cell at any time.",
       "Cards in the tableau are built in descending order, alternating colors. More cards can be moved at once when free cells and empty columns are available.",
       "Empty tableau columns can hold any card or sequence.",
+    ],
+    most_popular: true,
+  },
+  {
+    id: "grandfathers-clock",
+    name: "Grandfather's Clock",
+    subtitle: "Build the clock",
+    blurb:
+      "Arrange cards in a circular clock face. Build foundations up by suit to match the hour.",
+    color: "bg-amber-100 dark:bg-amber-950",
+    rules: [
+      "The goal is to move all cards to the 12 foundation piles (the 'Clock'), built up by suit to their respective 'hour' rank (Ace for 1, 10 for 10, Jack for 11, Queen for 12).",
+      "Foundations are seeded with specific cards (e.g., 9 of Clubs at 12 o'clock). Ranking is continuous: King builds to Ace.",
+      "The tableau has 8 columns of 5 cards each. Build down in rank regardless of suit. Ace wraps to King.",
+      "Only one card can be moved at a time.",
+      "Empty tableau columns can be filled with any available card.",
     ],
   },
 ]

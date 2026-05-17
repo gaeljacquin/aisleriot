@@ -41,6 +41,14 @@ function MiniCard({
 export function MiniBoard({ id }: MiniBoardProps) {
   const deal = PREVIEW_DEALS[id]
 
+  if (!deal) {
+    return (
+      <div className="flex h-32 w-full items-center justify-center rounded-md border border-gold/10 bg-felt-deep/20 text-cream-dim/40 italic">
+        Preview unavailable
+      </div>
+    )
+  }
+
   if (id === 'klondike-draw-1' || id === 'klondike-draw-3') {
     return (
       <div className="flex w-full flex-col gap-2.5">
@@ -176,6 +184,69 @@ export function MiniBoard({ id }: MiniBoardProps) {
             faceUp={deal.waste.faceUp}
             className="h-8 w-6"
           />
+        </div>
+      </div>
+    )
+  }
+
+  if (id === 'grandfathers-clock') {
+    const clockRadius = 48
+    const clockPositions = [
+      { angle: 0 }, // 12
+      { angle: 30 }, // 1
+      { angle: 60 }, // 2
+      { angle: 90 }, // 3
+      { angle: 120 }, // 4
+      { angle: 150 }, // 5
+      { angle: 180 }, // 6
+      { angle: 210 }, // 7
+      { angle: 240 }, // 8
+      { angle: 270 }, // 9
+      { angle: 300 }, // 10
+      { angle: 330 }, // 11
+    ]
+
+    // Sort foundation cards to match the 12, 1, 2... order if they aren't already
+    const foundationCards = [...deal.foundation]
+    const rotatedFoundations = [
+      foundationCards[11], // 12 o'clock
+      ...foundationCards.slice(0, 11),
+    ]
+
+    return (
+      <div className="flex w-full items-center justify-between gap-2 px-1">
+        {/* Tableau - 2 rows of 4 */}
+        <div className="grid grid-cols-4 gap-x-1 gap-y-1">
+          {deal.tableau.map((column: any[], i: number) => (
+            <div key={i} className="flex flex-col -space-y-4">
+              {column.map((card: any, j: number) => (
+                <MiniCard key={j} {...card} className="h-7.5 w-5.5" />
+              ))}
+            </div>
+          ))}
+        </div>
+
+        {/* Clock Foundations */}
+        <div className="relative h-32 w-32 shrink-0">
+          {clockPositions.map((pos, i) => {
+            const card = rotatedFoundations[i]
+            const sin = Math.sin((pos.angle * Math.PI) / 180)
+            const cos = Math.cos((pos.angle * Math.PI) / 180)
+            return (
+              <div
+                key={i}
+                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+                style={{
+                  left: `calc(50% + ${sin * clockRadius}px)`,
+                  top: `calc(50% - ${cos * clockRadius}px)`,
+                }}
+              >
+                <div className="h-5.5 w-4 rounded-[0.5px] border border-gold/10 bg-white/5">
+                  <MiniCard {...card} className="h-full w-full" />
+                </div>
+              </div>
+            )
+          })}
         </div>
       </div>
     )

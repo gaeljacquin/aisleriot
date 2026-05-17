@@ -1,6 +1,6 @@
 # Common Workflows
 
-> **NOTE**: All command-line examples in these workflows MUST be run within the **DevContainer** terminal.
+> **NOTE**: All command-line examples in these workflows MUST be run within the **DevBox** terminal.
 
 ## Add a New Solitaire Game Variant
 

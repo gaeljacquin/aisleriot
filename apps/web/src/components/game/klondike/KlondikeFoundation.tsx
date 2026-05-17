@@ -62,7 +62,6 @@ export default function KlondikeFoundation({
 
   const topCard = cards.length > 0 ? cards[cards.length - 1] : null
   const beneathCard = cards.length > 1 ? cards[cards.length - 2] : null
-  const isRed = suit === 'hearts' || suit === 'diamonds'
 
   return (
     <div
