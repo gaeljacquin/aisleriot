@@ -31,7 +31,10 @@ import {
   TouchIcon,
   ChampionIcon,
   Cancel01Icon,
+  ViewIcon,
 } from '@hugeicons/core-free-icons'
+import { useDevModeStore } from '#/stores/dev-mode'
+import { BoardLabel } from '../BoardLabel'
 
 interface FreeCellBoardProps {
   onHowToPlay: () => void
@@ -57,6 +60,8 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
     triggerAutoMove,
     devSetStatus,
   } = useFreeCell()
+
+  const { isDevMode, toggleDevMode } = useDevModeStore()
 
   const variant = getVariant('freecell')
 
@@ -157,13 +162,19 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
     },
     {
       icon: Refresh04Icon,
-      label: 'Reset',
+      label: 'Restart',
       onClick: () => setConfirmRestart(true),
     },
     { icon: BookOpen01Icon, label: 'How to Play', onClick: onHowToPlay },
   ]
 
   const devActions = [
+    {
+      icon: ViewIcon,
+      label: 'Debug',
+      onClick: toggleDevMode,
+      active: isDevMode,
+    },
     {
       icon: TouchIcon,
       label: 'Moves',
@@ -250,12 +261,15 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
                 onFreeCellDoubleClick={handleFreeCellDoubleClick}
               />
 
-              <FreeCellTableau
-                tableau={tableau}
-                draggableFromIndex={draggableFromIndex}
-                devUnlimitedMoves={devUnlimitedMoves}
-                onDoubleClick={handleTableauDoubleClick}
-              />
+              <div className="flex flex-col items-center gap-2">
+                <BoardLabel label="Tableau" />
+                <FreeCellTableau
+                  tableau={tableau}
+                  draggableFromIndex={draggableFromIndex}
+                  devUnlimitedMoves={devUnlimitedMoves}
+                  onDoubleClick={handleTableauDoubleClick}
+                />
+              </div>
             </div>
           </div>
 

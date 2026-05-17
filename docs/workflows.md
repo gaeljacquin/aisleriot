@@ -1,5 +1,7 @@
 # Common Workflows
 
+> **NOTE**: All command-line examples in these workflows MUST be run within the **DevContainer** terminal.
+
 ## Add a New Solitaire Game Variant
 
 Use the `@solitaire-variant-architect` agent for this workflow. The pattern is layer-by-layer, bottom-up.

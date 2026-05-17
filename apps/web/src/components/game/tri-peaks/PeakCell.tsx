@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { createPortal } from 'react-dom'
 import Card from '../Card'
+import CardSlot from '../CardSlot'
 import { useWasteRef } from './WasteRefContext'
 import type { TriPeaksCell, TriPeaksCellId } from '#/lib/games/tri-peaks'
 
@@ -10,6 +11,7 @@ interface PeakCellProps {
   isAvailable: boolean
   onClick: (id: TriPeaksCellId) => void
   isValidMove: (id: TriPeaksCellId) => boolean
+  isTop?: boolean
 }
 
 interface FlyState {
@@ -24,6 +26,7 @@ export default function PeakCell({
   isAvailable,
   onClick,
   isValidMove,
+  isTop,
 }: PeakCellProps) {
   const cardRef = useRef<HTMLDivElement>(null)
   const wasteRef = useWasteRef()
@@ -59,81 +62,82 @@ export default function PeakCell({
   if (cell.removed) {
     return (
       <div
-        className="pointer-events-none"
+        className="pointer-events-none relative"
         style={{
           width: 'var(--card-width, 7rem)',
           height: 'var(--card-height, 10rem)',
         }}
         aria-hidden="true"
-      />
+      >
+        {isTop && <CardSlot role="tableau" className="absolute inset-0" />}
+      </div>
     )
   }
 
   const isBlocked = !isAvailable
 
-  if (isBlocked) {
-    return (
-      <div
-        style={{
-          width: 'var(--card-width, 7rem)',
-          height: 'var(--card-height, 10rem)',
-        }}
-      >
-        <Card suit={cell.card.suit} rank={cell.card.rank} faceUp={false} />
-      </div>
-    )
-  }
-
   return (
-    <>
-      <div
-        ref={cardRef}
-        style={{
-          width: 'var(--card-width, 7rem)',
-          height: 'var(--card-height, 10rem)',
-        }}
-      >
-        {!flyState && (
-          <Card
-            suit={cell.card.suit}
-            rank={cell.card.rank}
-            faceUp={true}
-            onClick={handleClick}
-          />
-        )}
-      </div>
+    <div
+      className="relative"
+      style={{
+        width: 'var(--card-width, 7rem)',
+        height: 'var(--card-height, 10rem)',
+      }}
+    >
+      {isTop && <CardSlot role="tableau" className="absolute inset-0" />}
 
-      {/* Flying card portal — renders at document.body level with fixed positioning */}
-      {flyState &&
-        createPortal(
-          <motion.div
-            className="tri-peaks-container"
-            style={{
-              position: 'fixed',
-              left: flyState.startX,
-              top: flyState.startY,
-              width: 'var(--card-width, 7rem)',
-              height: 'var(--card-height, 10rem)',
-              zIndex: 9999,
-              pointerEvents: 'none',
-            }}
-            initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
-            animate={{
-              x: flyState.endX - flyState.startX,
-              y: flyState.endY - flyState.startY,
-              opacity: 0,
-              scale: 0.85,
-            }}
-            transition={{ duration: 0.3, ease: 'easeIn' }}
-            onAnimationComplete={() => {
-              setFlyState(null)
-              onClick(cell.id)
-            }}
-          >
-            <Card suit={cell.card.suit} rank={cell.card.rank} faceUp={true} />
-          </motion.div>,
-          document.body,
-        )}
-    </>
+      {isBlocked ? (
+        <Card suit={cell.card.suit} rank={cell.card.rank} faceUp={false} />
+      ) : (
+        <>
+          <div ref={cardRef} className="h-full w-full">
+            {!flyState && (
+              <Card
+                suit={cell.card.suit}
+                rank={cell.card.rank}
+                faceUp={true}
+                onClick={handleClick}
+              />
+            )}
+          </div>
+
+          {/* Flying card portal — renders at document.body level with fixed positioning */}
+          {flyState &&
+            createPortal(
+              <motion.div
+                className="tri-peaks-container"
+                style={{
+                  position: 'fixed',
+                  left: flyState.startX,
+                  top: flyState.startY,
+                  width: 'var(--card-width, 7rem)',
+                  height: 'var(--card-height, 10rem)',
+                  zIndex: 9999,
+                  pointerEvents: 'none',
+                }}
+                initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
+                animate={{
+                  x: flyState.endX - flyState.startX,
+                  y: flyState.endY - flyState.startY,
+                  opacity: 0,
+                  scale: 0.85,
+                }}
+                transition={{ duration: 0.3, ease: 'easeIn' }}
+                onAnimationComplete={() => {
+                  setFlyState(null)
+                  onClick(cell.id)
+                }}
+              >
+                <Card
+                  suit={cell.card.suit}
+                  rank={cell.card.rank}
+                  faceUp={true}
+                />
+              </motion.div>,
+              document.body,
+            )}
+        </>
+      )}
+    </div>
   )
 }

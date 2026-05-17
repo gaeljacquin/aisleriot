@@ -1,38 +1,101 @@
 import { cn } from '@workspace/ui/lib/utils'
 import type { GameVariantId } from '@workspace/constants'
+import type { Suit, Rank } from '#/lib/types'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { ArrowRight02Icon } from '@hugeicons/core-free-icons'
+import { PREVIEW_DEALS } from '#/lib/games/preview-deals'
+import CardPrimitive from './game/CardPrimitive'
 
 interface MiniBoardProps {
   id: GameVariantId
 }
 
+function MiniCard({
+  suit,
+  rank,
+  faceUp,
+  className,
+  style,
+}: {
+  suit?: Suit
+  rank?: Rank
+  faceUp: boolean
+  className?: string
+  style?: React.CSSProperties
+}) {
+  return (
+    <div
+      className={cn('relative rounded-[1px] overflow-hidden', className)}
+      style={style}
+    >
+      <CardPrimitive
+        suit={suit || 'spades'}
+        rank={rank || 'A'}
+        faceUp={faceUp}
+        className="h-full w-full"
+      />
+    </div>
+  )
+}
+
 export function MiniBoard({ id }: MiniBoardProps) {
-  const cls = 'rounded-[2px] border border-gold/40 bg-felt-light/20 shadow-sm'
-  const cardBack = 'bg-rose-900/40'
-  const cardFace = 'bg-felt-light/40'
+  const deal = PREVIEW_DEALS[id]
 
   if (id === 'klondike-draw-1' || id === 'klondike-draw-3') {
     return (
-      <div className="flex w-full flex-col gap-2">
+      <div className="flex w-full flex-col gap-2.5">
         <div className="flex justify-between">
           <div className="flex gap-1.5">
-            <div className={cn(cls, 'h-7 w-5', cardBack)} />
-            <div className={cn(cls, 'h-7 w-5', cardFace)} />
+            <MiniCard faceUp={deal.stock.faceUp} className="h-9 w-6.5" />
+            {Array.isArray(deal.waste) ? (
+              <div className="flex -space-x-5">
+                {deal.waste.map((card: any, i: number) => (
+                  <MiniCard
+                    key={i}
+                    suit={card.suit}
+                    rank={card.rank}
+                    faceUp={card.faceUp}
+                    className="h-9 w-6.5"
+                  />
+                ))}
+              </div>
+            ) : (
+              <MiniCard
+                suit={deal.waste.suit}
+                rank={deal.waste.rank}
+                faceUp={deal.waste.faceUp}
+                className="h-9 w-6.5"
+              />
+            )}
           </div>
           <div className="flex gap-1">
-            {[0, 1, 2, 3].map((i) => (
-              <div key={i} className={cn(cls, 'h-7 w-5 opacity-60')} />
+            {deal.foundations.map((card: any, i: number) => (
+              <div
+                key={i}
+                className="h-9 w-6.5 rounded-[1px] border border-gold/10 bg-white/5"
+              >
+                {card && (
+                  <MiniCard
+                    suit={card.suit}
+                    rank={card.rank}
+                    faceUp={card.faceUp}
+                    className="h-full w-full"
+                  />
+                )}
+              </div>
             ))}
           </div>
         </div>
-        <div className="flex justify-between gap-1">
-          {[0, 1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="flex flex-col -space-y-4.5">
-              {Array.from({ length: i + 1 }).map((_, j) => (
-                <div
+        <div className="flex justify-between gap-0.5">
+          {deal.tableau.map((column: any[], i: number) => (
+            <div key={i} className="flex flex-col -space-y-7">
+              {column.map((card, j) => (
+                <MiniCard
                   key={j}
-                  className={cn(cls, 'h-6 w-4.5', j < i ? cardBack : cardFace)}
+                  suit={card.suit}
+                  rank={card.rank}
+                  faceUp={card.faceUp}
+                  className="h-8 w-6"
                 />
               ))}
             </div>
@@ -43,153 +106,76 @@ export function MiniBoard({ id }: MiniBoardProps) {
   }
 
   if (id === 'tri-peaks' || id === 'tri-peaks-alt') {
+    const peaks = deal.peaks
     return (
-      <div className="flex w-full flex-col items-center gap-0">
-        {/* The 28-card peaks layout - precisely spread */}
-        <div className="relative h-11.75 w-full max-w-40">
-          {/* Row 1: 3 Peaks (portrait orientation) */}
-          <div
-            className={cn(
-              cls,
-              'absolute left-[15.2%] top-0 h-5 w-3.5',
-              cardBack,
-            )}
+      <div className="flex w-full flex-col items-center gap-1">
+        <div className="relative h-20 w-full max-w-64">
+          {/* Row 1: 3 Peaks */}
+          <MiniCard
+            {...peaks[0]}
+            className="absolute left-[15.2%] top-0 h-8 w-6"
           />
-          <div
-            className={cn(
-              cls,
-              'absolute left-[45.6%] top-0 h-5 w-3.5',
-              cardBack,
-            )}
+          <MiniCard
+            {...peaks[1]}
+            className="absolute left-[45.6%] top-0 h-8 w-6"
           />
-          <div
-            className={cn(cls, 'absolute left-[76%] top-0 h-5 w-3.5', cardBack)}
+          <MiniCard
+            {...peaks[2]}
+            className="absolute left-[76%] top-0 h-8 w-6"
           />
 
           {/* Row 2: 6 cards */}
-          <div
-            className={cn(
-              cls,
-              'absolute left-[10.1%] top-2.25 h-5 w-3.5',
-              cardBack,
-            )}
+          <MiniCard
+            {...peaks[3]}
+            className="absolute left-[10.1%] top-[12px] h-8 w-6"
           />
-          <div
-            className={cn(
-              cls,
-              'absolute left-[20.3%] top-[9px] h-[20px] w-[14px]',
-              cardBack,
-            )}
+          <MiniCard
+            {...peaks[4]}
+            className="absolute left-[20.3%] top-[12px] h-8 w-6"
           />
-          <div
-            className={cn(
-              cls,
-              'absolute left-[40.5%] top-[9px] h-[20px] w-[14px]',
-              cardBack,
-            )}
+          <MiniCard
+            {...peaks[5]}
+            className="absolute left-[40.5%] top-[12px] h-8 w-6"
           />
-          <div
-            className={cn(
-              cls,
-              'absolute left-[50.7%] top-[9px] h-[20px] w-[14px]',
-              cardBack,
-            )}
+          <MiniCard
+            {...peaks[6]}
+            className="absolute left-[50.7%] top-[12px] h-8 w-6"
           />
-          <div
-            className={cn(
-              cls,
-              'absolute left-[70.9%] top-[9px] h-[20px] w-[14px]',
-              cardBack,
-            )}
+          <MiniCard
+            {...peaks[7]}
+            className="absolute left-[70.9%] top-[12px] h-8 w-6"
           />
-          <div
-            className={cn(
-              cls,
-              'absolute left-[81.1%] top-[9px] h-[20px] w-[14px]',
-              cardBack,
-            )}
+          <MiniCard
+            {...peaks[8]}
+            className="absolute left-[81.1%] top-[12px] h-8 w-6"
           />
 
           {/* Row 3: 9 cards */}
-          <div
-            className={cn(
-              cls,
-              'absolute left-[5.1%] top-[18px] h-[20px] w-[14px]',
-              cardBack,
-            )}
-          />
-          <div
-            className={cn(
-              cls,
-              'absolute left-[15.2%] top-[18px] h-[20px] w-[14px]',
-              cardBack,
-            )}
-          />
-          <div
-            className={cn(
-              cls,
-              'absolute left-[25.3%] top-[18px] h-[20px] w-[14px]',
-              cardBack,
-            )}
-          />
-          <div
-            className={cn(
-              cls,
-              'absolute left-[35.5%] top-[18px] h-[20px] w-[14px]',
-              cardBack,
-            )}
-          />
-          <div
-            className={cn(
-              cls,
-              'absolute left-[45.6%] top-[18px] h-[20px] w-[14px]',
-              cardBack,
-            )}
-          />
-          <div
-            className={cn(
-              cls,
-              'absolute left-[55.7%] top-[18px] h-[20px] w-[14px]',
-              cardBack,
-            )}
-          />
-          <div
-            className={cn(
-              cls,
-              'absolute left-[65.9%] top-[18px] h-[20px] w-[14px]',
-              cardBack,
-            )}
-          />
-          <div
-            className={cn(
-              cls,
-              'absolute left-[76%] top-[18px] h-[20px] w-[14px]',
-              cardBack,
-            )}
-          />
-          <div
-            className={cn(
-              cls,
-              'absolute left-[86.1%] top-[18px] h-[20px] w-[14px]',
-              cardBack,
-            )}
-          />
+          {[9, 10, 11, 12, 13, 14, 15, 16, 17].map((idx, i) => (
+            <MiniCard
+              key={idx}
+              {...peaks[idx]}
+              className="absolute h-8 w-6 top-[24px]"
+              style={{ left: `${5.1 + i * 10.125}%` }}
+            />
+          ))}
 
-          {/* Row 4: 10 face-up base cards */}
-          <div className="absolute inset-x-0 top-[27px] flex justify-between">
-            {Array.from({ length: 10 }).map((_, i) => (
-              <div
-                key={i}
-                className={cn(cls, 'h-[20px] w-[14px] shrink-0', cardFace)}
-              />
+          {/* Row 4: 10 cards */}
+          <div className="absolute inset-x-0 top-[36px] flex justify-between">
+            {[18, 19, 20, 21, 22, 23, 24, 25, 26, 27].map((idx) => (
+              <MiniCard key={idx} {...peaks[idx]} className="h-8 w-6" />
             ))}
           </div>
         </div>
 
-        {/* Stock and Waste - moved down but close gap */}
         <div className="mt-2.5 flex gap-2">
-          <div className={cn(cls, 'h-[20px] w-[14px]', cardBack)} />
-          <div className={cn(cls, 'h-[20px] w-[14px]', cardFace)} />
+          <MiniCard faceUp={deal.stock.faceUp} className="h-8 w-6" />
+          <MiniCard
+            suit={deal.waste.suit}
+            rank={deal.waste.rank}
+            faceUp={deal.waste.faceUp}
+            className="h-8 w-6"
+          />
         </div>
       </div>
     )
@@ -197,24 +183,40 @@ export function MiniBoard({ id }: MiniBoardProps) {
 
   if (id === 'freecell') {
     return (
-      <div className="flex w-full flex-col gap-2">
+      <div className="flex w-full flex-col gap-2.5">
         <div className="flex justify-between">
           <div className="flex gap-1">
-            {[0, 1, 2, 3].map((i) => (
-              <div key={i} className={cn(cls, 'h-6 w-5 opacity-60')} />
+            {deal.freecells.map((card: any, i: number) => (
+              <div
+                key={i}
+                className="h-9 w-7 rounded-[1px] border border-gold/10 bg-white/5"
+              >
+                {card && <MiniCard {...card} className="h-full w-full" />}
+              </div>
             ))}
           </div>
           <div className="flex gap-1">
-            {[0, 1, 2, 3].map((i) => (
-              <div key={i} className={cn(cls, 'h-6 w-5 opacity-60')} />
+            {deal.foundations.map((card: any, i: number) => (
+              <div
+                key={i}
+                className="h-9 w-7 rounded-[1px] border border-gold/10 bg-white/5"
+              >
+                {card && <MiniCard {...card} className="h-full w-full" />}
+              </div>
             ))}
           </div>
         </div>
         <div className="flex justify-between gap-0.5">
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="flex flex-col -space-y-4">
-              {Array.from({ length: i < 4 ? 7 : 6 }).map((__, j) => (
-                <div key={j} className={cn(cls, 'h-5 w-4', cardFace)} />
+          {deal.columns.map((column: any[], i: number) => (
+            <div key={i} className="flex flex-col -space-y-7">
+              {column.map((card, j) => (
+                <MiniCard
+                  key={j}
+                  suit={card.suit}
+                  rank={card.rank}
+                  faceUp={card.faceUp}
+                  className="h-8 w-6"
+                />
               ))}
             </div>
           ))}
@@ -226,23 +228,34 @@ export function MiniBoard({ id }: MiniBoardProps) {
   // pyramid
   return (
     <div className="flex w-full flex-col items-center">
-      <div className="flex flex-col items-center -space-y-[18px]">
-        {Array.from({ length: 7 }).map((_, row) => (
-          <div key={row} className="flex gap-0.5">
-            {Array.from({ length: row + 1 }).map((__, i) => (
-              <div key={i} className={cn(cls, 'h-6 w-5', cardFace)} />
+      <div className="flex flex-col items-center -space-y-7.5">
+        {deal.pyramid.map((row: any[], i: number) => (
+          <div key={i} className="flex gap-0.5">
+            {row.map((card, j) => (
+              <MiniCard
+                key={j}
+                suit={card.suit}
+                rank={card.rank}
+                faceUp={card.faceUp}
+                className="h-9 w-6.5"
+              />
             ))}
           </div>
         ))}
       </div>
       <div className="mt-3 flex items-center gap-2">
-        <div className={cn(cls, 'h-6 w-5', cardBack)} />
+        <MiniCard faceUp={deal.stock.faceUp} className="h-9 w-6.5" />
         {id === 'pyramid-alt' && (
-          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-gold/10 text-gold shadow-sm">
+          <div className="flex h-4.5 w-4.5 items-center justify-center rounded-full bg-gold/10 text-gold shadow-sm">
             <HugeiconsIcon icon={ArrowRight02Icon} className="h-3.5 w-3.5" />
           </div>
         )}
-        <div className={cn(cls, 'h-6 w-5', cardFace)} />
+        <MiniCard
+          suit={deal.waste.suit}
+          rank={deal.waste.rank}
+          faceUp={deal.waste.faceUp}
+          className="h-9 w-6.5"
+        />
       </div>
     </div>
   )

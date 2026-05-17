@@ -68,6 +68,7 @@ export default function PyramidGrid({
               isAvailable={availableSet.has(cellId)}
               isSelected={selectedCellId === cellId}
               onClick={onCellClick}
+              isTop={idx === 0}
             />
           </div>
         )

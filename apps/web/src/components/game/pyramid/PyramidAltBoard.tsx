@@ -4,7 +4,6 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { ArrowRight02Icon, Refresh01Icon } from '@hugeicons/core-free-icons'
 import { cn } from '@workspace/ui/lib/utils'
 import Card from '../Card'
-import CardSlot from '../CardSlot'
 import StockEmptyIndicator from '../StockEmptyIndicator'
 import PyramidBoardBase from './PyramidBoardBase'
 import { usePyramidAlt } from '#/lib/hooks/usePyramidAlt'
@@ -12,6 +11,8 @@ import type { UsePyramidAltResult } from '#/lib/hooks/usePyramidAlt'
 import { isKing } from '#/lib/games/pyramid'
 import type { PyramidCellId } from '#/lib/games/pyramid'
 import type { PyramidBoardBaseStockRowContext } from './PyramidBoardBase'
+import { BoardLabel } from '../BoardLabel'
+import Waste from '../Waste'
 
 interface PyramidAltBoardProps {
   onHowToPlay: () => void
@@ -48,80 +49,83 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
         (ctx.canDraw && !ctx.game.stockTopIsKing) || ctx.canRecycle
 
       return (
-        <div
-          className="flex flex-col items-center gap-6"
-          style={{ marginTop: 'var(--stock-row-mt, 2.5rem)' }}
-        >
+        <div className="flex flex-col items-center gap-6">
           <div
             className="flex items-center justify-center"
             style={{ gap: 'var(--pyramid-gap, 2rem)' }}
           >
-            <div
-              className="relative"
-              style={{
-                width: 'var(--card-width, 7rem)',
-                height: 'var(--card-height, 10rem)',
-              }}
-            >
-              {ctx.stockCount > 0 ? (
-                <Card
-                  suit="spades"
-                  rank="A"
-                  faceUp={false}
-                  className="absolute inset-0"
-                />
-              ) : (
-                <StockEmptyIndicator
-                  canRecycle={ctx.canRecycle}
-                  onClick={ctx.onRecycle}
-                />
-              )}
+            <div className="flex items-center gap-2">
+              <BoardLabel
+                label="Stock"
+                className="[writing-mode:vertical-lr] rotate-180"
+              />
+              <div
+                className="relative"
+                style={{
+                  width: 'var(--card-width, 7rem)',
+                  height: 'var(--card-height, 10rem)',
+                }}
+              >
+                {ctx.stockCount > 0 ? (
+                  <Card
+                    suit="spades"
+                    rank="A"
+                    faceUp={false}
+                    className="absolute inset-0"
+                  />
+                ) : (
+                  <StockEmptyIndicator
+                    canRecycle={ctx.canRecycle}
+                    onClick={ctx.onRecycle}
+                  />
+                )}
 
-              {ctx.stockCount > 0 && ctx.game.stockTop && (
-                <div className="absolute inset-0">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={`${ctx.game.stockTop.suit}-${ctx.game.stockTop.rank}`}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={
-                        ctx.game.stockTopIsKing
-                          ? { rotateY: 360, opacity: 0, scale: 0 }
-                          : { opacity: 0 }
-                      }
-                      transition={{ duration: 0.25, ease: 'easeOut' }}
-                    >
-                      <Card
-                        suit={ctx.game.stockTop.suit}
-                        rank={ctx.game.stockTop.rank}
-                        faceUp={true}
-                        highlighted={selectedIsStock}
-                        onClick={() => {
-                          if (ctx.game.stockTopIsKing) {
-                            ctx.game.onRemoveAloneFromStock()
-                            setSelectedIsStock(false)
-                            setSelectedIsWaste(false)
-                            ctx.clearSelection()
-                          } else if (ctx.selectedCellId !== null) {
-                            altGame.onRemovePairWithStock(ctx.selectedCellId)
-                            ctx.clearSelection()
-                            setSelectedIsStock(false)
-                            setSelectedIsWaste(false)
-                          } else if (selectedIsWaste) {
-                            altGame.onRemovePairStockWithWaste()
-                            setSelectedIsWaste(false)
-                            setSelectedIsStock(false)
-                            ctx.clearSelection()
-                          } else {
-                            setSelectedIsWaste(false)
-                            setSelectedIsStock((prev) => !prev)
-                          }
-                        }}
-                      />
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-              )}
+                {ctx.stockCount > 0 && ctx.game.stockTop && (
+                  <div className="absolute inset-0">
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={`${ctx.game.stockTop.suit}-${ctx.game.stockTop.rank}`}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={
+                          ctx.game.stockTopIsKing
+                            ? { rotateY: 360, opacity: 0, scale: 0 }
+                            : { opacity: 0 }
+                        }
+                        transition={{ duration: 0.25, ease: 'easeOut' }}
+                      >
+                        <Card
+                          suit={ctx.game.stockTop.suit}
+                          rank={ctx.game.stockTop.rank}
+                          faceUp={true}
+                          highlighted={selectedIsStock}
+                          onClick={() => {
+                            if (ctx.game.stockTopIsKing) {
+                              ctx.game.onRemoveAloneFromStock()
+                              setSelectedIsStock(false)
+                              setSelectedIsWaste(false)
+                              ctx.clearSelection()
+                            } else if (ctx.selectedCellId !== null) {
+                              altGame.onRemovePairWithStock(ctx.selectedCellId)
+                              ctx.clearSelection()
+                              setSelectedIsStock(false)
+                              setSelectedIsWaste(false)
+                            } else if (selectedIsWaste) {
+                              altGame.onRemovePairStockWithWaste()
+                              setSelectedIsWaste(false)
+                              setSelectedIsStock(false)
+                              ctx.clearSelection()
+                            } else {
+                              setSelectedIsWaste(false)
+                              setSelectedIsStock((prev) => !prev)
+                            }
+                          }}
+                        />
+                      </motion.div>
+                    </AnimatePresence>
+                  </div>
+                )}
+              </div>
             </div>
 
             <button
@@ -154,12 +158,17 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
               />
             </button>
 
-            <div ref={ctx.wasteRef} className="inline-block">
+            <div className="flex items-center gap-2">
               <div
+                ref={ctx.wasteRef}
                 className={cn(
-                  'cursor-default',
+                  'relative rounded-lg cursor-default',
                   ctx.wasteTop !== null && 'cursor-pointer',
                 )}
+                style={{
+                  width: 'var(--card-width, 7rem)',
+                  height: 'var(--card-height, 10rem)',
+                }}
                 onClick={() => {
                   if (!ctx.wasteTop) return
                   if (isKing(ctx.wasteTop)) {
@@ -184,17 +193,17 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
                   }
                 }}
               >
-                {ctx.wasteTop ? (
-                  <Card
-                    suit={ctx.wasteTop.suit}
-                    rank={ctx.wasteTop.rank}
-                    faceUp={true}
-                    highlighted={selectedIsWaste}
-                  />
-                ) : (
-                  <CardSlot role="waste" />
-                )}
+                <Waste
+                  topCard={ctx.wasteTop}
+                  animate={false}
+                  highlighted={selectedIsWaste}
+                />
               </div>
+              <BoardLabel
+                label="Waste"
+                color="gold"
+                className="[writing-mode:vertical-lr]"
+              />
             </div>
           </div>
         </div>

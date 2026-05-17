@@ -23,8 +23,8 @@ export function canPlayCard(
 
   const dist = rankDistance(cell.card, state.waste[state.waste.length - 1])
   if (wrap) {
-    // K(13) and A(1) are adjacent: wrapped distance = min(dist, 14 - dist)
-    return Math.min(dist, 14 - dist) === 1
+    // K(13) and A(1) are adjacent: wrapped distance = min(dist, 13 - dist)
+    return Math.min(dist, 13 - dist) === 1
   }
   return dist === 1
 }

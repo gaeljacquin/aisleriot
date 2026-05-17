@@ -90,6 +90,7 @@ const config = defineConfig({
     },
   },
   server: {
+    host: true,
     allowedHosts: true,
   },
   build: {

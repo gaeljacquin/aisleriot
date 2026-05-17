@@ -77,15 +77,7 @@ export default function KlondikeFoundation({
       }}
     >
       {/* Always-visible empty slot with suit hint */}
-      <CardSlot role="foundation" />
-      <div
-        className={cn(
-          'pointer-events-none absolute inset-0 flex items-center justify-center text-3xl opacity-60',
-          isRed ? 'text-red-300' : 'text-slate-300',
-        )}
-      >
-        {SUIT_SYMBOLS[suit]}
-      </div>
+      <CardSlot role="foundation" label={SUIT_SYMBOLS[suit]} />
 
       {/* Card beneath top — shown while the top card is being dragged */}
       {isDraggingTop && beneathCard && (

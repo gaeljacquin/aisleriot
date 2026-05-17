@@ -118,6 +118,7 @@ export default function PeakGrid({
               isAvailable={availableSet.has(cellId)}
               onClick={onPlayCard}
               isValidMove={isValidMove}
+              isTop={idx <= 2}
             />
           </div>
         )

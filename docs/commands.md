@@ -1,5 +1,7 @@
 # Dev Commands
 
+> **CRITICAL**: All commands listed below MUST be executed within the **DevContainer** terminal. Never run package modification commands (`install`, `update`) on bare metal.
+
 ## Running the App
 
 ```bash

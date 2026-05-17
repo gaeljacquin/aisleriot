@@ -28,7 +28,7 @@ export default function ThemeToggle({
     setMode(isDark ? 'light' : 'dark')
   }
 
-  const label = `Theme mode: ${mode}. Click to switch mode.`
+  const label = `Theme mode: ${mode}`
 
   const dims = size === 'sm' ? 'h-7 w-[3.25rem] p-0.5' : 'h-8 w-[3.75rem] p-1'
   const knob = 'h-6 w-6'
@@ -81,7 +81,9 @@ export default function ThemeToggle({
           />
         </span>
       </TooltipTrigger>
-      <TooltipContent>{label}</TooltipContent>
+      <TooltipContent>
+        <span className="capitalize">{label}</span>
+      </TooltipContent>
     </Tooltip>
   )
 }

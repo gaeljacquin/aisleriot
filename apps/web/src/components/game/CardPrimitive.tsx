@@ -74,13 +74,26 @@ const SUIT_GLYPH: Record<Suit, string> = {
   clubs: '♣',
 }
 
-function MinimalCard({ suit, rank }: { suit: Suit; rank: Rank }) {
+function MinimalCard({
+  suit,
+  rank,
+  className,
+}: {
+  suit: Suit
+  rank: Rank
+  className?: string
+}) {
   const isRed = suit === 'hearts' || suit === 'diamonds'
   const glyph = SUIT_GLYPH[suit]
   const colorClass = isRed ? 'text-rose-600' : 'text-slate-900'
 
   return (
-    <div className="relative h-full w-full rounded-lg border border-gold/40 bg-white p-1 text-slate-900 shadow-sm transition-transform duration-200">
+    <div
+      className={cn(
+        'relative h-full w-full rounded-[inherit] bg-white p-1 text-slate-900 shadow-sm transition-transform duration-200',
+        className,
+      )}
+    >
       {/* corner top-left */}
       <div
         className={cn(
@@ -137,7 +150,7 @@ export function CardBackComponent({
   return (
     <div
       className={cn(
-        'relative h-full w-full rounded-lg border-2 border-slate-800 shadow-sm overflow-hidden',
+        'relative h-full w-full rounded-[inherit] shadow-sm overflow-hidden',
         className,
       )}
       style={{ background: CARD_BACK_STYLES[back] }}
