@@ -1,6 +1,6 @@
-import { useDroppable, useDraggable, useDndMonitor } from '@dnd-kit/core'
-import { useState } from 'react'
+import { useDroppable, useDraggable } from '@dnd-kit/core'
 import { cn } from '@workspace/ui/lib/utils'
+
 import CardSlot from '../CardSlot'
 import { GrandfathersClockCard } from './GrandfathersClockCard'
 import type {

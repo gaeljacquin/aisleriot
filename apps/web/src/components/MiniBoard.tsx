@@ -252,6 +252,26 @@ export function MiniBoard({ id }: MiniBoardProps) {
     )
   }
 
+  if (id === 'golf') {
+    return (
+      <div className="flex w-full flex-col gap-2.5">
+        <div className="flex justify-between gap-0.5 px-0.5">
+          {deal.columns.map((column: any[], i: number) => (
+            <div key={i} className="flex flex-col -space-y-6">
+              {column.map((card: any, j: number) => (
+                <MiniCard key={j} {...card} className="h-8 w-6" />
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-center gap-4">
+          <MiniCard faceUp={deal.stock.faceUp} className="h-9 w-6.5" />
+          <MiniCard {...deal.waste} className="h-9 w-6.5" />
+        </div>
+      </div>
+    )
+  }
+
   if (id === 'freecell') {
     return (
       <div className="flex w-full flex-col gap-2.5">

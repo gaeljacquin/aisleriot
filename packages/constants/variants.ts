@@ -6,6 +6,7 @@ const gameVariantIds = [
   "pyramid-alt",
   "tri-peaks",
   "tri-peaks-alt",
+  "golf",
   "grandfathers-clock",
 ]
 
@@ -127,6 +128,23 @@ const gameVariantsUnordered: GameVariant[] = [
     gael_favorite: true,
   },
   {
+    id: "golf",
+    name: "Golf",
+    subtitle: "Clear the columns",
+    blurb:
+      "Move all cards from the columns to the waste by rank. Speed and precision are key.",
+    color: "bg-green-100 dark:bg-green-950",
+    rules: [
+      "Seven columns of five cards are dealt face-up. The goal is to move all cards to the waste pile.",
+      "The waste pile starts with one card from the stock. Any face-up card at the bottom of a column can be moved to the waste if it is one rank higher or lower than the current top card.",
+      "Suit does not matter. Wrap-around is disabled: you cannot place an Ace on a King, or a King on an Ace.",
+      "In this version, Kings are 'stopped': once a King is on the waste pile, no card can be placed on top of it.",
+      "Click the stock to draw a new card to the waste. There are no redeals.",
+    ],
+    most_popular: true,
+    gael_favorite: true,
+  },
+  {
     id: "freecell",
     name: "FreeCell",
     subtitle: "Open cell strategy",
@@ -158,6 +176,7 @@ const gameVariantsUnordered: GameVariant[] = [
     ],
   },
 ]
+
 
 export const gameVariants: GameVariant[] = gameVariantsUnordered.sort((a, b) =>
   a.name.localeCompare(b.name)
