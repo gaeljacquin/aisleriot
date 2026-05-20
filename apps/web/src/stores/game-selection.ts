@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
-export type GameFilter = 'popular' | 'all' | 'favorites'
+export type GameFilter = 'popular' | 'all' | 'favorites' | 'your_favorite'
 
 interface GameSelectionState {
   gameFilter: GameFilter

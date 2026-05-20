@@ -5,7 +5,10 @@ import {
   Cancel01Icon,
   FilterIcon,
   Search01Icon,
-  Tick01Icon,
+  Bookmark02Icon,
+  BookmarkAdd02Icon,
+  BookmarkCheck02Icon,
+  BookmarkMinus01Icon,
 } from '@hugeicons/core-free-icons'
 import { gameVariants } from '@workspace/constants'
 import { cn } from '@workspace/ui/lib/utils'
@@ -31,6 +34,7 @@ import { VariantCard } from '@/components/VariantCard'
 import { VariantCardSkeleton } from '@/components/VariantCardSkeleton'
 import { useGameSelectionStore } from '@/stores/game-selection'
 import type { GameFilter } from '@/stores/game-selection'
+import { useFavoritesStore } from '@/stores/favorites'
 
 export const Route = createFileRoute('/new-game')({ component: NewGame })
 
@@ -39,7 +43,10 @@ function NewGame() {
   const [search, setSearch] = useState('')
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [isFilterOpen, setIsFilterOpen] = useState(false)
+  const [hoveredHeartId, setHoveredHeartId] = useState<string | null>(null)
+  const [hoveredVariantId, setHoveredVariantId] = useState<string | null>(null)
   const { gameFilter, setGameFilter } = useGameSelectionStore()
+  const { favorites, toggleFavorite } = useFavoritesStore()
 
   const filteredVariants = useMemo(() => {
     return gameVariants.filter((v) => {
@@ -50,13 +57,15 @@ function NewGame() {
         matchesFilter = true
       } else if (gameFilter === 'popular') {
         matchesFilter = !!v.most_popular
-      } else {
+      } else if (gameFilter === 'favorites') {
         matchesFilter = !!v.gael_favorite
+      } else {
+        matchesFilter = favorites.includes(v.id)
       }
 
       return matchesSearch && matchesFilter
     })
-  }, [search, gameFilter])
+  }, [search, gameFilter, favorites])
 
   const selectedVariant = useMemo(() => {
     return gameVariants.find((v) => v.id === selectedId) || null
@@ -91,7 +100,7 @@ function NewGame() {
                     open={isFilterOpen}
                     onOpenChange={setIsFilterOpen}
                   >
-                    <TooltipTrigger asChild>
+                    <TooltipTrigger>
                       <DropdownMenuTrigger
                         className={cn(
                           buttonVariants({ variant: 'outline' }),
@@ -104,7 +113,7 @@ function NewGame() {
                     </TooltipTrigger>
                     <DropdownMenuContent
                       align="start"
-                      className="w-48 bg-felt-deep border-gold/20 text-cream"
+                      className="w-48 bg-felt-deep border-gold/20 text-cream rounded-xl font-serif"
                     >
                       <DropdownMenuRadioGroup
                         value={gameFilter}
@@ -114,25 +123,32 @@ function NewGame() {
                         }}
                       >
                         <DropdownMenuRadioItem
-                          value="popular"
-                          onSelect={() => setIsFilterOpen(false)}
-                          className="focus:bg-gold/10 focus:text-gold data-[state=checked]:text-gold"
-                        >
-                          Most Popular
-                        </DropdownMenuRadioItem>
-                        <DropdownMenuRadioItem
                           value="all"
                           onSelect={() => setIsFilterOpen(false)}
-                          className="focus:bg-gold/10 focus:text-gold data-[state=checked]:text-gold"
+                          className="focus:bg-gold/10 focus:text-gold data-[state=checked]:text-gold rounded-lg cursor-pointer"
                         >
                           All
                         </DropdownMenuRadioItem>
                         <DropdownMenuRadioItem
                           value="favorites"
                           onSelect={() => setIsFilterOpen(false)}
-                          className="focus:bg-gold/10 focus:text-gold data-[state=checked]:text-gold"
+                          className="focus:bg-gold/10 focus:text-gold data-[state=checked]:text-gold rounded-lg cursor-pointer"
                         >
                           Gaël's Favorites
+                        </DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem
+                          value="popular"
+                          onSelect={() => setIsFilterOpen(false)}
+                          className="focus:bg-gold/10 focus:text-gold data-[state=checked]:text-gold rounded-lg cursor-pointer"
+                        >
+                          Most Popular
+                        </DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem
+                          value="your_favorite"
+                          onSelect={() => setIsFilterOpen(false)}
+                          className="focus:bg-gold/10 focus:text-gold data-[state=checked]:text-gold rounded-lg cursor-pointer"
+                        >
+                          Your Favorites
                         </DropdownMenuRadioItem>
                       </DropdownMenuRadioGroup>
                     </DropdownMenuContent>
@@ -143,7 +159,9 @@ function NewGame() {
                         ? 'Most Popular'
                         : gameFilter === 'all'
                           ? 'All'
-                          : "Gaël's Favorites"}
+                          : gameFilter === 'favorites'
+                            ? "Gaël's Favorites"
+                            : 'Your Favorites'}
                     </p>
                   </TooltipContent>
                 </Tooltip>
@@ -185,11 +203,14 @@ function NewGame() {
                   {filteredVariants.length > 0 ? (
                     filteredVariants.map((variant) => {
                       const isSelected = variant.id === selectedId
+                      const isFavorite = favorites.includes(variant.id)
 
                       return (
                         <button
                           key={variant.id}
                           onClick={() => setSelectedId(variant.id)}
+                          onMouseEnter={() => setHoveredVariantId(variant.id)}
+                          onMouseLeave={() => setHoveredVariantId(null)}
                           className={cn(
                             'group flex items-center gap-3 rounded-lg px-4 py-2 text-left transition-all duration-200',
                             isSelected
@@ -208,18 +229,43 @@ function NewGame() {
                               {variant.name}
                             </span>
                           </div>
-                          {isSelected && (
+                          <div
+                            className="relative"
+                            onMouseEnter={() => setHoveredHeartId(variant.id)}
+                            onMouseLeave={() => setHoveredHeartId(null)}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              toggleFavorite(variant.id)
+                            }}
+                          >
                             <HugeiconsIcon
-                              icon={Tick01Icon}
-                              className="h-3.5 w-3.5 text-gold"
+                              icon={
+                                isFavorite
+                                  ? hoveredHeartId === variant.id
+                                    ? BookmarkMinus01Icon
+                                    : BookmarkCheck02Icon
+                                  : hoveredVariantId === variant.id
+                                    ? BookmarkAdd02Icon
+                                    : Bookmark02Icon
+                              }
+                              className={cn(
+                                'h-4 w-4 transition-all duration-200 text-gold',
+                                !isFavorite &&
+                                  hoveredVariantId !== variant.id &&
+                                  'opacity-40',
+                              )}
                             />
-                          )}
+                          </div>
                         </button>
                       )
                     })
                   ) : (
-                    <div className="flex flex-1 items-center justify-center text-center text-sm text-cream-dim/60">
-                      <span>No match found.</span>
+                    <div className="flex flex-1 items-center justify-center text-center text-sm text-cream-dim/60 font-serif">
+                      <span>
+                        {gameFilter === 'your_favorite' && !search
+                          ? 'No favorites bookmarked.'
+                          : 'No match found.'}
+                      </span>
                     </div>
                   )}
                 </div>
