@@ -155,15 +155,15 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
       onClick: () => setConfirmNewGame(true),
     },
     {
+      icon: Refresh04Icon,
+      label: 'Restart',
+      onClick: () => setConfirmRestart(true),
+    },
+    {
       icon: UndoIcon,
       label: 'Undo',
       onClick: onUndo,
       disabled: !canUndo || isGameOver,
-    },
-    {
-      icon: Refresh04Icon,
-      label: 'Restart',
-      onClick: () => setConfirmRestart(true),
     },
     { icon: BookOpen01Icon, label: 'How to Play', onClick: onHowToPlay },
   ]

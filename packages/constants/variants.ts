@@ -8,6 +8,7 @@ const gameVariantIds = [
   "tri-peaks-alt",
   "golf",
   "grandfathers-clock",
+  "simple-simon",
 ]
 
 export type GameVariantId = (typeof gameVariantIds)[number]
@@ -174,6 +175,25 @@ const gameVariantsUnordered: GameVariant[] = [
       "Only one card can be moved at a time.",
       "Empty tableau columns can be filled with any available card.",
     ],
+  },
+  {
+    id: "simple-simon",
+    name: "Simple Simon",
+    subtitle: "Spider Lite",
+    blurb:
+      "A Spider-like variant with all cards visible. Build descending suit sequences to clear them.",
+    color: "bg-blue-100 dark:bg-blue-950",
+    rules: [
+      "All 52 cards are dealt face-up into 10 columns of varying heights.",
+      "The goal is to build four 13-card descending suit sequences (King to Ace) on the tableau.",
+      "You can build down regardless of suit. For example, any 5 can be placed on any 6.",
+      "Only sequences of the same suit can be moved as a unit. Groups of cards not of the same suit cannot be moved.",
+      "Completed 13-card suit sequences are automatically removed from the tableau.",
+      "Empty columns can be filled with any available card or valid sequence.",
+      "Nothing can be placed on an Ace.",
+    ],
+    most_popular: true,
+    gael_favorite: true,
   },
 ]
 

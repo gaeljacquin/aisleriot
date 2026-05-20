@@ -316,6 +316,45 @@ export function MiniBoard({ id }: MiniBoardProps) {
     )
   }
 
+  if (id === 'simple-simon') {
+    return (
+      <div className="flex w-full flex-col gap-2">
+        <div className="flex justify-center gap-1 mb-1">
+          {deal.foundations.map((card: any, i: number) => (
+            <div
+              key={i}
+              className="h-8 w-5.5 rounded-[0.5px] border border-gold/10 bg-white/5"
+            >
+              {card && (
+                <MiniCard
+                  suit={card.suit}
+                  rank={card.rank}
+                  faceUp={card.faceUp}
+                  className="h-full w-full"
+                />
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-between gap-0.5">
+          {deal.tableau.map((column: any[], i: number) => (
+            <div key={i} className="flex flex-col -space-y-5.5">
+              {column.map((card: any, j: number) => (
+                <MiniCard
+                  key={j}
+                  suit={card.suit}
+                  rank={card.rank}
+                  faceUp={card.faceUp}
+                  className="h-7 w-5"
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   // pyramid
   return (
     <div className="flex w-full flex-col items-center">

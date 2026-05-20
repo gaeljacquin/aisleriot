@@ -274,6 +274,14 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
       },
     },
     {
+      icon: Refresh04Icon,
+      label: 'Restart',
+      onClick: () => {
+        setConfirmRestart(true)
+        setSelectedIsWaste(false)
+      },
+    },
+    {
       icon: UndoIcon,
       label: 'Undo',
       onClick: () => {
@@ -281,14 +289,6 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
         setSelectedIsWaste(false)
       },
       disabled: !canUndo || (status !== 'playing' && status !== 'idle'),
-    },
-    {
-      icon: Refresh04Icon,
-      label: 'Restart',
-      onClick: () => {
-        setConfirmRestart(true)
-        setSelectedIsWaste(false)
-      },
     },
     { icon: BookOpen01Icon, label: 'How to Play', onClick: onHowToPlay },
   ]

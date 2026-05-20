@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TriPeaksAltRouteImport } from './routes/tri-peaks-alt'
 import { Route as TriPeaksRouteImport } from './routes/tri-peaks'
+import { Route as SimpleSimonRouteImport } from './routes/simple-simon'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as PyramidAltRouteImport } from './routes/pyramid-alt'
 import { Route as PyramidRouteImport } from './routes/pyramid'
@@ -32,6 +33,11 @@ const TriPeaksAltRoute = TriPeaksAltRouteImport.update({
 const TriPeaksRoute = TriPeaksRouteImport.update({
   id: '/tri-peaks',
   path: '/tri-peaks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SimpleSimonRoute = SimpleSimonRouteImport.update({
+  id: '/simple-simon',
+  path: '/simple-simon',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsRoute = SettingsRouteImport.update({
@@ -108,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/pyramid': typeof PyramidRoute
   '/pyramid-alt': typeof PyramidAltRoute
   '/settings': typeof SettingsRoute
+  '/simple-simon': typeof SimpleSimonRoute
   '/tri-peaks': typeof TriPeaksRoute
   '/tri-peaks-alt': typeof TriPeaksAltRoute
 }
@@ -124,6 +131,7 @@ export interface FileRoutesByTo {
   '/pyramid': typeof PyramidRoute
   '/pyramid-alt': typeof PyramidAltRoute
   '/settings': typeof SettingsRoute
+  '/simple-simon': typeof SimpleSimonRoute
   '/tri-peaks': typeof TriPeaksRoute
   '/tri-peaks-alt': typeof TriPeaksAltRoute
 }
@@ -141,6 +149,7 @@ export interface FileRoutesById {
   '/pyramid': typeof PyramidRoute
   '/pyramid-alt': typeof PyramidAltRoute
   '/settings': typeof SettingsRoute
+  '/simple-simon': typeof SimpleSimonRoute
   '/tri-peaks': typeof TriPeaksRoute
   '/tri-peaks-alt': typeof TriPeaksAltRoute
 }
@@ -159,6 +168,7 @@ export interface FileRouteTypes {
     | '/pyramid'
     | '/pyramid-alt'
     | '/settings'
+    | '/simple-simon'
     | '/tri-peaks'
     | '/tri-peaks-alt'
   fileRoutesByTo: FileRoutesByTo
@@ -175,6 +185,7 @@ export interface FileRouteTypes {
     | '/pyramid'
     | '/pyramid-alt'
     | '/settings'
+    | '/simple-simon'
     | '/tri-peaks'
     | '/tri-peaks-alt'
   id:
@@ -191,6 +202,7 @@ export interface FileRouteTypes {
     | '/pyramid'
     | '/pyramid-alt'
     | '/settings'
+    | '/simple-simon'
     | '/tri-peaks'
     | '/tri-peaks-alt'
   fileRoutesById: FileRoutesById
@@ -208,6 +220,7 @@ export interface RootRouteChildren {
   PyramidRoute: typeof PyramidRoute
   PyramidAltRoute: typeof PyramidAltRoute
   SettingsRoute: typeof SettingsRoute
+  SimpleSimonRoute: typeof SimpleSimonRoute
   TriPeaksRoute: typeof TriPeaksRoute
   TriPeaksAltRoute: typeof TriPeaksAltRoute
 }
@@ -226,6 +239,13 @@ declare module '@tanstack/react-router' {
       path: '/tri-peaks'
       fullPath: '/tri-peaks'
       preLoaderRoute: typeof TriPeaksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/simple-simon': {
+      id: '/simple-simon'
+      path: '/simple-simon'
+      fullPath: '/simple-simon'
+      preLoaderRoute: typeof SimpleSimonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings': {
@@ -328,6 +348,7 @@ const rootRouteChildren: RootRouteChildren = {
   PyramidRoute: PyramidRoute,
   PyramidAltRoute: PyramidAltRoute,
   SettingsRoute: SettingsRoute,
+  SimpleSimonRoute: SimpleSimonRoute,
   TriPeaksRoute: TriPeaksRoute,
   TriPeaksAltRoute: TriPeaksAltRoute,
 }
