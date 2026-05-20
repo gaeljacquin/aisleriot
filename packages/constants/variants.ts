@@ -19,6 +19,8 @@ export interface GameVariant {
   rules: string[]
   color: string
   most_popular?: boolean
+  gael_favorite?: boolean
+  your_favorite?: boolean
   placeholder?: boolean
 }
 
@@ -70,6 +72,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "The game is won when the pyramid is completely cleared.",
     ],
     most_popular: true,
+    gael_favorite: true,
   },
   {
     id: "pyramid-alt",
@@ -87,6 +90,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "The game is won when the pyramid is completely cleared.",
     ],
     most_popular: true,
+    gael_favorite: true,
   },
   {
     id: "tri-peaks",
@@ -103,6 +107,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "Building long chains without drawing from the stock earns bonus points.",
     ],
     most_popular: true,
+    gael_favorite: true,
   },
   {
     id: "tri-peaks-alt",
@@ -119,6 +124,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "Building long chains without drawing from the stock earns bonus points.",
     ],
     most_popular: true,
+    gael_favorite: true,
   },
   {
     id: "freecell",

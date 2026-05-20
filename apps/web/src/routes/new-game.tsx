@@ -3,7 +3,6 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { HugeiconsIcon } from '@hugeicons/react'
 import {
   Cancel01Icon,
-  FavouriteIcon,
   FilterIcon,
   Search01Icon,
   Tick01Icon,
@@ -13,6 +12,13 @@ import { cn } from '@workspace/ui/lib/utils'
 import { Input } from '@workspace/ui/components/input'
 import { Button, buttonVariants } from '@workspace/ui/components/button'
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from '@workspace/ui/components/dropdown-menu'
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
@@ -20,9 +26,11 @@ import {
 } from '@workspace/ui/components/tooltip'
 import BackLink from '@/components/BackLink'
 import ThemeToggle from '@/components/ThemeToggle'
+import ViewportDebugger from '@/components/ViewportDebugger'
 import { VariantCard } from '@/components/VariantCard'
 import { VariantCardSkeleton } from '@/components/VariantCardSkeleton'
 import { useGameSelectionStore } from '@/stores/game-selection'
+import type { GameFilter } from '@/stores/game-selection'
 
 export const Route = createFileRoute('/new-game')({ component: NewGame })
 
@@ -30,15 +38,25 @@ function NewGame() {
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [selectedId, setSelectedId] = useState<string | null>(null)
-  const { showAllGames, toggleShowAllGames } = useGameSelectionStore()
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
+  const { gameFilter, setGameFilter } = useGameSelectionStore()
 
   const filteredVariants = useMemo(() => {
     return gameVariants.filter((v) => {
       const matchesSearch = v.name.toLowerCase().includes(search.toLowerCase())
-      const matchesFilter = showAllGames || v.most_popular
+      let matchesFilter = false
+
+      if (gameFilter === 'all') {
+        matchesFilter = true
+      } else if (gameFilter === 'popular') {
+        matchesFilter = !!v.most_popular
+      } else {
+        matchesFilter = !!v.gael_favorite
+      }
+
       return matchesSearch && matchesFilter
     })
-  }, [search, showAllGames])
+  }, [search, gameFilter])
 
   const selectedVariant = useMemo(() => {
     return gameVariants.find((v) => v.id === selectedId) || null
@@ -69,21 +87,64 @@ function NewGame() {
             <div className="flex flex-col gap-6">
               <div className="flex gap-2">
                 <Tooltip>
-                  <TooltipTrigger
-                    onClick={toggleShowAllGames}
-                    className={cn(
-                      buttonVariants({ variant: 'outline' }),
-                      'h-10 w-10 shrink-0 border-gold/80 bg-felt-deep/80 p-0 text-gold/60 hover:bg-gold/10 hover:text-gold rounded-md',
-                      !showAllGames && 'text-gold bg-gold/10',
-                    )}
+                  <DropdownMenu
+                    open={isFilterOpen}
+                    onOpenChange={setIsFilterOpen}
                   >
-                    <HugeiconsIcon
-                      icon={showAllGames ? FilterIcon : FavouriteIcon}
-                      className="h-5 w-5"
-                    />
-                  </TooltipTrigger>
+                    <TooltipTrigger asChild>
+                      <DropdownMenuTrigger
+                        className={cn(
+                          buttonVariants({ variant: 'outline' }),
+                          'h-10 w-10 shrink-0 border-gold/80 bg-felt-deep/80 p-0 text-gold/60 hover:bg-gold/10 hover:text-gold rounded-md data-[state=open]:bg-gold/10 data-[state=open]:text-gold',
+                          gameFilter !== 'all' && 'text-gold bg-gold/10',
+                        )}
+                      >
+                        <HugeiconsIcon icon={FilterIcon} className="h-5 w-5" />
+                      </DropdownMenuTrigger>
+                    </TooltipTrigger>
+                    <DropdownMenuContent
+                      align="start"
+                      className="w-48 bg-felt-deep border-gold/20 text-cream"
+                    >
+                      <DropdownMenuRadioGroup
+                        value={gameFilter}
+                        onValueChange={(val) => {
+                          setGameFilter(val as GameFilter)
+                          setIsFilterOpen(false)
+                        }}
+                      >
+                        <DropdownMenuRadioItem
+                          value="popular"
+                          onSelect={() => setIsFilterOpen(false)}
+                          className="focus:bg-gold/10 focus:text-gold data-[state=checked]:text-gold"
+                        >
+                          Most Popular
+                        </DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem
+                          value="all"
+                          onSelect={() => setIsFilterOpen(false)}
+                          className="focus:bg-gold/10 focus:text-gold data-[state=checked]:text-gold"
+                        >
+                          All
+                        </DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem
+                          value="favorites"
+                          onSelect={() => setIsFilterOpen(false)}
+                          className="focus:bg-gold/10 focus:text-gold data-[state=checked]:text-gold"
+                        >
+                          Gaël's Favorites
+                        </DropdownMenuRadioItem>
+                      </DropdownMenuRadioGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                   <TooltipContent>
-                    <p>{showAllGames ? 'Most Popular' : 'All'}</p>
+                    <p>
+                      {gameFilter === 'popular'
+                        ? 'Most Popular'
+                        : gameFilter === 'all'
+                          ? 'All'
+                          : "Gaël's Favorites"}
+                    </p>
                   </TooltipContent>
                 </Tooltip>
 
@@ -182,6 +243,11 @@ function NewGame() {
                   </div>
                 )}
               </div>
+            </div>
+
+            {/* Viewport Debugger */}
+            <div className="md:col-span-2 flex justify-center pt-4">
+              <ViewportDebugger />
             </div>
           </section>
 

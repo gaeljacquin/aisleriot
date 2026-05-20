@@ -1,23 +1,22 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
+export type GameFilter = 'popular' | 'all' | 'favorites'
+
 interface GameSelectionState {
-  showAllGames: boolean
-  setShowAllGames: (showAllGames: boolean) => void
-  toggleShowAllGames: () => void
+  gameFilter: GameFilter
+  setGameFilter: (filter: GameFilter) => void
 }
 
 export const useGameSelectionStore = create<GameSelectionState>()(
   persist(
     (set) => ({
-      showAllGames: false,
-      setShowAllGames: (showAllGames) => set({ showAllGames }),
-      toggleShowAllGames: () =>
-        set((state) => ({ showAllGames: !state.showAllGames })),
+      gameFilter: 'popular',
+      setGameFilter: (gameFilter) => set({ gameFilter }),
     }),
     {
       name: 'game-selection-storage',
-      version: 1,
+      version: 2,
       storage: createJSONStorage(() => localStorage),
     },
   ),
