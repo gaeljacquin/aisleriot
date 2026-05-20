@@ -100,6 +100,7 @@ export const useGrandfathersClockStore = create<GrandfathersClockStore>()(
 
         // Push history before mutating
         state.pushHistory(snapshot(state))
+        const { past, future, canUndo, canRedo } = get()
 
         // --- Apply move ---
         const tableau = { ...state.tableau }
@@ -135,10 +136,20 @@ export const useGrandfathersClockStore = create<GrandfathersClockStore>()(
           set({
             ...nextState,
             status: 'won',
+            past,
+            future,
+            canUndo,
+            canRedo,
           } as Partial<GrandfathersClockStore>)
           get().recordWin(finalScore, !get().usedUndo)
         } else {
-          set(nextState as Partial<GrandfathersClockStore>)
+          set({
+            ...nextState,
+            past,
+            future,
+            canUndo,
+            canRedo,
+          } as Partial<GrandfathersClockStore>)
         }
       },
 
