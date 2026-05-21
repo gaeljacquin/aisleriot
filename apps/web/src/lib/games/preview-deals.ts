@@ -441,4 +441,108 @@ export const PREVIEW_DEALS: Record<string, any> = {
       ],
     ],
   },
+  golf: {
+    stock: { faceUp: false },
+    waste: { suit: 'hearts', rank: 'A', faceUp: true },
+    columns: [
+      [
+        { suit: 'spades', rank: '5', faceUp: true },
+        { suit: 'spades', rank: '4', faceUp: true },
+        { suit: 'spades', rank: '3', faceUp: true },
+        { suit: 'spades', rank: '2', faceUp: true },
+        { suit: 'spades', rank: 'A', faceUp: true },
+      ],
+      [
+        { suit: 'hearts', rank: '10', faceUp: true },
+        { suit: 'hearts', rank: '9', faceUp: true },
+        { suit: 'hearts', rank: '8', faceUp: true },
+        { suit: 'hearts', rank: '7', faceUp: true },
+        { suit: 'hearts', rank: '6', faceUp: true },
+      ],
+      [
+        { suit: 'clubs', rank: 'Q', faceUp: true },
+        { suit: 'clubs', rank: 'J', faceUp: true },
+        { suit: 'clubs', rank: '10', faceUp: true },
+        { suit: 'clubs', rank: '9', faceUp: true },
+        { suit: 'clubs', rank: '8', faceUp: true },
+      ],
+      [
+        { suit: 'diamonds', rank: 'K', faceUp: true },
+        { suit: 'diamonds', rank: 'Q', faceUp: true },
+        { suit: 'diamonds', rank: 'J', faceUp: true },
+        { suit: 'diamonds', rank: '10', faceUp: true },
+        { suit: 'diamonds', rank: '9', faceUp: true },
+      ],
+      [
+        { suit: 'spades', rank: 'J', faceUp: true },
+        { suit: 'spades', rank: '10', faceUp: true },
+        { suit: 'spades', rank: '9', faceUp: true },
+        { suit: 'spades', rank: '8', faceUp: true },
+        { suit: 'spades', rank: '7', faceUp: true },
+      ],
+      [
+        { suit: 'hearts', rank: '4', faceUp: true },
+        { suit: 'hearts', rank: '3', faceUp: true },
+        { suit: 'hearts', rank: '2', faceUp: true },
+        { suit: 'hearts', rank: 'A', faceUp: true },
+        { suit: 'hearts', rank: 'K', faceUp: true },
+      ],
+      [
+        { suit: 'clubs', rank: '6', faceUp: true },
+        { suit: 'clubs', rank: '5', faceUp: true },
+        { suit: 'clubs', rank: '4', faceUp: true },
+        { suit: 'clubs', rank: '3', faceUp: true },
+        { suit: 'clubs', rank: '2', faceUp: true },
+      ],
+    ],
+  },
+  'simple-simon': {
+    foundations: [
+      { suit: 'hearts', rank: 'A', faceUp: true },
+      null,
+      null,
+      null,
+    ],
+    tableau: [
+      [
+        { suit: 'spades', rank: 'K', faceUp: true },
+        { suit: 'spades', rank: 'Q', faceUp: true },
+        { suit: 'spades', rank: 'J', faceUp: true },
+        { suit: 'spades', rank: '10', faceUp: true },
+      ],
+      [
+        { suit: 'hearts', rank: 'Q', faceUp: true },
+        { suit: 'hearts', rank: 'J', faceUp: true },
+        { suit: 'hearts', rank: '10', faceUp: true },
+        { suit: 'hearts', rank: '9', faceUp: true },
+      ],
+      [
+        { suit: 'clubs', rank: 'J', faceUp: true },
+        { suit: 'clubs', rank: '10', faceUp: true },
+        { suit: 'clubs', rank: '9', faceUp: true },
+        { suit: 'clubs', rank: '8', faceUp: true },
+      ],
+      [
+        { suit: 'diamonds', rank: '10', faceUp: true },
+        { suit: 'diamonds', rank: '9', faceUp: true },
+        { suit: 'diamonds', rank: '8', faceUp: true },
+      ],
+      [
+        { suit: 'spades', rank: '9', faceUp: true },
+        { suit: 'spades', rank: '8', faceUp: true },
+        { suit: 'spades', rank: '7', faceUp: true },
+      ],
+      [
+        { suit: 'hearts', rank: '8', faceUp: true },
+        { suit: 'hearts', rank: '7', faceUp: true },
+      ],
+      [
+        { suit: 'clubs', rank: '7', faceUp: true },
+        { suit: 'clubs', rank: '6', faceUp: true },
+      ],
+      [{ suit: 'diamonds', rank: '6', faceUp: true }],
+      [{ suit: 'spades', rank: '5', faceUp: true }],
+      [{ suit: 'hearts', rank: '4', faceUp: true }],
+    ],
+  },
 }

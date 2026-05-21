@@ -6,7 +6,9 @@ const gameVariantIds = [
   "pyramid-alt",
   "tri-peaks",
   "tri-peaks-alt",
+  "golf",
   "grandfathers-clock",
+  "simple-simon",
 ]
 
 export type GameVariantId = (typeof gameVariantIds)[number]
@@ -19,6 +21,8 @@ export interface GameVariant {
   rules: string[]
   color: string
   most_popular?: boolean
+  gael_favorite?: boolean
+  your_favorite?: boolean
   placeholder?: boolean
 }
 
@@ -70,6 +74,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "The game is won when the pyramid is completely cleared.",
     ],
     most_popular: true,
+    gael_favorite: true,
   },
   {
     id: "pyramid-alt",
@@ -87,6 +92,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "The game is won when the pyramid is completely cleared.",
     ],
     most_popular: true,
+    gael_favorite: true,
   },
   {
     id: "tri-peaks",
@@ -103,6 +109,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "Building long chains without drawing from the stock earns bonus points.",
     ],
     most_popular: true,
+    gael_favorite: true,
   },
   {
     id: "tri-peaks-alt",
@@ -119,6 +126,24 @@ const gameVariantsUnordered: GameVariant[] = [
       "Building long chains without drawing from the stock earns bonus points.",
     ],
     most_popular: true,
+    gael_favorite: true,
+  },
+  {
+    id: "golf",
+    name: "Golf",
+    subtitle: "Clear the columns",
+    blurb:
+      "Move all cards from the columns to the waste by rank. Speed and precision are key.",
+    color: "bg-green-100 dark:bg-green-950",
+    rules: [
+      "Seven columns of five cards are dealt face-up. The goal is to move all cards to the waste pile.",
+      "The waste pile starts with one card from the stock. Any face-up card at the bottom of a column can be moved to the waste if it is one rank higher or lower than the current top card.",
+      "Suit does not matter. Wrap-around is disabled: you cannot place an Ace on a King, or a King on an Ace.",
+      "In this version, Kings are 'stopped': once a King is on the waste pile, no card can be placed on top of it.",
+      "Click the stock to draw a new card to the waste. There are no redeals.",
+    ],
+    most_popular: true,
+    gael_favorite: true,
   },
   {
     id: "freecell",
@@ -151,7 +176,27 @@ const gameVariantsUnordered: GameVariant[] = [
       "Empty tableau columns can be filled with any available card.",
     ],
   },
+  {
+    id: "simple-simon",
+    name: "Simple Simon",
+    subtitle: "Spider Lite",
+    blurb:
+      "A Spider-like variant with all cards visible. Build descending suit sequences to clear them.",
+    color: "bg-blue-100 dark:bg-blue-950",
+    rules: [
+      "All 52 cards are dealt face-up into 10 columns of varying heights.",
+      "The goal is to build four 13-card descending suit sequences (King to Ace) on the tableau.",
+      "You can build down regardless of suit. For example, any 5 can be placed on any 6.",
+      "Only sequences of the same suit can be moved as a unit. Groups of cards not of the same suit cannot be moved.",
+      "Completed 13-card suit sequences are automatically removed from the tableau.",
+      "Empty columns can be filled with any available card or valid sequence.",
+      "Nothing can be placed on an Ace.",
+    ],
+    most_popular: true,
+    gael_favorite: true,
+  },
 ]
+
 
 export const gameVariants: GameVariant[] = gameVariantsUnordered.sort((a, b) =>
   a.name.localeCompare(b.name)

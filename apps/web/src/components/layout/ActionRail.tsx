@@ -74,12 +74,12 @@ export function ActionRail({
                 onClick={action.onClick}
                 disabled={action.disabled}
                 className={cn(
-                  'group flex items-center justify-center rounded-full border transition-all cursor-pointer',
+                  'group flex items-center justify-center rounded-full border transition-all',
                   'w-11 h-11',
-                  action.active
-                    ? 'border-gold/40 bg-gold/20 shadow-inner'
-                    : 'border-gold/10 bg-white/5 hover:bg-gold/10 hover:border-gold/40',
-                  'disabled:opacity-30 disabled:cursor-not-allowed',
+                  action.disabled
+                    ? 'opacity-30 cursor-not-allowed'
+                    : 'cursor-pointer border-gold/10 bg-white/5 hover:bg-gold/10 hover:border-gold/40',
+                  action.active && 'border-gold/40 bg-gold/20 shadow-inner',
                 )}
               >
                 <HugeiconsIcon
@@ -116,12 +116,12 @@ export function ActionRail({
                 onClick={action.onClick}
                 disabled={action.disabled}
                 className={cn(
-                  'group flex items-center justify-center rounded-full border transition-all cursor-pointer',
+                  'group flex items-center justify-center rounded-full border transition-all',
                   'w-11 h-11',
-                  action.active
-                    ? 'border-gold/40 bg-gold/20 shadow-inner'
-                    : 'border-gold/10 bg-white/5 hover:bg-gold/10 hover:border-gold/40',
-                  'disabled:opacity-30 disabled:cursor-not-allowed',
+                  action.disabled
+                    ? 'opacity-30 cursor-not-allowed'
+                    : 'cursor-pointer border-gold/10 bg-white/5 hover:bg-gold/10 hover:border-gold/40',
+                  action.active && 'border-gold/40 bg-gold/20 shadow-inner',
                 )}
               >
                 <HugeiconsIcon

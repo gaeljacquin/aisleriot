@@ -3,15 +3,24 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { HugeiconsIcon } from '@hugeicons/react'
 import {
   Cancel01Icon,
-  FavouriteIcon,
   FilterIcon,
   Search01Icon,
-  Tick01Icon,
+  Bookmark02Icon,
+  BookmarkAdd02Icon,
+  BookmarkCheck02Icon,
+  BookmarkMinus01Icon,
 } from '@hugeicons/core-free-icons'
 import { gameVariants } from '@workspace/constants'
 import { cn } from '@workspace/ui/lib/utils'
 import { Input } from '@workspace/ui/components/input'
 import { Button, buttonVariants } from '@workspace/ui/components/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from '@workspace/ui/components/dropdown-menu'
 import {
   Tooltip,
   TooltipContent,
@@ -20,9 +29,12 @@ import {
 } from '@workspace/ui/components/tooltip'
 import BackLink from '@/components/BackLink'
 import ThemeToggle from '@/components/ThemeToggle'
+import ViewportDebugger from '@/components/ViewportDebugger'
 import { VariantCard } from '@/components/VariantCard'
 import { VariantCardSkeleton } from '@/components/VariantCardSkeleton'
 import { useGameSelectionStore } from '@/stores/game-selection'
+import type { GameFilter } from '@/stores/game-selection'
+import { useFavoritesStore } from '@/stores/favorites'
 
 export const Route = createFileRoute('/new-game')({ component: NewGame })
 
@@ -30,15 +42,30 @@ function NewGame() {
   const navigate = useNavigate()
   const [search, setSearch] = useState('')
   const [selectedId, setSelectedId] = useState<string | null>(null)
-  const { showAllGames, toggleShowAllGames } = useGameSelectionStore()
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
+  const [hoveredHeartId, setHoveredHeartId] = useState<string | null>(null)
+  const [hoveredVariantId, setHoveredVariantId] = useState<string | null>(null)
+  const { gameFilter, setGameFilter } = useGameSelectionStore()
+  const { favorites, toggleFavorite } = useFavoritesStore()
 
   const filteredVariants = useMemo(() => {
     return gameVariants.filter((v) => {
       const matchesSearch = v.name.toLowerCase().includes(search.toLowerCase())
-      const matchesFilter = showAllGames || v.most_popular
+      let matchesFilter = false
+
+      if (gameFilter === 'all') {
+        matchesFilter = true
+      } else if (gameFilter === 'popular') {
+        matchesFilter = !!v.most_popular
+      } else if (gameFilter === 'favorites') {
+        matchesFilter = !!v.gael_favorite
+      } else {
+        matchesFilter = favorites.includes(v.id)
+      }
+
       return matchesSearch && matchesFilter
     })
-  }, [search, showAllGames])
+  }, [search, gameFilter, favorites])
 
   const selectedVariant = useMemo(() => {
     return gameVariants.find((v) => v.id === selectedId) || null
@@ -69,21 +96,73 @@ function NewGame() {
             <div className="flex flex-col gap-6">
               <div className="flex gap-2">
                 <Tooltip>
-                  <TooltipTrigger
-                    onClick={toggleShowAllGames}
-                    className={cn(
-                      buttonVariants({ variant: 'outline' }),
-                      'h-10 w-10 shrink-0 border-gold/80 bg-felt-deep/80 p-0 text-gold/60 hover:bg-gold/10 hover:text-gold rounded-md',
-                      !showAllGames && 'text-gold bg-gold/10',
-                    )}
+                  <DropdownMenu
+                    open={isFilterOpen}
+                    onOpenChange={setIsFilterOpen}
                   >
-                    <HugeiconsIcon
-                      icon={showAllGames ? FilterIcon : FavouriteIcon}
-                      className="h-5 w-5"
-                    />
-                  </TooltipTrigger>
+                    <TooltipTrigger>
+                      <DropdownMenuTrigger
+                        className={cn(
+                          buttonVariants({ variant: 'outline' }),
+                          'h-10 w-10 shrink-0 border-gold/80 bg-felt-deep/80 p-0 text-gold/60 hover:bg-gold/10 hover:text-gold rounded-md data-[state=open]:bg-gold/10 data-[state=open]:text-gold',
+                          gameFilter !== 'all' && 'text-gold bg-gold/10',
+                        )}
+                      >
+                        <HugeiconsIcon icon={FilterIcon} className="h-5 w-5" />
+                      </DropdownMenuTrigger>
+                    </TooltipTrigger>
+                    <DropdownMenuContent
+                      align="start"
+                      className="w-48 bg-felt-deep border-gold/20 text-cream rounded-xl font-serif"
+                    >
+                      <DropdownMenuRadioGroup
+                        value={gameFilter}
+                        onValueChange={(val) => {
+                          setGameFilter(val as GameFilter)
+                          setIsFilterOpen(false)
+                        }}
+                      >
+                        <DropdownMenuRadioItem
+                          value="all"
+                          onSelect={() => setIsFilterOpen(false)}
+                          className="focus:bg-gold/10 focus:text-gold data-[state=checked]:text-gold rounded-lg cursor-pointer"
+                        >
+                          All
+                        </DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem
+                          value="favorites"
+                          onSelect={() => setIsFilterOpen(false)}
+                          className="focus:bg-gold/10 focus:text-gold data-[state=checked]:text-gold rounded-lg cursor-pointer"
+                        >
+                          Gaël's Favorites
+                        </DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem
+                          value="popular"
+                          onSelect={() => setIsFilterOpen(false)}
+                          className="focus:bg-gold/10 focus:text-gold data-[state=checked]:text-gold rounded-lg cursor-pointer"
+                        >
+                          Most Popular
+                        </DropdownMenuRadioItem>
+                        <DropdownMenuRadioItem
+                          value="your_favorite"
+                          onSelect={() => setIsFilterOpen(false)}
+                          className="focus:bg-gold/10 focus:text-gold data-[state=checked]:text-gold rounded-lg cursor-pointer"
+                        >
+                          Your Favorites
+                        </DropdownMenuRadioItem>
+                      </DropdownMenuRadioGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                   <TooltipContent>
-                    <p>{showAllGames ? 'Most Popular' : 'All'}</p>
+                    <p>
+                      {gameFilter === 'popular'
+                        ? 'Most Popular'
+                        : gameFilter === 'all'
+                          ? 'All'
+                          : gameFilter === 'favorites'
+                            ? "Gaël's Favorites"
+                            : 'Your Favorites'}
+                    </p>
                   </TooltipContent>
                 </Tooltip>
 
@@ -124,11 +203,14 @@ function NewGame() {
                   {filteredVariants.length > 0 ? (
                     filteredVariants.map((variant) => {
                       const isSelected = variant.id === selectedId
+                      const isFavorite = favorites.includes(variant.id)
 
                       return (
                         <button
                           key={variant.id}
                           onClick={() => setSelectedId(variant.id)}
+                          onMouseEnter={() => setHoveredVariantId(variant.id)}
+                          onMouseLeave={() => setHoveredVariantId(null)}
                           className={cn(
                             'group flex items-center gap-3 rounded-lg px-4 py-2 text-left transition-all duration-200',
                             isSelected
@@ -147,18 +229,43 @@ function NewGame() {
                               {variant.name}
                             </span>
                           </div>
-                          {isSelected && (
+                          <div
+                            className="relative"
+                            onMouseEnter={() => setHoveredHeartId(variant.id)}
+                            onMouseLeave={() => setHoveredHeartId(null)}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              toggleFavorite(variant.id)
+                            }}
+                          >
                             <HugeiconsIcon
-                              icon={Tick01Icon}
-                              className="h-3.5 w-3.5 text-gold"
+                              icon={
+                                isFavorite
+                                  ? hoveredHeartId === variant.id
+                                    ? BookmarkMinus01Icon
+                                    : BookmarkCheck02Icon
+                                  : hoveredVariantId === variant.id
+                                    ? BookmarkAdd02Icon
+                                    : Bookmark02Icon
+                              }
+                              className={cn(
+                                'h-4 w-4 transition-all duration-200 text-gold',
+                                !isFavorite &&
+                                  hoveredVariantId !== variant.id &&
+                                  'opacity-40',
+                              )}
                             />
-                          )}
+                          </div>
                         </button>
                       )
                     })
                   ) : (
-                    <div className="flex flex-1 items-center justify-center text-center text-sm text-cream-dim/60">
-                      <span>No match found.</span>
+                    <div className="flex flex-1 items-center justify-center text-center text-sm text-cream-dim/60 font-serif">
+                      <span>
+                        {gameFilter === 'your_favorite' && !search
+                          ? 'No favorites bookmarked.'
+                          : 'No match found.'}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -182,6 +289,11 @@ function NewGame() {
                   </div>
                 )}
               </div>
+            </div>
+
+            {/* Viewport Debugger */}
+            <div className="md:col-span-2 flex justify-center pt-4">
+              <ViewportDebugger />
             </div>
           </section>
 

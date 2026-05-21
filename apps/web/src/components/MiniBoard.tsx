@@ -252,6 +252,26 @@ export function MiniBoard({ id }: MiniBoardProps) {
     )
   }
 
+  if (id === 'golf') {
+    return (
+      <div className="flex w-full flex-col gap-2.5">
+        <div className="flex justify-between gap-0.5 px-0.5">
+          {deal.columns.map((column: any[], i: number) => (
+            <div key={i} className="flex flex-col -space-y-6">
+              {column.map((card: any, j: number) => (
+                <MiniCard key={j} {...card} className="h-8 w-6" />
+              ))}
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-center gap-4">
+          <MiniCard faceUp={deal.stock.faceUp} className="h-9 w-6.5" />
+          <MiniCard {...deal.waste} className="h-9 w-6.5" />
+        </div>
+      </div>
+    )
+  }
+
   if (id === 'freecell') {
     return (
       <div className="flex w-full flex-col gap-2.5">
@@ -287,6 +307,45 @@ export function MiniBoard({ id }: MiniBoardProps) {
                   rank={card.rank}
                   faceUp={card.faceUp}
                   className="h-8 w-6"
+                />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  if (id === 'simple-simon') {
+    return (
+      <div className="flex w-full flex-col gap-2">
+        <div className="flex justify-center gap-1 mb-1">
+          {deal.foundations.map((card: any, i: number) => (
+            <div
+              key={i}
+              className="h-8 w-5.5 rounded-[0.5px] border border-gold/10 bg-white/5"
+            >
+              {card && (
+                <MiniCard
+                  suit={card.suit}
+                  rank={card.rank}
+                  faceUp={card.faceUp}
+                  className="h-full w-full"
+                />
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-between gap-0.5">
+          {deal.tableau.map((column: any[], i: number) => (
+            <div key={i} className="flex flex-col -space-y-5.5">
+              {column.map((card: any, j: number) => (
+                <MiniCard
+                  key={j}
+                  suit={card.suit}
+                  rank={card.rank}
+                  faceUp={card.faceUp}
+                  className="h-7 w-5"
                 />
               ))}
             </div>

@@ -8,10 +8,7 @@ import {
   FOUNDATION_IDS,
   FOUNDATION_SUITS,
 } from '#/lib/games/klondike'
-import type {
-  KlondikeTableauId,
-  KlondikeFoundationId,
-} from '#/lib/games/klondike'
+import type { KlondikeTableauId } from '#/lib/games/klondike'
 import type {
   UseKlondikeResult,
   KlondikeTableauEntry,

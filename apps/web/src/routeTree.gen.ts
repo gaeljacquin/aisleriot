@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TriPeaksAltRouteImport } from './routes/tri-peaks-alt'
 import { Route as TriPeaksRouteImport } from './routes/tri-peaks'
+import { Route as SimpleSimonRouteImport } from './routes/simple-simon'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as PyramidAltRouteImport } from './routes/pyramid-alt'
 import { Route as PyramidRouteImport } from './routes/pyramid'
@@ -18,6 +19,7 @@ import { Route as NewGameRouteImport } from './routes/new-game'
 import { Route as KlondikeDraw3RouteImport } from './routes/klondike-draw-3'
 import { Route as KlondikeDraw1RouteImport } from './routes/klondike-draw-1'
 import { Route as GrandfathersClockRouteImport } from './routes/grandfathers-clock'
+import { Route as GolfRouteImport } from './routes/golf'
 import { Route as FreecellRouteImport } from './routes/freecell'
 import { Route as CreditsRouteImport } from './routes/credits'
 import { Route as AboutRouteImport } from './routes/about'
@@ -31,6 +33,11 @@ const TriPeaksAltRoute = TriPeaksAltRouteImport.update({
 const TriPeaksRoute = TriPeaksRouteImport.update({
   id: '/tri-peaks',
   path: '/tri-peaks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SimpleSimonRoute = SimpleSimonRouteImport.update({
+  id: '/simple-simon',
+  path: '/simple-simon',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SettingsRoute = SettingsRouteImport.update({
@@ -68,6 +75,11 @@ const GrandfathersClockRoute = GrandfathersClockRouteImport.update({
   path: '/grandfathers-clock',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GolfRoute = GolfRouteImport.update({
+  id: '/golf',
+  path: '/golf',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FreecellRoute = FreecellRouteImport.update({
   id: '/freecell',
   path: '/freecell',
@@ -94,6 +106,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/credits': typeof CreditsRoute
   '/freecell': typeof FreecellRoute
+  '/golf': typeof GolfRoute
   '/grandfathers-clock': typeof GrandfathersClockRoute
   '/klondike-draw-1': typeof KlondikeDraw1Route
   '/klondike-draw-3': typeof KlondikeDraw3Route
@@ -101,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/pyramid': typeof PyramidRoute
   '/pyramid-alt': typeof PyramidAltRoute
   '/settings': typeof SettingsRoute
+  '/simple-simon': typeof SimpleSimonRoute
   '/tri-peaks': typeof TriPeaksRoute
   '/tri-peaks-alt': typeof TriPeaksAltRoute
 }
@@ -109,6 +123,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/credits': typeof CreditsRoute
   '/freecell': typeof FreecellRoute
+  '/golf': typeof GolfRoute
   '/grandfathers-clock': typeof GrandfathersClockRoute
   '/klondike-draw-1': typeof KlondikeDraw1Route
   '/klondike-draw-3': typeof KlondikeDraw3Route
@@ -116,6 +131,7 @@ export interface FileRoutesByTo {
   '/pyramid': typeof PyramidRoute
   '/pyramid-alt': typeof PyramidAltRoute
   '/settings': typeof SettingsRoute
+  '/simple-simon': typeof SimpleSimonRoute
   '/tri-peaks': typeof TriPeaksRoute
   '/tri-peaks-alt': typeof TriPeaksAltRoute
 }
@@ -125,6 +141,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/credits': typeof CreditsRoute
   '/freecell': typeof FreecellRoute
+  '/golf': typeof GolfRoute
   '/grandfathers-clock': typeof GrandfathersClockRoute
   '/klondike-draw-1': typeof KlondikeDraw1Route
   '/klondike-draw-3': typeof KlondikeDraw3Route
@@ -132,6 +149,7 @@ export interface FileRoutesById {
   '/pyramid': typeof PyramidRoute
   '/pyramid-alt': typeof PyramidAltRoute
   '/settings': typeof SettingsRoute
+  '/simple-simon': typeof SimpleSimonRoute
   '/tri-peaks': typeof TriPeaksRoute
   '/tri-peaks-alt': typeof TriPeaksAltRoute
 }
@@ -142,6 +160,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/credits'
     | '/freecell'
+    | '/golf'
     | '/grandfathers-clock'
     | '/klondike-draw-1'
     | '/klondike-draw-3'
@@ -149,6 +168,7 @@ export interface FileRouteTypes {
     | '/pyramid'
     | '/pyramid-alt'
     | '/settings'
+    | '/simple-simon'
     | '/tri-peaks'
     | '/tri-peaks-alt'
   fileRoutesByTo: FileRoutesByTo
@@ -157,6 +177,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/credits'
     | '/freecell'
+    | '/golf'
     | '/grandfathers-clock'
     | '/klondike-draw-1'
     | '/klondike-draw-3'
@@ -164,6 +185,7 @@ export interface FileRouteTypes {
     | '/pyramid'
     | '/pyramid-alt'
     | '/settings'
+    | '/simple-simon'
     | '/tri-peaks'
     | '/tri-peaks-alt'
   id:
@@ -172,6 +194,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/credits'
     | '/freecell'
+    | '/golf'
     | '/grandfathers-clock'
     | '/klondike-draw-1'
     | '/klondike-draw-3'
@@ -179,6 +202,7 @@ export interface FileRouteTypes {
     | '/pyramid'
     | '/pyramid-alt'
     | '/settings'
+    | '/simple-simon'
     | '/tri-peaks'
     | '/tri-peaks-alt'
   fileRoutesById: FileRoutesById
@@ -188,6 +212,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   CreditsRoute: typeof CreditsRoute
   FreecellRoute: typeof FreecellRoute
+  GolfRoute: typeof GolfRoute
   GrandfathersClockRoute: typeof GrandfathersClockRoute
   KlondikeDraw1Route: typeof KlondikeDraw1Route
   KlondikeDraw3Route: typeof KlondikeDraw3Route
@@ -195,6 +220,7 @@ export interface RootRouteChildren {
   PyramidRoute: typeof PyramidRoute
   PyramidAltRoute: typeof PyramidAltRoute
   SettingsRoute: typeof SettingsRoute
+  SimpleSimonRoute: typeof SimpleSimonRoute
   TriPeaksRoute: typeof TriPeaksRoute
   TriPeaksAltRoute: typeof TriPeaksAltRoute
 }
@@ -213,6 +239,13 @@ declare module '@tanstack/react-router' {
       path: '/tri-peaks'
       fullPath: '/tri-peaks'
       preLoaderRoute: typeof TriPeaksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/simple-simon': {
+      id: '/simple-simon'
+      path: '/simple-simon'
+      fullPath: '/simple-simon'
+      preLoaderRoute: typeof SimpleSimonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/settings': {
@@ -264,6 +297,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GrandfathersClockRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/golf': {
+      id: '/golf'
+      path: '/golf'
+      fullPath: '/golf'
+      preLoaderRoute: typeof GolfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/freecell': {
       id: '/freecell'
       path: '/freecell'
@@ -300,6 +340,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   CreditsRoute: CreditsRoute,
   FreecellRoute: FreecellRoute,
+  GolfRoute: GolfRoute,
   GrandfathersClockRoute: GrandfathersClockRoute,
   KlondikeDraw1Route: KlondikeDraw1Route,
   KlondikeDraw3Route: KlondikeDraw3Route,
@@ -307,6 +348,7 @@ const rootRouteChildren: RootRouteChildren = {
   PyramidRoute: PyramidRoute,
   PyramidAltRoute: PyramidAltRoute,
   SettingsRoute: SettingsRoute,
+  SimpleSimonRoute: SimpleSimonRoute,
   TriPeaksRoute: TriPeaksRoute,
   TriPeaksAltRoute: TriPeaksAltRoute,
 }

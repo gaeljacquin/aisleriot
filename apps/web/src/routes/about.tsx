@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import BackLink from '@/components/BackLink'
+import { appInfo } from '@workspace/constants'
 
 export const Route = createFileRoute('/about')({
   component: About,
@@ -11,7 +12,7 @@ function About() {
       <div className="mx-auto w-full max-w-xl">
         <header className="mb-12 text-center">
           <h1 className="font-serif text-4xl font-bold tracking-tight text-gold sm:text-5xl">
-            About Aisleriot
+            About {appInfo.title}
           </h1>
           <p className="mt-3 font-serif text-sm text-cream-dim">
             A small starter with room to grow.

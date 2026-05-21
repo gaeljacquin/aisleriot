@@ -1,14 +1,12 @@
 import { useRef, useState, useMemo } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
 import { Waste, Stock } from '../index'
-import PeakGrid from './PeakGrid'
-import { WasteRefContext } from './WasteRefContext'
+import { BoardLabel } from '../BoardLabel'
 import { TopBar } from '@/components/layout/TopBar'
 import { ActionRail } from '@/components/layout/ActionRail'
 import { ConfirmModal } from '#/components/ConfirmModal'
 import { getVariant } from '@workspace/constants'
-import type { GameVariantId } from '@workspace/constants'
-import type { UseTriPeaksResult } from '#/lib/hooks/useTriPeaks'
+import { useGolf } from '#/lib/hooks/useGolf'
 import {
   PlusSignIcon,
   UndoIcon,
@@ -20,27 +18,21 @@ import {
   ViewIcon,
 } from '@hugeicons/core-free-icons'
 import { useDevModeStore } from '#/stores/dev-mode'
-import { BoardLabel } from '../BoardLabel'
+import GolfColumn from './GolfColumn'
+import { WasteRefContext } from './WasteRefContext'
 
-interface TriPeaksBoardBaseProps {
-  useGame: () => UseTriPeaksResult
+interface GolfBoardProps {
   onHowToPlay: () => void
-  variantId: GameVariantId
 }
 
-export default function TriPeaksBoardBase({
-  useGame,
-  onHowToPlay,
-  variantId,
-}: TriPeaksBoardBaseProps) {
+export function GolfBoard({ onHowToPlay }: GolfBoardProps) {
   const {
-    cells,
-    availableCells,
+    columns,
     wasteTop,
     stockCount,
     canDraw,
-    chain,
     score,
+    moveCount,
     status,
     canUndo,
     onPlayCard,
@@ -50,9 +42,9 @@ export default function TriPeaksBoardBase({
     onUndo,
     isValidMove,
     devSetStatus,
-  } = useGame()
+  } = useGolf()
 
-  const variant = getVariant(variantId)
+  const variant = getVariant('golf')
   const wasteRef = useRef<HTMLDivElement>(null)
   const [confirmRestart, setConfirmRestart] = useState(false)
   const [confirmNewGame, setConfirmNewGame] = useState(false)
@@ -63,10 +55,10 @@ export default function TriPeaksBoardBase({
 
   const stats = useMemo(
     () => [
-      { label: 'Score', value: score },
-      { label: 'Chain', value: chain },
+      { label: 'Cleared', value: `${score}/35` },
+      { label: 'Moves', value: moveCount },
     ],
-    [score, chain],
+    [score, moveCount],
   )
 
   const actions = [
@@ -121,37 +113,35 @@ export default function TriPeaksBoardBase({
   return (
     <WasteRefContext value={wasteRef}>
       <style>{`
-        .tri-peaks-container {
-          --card-width: 7.5rem;
-          --card-height: 10.7rem;
-          --card-gap-tri: 1.25rem;
-          --card-overlap-tri: 4rem;
-          --card-step-x: 8.5rem;
-          --card-step-y: 6.7rem;
+        .golf-container {
+          --card-width: 8rem;
+          --card-height: 11.4rem;
+          --card-gap-x: 1.5rem;
+          --card-overlap-y: 2.5rem;
           --rail-gap: 4rem;
         }
 
         @media (max-width: 1536px) {
-          .tri-peaks-container {
-            --card-width: clamp(3rem, min(8vw, 13vh), 7.2rem);
+          .golf-container {
+            --card-width: clamp(3.5rem, min(9vw, 14vh), 7.5rem);
             --card-height: calc(var(--card-width) * 1.428);
-            --card-step-x: calc(var(--card-width) * 1.13);
-            --card-step-y: calc(var(--card-height) * 0.58);
+            --card-gap-x: clamp(0.5rem, 1.5vw, 1.25rem);
+            --card-overlap-y: calc(var(--card-height) * 0.22);
             --rail-gap: 3vmin;
           }
         }
 
         @media (max-width: 640px) {
-          .tri-peaks-container {
-            --card-width: clamp(1.8rem, min(8.5vw, 12vh), 3.8rem);
+          .golf-container {
+            --card-width: clamp(2.2rem, 12vw, 4.5rem);
             --card-height: calc(var(--card-width) * 1.428);
-            --card-step-x: calc(var(--card-width) * 1.08);
-            --card-step-y: calc(var(--card-height) * 0.55);
+            --card-gap-x: 0.4rem;
+            --card-overlap-y: calc(var(--card-height) * 0.25);
             --rail-gap: 2vmin;
           }
         }
       `}</style>
-      <div className="flex h-full flex-col tri-peaks-container">
+      <div className="flex h-full flex-col golf-container">
         <TopBar
           title={variant.name}
           subtitle={variant.subtitle}
@@ -168,13 +158,20 @@ export default function TriPeaksBoardBase({
               status !== 'playing' && status !== 'idle' && 'opacity-50',
             )}
           >
-            {/* Pyramid */}
-            <PeakGrid
-              cells={cells}
-              availableCells={availableCells}
-              onPlayCard={onPlayCard}
-              isValidMove={(id) => devMoveAnywhere || isValidMove(id)}
-            />
+            {/* Tableau */}
+            <div
+              className="flex justify-center"
+              style={{ gap: 'var(--card-gap-x)' }}
+            >
+              {columns.map((column) => (
+                <GolfColumn
+                  key={column.id}
+                  column={column}
+                  onPlayCard={onPlayCard}
+                  isValidMove={(id) => devMoveAnywhere || isValidMove(id)}
+                />
+              ))}
+            </div>
 
             {/* Stock + Waste row */}
             <div
@@ -195,8 +192,8 @@ export default function TriPeaksBoardBase({
                   ref={wasteRef}
                   className="relative"
                   style={{
-                    width: 'var(--card-width, 7rem)',
-                    height: 'var(--card-height, 10rem)',
+                    width: 'var(--card-width)',
+                    height: 'var(--card-height)',
                   }}
                 >
                   <Waste topCard={wasteTop} animate={false} />
