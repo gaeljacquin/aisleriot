@@ -9,6 +9,7 @@ const gameVariantIds = [
   "golf",
   "grandfathers-clock",
   "simple-simon",
+  "acme",
 ]
 
 export type GameVariantId = (typeof gameVariantIds)[number]
@@ -142,7 +143,6 @@ const gameVariantsUnordered: GameVariant[] = [
       "In this version, Kings are 'stopped': once a King is on the waste pile, no card can be placed on top of it.",
       "Click the stock to draw a new card to the waste. There are no redeals.",
     ],
-    most_popular: true,
     gael_favorite: true,
   },
   {
@@ -192,11 +192,26 @@ const gameVariantsUnordered: GameVariant[] = [
       "Empty columns can be filled with any available card or valid sequence.",
       "Nothing can be placed on an Ace.",
     ],
-    most_popular: true,
     gael_favorite: true,
   },
+  {
+    id: "acme",
+    name: "Acme",
+    subtitle: "Canfield type",
+    blurb:
+      "A Canfield variation. Build four foundations up from Ace to King. Spaces automatically fill from the reserve.",
+    color: "bg-indigo-100 dark:bg-indigo-950",
+    rules: [
+      "The goal is to move all 52 cards to four foundation piles, built up by suit from Ace to King.",
+      "Four Aces are removed from the deck and placed on the foundations to start.",
+      "The tableau has four columns, starting with one card each. Build down by suit.",
+      "The reserve contains 13 cards. Empty tableau spaces are automatically filled from the reserve.",
+      "When the reserve is empty, spaces may be filled from the waste, but never from the tableau.",
+      "Only one card can be moved at a time.",
+      "Turn one card at a time from the stock to the waste. One redeal is permitted.",
+    ],
+  },
 ]
-
 
 export const gameVariants: GameVariant[] = gameVariantsUnordered.sort((a, b) =>
   a.name.localeCompare(b.name)

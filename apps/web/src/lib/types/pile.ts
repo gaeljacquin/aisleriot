@@ -8,6 +8,7 @@ export type PileRole =
   | 'freecell'
   | 'peak'
   | 'discard'
+  | 'reserve'
 
 export type PileId = string
 

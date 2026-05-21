@@ -22,6 +22,7 @@ import { Route as GrandfathersClockRouteImport } from './routes/grandfathers-clo
 import { Route as GolfRouteImport } from './routes/golf'
 import { Route as FreecellRouteImport } from './routes/freecell'
 import { Route as CreditsRouteImport } from './routes/credits'
+import { Route as AcmeRouteImport } from './routes/acme'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -90,6 +91,11 @@ const CreditsRoute = CreditsRouteImport.update({
   path: '/credits',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AcmeRoute = AcmeRouteImport.update({
+  id: '/acme',
+  path: '/acme',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -104,6 +110,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/acme': typeof AcmeRoute
   '/credits': typeof CreditsRoute
   '/freecell': typeof FreecellRoute
   '/golf': typeof GolfRoute
@@ -121,6 +128,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/acme': typeof AcmeRoute
   '/credits': typeof CreditsRoute
   '/freecell': typeof FreecellRoute
   '/golf': typeof GolfRoute
@@ -139,6 +147,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/acme': typeof AcmeRoute
   '/credits': typeof CreditsRoute
   '/freecell': typeof FreecellRoute
   '/golf': typeof GolfRoute
@@ -158,6 +167,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/acme'
     | '/credits'
     | '/freecell'
     | '/golf'
@@ -175,6 +185,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/acme'
     | '/credits'
     | '/freecell'
     | '/golf'
@@ -192,6 +203,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/acme'
     | '/credits'
     | '/freecell'
     | '/golf'
@@ -210,6 +222,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AcmeRoute: typeof AcmeRoute
   CreditsRoute: typeof CreditsRoute
   FreecellRoute: typeof FreecellRoute
   GolfRoute: typeof GolfRoute
@@ -318,6 +331,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreditsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/acme': {
+      id: '/acme'
+      path: '/acme'
+      fullPath: '/acme'
+      preLoaderRoute: typeof AcmeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -338,6 +358,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AcmeRoute: AcmeRoute,
   CreditsRoute: CreditsRoute,
   FreecellRoute: FreecellRoute,
   GolfRoute: GolfRoute,

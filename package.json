@@ -6,7 +6,11 @@
   "scripts": {
     "build": "turbo build --filter '!vite_react_shadcn_ts'",
     "dev": "turbo dev",
+    "dev:bg": "nohup turbo dev > turbo-dev.log 2>&1 & echo $! > turbo-dev.pid",
+    "dev:logs": "tail -f turbo-dev.log",
+    "dev:kill": "[ -f turbo-dev.pid ] && kill $(cat turbo-dev.pid) && rm -f turbo-dev.pid || echo 'No turbo dev PID file found'",
     "lint": "turbo lint --filter '!@workspace/ui' --filter '!vite_react_shadcn_ts'",
+    "lint:fix": "turbo lint --filter '!@workspace/ui' --filter '!vite_react_shadcn_ts' -- --fix",
     "lint:web": "turbo lint --filter @workspace/web",
     "test": "turbo test",
     "test:web": "turbo test --filter @workspace/web",
@@ -15,7 +19,15 @@
     "typecheck": "turbo typecheck",
     "add:web": "pnpm --filter ./apps/web add",
     "add:ui": "pnpm --filter ./packages/ui add",
-    "preview:web": "pnpm --filter @workspace/web preview"
+    "preview:web": "pnpm --filter @workspace/web preview",
+    "sync": "./remote-sync.sh",
+    "sync:list": "mutagen sync list",
+    "sync:list-long": "mutagen sync list --long",
+    "sync:monitor": "mutagen sync monitor aisleriot",
+    "sync:pause": "mutagen sync pause aisleriot",
+    "sync:resume": "mutagen sync resume aisleriot",
+    "sync:terminate": "mutagen sync terminate aisleriot",
+    "sync:reset": "mutagen sync reset aisleriot"
   },
   "devDependencies": {
     "prettier": "^3.8.3",
