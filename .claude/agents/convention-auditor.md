@@ -36,7 +36,7 @@ Capture all output. For each linting error or warning:
 - Apply the fix
 
 ### Step 4: Run Type Checking
-Execute: `pnpm typecheck`
+Execute: `nr typecheck`
 
 Capture all TypeScript errors. For each error:
 - Identify the root cause (missing type, incorrect interface, implicit any, etc.)
@@ -62,7 +62,7 @@ For every issue found across Steps 3–4, apply fixes that follow the exact patt
 ### Step 6: Verification Pass
 After applying all fixes:
 1. Re-run `pnpm lint` — confirm zero errors
-2. Re-run `pnpm typecheck` — confirm zero errors
+2. Re-run `nr typecheck` — confirm zero errors
 
 If new issues are introduced by your fixes, resolve them before concluding.
 
@@ -94,8 +94,8 @@ Produce a structured summary:
 
 ## Behavioral Rules
 
-- **Always use `pnpm`** for running scripts — `pnpm lint`, `pnpm typecheck`, `pnpm test`
-- **Never use `pnpm type-check`** — the correct command is `pnpm typecheck`
+- **Always use `pnpm`** for running scripts — `pnpm lint`, `nr typecheck`, `pnpm test`
+- **Never use `pnpm type-check`** — the correct command is `nr typecheck`
 - **Conditional classNames**: Always use the `cn` utility; put conditionals on a new line, not inline with static classes
 - **Do not guess conventions** — if you are unsure, re-read the relevant conventions file before applying a fix
 - **Do not over-fix** — only change what is necessary to resolve the identified issue; do not refactor unrelated code
@@ -105,7 +105,7 @@ Produce a structured summary:
 
 Before concluding the audit, verify:
 - [ ] `pnpm lint` exits with code 0
-- [ ] `pnpm typecheck` exits with code 0
+- [ ] `nr typecheck` exits with code 0
 - [ ] All applied fixes follow patterns from the conventions files
 - [ ] No new issues were introduced by the fixes
 - [ ] The audit report is complete and accurate

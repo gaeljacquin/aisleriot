@@ -5,13 +5,13 @@
 ## Running the App
 
 ```bash
-pnpm dev          # Start all apps (runs turbo dev)
+nr dev          # Start all apps (runs turbo dev)
 ```
 
 Or run the web app directly:
 
 ```bash
-cd apps/web && pnpm dev
+cd apps/web && nr dev
 ```
 
 Dev server starts at `http://localhost:3000`.
@@ -19,33 +19,33 @@ Dev server starts at `http://localhost:3000`.
 ## Building
 
 ```bash
-pnpm build        # Build all apps and packages (runs turbo build)
+nr build        # Build all apps and packages (runs turbo build)
 ```
 
 ## Testing
 
 ```bash
-pnpm test         # Run Vitest tests across all packages
+nr test         # Run Vitest tests across all packages
 ```
 
 Or in a specific package:
 
 ```bash
-cd apps/web && pnpm test
+cd apps/web && nr test
 ```
 
 ## Linting & Formatting
 
 ```bash
-pnpm lint         # ESLint across all packages (excludes packages/ui)
-pnpm format       # Prettier format check
-pnpm typecheck    # TypeScript type checking
+nr lint         # ESLint across all packages (excludes packages/ui)
+nr format       # Prettier format check
+nr typecheck    # TypeScript type checking
 ```
 
 Auto-fix lint and format issues:
 
 ```bash
-cd apps/web && pnpm check   # prettier --write + eslint --fix
+cd apps/web && nr format:write   # prettier --write + eslint --fix
 ```
 
 ## Adding UI Components

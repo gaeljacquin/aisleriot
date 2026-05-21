@@ -35,12 +35,12 @@ docs/         # Developer documentation
 Run all commands from the root or within specific app/package directories inside the DevBox terminal:
 
 ```bash
-pnpm dev        # Start all apps in dev mode
-pnpm build      # Build all apps and packages
-pnpm test       # Run Vitest tests
-pnpm lint       # Lint all packages
-pnpm format     # Check formatting with Prettier
-pnpm typecheck  # Run TypeScript type checking
+nr dev        # Start all apps in dev mode
+nr build      # Build all apps and packages
+nr test       # Run Vitest tests
+nr lint       # Lint all packages
+nr format     # Check formatting with Prettier
+nr typecheck  # Run TypeScript type checking
 ```
 
 ## Adding UI Components

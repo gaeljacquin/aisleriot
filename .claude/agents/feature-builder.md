@@ -53,7 +53,7 @@ Run through the self-verification checklist before declaring done.
 - **Icons**: HugeIcons (`@hugeicons/react`) — not Lucide.
 - **Imports**: Use path aliases (`#/*` or `@/*` for `src/*`, `@workspace/ui/*` for the UI package).
 - **TypeScript**: Strict mode, no `any`. Infer types from Zod schemas with `z.infer<>` where applicable.
-- **Typecheck**: Use `pnpm typecheck` — never `pnpm type-check`.
+- **Typecheck**: Use `nr typecheck` — never `pnpm type-check`.
 
 ---
 
@@ -79,7 +79,7 @@ When handed off from @architecture-design-advisor, you will receive:
 - [ ] Shared components are in `components/game/` not a feature-specific folder
 - [ ] All conditional classNames use `cn()`
 - [ ] No `any` types; types flow end-to-end
-- [ ] `pnpm typecheck` passes (run via Bash tool)
+- [ ] `nr typecheck` passes (run via Bash tool)
 - [ ] No Lucide icons used — HugeIcons only
 - [ ] If a design plan was provided, the file structure matches it
 

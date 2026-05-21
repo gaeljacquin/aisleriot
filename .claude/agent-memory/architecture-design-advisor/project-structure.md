@@ -54,7 +54,7 @@ type: project
 - Game rules in `lib/games/<game>/` must never import React, Zustand, or dnd-kit
 - Path aliases: `#/*` for `apps/web/src/*`, `@workspace/ui/*` for shared UI
 - Icons: HugeIcons (`@hugeicons/react`) — NOT Lucide
-- `pnpm typecheck` (NOT `pnpm type-check`)
+- `nr typecheck` (NOT `pnpm type-check`)
 
 ## Game variants registered (as of 2026-03-18, pre-Klondike)
 `klondike` (stub), `freecell`, `pyramid`, `pyramid-alt`, `tri-peaks`, `tri-peaks-alt`
