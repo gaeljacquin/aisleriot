@@ -152,3 +152,9 @@ TODO.md
 
 # pnpm
 .pnpm-store
+
+# temp folder
+temp/
+
+# Kilo
+.kilo*/
