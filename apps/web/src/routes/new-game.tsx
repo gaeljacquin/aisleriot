@@ -100,16 +100,18 @@ function NewGame() {
                     open={isFilterOpen}
                     onOpenChange={setIsFilterOpen}
                   >
-                    <TooltipTrigger>
-                      <DropdownMenuTrigger
-                        className={cn(
-                          buttonVariants({ variant: 'outline' }),
-                          'h-10 w-10 shrink-0 border-gold/80 bg-felt-deep/80 p-0 text-gold/60 hover:bg-gold/10 hover:text-gold rounded-md data-[state=open]:bg-gold/10 data-[state=open]:text-gold',
-                          gameFilter !== 'all' && 'text-gold bg-gold/10',
-                        )}
-                      >
-                        <HugeiconsIcon icon={FilterIcon} className="h-5 w-5" />
-                      </DropdownMenuTrigger>
+                    <TooltipTrigger
+                      render={
+                        <DropdownMenuTrigger
+                          className={cn(
+                            buttonVariants({ variant: 'outline' }),
+                            'h-10 w-10 shrink-0 border-gold/80 bg-felt-deep/80 p-0 text-gold/60 hover:bg-gold/10 hover:text-gold rounded-md data-[state=open]:bg-gold/10 data-[state=open]:text-gold',
+                            gameFilter !== 'all' && 'text-gold bg-gold/10',
+                          )}
+                        />
+                      }
+                    >
+                      <HugeiconsIcon icon={FilterIcon} className="h-5 w-5" />
                     </TooltipTrigger>
                     <DropdownMenuContent
                       align="start"

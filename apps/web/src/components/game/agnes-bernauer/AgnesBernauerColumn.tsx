@@ -16,7 +16,7 @@ import type {
 interface AgnesBernauerColumnProps {
   id: AgnesBernauerTableauId
   cards: CardType[]
-  state: AgnesBernauerState
+  state: AgnesBernauerState & { autoMove: (id: AgnesBernauerTableauId) => void }
   disabled?: boolean
   devUnlimitedMoves?: boolean
 }

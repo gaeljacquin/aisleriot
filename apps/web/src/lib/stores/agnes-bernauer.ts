@@ -16,11 +16,7 @@ import type {
   AgnesBernauerFoundationId,
   AgnesBernauerReserveId,
 } from '../games/agnes-bernauer/types'
-import {
-  TABLEAU_IDS,
-  FOUNDATION_IDS,
-  RESERVE_IDS,
-} from '../games/agnes-bernauer/types'
+import { RESERVE_IDS } from '../games/agnes-bernauer/types'
 import { createHistorySlice } from './slices/history'
 import { createStatsSlice } from './slices/stats'
 import type { HistorySlice } from './slices/history'

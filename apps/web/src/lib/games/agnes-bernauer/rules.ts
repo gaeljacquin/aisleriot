@@ -1,4 +1,4 @@
-import { rankValue, oppColor } from '#/lib/utils'
+import { oppColor } from '#/lib/utils'
 import type { Card, Rank } from '#/lib/types'
 import type {
   AgnesBernauerState,
@@ -148,8 +148,13 @@ export function canMoveToFoundation(
   ) as AgnesBernauerFoundationId[]) {
     const pile = state.foundation[fid]
     if (pile.length === 0) {
-      // Must be base rank
-      if (card.rank === state.baseRank) return true
+      // Must be base rank AND match the assigned suit for this foundation
+      if (
+        card.rank === state.baseRank &&
+        state.foundationSuits[fid] === card.suit
+      ) {
+        return true
+      }
     } else {
       const top = pile[pile.length - 1]
       if (card.suit === top.suit && isNextRankUp(top, card)) return true
@@ -175,12 +180,17 @@ export function getFoundationTargetId(
     }
   }
 
-  // Then look for empty pile if it's base rank
+  // Then look for the foundation assigned to this suit if it's base rank
   if (card.rank === state.baseRank) {
     for (const fid of Object.keys(
-      state.foundation,
+      state.foundationSuits,
     ) as AgnesBernauerFoundationId[]) {
-      if (state.foundation[fid].length === 0) return fid
+      if (
+        state.foundationSuits[fid] === card.suit &&
+        state.foundation[fid].length === 0
+      ) {
+        return fid
+      }
     }
   }
 

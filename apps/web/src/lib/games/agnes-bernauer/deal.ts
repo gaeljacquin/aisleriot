@@ -1,11 +1,6 @@
 import { createShuffledDeck } from '#/lib/utils'
-import type { Card, Rank, Suit } from '#/lib/types'
-import type {
-  AgnesBernauerState,
-  AgnesBernauerTableauId,
-  AgnesBernauerReserveId,
-  AgnesBernauerFoundationId,
-} from './types'
+import type { Suit } from '#/lib/types'
+import type { AgnesBernauerState, AgnesBernauerFoundationId } from './types'
 import { TABLEAU_IDS, RESERVE_IDS } from './types'
 
 export function createInitialState(seed?: number): AgnesBernauerState {
