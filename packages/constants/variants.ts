@@ -15,6 +15,21 @@ const gameVariantIds = [
 
 export type GameVariantId = (typeof gameVariantIds)[number]
 
+export type Rank =
+  | 'A'
+  | '2'
+  | '3'
+  | '4'
+  | '5'
+  | '6'
+  | '7'
+  | '8'
+  | '9'
+  | '10'
+  | 'J'
+  | 'Q'
+  | 'K'
+
 export interface GameVariant {
   id: GameVariantId
   name: string
@@ -26,6 +41,7 @@ export interface GameVariant {
   gael_favorite?: boolean
   your_favorite?: boolean
   placeholder?: boolean
+  foundation_base_rank?: Rank | null
 }
 
 const gameVariantsUnordered: GameVariant[] = [
@@ -44,6 +60,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "When the stock is empty, click the recycling indicator to flip the waste pile back into the stock.",
     ],
     most_popular: true,
+    foundation_base_rank: 'A',
   },
   {
     id: "klondike-draw-3",
@@ -60,6 +77,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "When the stock is empty, click the recycling indicator to flip the waste pile back into the stock. A -100 score penalty applies per recycle.",
     ],
     most_popular: true,
+    foundation_base_rank: 'A',
   },
   {
     id: "pyramid",
@@ -161,6 +179,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "Empty tableau columns can hold any card or sequence.",
     ],
     most_popular: true,
+    foundation_base_rank: 'A',
   },
   {
     id: "grandfathers-clock",
@@ -194,6 +213,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "Nothing can be placed on an Ace.",
     ],
     gael_favorite: true,
+    foundation_base_rank: 'A',
   },
   {
     id: "acme",
@@ -211,6 +231,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "Only one card can be moved at a time.",
       "Turn one card at a time from the stock to the waste. One redeal is permitted.",
     ],
+    foundation_base_rank: 'A',
   },
   {
     id: "agnes-bernauer",
@@ -227,6 +248,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "Click the stock to deal one card to each of the seven reserve piles. Reserve cards are available for play to the tableau or foundations.",
     ],
     gael_favorite: true,
+    foundation_base_rank: null,
   },
 ]
 

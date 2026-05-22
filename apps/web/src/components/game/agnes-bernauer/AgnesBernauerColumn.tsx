@@ -79,8 +79,8 @@ export default function AgnesBernauerColumn({
     >
       <CardSlot
         role="tableau"
-        label={emptyLabel}
-        className="absolute top-0 left-0 text-[4rem] font-bold text-green-700/40"
+        baseRank={emptyLabel}
+        className="absolute top-0 left-0"
       />
 
       {cards.map((card, index) => {

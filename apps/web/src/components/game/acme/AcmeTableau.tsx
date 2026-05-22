@@ -117,7 +117,7 @@ function AcmeTableauColumn({
         minHeight: 'var(--card-height)',
       }}
     >
-      <CardSlot role="tableau" className="absolute top-0 left-0" />
+      <CardSlot role="tableau" showLogo className="absolute top-0 left-0" />
       {entry.cards.length > 0 &&
         entry.cards.map((card, index) => (
           <div

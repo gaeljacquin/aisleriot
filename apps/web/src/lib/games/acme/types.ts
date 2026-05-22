@@ -9,10 +9,10 @@ export const TABLEAU_IDS = [
 export type AcmeTableauId = (typeof TABLEAU_IDS)[number]
 
 export const FOUNDATION_SUITS: Suit[] = [
+  'spades',
+  'hearts',
   'clubs',
   'diamonds',
-  'hearts',
-  'spades',
 ]
 export const FOUNDATION_IDS = FOUNDATION_SUITS.map(
   (s) => `foundation-${s}`,

@@ -96,14 +96,14 @@ export function MiniBoard({ id }: MiniBoardProps) {
         </div>
         <div className="flex justify-between gap-0.5">
           {deal.tableau.map((column: any[], i: number) => (
-            <div key={i} className="flex flex-col -space-y-7">
+            <div key={i} className="flex flex-col -space-y-8">
               {column.map((card, j) => (
                 <MiniCard
                   key={j}
                   suit={card.suit}
                   rank={card.rank}
                   faceUp={card.faceUp}
-                  className="h-8 w-6"
+                  className="h-9 w-6.5"
                 />
               ))}
             </div>
@@ -121,41 +121,41 @@ export function MiniBoard({ id }: MiniBoardProps) {
           {/* Row 1: 3 Peaks */}
           <MiniCard
             {...peaks[0]}
-            className="absolute left-[15.2%] top-0 h-8 w-6"
+            className="absolute left-[15.2%] top-0 h-9 w-6.5"
           />
           <MiniCard
             {...peaks[1]}
-            className="absolute left-[45.6%] top-0 h-8 w-6"
+            className="absolute left-[45.6%] top-0 h-9 w-6.5"
           />
           <MiniCard
             {...peaks[2]}
-            className="absolute left-[76%] top-0 h-8 w-6"
+            className="absolute left-[76%] top-0 h-9 w-6.5"
           />
 
           {/* Row 2: 6 cards */}
           <MiniCard
             {...peaks[3]}
-            className="absolute left-[10.1%] top-[12px] h-8 w-6"
+            className="absolute left-[10.1%] top-[16px] h-9 w-6.5"
           />
           <MiniCard
             {...peaks[4]}
-            className="absolute left-[20.3%] top-[12px] h-8 w-6"
+            className="absolute left-[20.3%] top-[16px] h-9 w-6.5"
           />
           <MiniCard
             {...peaks[5]}
-            className="absolute left-[40.5%] top-[12px] h-8 w-6"
+            className="absolute left-[40.5%] top-[16px] h-9 w-6.5"
           />
           <MiniCard
             {...peaks[6]}
-            className="absolute left-[50.7%] top-[12px] h-8 w-6"
+            className="absolute left-[50.7%] top-[16px] h-9 w-6.5"
           />
           <MiniCard
             {...peaks[7]}
-            className="absolute left-[70.9%] top-[12px] h-8 w-6"
+            className="absolute left-[70.9%] top-[16px] h-9 w-6.5"
           />
           <MiniCard
             {...peaks[8]}
-            className="absolute left-[81.1%] top-[12px] h-8 w-6"
+            className="absolute left-[81.1%] top-[16px] h-9 w-6.5"
           />
 
           {/* Row 3: 9 cards */}
@@ -163,26 +163,26 @@ export function MiniBoard({ id }: MiniBoardProps) {
             <MiniCard
               key={idx}
               {...peaks[idx]}
-              className="absolute h-8 w-6 top-[24px]"
+              className="absolute h-9 w-6.5 top-[32px]"
               style={{ left: `${5.1 + i * 10.125}%` }}
             />
           ))}
 
           {/* Row 4: 10 cards */}
-          <div className="absolute inset-x-0 top-[36px] flex justify-between">
+          <div className="absolute inset-x-0 top-[48px] flex justify-between">
             {[18, 19, 20, 21, 22, 23, 24, 25, 26, 27].map((idx) => (
-              <MiniCard key={idx} {...peaks[idx]} className="h-8 w-6" />
+              <MiniCard key={idx} {...peaks[idx]} className="h-9 w-6.5" />
             ))}
           </div>
         </div>
 
         <div className="mt-2.5 flex gap-2">
-          <MiniCard faceUp={deal.stock.faceUp} className="h-8 w-6" />
+          <MiniCard faceUp={deal.stock.faceUp} className="h-9 w-6.5" />
           <MiniCard
             suit={deal.waste.suit}
             rank={deal.waste.rank}
             faceUp={deal.waste.faceUp}
-            className="h-8 w-6"
+            className="h-9 w-6.5"
           />
         </div>
       </div>
@@ -190,7 +190,7 @@ export function MiniBoard({ id }: MiniBoardProps) {
   }
 
   if (id === 'grandfathers-clock') {
-    const clockRadius = 48
+    const clockRadius = 66
     const clockPositions = [
       { angle: 0 }, // 12
       { angle: 30 }, // 1
@@ -214,20 +214,20 @@ export function MiniBoard({ id }: MiniBoardProps) {
     ]
 
     return (
-      <div className="flex w-full items-center justify-between gap-2 px-1">
+      <div className="flex w-full items-center justify-between gap-1 px-1 py-1 h-full">
         {/* Tableau - 2 rows of 4 */}
-        <div className="grid grid-cols-4 gap-x-1 gap-y-1">
+        <div className="grid grid-cols-4 gap-x-1 gap-y-10">
           {deal.tableau.map((column: any[], i: number) => (
-            <div key={i} className="flex flex-col -space-y-4">
+            <div key={i} className="flex flex-col -space-y-7">
               {column.map((card: any, j: number) => (
-                <MiniCard key={j} {...card} className="h-7.5 w-5.5" />
+                <MiniCard key={j} {...card} className="h-8.5 w-6" />
               ))}
             </div>
           ))}
         </div>
 
         {/* Clock Foundations */}
-        <div className="relative h-32 w-32 shrink-0">
+        <div className="relative h-44 w-44 shrink-0">
           {clockPositions.map((pos, i) => {
             const card = rotatedFoundations[i]
             const sin = Math.sin((pos.angle * Math.PI) / 180)
@@ -241,7 +241,7 @@ export function MiniBoard({ id }: MiniBoardProps) {
                   top: `calc(50% - ${cos * clockRadius}px)`,
                 }}
               >
-                <div className="h-5.5 w-4 rounded-[0.5px] border border-gold/10 bg-white/5">
+                <div className="h-7 w-5 rounded-[0.5px] border border-gold/10 bg-white/5">
                   <MiniCard {...card} className="h-full w-full" />
                 </div>
               </div>
@@ -257,9 +257,9 @@ export function MiniBoard({ id }: MiniBoardProps) {
       <div className="flex w-full flex-col gap-2.5">
         <div className="flex justify-between gap-0.5 px-0.5">
           {deal.columns.map((column: any[], i: number) => (
-            <div key={i} className="flex flex-col -space-y-6">
+            <div key={i} className="flex flex-col -space-y-7.5">
               {column.map((card: any, j: number) => (
-                <MiniCard key={j} {...card} className="h-8 w-6" />
+                <MiniCard key={j} {...card} className="h-9 w-6.5" />
               ))}
             </div>
           ))}
@@ -280,7 +280,7 @@ export function MiniBoard({ id }: MiniBoardProps) {
             {deal.freecells.map((card: any, i: number) => (
               <div
                 key={i}
-                className="h-9 w-7 rounded-[1px] border border-gold/10 bg-white/5"
+                className="h-9 w-6.5 rounded-[1px] border border-gold/10 bg-white/5"
               >
                 {card && <MiniCard {...card} className="h-full w-full" />}
               </div>
@@ -290,7 +290,7 @@ export function MiniBoard({ id }: MiniBoardProps) {
             {deal.foundations.map((card: any, i: number) => (
               <div
                 key={i}
-                className="h-9 w-7 rounded-[1px] border border-gold/10 bg-white/5"
+                className="h-9 w-6.5 rounded-[1px] border border-gold/10 bg-white/5"
               >
                 {card && <MiniCard {...card} className="h-full w-full" />}
               </div>
@@ -299,14 +299,14 @@ export function MiniBoard({ id }: MiniBoardProps) {
         </div>
         <div className="flex justify-between gap-0.5">
           {deal.columns.map((column: any[], i: number) => (
-            <div key={i} className="flex flex-col -space-y-7">
+            <div key={i} className="flex flex-col -space-y-8">
               {column.map((card, j) => (
                 <MiniCard
                   key={j}
                   suit={card.suit}
                   rank={card.rank}
                   faceUp={card.faceUp}
-                  className="h-8 w-6"
+                  className="h-9 w-6.5"
                 />
               ))}
             </div>
@@ -323,7 +323,7 @@ export function MiniBoard({ id }: MiniBoardProps) {
           {deal.foundations.map((card: any, i: number) => (
             <div
               key={i}
-              className="h-8 w-5.5 rounded-[0.5px] border border-gold/10 bg-white/5"
+              className="h-9 w-6.5 rounded-[0.5px] border border-gold/10 bg-white/5"
             >
               {card && (
                 <MiniCard
@@ -338,14 +338,14 @@ export function MiniBoard({ id }: MiniBoardProps) {
         </div>
         <div className="flex justify-between gap-0.5">
           {deal.tableau.map((column: any[], i: number) => (
-            <div key={i} className="flex flex-col -space-y-5.5">
-              {column.map((card: any, j: number) => (
+            <div key={i} className="flex flex-col -space-y-8">
+              {column.map((card, j) => (
                 <MiniCard
                   key={j}
                   suit={card.suit}
                   rank={card.rank}
                   faceUp={card.faceUp}
-                  className="h-7 w-5"
+                  className="h-9 w-6.5"
                 />
               ))}
             </div>
@@ -357,46 +357,46 @@ export function MiniBoard({ id }: MiniBoardProps) {
 
   if (id === 'acme') {
     return (
-      <div className="flex w-full gap-4 items-start justify-center">
+      <div className="flex w-full justify-center gap-6 py-2 items-start">
         {/* Left Column: Stock/Waste & Reserve */}
-        <div className="flex flex-col items-start gap-4">
-          <div className="flex gap-1">
+        <div className="flex flex-col gap-3 items-start">
+          <div className="flex gap-1.5">
             <MiniCard faceUp={deal.stock.faceUp} className="h-9 w-6.5" />
             <MiniCard {...deal.waste} className="h-9 w-6.5" />
           </div>
-          <div className="flex flex-col -space-y-6 px-0.5">
+          <div className="flex flex-col -space-y-8">
             {deal.reserve.map((card: any, i: number) => (
               <MiniCard
                 key={i}
                 {...card}
-                className="h-8 w-6 shadow-[0_-1px_2px_rgba(0,0,0,0.3)]"
+                className="h-9 w-6.5 shadow-[0_-1px_2px_rgba(0,0,0,0.3)]"
               />
             ))}
           </div>
         </div>
 
         {/* Right Column: Foundation & Tableau */}
-        <div className="flex flex-col items-center gap-4">
-          <div className="flex gap-1">
+        <div className="flex flex-col gap-3 items-start">
+          <div className="flex gap-1.5">
             {deal.foundation.map((card: any, i: number) => (
               <div
                 key={i}
-                className="h-9 w-6.5 rounded-[1px] border border-gold/10 bg-white/5"
+                className="h-9 w-6.5 rounded-[0.5px] border border-gold/10 bg-white/5"
               >
                 {card && <MiniCard {...card} className="h-full w-full" />}
               </div>
             ))}
           </div>
-          <div className="flex gap-1 justify-center">
+          <div className="flex gap-1.5">
             {deal.tableau.map((column: any[], i: number) => (
-              <div key={i} className="flex flex-col -space-y-7">
+              <div key={i} className="flex flex-col">
                 {column.map((card, j) => (
                   <MiniCard
                     key={j}
                     suit={card.suit}
                     rank={card.rank}
                     faceUp={card.faceUp}
-                    className="h-8 w-6"
+                    className="h-9 w-6.5"
                   />
                 ))}
               </div>
@@ -413,17 +413,17 @@ export function MiniBoard({ id }: MiniBoardProps) {
         {/* Row 1: Stock and Foundations (aligned with 7-column grid) */}
         <div className="flex justify-center gap-1.5 w-full">
           {/* Stock aligned with column 1 */}
-          <MiniCard faceUp={deal.stock.faceUp} className="h-8.5 w-6" />
+          <MiniCard faceUp={deal.stock.faceUp} className="h-9 w-6.5" />
 
           {/* Spacers for columns 2 and 3 */}
-          <div className="h-8.5 w-6" />
-          <div className="h-8.5 w-6" />
+          <div className="h-9 w-6.5" />
+          <div className="h-9 w-6.5" />
 
           {/* Foundations aligned with columns 4, 5, 6, 7 */}
           {deal.foundations.map((card: any, i: number) => (
             <div
               key={i}
-              className="h-8.5 w-6 rounded-[0.5px] border border-gold/10 bg-white/5"
+              className="h-9 w-6.5 rounded-[0.5px] border border-gold/10 bg-white/5"
             >
               {card && <MiniCard {...card} className="h-full w-full" />}
             </div>
@@ -433,16 +433,16 @@ export function MiniBoard({ id }: MiniBoardProps) {
         {/* Row 2: Reserve (7 piles) */}
         <div className="flex justify-center gap-1.5 w-full">
           {deal.reserve.map((card: any, i: number) => (
-            <MiniCard key={i} {...card} className="h-8 w-6" />
+            <MiniCard key={i} {...card} className="h-9 w-6.5" />
           ))}
         </div>
 
         {/* Row 3: Tableau */}
         <div className="flex justify-center gap-1.5 w-full">
           {deal.tableau.map((column: any[], i: number) => (
-            <div key={i} className="flex flex-col -space-y-6.5">
-              {column.map((card: any, j: number) => (
-                <MiniCard key={j} {...card} className="h-8 w-6" />
+            <div key={i} className="flex flex-col -space-y-8">
+              {column.map((card, j) => (
+                <MiniCard key={j} {...card} className="h-9 w-6.5" />
               ))}
             </div>
           ))}

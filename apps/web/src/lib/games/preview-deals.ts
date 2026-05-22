@@ -17,8 +17,8 @@ export const PREVIEW_DEALS: Record<string, any> = {
     stock: { faceUp: false },
     waste: { suit: 'hearts', rank: '2', faceUp: true },
     foundations: [
-      { suit: 'hearts', rank: 'A', faceUp: true },
       null,
+      { suit: 'hearts', rank: 'A', faceUp: true },
       null,
       null,
     ],
@@ -73,9 +73,9 @@ export const PREVIEW_DEALS: Record<string, any> = {
       { suit: 'clubs', rank: 'J', faceUp: true },
     ],
     foundations: [
+      null,
       { suit: 'hearts', rank: 'A', faceUp: true },
       { suit: 'clubs', rank: 'A', faceUp: true },
-      null,
       null,
     ],
     tableau: [
@@ -124,8 +124,8 @@ export const PREVIEW_DEALS: Record<string, any> = {
   freecell: {
     freecells: [null, null, null, null],
     foundations: [
-      { suit: 'hearts', rank: 'A', faceUp: true },
       null,
+      { suit: 'hearts', rank: 'A', faceUp: true },
       null,
       null,
     ],
@@ -498,7 +498,7 @@ export const PREVIEW_DEALS: Record<string, any> = {
   },
   'simple-simon': {
     foundations: [
-      { suit: 'hearts', rank: 'A', faceUp: true },
+      { suit: 'spades', rank: 'A', faceUp: true },
       null,
       null,
       null,
@@ -549,11 +549,12 @@ export const PREVIEW_DEALS: Record<string, any> = {
     stock: { faceUp: false },
     waste: { suit: 'hearts', rank: '3', faceUp: true },
     foundation: [
+      { suit: 'spades', rank: 'A', faceUp: true },
+      { suit: 'hearts', rank: 'A', faceUp: true },
       { suit: 'clubs', rank: 'A', faceUp: true },
       { suit: 'diamonds', rank: 'A', faceUp: true },
-      { suit: 'hearts', rank: 'A', faceUp: true },
-      { suit: 'spades', rank: 'A', faceUp: true },
     ],
+
     reserve: [
       { suit: 'spades', rank: 'K', faceUp: true },
       { suit: 'hearts', rank: 'Q', faceUp: true },
@@ -567,7 +568,7 @@ export const PREVIEW_DEALS: Record<string, any> = {
       { suit: 'hearts', rank: '4', faceUp: true },
       { suit: 'clubs', rank: '3', faceUp: true },
       { suit: 'diamonds', rank: '2', faceUp: true },
-      { suit: 'spades', rank: 'A', faceUp: true },
+      { suit: 'spades', rank: '3', faceUp: true },
     ],
     tableau: [
       [{ suit: 'diamonds', rank: '10', faceUp: true }],
@@ -579,8 +580,8 @@ export const PREVIEW_DEALS: Record<string, any> = {
   'agnes-bernauer': {
     stock: { faceUp: false },
     foundations: [
-      { suit: 'hearts', rank: '7', faceUp: true },
       null,
+      { suit: 'hearts', rank: '7', faceUp: true },
       null,
       null,
     ],

@@ -4,19 +4,13 @@ import { cn } from '@workspace/ui/lib/utils'
 import CardSlot from '../CardSlot'
 import Card from '../Card'
 import KlondikeCard from './KlondikeCard'
+import { getVariant } from '@workspace/constants'
 import type {
   KlondikeFoundationId,
   DroppableZoneData,
   DraggableCardData,
 } from '#/lib/games/klondike'
 import type { Card as CardType, Suit } from '#/lib/types'
-
-const SUIT_SYMBOLS: Record<Suit, string> = {
-  hearts: '♥',
-  diamonds: '♦',
-  clubs: '♣',
-  spades: '♠',
-}
 
 interface KlondikeFoundationProps {
   id: KlondikeFoundationId
@@ -32,6 +26,7 @@ export default function KlondikeFoundation({
   suit,
   draggable = true,
 }: KlondikeFoundationProps) {
+  const variant = getVariant('klondike-draw-1')
   const droppableData: DroppableZoneData = {
     type: 'pile',
     pileId: id,
@@ -75,8 +70,12 @@ export default function KlondikeFoundation({
         height: 'var(--card-height, 10rem)',
       }}
     >
-      {/* Always-visible empty slot with suit hint */}
-      <CardSlot role="foundation" label={SUIT_SYMBOLS[suit]} />
+      {/* Always-visible empty slot with suit hint and base rank */}
+      <CardSlot
+        role="foundation"
+        suit={suit}
+        baseRank={variant.foundation_base_rank}
+      />
 
       {/* Card beneath top — shown while the top card is being dragged */}
       {isDraggingTop && beneathCard && (

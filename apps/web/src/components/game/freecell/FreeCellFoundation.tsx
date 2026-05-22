@@ -2,15 +2,9 @@ import { useDroppable } from '@dnd-kit/core'
 import { cn } from '@workspace/ui/lib/utils'
 import CardSlot from '../CardSlot'
 import Card from '../Card'
+import { getVariant } from '@workspace/constants'
 import type { FreeCellPileId, DroppableZoneData } from '#/lib/games/freecell'
 import type { Card as CardType, Suit } from '#/lib/types'
-
-const SUIT_SYMBOLS: Record<Suit, string> = {
-  hearts: '♥',
-  diamonds: '♦',
-  clubs: '♣',
-  spades: '♠',
-}
 
 interface FreeCellFoundationProps {
   id: FreeCellPileId
@@ -23,6 +17,7 @@ export default function FreeCellFoundation({
   cards,
   suit,
 }: FreeCellFoundationProps) {
+  const variant = getVariant('freecell')
   const droppableData: DroppableZoneData = {
     type: 'pile',
     pileId: id,
@@ -49,7 +44,11 @@ export default function FreeCellFoundation({
       }}
     >
       <div className="relative h-full w-full">
-        <CardSlot role="foundation" label={SUIT_SYMBOLS[suit]} />
+        <CardSlot
+          role="foundation"
+          suit={suit}
+          baseRank={variant.foundation_base_rank}
+        />
       </div>
 
       {topCard && (

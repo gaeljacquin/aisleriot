@@ -2,15 +2,9 @@ import { useDroppable } from '@dnd-kit/core'
 import { cn } from '@workspace/ui/lib/utils'
 import AcmeCard from './AcmeCard'
 import CardSlot from '../CardSlot'
+import { getVariant } from '@workspace/constants'
 import type { AcmeFoundationEntry } from '#/lib/hooks/use-acme'
 import type { Suit } from '#/lib/types'
-
-const SUIT_SYMBOLS: Record<Suit, string> = {
-  hearts: '♥',
-  diamonds: '♦',
-  clubs: '♣',
-  spades: '♠',
-}
 
 interface AcmeFoundationProps {
   foundation: AcmeFoundationEntry[]
@@ -27,6 +21,7 @@ export default function AcmeFoundation({ foundation }: AcmeFoundationProps) {
 }
 
 function AcmeFoundationPile({ entry }: { entry: AcmeFoundationEntry }) {
+  const variant = getVariant('acme')
   const { setNodeRef, isOver } = useDroppable({
     id: entry.id,
     data: {
@@ -51,7 +46,8 @@ function AcmeFoundationPile({ entry }: { entry: AcmeFoundationEntry }) {
     >
       <CardSlot
         role="foundation"
-        label={SUIT_SYMBOLS[entry.suit]}
+        suit={entry.suit}
+        baseRank={variant.foundation_base_rank}
         className="absolute inset-0"
       />
       {entry.cards.length > 0 && (

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { cn } from '@workspace/ui/lib/utils'
 import Card from '../Card'
 import AgnesBernauerCard from './AgnesBernauerCard'
-import AgnesBernauerFoundationSlot from './AgnesBernauerFoundationSlot'
+import CardSlot from '../CardSlot'
 import type {
   AgnesBernauerFoundationId,
   DroppableZoneData,
@@ -72,7 +72,7 @@ export default function AgnesBernauerFoundation({
         height: 'var(--card-height, 10rem)',
       }}
     >
-      <AgnesBernauerFoundationSlot suit={suit} baseRank={baseRank} />
+      <CardSlot role="foundation" suit={suit} baseRank={baseRank} />
 
       {isDraggingTop && beneathCard && (
         <div className="absolute inset-0">

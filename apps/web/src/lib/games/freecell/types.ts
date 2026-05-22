@@ -55,15 +55,15 @@ export const FREECELL_IDS: FreeCellPileId[] = [
 ]
 
 export const FOUNDATION_IDS: FreeCellPileId[] = [
-  'foundation-hearts',
-  'foundation-diamonds',
-  'foundation-clubs',
   'foundation-spades',
+  'foundation-hearts',
+  'foundation-clubs',
+  'foundation-diamonds',
 ]
 
 export const FOUNDATION_SUITS: Record<FreeCellPileId, Suit> = {
-  'foundation-hearts': 'hearts',
-  'foundation-diamonds': 'diamonds',
-  'foundation-clubs': 'clubs',
   'foundation-spades': 'spades',
+  'foundation-hearts': 'hearts',
+  'foundation-clubs': 'clubs',
+  'foundation-diamonds': 'diamonds',
 }
