@@ -73,7 +73,7 @@ export default function KlondikeColumn({
         width: 'var(--card-width, 7rem)',
       }}
     >
-      <CardSlot role="tableau" className="absolute top-0 left-0" />
+      <CardSlot role="tableau" baseRank="K" className="absolute top-0 left-0" />
       {cards.length > 0 && (
         <>
           {/* Non-draggable face-down cards */}

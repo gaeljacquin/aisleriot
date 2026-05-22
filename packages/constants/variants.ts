@@ -9,9 +9,26 @@ const gameVariantIds = [
   "golf",
   "grandfathers-clock",
   "simple-simon",
+  "acme",
+  "agnes-bernauer",
 ]
 
 export type GameVariantId = (typeof gameVariantIds)[number]
+
+export type Rank =
+  | 'A'
+  | '2'
+  | '3'
+  | '4'
+  | '5'
+  | '6'
+  | '7'
+  | '8'
+  | '9'
+  | '10'
+  | 'J'
+  | 'Q'
+  | 'K'
 
 export interface GameVariant {
   id: GameVariantId
@@ -24,6 +41,7 @@ export interface GameVariant {
   gael_favorite?: boolean
   your_favorite?: boolean
   placeholder?: boolean
+  foundation_base_rank?: Rank | null
 }
 
 const gameVariantsUnordered: GameVariant[] = [
@@ -42,6 +60,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "When the stock is empty, click the recycling indicator to flip the waste pile back into the stock.",
     ],
     most_popular: true,
+    foundation_base_rank: 'A',
   },
   {
     id: "klondike-draw-3",
@@ -58,6 +77,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "When the stock is empty, click the recycling indicator to flip the waste pile back into the stock. A -100 score penalty applies per recycle.",
     ],
     most_popular: true,
+    foundation_base_rank: 'A',
   },
   {
     id: "pyramid",
@@ -142,7 +162,6 @@ const gameVariantsUnordered: GameVariant[] = [
       "In this version, Kings are 'stopped': once a King is on the waste pile, no card can be placed on top of it.",
       "Click the stock to draw a new card to the waste. There are no redeals.",
     ],
-    most_popular: true,
     gael_favorite: true,
   },
   {
@@ -160,6 +179,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "Empty tableau columns can hold any card or sequence.",
     ],
     most_popular: true,
+    foundation_base_rank: 'A',
   },
   {
     id: "grandfathers-clock",
@@ -192,11 +212,45 @@ const gameVariantsUnordered: GameVariant[] = [
       "Empty columns can be filled with any available card or valid sequence.",
       "Nothing can be placed on an Ace.",
     ],
-    most_popular: true,
     gael_favorite: true,
+    foundation_base_rank: 'A',
+  },
+  {
+    id: "acme",
+    name: "Acme",
+    subtitle: "Canfield type",
+    blurb:
+      "A Canfield variation. Build four foundations up from Ace to King. Spaces automatically fill from the reserve.",
+    color: "bg-indigo-100 dark:bg-indigo-950",
+    rules: [
+      "The goal is to move all 52 cards to four foundation piles, built up by suit from Ace to King.",
+      "Four Aces are removed from the deck and placed on the foundations to start.",
+      "The tableau has four columns, starting with one card each. Build down by suit.",
+      "The reserve contains 13 cards. Empty tableau spaces are automatically filled from the reserve.",
+      "When the reserve is empty, spaces may be filled from the waste, but never from the tableau.",
+      "Only one card can be moved at a time.",
+      "Turn one card at a time from the stock to the waste. One redeal is permitted.",
+    ],
+    foundation_base_rank: 'A',
+  },
+  {
+    id: "agnes-bernauer",
+    name: "Agnes Bernauer",
+    subtitle: "Reserve Strategy",
+    blurb:
+      "A Klondike variant with continuous building and reserve piles. The foundations start with a random base rank.",
+    color: "bg-amber-100 dark:bg-amber-950",
+    rules: [
+      "The goal is to move all cards to the foundations. Foundations build up in suit from a variable base card.",
+      "Tableau builds down in alternating colors. Ranking is continuous: King builds on Ace.",
+      "Foundation ranking is also continuous: Ace builds on King.",
+      "Empty tableau spaces can only be filled by cards or sequences starting with the rank one below the base rank.",
+      "Click the stock to deal one card to each of the seven reserve piles. Reserve cards are available for play to the tableau or foundations.",
+    ],
+    gael_favorite: true,
+    foundation_base_rank: null,
   },
 ]
-
 
 export const gameVariants: GameVariant[] = gameVariantsUnordered.sort((a, b) =>
   a.name.localeCompare(b.name)

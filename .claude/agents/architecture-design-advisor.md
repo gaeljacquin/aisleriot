@@ -64,7 +64,7 @@ Once you have enough context, always propose exactly **three options**:
 - **Shared components**: New UI primitives that could apply to multiple games go in `components/game/`, not in a game-specific directory.
 - **cn utility**: Note in any UI-related design that conditional classNames must use `cn()` with conditionals on separate lines.
 - **Icons**: HugeIcons (`@hugeicons/react`) — not Lucide for new code.
-- **No pnpm type-check**: Do not recommend or reference `pnpm type-check` in any workflow steps. Use `pnpm typecheck`.
+- **No pnpm type-check**: Do not recommend or reference `pnpm type-check` in any workflow steps. Use `nr typecheck`.
 
 ---
 

@@ -277,7 +277,7 @@ export default function KlondikeBoardBase({
 
               {/* Foundations (Columns 4-7) */}
               <div className="col-span-4 flex flex-col items-center gap-2">
-                <BoardLabel label="Foundations" />
+                <BoardLabel label="Foundation" />
                 <div
                   className="grid grid-cols-4 w-full"
                   style={{

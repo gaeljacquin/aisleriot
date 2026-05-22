@@ -19,6 +19,7 @@ describe('Golf Rules - Wrap-around', () => {
     moveCount: 0,
     status: 'playing',
     usedUndo: false,
+    currentSeed: 123,
   })
 
   const createCard = (rank: string): Card => ({

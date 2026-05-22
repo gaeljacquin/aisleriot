@@ -63,15 +63,15 @@ export const TABLEAU_IDS: KlondikeTableauId[] = [
 ]
 
 export const FOUNDATION_IDS: KlondikeFoundationId[] = [
-  'foundation-hearts',
-  'foundation-diamonds',
-  'foundation-clubs',
   'foundation-spades',
+  'foundation-hearts',
+  'foundation-clubs',
+  'foundation-diamonds',
 ]
 
 export const FOUNDATION_SUITS: Record<KlondikeFoundationId, Suit> = {
-  'foundation-hearts': 'hearts',
-  'foundation-diamonds': 'diamonds',
-  'foundation-clubs': 'clubs',
   'foundation-spades': 'spades',
+  'foundation-hearts': 'hearts',
+  'foundation-clubs': 'clubs',
+  'foundation-diamonds': 'diamonds',
 }

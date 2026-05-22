@@ -114,7 +114,7 @@ export default function SimpleSimonColumn({
         minHeight: containerHeight,
       }}
     >
-      <CardSlot role="tableau" className="absolute top-0 left-0" />
+      <CardSlot role="tableau" showLogo className="absolute top-0 left-0" />
       {cards.length > 0 && (
         <>
           {cards.slice(0, draggableFrom).map((card, i) => (

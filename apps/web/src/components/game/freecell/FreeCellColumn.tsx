@@ -124,7 +124,7 @@ export default function FreeCellColumn({
         minHeight: containerHeight,
       }}
     >
-      <CardSlot role="tableau" className="absolute top-0 left-0" />
+      <CardSlot role="tableau" showLogo className="absolute top-0 left-0" />
       {cards.length > 0 && (
         <>
           {/* Non-draggable cards */}
