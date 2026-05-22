@@ -10,6 +10,7 @@ const gameVariantIds = [
   "grandfathers-clock",
   "simple-simon",
   "acme",
+  "agnes-bernauer",
 ]
 
 export type GameVariantId = (typeof gameVariantIds)[number]
@@ -210,6 +211,22 @@ const gameVariantsUnordered: GameVariant[] = [
       "Only one card can be moved at a time.",
       "Turn one card at a time from the stock to the waste. One redeal is permitted.",
     ],
+  },
+  {
+    id: "agnes-bernauer",
+    name: "Agnes Bernauer",
+    subtitle: "Reserve Strategy",
+    blurb:
+      "A Klondike variant with continuous building and reserve piles. The foundations start with a random base rank.",
+    color: "bg-amber-100 dark:bg-amber-950",
+    rules: [
+      "The goal is to move all cards to the foundations. Foundations build up in suit from a variable base card.",
+      "Tableau builds down in alternating colors. Ranking is continuous: King builds on Ace.",
+      "Foundation ranking is also continuous: Ace builds on King.",
+      "Empty tableau spaces can only be filled by cards or sequences starting with the rank one below the base rank.",
+      "Click the stock to deal one card to each of the seven reserve piles. Reserve cards are available for play to the tableau or foundations.",
+    ],
+    gael_favorite: true,
   },
 ]
 

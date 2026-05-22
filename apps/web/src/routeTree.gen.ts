@@ -22,6 +22,7 @@ import { Route as GrandfathersClockRouteImport } from './routes/grandfathers-clo
 import { Route as GolfRouteImport } from './routes/golf'
 import { Route as FreecellRouteImport } from './routes/freecell'
 import { Route as CreditsRouteImport } from './routes/credits'
+import { Route as AgnesBernauerRouteImport } from './routes/agnes-bernauer'
 import { Route as AcmeRouteImport } from './routes/acme'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -91,6 +92,11 @@ const CreditsRoute = CreditsRouteImport.update({
   path: '/credits',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AgnesBernauerRoute = AgnesBernauerRouteImport.update({
+  id: '/agnes-bernauer',
+  path: '/agnes-bernauer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AcmeRoute = AcmeRouteImport.update({
   id: '/acme',
   path: '/acme',
@@ -111,6 +117,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/acme': typeof AcmeRoute
+  '/agnes-bernauer': typeof AgnesBernauerRoute
   '/credits': typeof CreditsRoute
   '/freecell': typeof FreecellRoute
   '/golf': typeof GolfRoute
@@ -129,6 +136,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/acme': typeof AcmeRoute
+  '/agnes-bernauer': typeof AgnesBernauerRoute
   '/credits': typeof CreditsRoute
   '/freecell': typeof FreecellRoute
   '/golf': typeof GolfRoute
@@ -148,6 +156,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/acme': typeof AcmeRoute
+  '/agnes-bernauer': typeof AgnesBernauerRoute
   '/credits': typeof CreditsRoute
   '/freecell': typeof FreecellRoute
   '/golf': typeof GolfRoute
@@ -168,6 +177,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/acme'
+    | '/agnes-bernauer'
     | '/credits'
     | '/freecell'
     | '/golf'
@@ -186,6 +196,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/acme'
+    | '/agnes-bernauer'
     | '/credits'
     | '/freecell'
     | '/golf'
@@ -204,6 +215,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/acme'
+    | '/agnes-bernauer'
     | '/credits'
     | '/freecell'
     | '/golf'
@@ -223,6 +235,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AcmeRoute: typeof AcmeRoute
+  AgnesBernauerRoute: typeof AgnesBernauerRoute
   CreditsRoute: typeof CreditsRoute
   FreecellRoute: typeof FreecellRoute
   GolfRoute: typeof GolfRoute
@@ -331,6 +344,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CreditsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/agnes-bernauer': {
+      id: '/agnes-bernauer'
+      path: '/agnes-bernauer'
+      fullPath: '/agnes-bernauer'
+      preLoaderRoute: typeof AgnesBernauerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/acme': {
       id: '/acme'
       path: '/acme'
@@ -359,6 +379,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AcmeRoute: AcmeRoute,
+  AgnesBernauerRoute: AgnesBernauerRoute,
   CreditsRoute: CreditsRoute,
   FreecellRoute: FreecellRoute,
   GolfRoute: GolfRoute,

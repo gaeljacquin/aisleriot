@@ -85,7 +85,7 @@ export function VariantCard({ variant, onClick, className }: VariantCardProps) {
       </div>
 
       <div className="flex h-48 items-center justify-center rounded-md border border-gold/10 bg-felt-deep/50 p-3">
-        <div className="flex w-full items-center justify-center overflow-hidden">
+        <div className="flex h-full w-full items-center justify-center overflow-hidden">
           <MiniBoard id={variant.id} />
         </div>
       </div>

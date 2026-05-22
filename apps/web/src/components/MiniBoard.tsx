@@ -407,6 +407,50 @@ export function MiniBoard({ id }: MiniBoardProps) {
     )
   }
 
+  if (id === 'agnes-bernauer') {
+    return (
+      <div className="flex w-full flex-col h-full py-1 justify-between items-center">
+        {/* Row 1: Stock and Foundations (aligned with 7-column grid) */}
+        <div className="flex justify-center gap-1.5 w-full">
+          {/* Stock aligned with column 1 */}
+          <MiniCard faceUp={deal.stock.faceUp} className="h-8.5 w-6" />
+
+          {/* Spacers for columns 2 and 3 */}
+          <div className="h-8.5 w-6" />
+          <div className="h-8.5 w-6" />
+
+          {/* Foundations aligned with columns 4, 5, 6, 7 */}
+          {deal.foundations.map((card: any, i: number) => (
+            <div
+              key={i}
+              className="h-8.5 w-6 rounded-[0.5px] border border-gold/10 bg-white/5"
+            >
+              {card && <MiniCard {...card} className="h-full w-full" />}
+            </div>
+          ))}
+        </div>
+
+        {/* Row 2: Reserve (7 piles) */}
+        <div className="flex justify-center gap-1.5 w-full">
+          {deal.reserve.map((card: any, i: number) => (
+            <MiniCard key={i} {...card} className="h-8 w-6" />
+          ))}
+        </div>
+
+        {/* Row 3: Tableau */}
+        <div className="flex justify-center gap-1.5 w-full">
+          {deal.tableau.map((column: any[], i: number) => (
+            <div key={i} className="flex flex-col -space-y-6.5">
+              {column.map((card: any, j: number) => (
+                <MiniCard key={j} {...card} className="h-8 w-6" />
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   // pyramid
   return (
     <div className="flex w-full flex-col items-center">

@@ -227,7 +227,7 @@ export default function SimpleSimonBoard({
             )}
           >
             <div className="flex flex-col items-center gap-2">
-              <BoardLabel label="Foundations" />
+              <BoardLabel label="Foundation" />
               <div className="flex justify-center gap-[var(--card-gap-x)]">
                 {Object.entries(foundations).map(([id, cards]) => (
                   <SimpleSimonFoundation

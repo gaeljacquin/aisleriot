@@ -27,7 +27,7 @@ export default function CardSlot({
       {label && (
         <span
           className={cn(
-            'font-display tracking-wide uppercase text-green-600 pointer-events-none select-none',
+            'font-display tracking-wide uppercase text-green-600 pointer-events-none select-none text-center leading-none',
           )}
         >
           {label}

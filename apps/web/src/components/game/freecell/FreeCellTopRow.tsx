@@ -40,7 +40,7 @@ export default function FreeCellTopRow({
 
       {/* Right: 4 foundations */}
       <div className="flex flex-col items-center gap-2">
-        <BoardLabel label="Foundations" color="gold" />
+        <BoardLabel label="Foundation" color="gold" />
         <div className="flex" style={{ gap: 'var(--card-gap-free, 1rem)' }}>
           {foundation.map((entry) => (
             <FreeCellFoundation
