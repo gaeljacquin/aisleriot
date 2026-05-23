@@ -12,7 +12,7 @@ export const Route = createFileRoute('/credits')({ component: Credits })
 
 function Credits() {
   return (
-    <main className="relative flex min-h-full flex-col overflow-y-auto px-6 py-12 sm:py-20">
+    <main className="relative flex min-h-full flex-col overflow-y-auto px-6 py-12 sm:py-15">
       <div className="mx-auto w-full max-w-xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

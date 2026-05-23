@@ -86,42 +86,43 @@ function MinimalCard({
   const isRed = suit === 'hearts' || suit === 'diamonds'
   const glyph = SUIT_GLYPH[suit]
   const colorClass = isRed ? 'text-rose-600' : 'text-slate-900'
+  const displayRank = rank === '10' ? '10' : RANK_MAP[rank]
 
   return (
     <div
       className={cn(
-        'relative h-full w-full rounded-[inherit] bg-white p-1 text-slate-900 shadow-sm transition-transform duration-200',
+        'relative h-full w-full rounded-[inherit] bg-white text-slate-900 shadow-sm transition-transform duration-200 @container',
         className,
       )}
     >
       {/* corner top-left */}
       <div
         className={cn(
-          'absolute left-1 top-1 flex flex-col items-center leading-none',
+          'absolute left-[8%] top-[8%] flex flex-col items-center leading-[0.9] text-[clamp(6.5px,18cqw,18px)]',
           colorClass,
         )}
       >
-        <span className="font-serif font-bold text-[1em]">{rank}</span>
-        <span className="text-[0.8em]">{glyph}</span>
+        <span className="font-serif font-bold">{displayRank}</span>
+        <span className="text-[0.7em]">{glyph}</span>
       </div>
       {/* corner bottom-right (rotated) */}
       <div
         className={cn(
-          'absolute bottom-1 right-1 flex rotate-180 flex-col items-center leading-none',
+          'absolute bottom-[8%] right-[8%] flex rotate-180 flex-col items-center leading-[0.9] text-[clamp(6.5px,18cqw,18px)] @max-h-[30px]:hidden',
           colorClass,
         )}
       >
-        <span className="font-serif font-bold text-[1em]">{rank}</span>
-        <span className="text-[0.8em]">{glyph}</span>
+        <span className="font-serif font-bold">{displayRank}</span>
+        <span className="text-[0.7em]">{glyph}</span>
       </div>
       {/* center pip */}
       <div
         className={cn(
-          'absolute inset-0 grid place-items-center opacity-90',
+          'absolute inset-0 grid place-items-center opacity-90 @max-h-[32px]:hidden',
           colorClass,
         )}
       >
-        <span className="text-[2.2em] leading-none drop-shadow-sm">
+        <span className="text-[clamp(10px,35cqw,48px)] leading-none drop-shadow-sm">
           {glyph}
         </span>
       </div>
@@ -130,10 +131,10 @@ function MinimalCard({
 }
 
 export const CARD_BACK_STYLES: Record<CardBack, string> = {
-  default: 'linear-gradient(135deg, hsl(215 25% 27%), hsl(215 25% 15%))',
-  classic: 'linear-gradient(135deg, hsl(354 50% 30%), hsl(354 60% 18%))',
-  lattice: 'hsl(158 64% 11%)',
-  monogram: 'linear-gradient(135deg, hsl(158 64% 11%), hsl(158 70% 5%))',
+  slate: 'linear-gradient(135deg, hsl(215 25% 27%), hsl(215 25% 15%))',
+  crimson: 'linear-gradient(135deg, hsl(354 50% 30%), hsl(354 60% 18%))',
+  default: 'hsl(158 48% 14%)',
+  kelly: 'linear-gradient(135deg, hsl(100 68% 38%), hsl(100 72% 20%))',
   royal: 'linear-gradient(135deg, hsl(354 45% 28%), hsl(354 55% 18%))',
 }
 
@@ -150,34 +151,37 @@ export function CardBackComponent({
   return (
     <div
       className={cn(
-        'relative h-full w-full rounded-[inherit] shadow-sm overflow-hidden',
+        'relative h-full w-full rounded-[inherit] shadow-sm overflow-hidden @container',
         className,
       )}
       style={{ background: CARD_BACK_STYLES[back] }}
     >
       {/* Pattern Overlays */}
-      {back === 'default' && (
+      {back === 'slate' && (
         <div className="pointer-events-none absolute inset-0 opacity-20">
           <div className="h-full w-full bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,rgba(255,255,255,0.15)_4px,rgba(255,255,255,0.15)_5px)]" />
         </div>
       )}
-      {(back === 'classic' || back === 'monogram') && (
+      {back === 'crimson' && (
         <div className="pointer-events-none absolute inset-0 opacity-10">
           <div className="h-full w-full bg-[radial-gradient(circle_at_center,white_0%,transparent_70%)]" />
         </div>
       )}
-      {back === 'lattice' && (
-        <div
-          className="absolute inset-0 opacity-40"
-          style={{
-            backgroundImage:
-              'repeating-linear-gradient(45deg, hsl(44 56% 54% / 0.4) 0 2px, transparent 2px 8px)',
-          }}
-        />
+      {back === 'default' && (
+        <>
+          <div className="absolute inset-[8%] rounded-[4cqw] border-[1.5cqw] border-gold/40" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <img
+              src="/g-logo.png"
+              alt=""
+              className="h-[40cqh] w-[40cqw] object-contain opacity-90 @max-h-[24px]:hidden"
+            />
+          </div>
+        </>
       )}
       {back === 'royal' && (
         <div
-          className="absolute inset-1 rounded-sm border border-gold/40"
+          className="absolute inset-[8%] rounded-[4cqw] border-[1.5cqw] border-gold/40"
           style={{
             backgroundImage:
               'repeating-linear-gradient(45deg, hsl(44 56% 54% / 0.18) 0 2px, transparent 2px 8px), repeating-linear-gradient(-45deg, hsl(44 56% 54% / 0.18) 0 2px, transparent 2px 8px)',

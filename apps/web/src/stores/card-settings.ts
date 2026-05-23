@@ -7,7 +7,7 @@ export type CardStyle =
   | 'large'
   | 'large-four-color'
   | 'minimal'
-export type CardBack = 'default' | 'classic' | 'lattice' | 'monogram' | 'royal'
+export type CardBack = 'slate' | 'crimson' | 'default' | 'kelly' | 'royal'
 
 interface CardSettingsStore {
   cardStyle: CardStyle

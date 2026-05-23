@@ -24,7 +24,6 @@ import { Route as FreecellRouteImport } from './routes/freecell'
 import { Route as CreditsRouteImport } from './routes/credits'
 import { Route as AgnesBernauerRouteImport } from './routes/agnes-bernauer'
 import { Route as AcmeRouteImport } from './routes/acme'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
 const TriPeaksAltRoute = TriPeaksAltRouteImport.update({
@@ -102,11 +101,6 @@ const AcmeRoute = AcmeRouteImport.update({
   path: '/acme',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -115,7 +109,6 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/acme': typeof AcmeRoute
   '/agnes-bernauer': typeof AgnesBernauerRoute
   '/credits': typeof CreditsRoute
@@ -134,7 +127,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/acme': typeof AcmeRoute
   '/agnes-bernauer': typeof AgnesBernauerRoute
   '/credits': typeof CreditsRoute
@@ -154,7 +146,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/acme': typeof AcmeRoute
   '/agnes-bernauer': typeof AgnesBernauerRoute
   '/credits': typeof CreditsRoute
@@ -175,7 +166,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
     | '/acme'
     | '/agnes-bernauer'
     | '/credits'
@@ -194,7 +184,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
     | '/acme'
     | '/agnes-bernauer'
     | '/credits'
@@ -213,7 +202,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/about'
     | '/acme'
     | '/agnes-bernauer'
     | '/credits'
@@ -233,7 +221,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
   AcmeRoute: typeof AcmeRoute
   AgnesBernauerRoute: typeof AgnesBernauerRoute
   CreditsRoute: typeof CreditsRoute
@@ -358,13 +345,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcmeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -377,7 +357,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
   AcmeRoute: AcmeRoute,
   AgnesBernauerRoute: AgnesBernauerRoute,
   CreditsRoute: CreditsRoute,
