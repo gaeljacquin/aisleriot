@@ -11,6 +11,7 @@ import { appInfo } from '@workspace/constants'
 import { cn } from '@workspace/ui/lib/utils'
 import { useThemeStore } from '@/stores/theme'
 import Footer from '@/components/Footer'
+import ViewportDebugger from '@/components/ViewportDebugger'
 
 export const Route = createFileRoute('/')({ component: Home })
 
@@ -134,6 +135,10 @@ function Home() {
               </Link>
             ))}
           </section>
+        </div>
+
+        <div className="flex flex-col items-center gap-2 mb-2">
+          <ViewportDebugger />
         </div>
 
         <Footer />

@@ -1,5 +1,4 @@
 import { cn } from '@workspace/ui/lib/utils'
-import ThemeToggle from '@/components/ThemeToggle'
 import ViewportDebugger from '@/components/ViewportDebugger'
 
 import type { GameStatus } from '#/lib/types'
@@ -87,8 +86,6 @@ export function TopBar({
             ))}
           </div>
         )}
-        <div className="h-8 w-px bg-gold/10 hidden sm:block" />
-        <ThemeToggle size="sm" />
       </div>
     </header>
   )

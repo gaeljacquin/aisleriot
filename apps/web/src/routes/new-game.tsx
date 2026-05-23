@@ -28,8 +28,6 @@ import {
   TooltipTrigger,
 } from '@workspace/ui/components/tooltip'
 import BackLink from '@/components/BackLink'
-import ThemeToggle from '@/components/ThemeToggle'
-import ViewportDebugger from '@/components/ViewportDebugger'
 import { VariantCard } from '@/components/VariantCard'
 import { VariantCardSkeleton } from '@/components/VariantCardSkeleton'
 import { useGameSelectionStore } from '@/stores/game-selection'
@@ -88,7 +86,7 @@ function NewGame() {
                 New Game
               </h1>
             </div>
-            <ThemeToggle />
+            <div className="w-[100px]" /> {/* Spacer to balance the BackLink */}
           </header>
 
           <section className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-2 lg:gap-12">
@@ -291,11 +289,6 @@ function NewGame() {
                   </div>
                 )}
               </div>
-            </div>
-
-            {/* Viewport Debugger */}
-            <div className="md:col-span-2 flex justify-center pt-4">
-              <ViewportDebugger />
             </div>
           </section>
 

@@ -1,15 +1,19 @@
-export type ThemeMode = 'light' | 'dark'
+export type ThemeMode = 'legacy-light' | 'legacy-dark'
 
 export function getStoredMode(): ThemeMode {
-  if (typeof window === 'undefined') return 'dark'
+  if (typeof window === 'undefined') return 'legacy-dark'
   const stored = localStorage.getItem('theme')
-  if (stored === 'light' || stored === 'dark') return stored
-  return 'dark'
+  if (stored === 'legacy-light' || stored === 'legacy-dark') return stored
+  // Migration/Fallback for older values
+  if (stored === 'light') return 'legacy-light'
+  if (stored === 'dark') return 'legacy-dark'
+  return 'legacy-dark'
 }
 
 export function applyThemeMode(mode: ThemeMode) {
+  const cssClass = mode === 'legacy-dark' ? 'dark' : 'light'
   document.documentElement.classList.remove('light', 'dark')
-  document.documentElement.classList.add(mode)
-  document.documentElement.setAttribute('data-theme', mode)
-  document.documentElement.style.colorScheme = mode
+  document.documentElement.classList.add(cssClass)
+  document.documentElement.setAttribute('data-theme', cssClass)
+  document.documentElement.style.colorScheme = cssClass
 }

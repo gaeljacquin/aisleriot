@@ -3,12 +3,16 @@ import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
 import { cn } from '@workspace/ui/lib/utils'
 import BackLink from '@/components/BackLink'
+import ViewportDebugger from '@/components/ViewportDebugger'
 import { useCardSettingsStore } from '@/stores/card-settings'
 import type { CardStyle } from '@/stores/card-settings'
 import CardPrimitive from '@/components/game/CardPrimitive'
 import type { Suit, Rank } from '@/lib/types/card'
 import { HugeiconsIcon } from '@hugeicons/react'
 import { ArrowLeftBigIcon, ArrowRightBigIcon } from '@hugeicons/core-free-icons'
+
+import { useThemeStore } from '@/stores/theme'
+import type { ThemeMode } from '@/lib/theme'
 
 const settingsSearchSchema = z.object({
   returnTo: z.string().optional(),
@@ -19,7 +23,49 @@ export const Route = createFileRoute('/settings')({
   component: Settings,
 })
 
+const THEMING_TEXT = 'Theming'
 const CARDSTYLETEXT = 'Card Style'
+
+const themeOptions: { value: ThemeMode; label: string }[] = [
+  { value: 'legacy-light', label: 'Legacy Light' },
+  { value: 'legacy-dark', label: 'Legacy Dark' },
+]
+
+function ThemeToggleGroup() {
+  const { mode, setMode } = useThemeStore()
+
+  return (
+    <div
+      role="group"
+      aria-label={THEMING_TEXT}
+      className="grid grid-cols-2 gap-3 sm:grid-cols-4"
+    >
+      {themeOptions.map(({ value, label }) => (
+        <button
+          key={value}
+          type="button"
+          onClick={() => setMode(value)}
+          aria-pressed={mode === value}
+          className={cn(
+            'flex flex-col items-center gap-2 rounded-xl border p-3 transition-all cursor-pointer',
+            mode === value
+              ? 'border-gold bg-felt-light/60 shadow-card'
+              : 'border-gold/20 bg-felt-deep/60 hover:border-gold/50',
+          )}
+        >
+          <span
+            className={cn(
+              'text-[10px] font-bold uppercase tracking-wider',
+              mode === value ? 'text-gold' : 'text-cream-dim',
+            )}
+          >
+            {label}
+          </span>
+        </button>
+      ))}
+    </div>
+  )
+}
 
 const cardStyleOptions: { value: CardStyle; label: string }[] = [
   { value: 'basic', label: 'Basic' },
@@ -47,7 +93,7 @@ function CardStyleToggleGroup() {
     <div
       role="group"
       aria-label={CARDSTYLETEXT}
-      className="grid grid-cols-2 gap-3 sm:grid-cols-4"
+      className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5"
     >
       {cardStyleOptions.map(({ value, label }) => (
         <button
@@ -80,7 +126,7 @@ function CardBackToggleGroup() {
   const { cardBack, setCardBack } = useCardSettingsStore()
 
   return (
-    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-5">
       {BACKS.map((b) => (
         <button
           key={b.id}
@@ -94,7 +140,7 @@ function CardBackToggleGroup() {
           )}
         >
           <div
-            className="relative h-16 w-12 overflow-hidden rounded-md border border-gold/40 shadow-sm"
+            className="relative h-16 w-12 overflow-hidden rounded-lg border border-gold/40 shadow-sm"
             style={{
               backgroundImage:
                 b.id === 'default'
@@ -156,6 +202,7 @@ function CardBackToggleGroup() {
 
 function CardPreview() {
   const [suits, setSuits] = useState<Suit[]>(DEFAULT_SUITS)
+  const [faceUp, setFaceUp] = useState(true)
 
   const rotateLeft = () => {
     setSuits((prev) => [...prev.slice(1), prev[0]])
@@ -166,52 +213,66 @@ function CardPreview() {
   }
 
   return (
-    <div className="flex items-center justify-center gap-8 pt-4">
-      <button
-        onClick={rotateLeft}
-        className="flex h-10 w-10 items-center justify-center rounded-full bg-felt-light/40 text-cream-dim transition-colors hover:bg-gold hover:text-felt-deep cursor-pointer"
-        aria-label="Rotate suits left"
-      >
-        <HugeiconsIcon icon={ArrowLeftBigIcon} size={20} />
-      </button>
+    <div className="flex flex-col items-center gap-6 pt-4">
+      <div className="flex items-center justify-center gap-8">
+        <button
+          onClick={rotateLeft}
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-felt-light/40 text-cream-dim transition-colors hover:bg-gold hover:text-felt-deep cursor-pointer"
+          aria-label="Rotate suits left"
+        >
+          <HugeiconsIcon icon={ArrowLeftBigIcon} size={20} />
+        </button>
 
-      <div className="flex -space-x-12 sm:-space-x-16">
-        <div className="h-44 w-32 rotate-[-15deg] transition-transform hover:rotate-[-20deg]">
-          <CardPrimitive
-            suit={suits[0]}
-            rank={PREVIEW_RANKS[0]}
-            faceUp={true}
-          />
+        <div className="flex -space-x-12 sm:-space-x-16">
+          <div className="h-44 w-32 rotate-[-15deg] transition-transform hover:rotate-[-20deg]">
+            <CardPrimitive
+              suit={suits[0]}
+              rank={PREVIEW_RANKS[0]}
+              faceUp={faceUp}
+              className="rounded-lg"
+            />
+          </div>
+          <div className="z-10 h-44 w-32 rotate-[-5deg] transition-transform hover:rotate-[-10deg]">
+            <CardPrimitive
+              suit={suits[1]}
+              rank={PREVIEW_RANKS[1]}
+              faceUp={faceUp}
+              className="rounded-lg"
+            />
+          </div>
+          <div className="z-20 h-44 w-32 rotate-[5deg] transition-transform hover:rotate-10">
+            <CardPrimitive
+              suit={suits[2]}
+              rank={PREVIEW_RANKS[2]}
+              faceUp={faceUp}
+              className="rounded-lg"
+            />
+          </div>
+          <div className="h-44 w-32 rotate-15 transition-transform hover:rotate-20">
+            <CardPrimitive
+              suit={suits[3]}
+              rank={PREVIEW_RANKS[3]}
+              faceUp={faceUp}
+              className="rounded-lg"
+            />
+          </div>
         </div>
-        <div className="z-10 h-44 w-32 rotate-[-5deg] transition-transform hover:rotate-[-10deg]">
-          <CardPrimitive
-            suit={suits[1]}
-            rank={PREVIEW_RANKS[1]}
-            faceUp={true}
-          />
-        </div>
-        <div className="z-20 h-44 w-32 rotate-[5deg] transition-transform hover:rotate-10">
-          <CardPrimitive
-            suit={suits[2]}
-            rank={PREVIEW_RANKS[2]}
-            faceUp={true}
-          />
-        </div>
-        <div className="h-44 w-32 rotate-15 transition-transform hover:rotate-20">
-          <CardPrimitive
-            suit={suits[3]}
-            rank={PREVIEW_RANKS[3]}
-            faceUp={true}
-          />
-        </div>
+
+        <button
+          onClick={rotateRight}
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-felt-light/40 text-cream-dim transition-colors hover:bg-gold hover:text-felt-deep cursor-pointer"
+          aria-label="Rotate suits right"
+        >
+          <HugeiconsIcon icon={ArrowRightBigIcon} size={20} />
+        </button>
       </div>
 
       <button
-        onClick={rotateRight}
-        className="flex h-10 w-10 items-center justify-center rounded-full bg-felt-light/40 text-cream-dim transition-colors hover:bg-gold hover:text-felt-deep cursor-pointer"
-        aria-label="Rotate suits right"
+        type="button"
+        onClick={() => setFaceUp(!faceUp)}
+        className="rounded-full border border-gold/40 bg-felt-deep/60 px-6 py-2 text-xs font-bold uppercase tracking-widest text-gold transition-all hover:border-gold hover:bg-felt-light/40 cursor-pointer shadow-sm"
       >
-        <HugeiconsIcon icon={ArrowRightBigIcon} size={20} />
+        Flip {faceUp ? 'to Back' : 'to Front'}
       </button>
     </div>
   )
@@ -221,15 +282,25 @@ function Settings() {
   const { returnTo } = Route.useSearch()
 
   return (
-    <main className="relative flex min-h-full flex-col overflow-y-auto px-6 py-12 sm:py-20">
-      <div className="mx-auto w-full max-w-xl">
+    <main className="relative flex min-h-full flex-col overflow-y-auto px-6 py-12 sm:py-15 lg:px-4">
+      <div className="mx-auto w-full max-w-xl lg:max-w-3xl">
         <header className="mb-12 text-center">
           <h1 className="font-serif text-4xl font-bold tracking-tight text-gold sm:text-5xl">
             Settings
           </h1>
         </header>
 
-        <div className="space-y-12">
+        <div className="space-y-10">
+          {/* Theme Section */}
+          <section className="space-y-6">
+            <label className="block text-xs font-bold uppercase tracking-[0.25em] text-cream-dim">
+              {THEMING_TEXT}
+            </label>
+            <ThemeToggleGroup />
+          </section>
+
+          <div className="h-px w-full bg-linear-to-r from-transparent via-gold/30 to-transparent" />
+
           {/* Card Appearance Section */}
           <section className="space-y-6">
             <label className="block text-xs font-bold uppercase tracking-[0.25em] text-cream-dim">
@@ -252,11 +323,12 @@ function Settings() {
           <div className="h-px w-full bg-linear-to-r from-transparent via-gold/30 to-transparent" />
         </div>
 
-        <div className="mt-20 flex justify-center">
+        <div className="mt-16 flex flex-col items-center gap-8">
           <BackLink
             destination={returnTo}
             label={returnTo && returnTo !== '/' ? 'Back to Game' : 'Main Menu'}
           />
+          <ViewportDebugger />
         </div>
       </div>
     </main>
