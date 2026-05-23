@@ -76,10 +76,10 @@ const cardStyleOptions: { value: CardStyle; label: string }[] = [
 ]
 
 const BACKS = [
+  { id: 'slate', label: 'Slate' },
+  { id: 'crimson', label: 'Crimson' },
   { id: 'default', label: 'Default' },
-  { id: 'classic', label: 'Crimson' },
-  { id: 'lattice', label: 'Lattice' },
-  { id: 'monogram', label: 'Monogram' },
+  { id: 'kelly', label: 'Kelly' },
   { id: 'royal', label: 'Royal Lattice' },
 ] as const
 
@@ -140,39 +140,43 @@ function CardBackToggleGroup() {
           )}
         >
           <div
-            className="relative h-16 w-12 overflow-hidden rounded-lg border border-gold/40 shadow-sm"
+            className="relative h-16 w-12 overflow-hidden rounded-md border border-gold/40 shadow-sm"
             style={{
-              backgroundImage:
-                b.id === 'default'
+              background:
+                b.id === 'slate'
                   ? 'linear-gradient(135deg, hsl(215 25% 27%), hsl(215 25% 15%))'
-                  : b.id === 'classic'
+                  : b.id === 'crimson'
                     ? 'linear-gradient(135deg, hsl(354 50% 30%), hsl(354 60% 18%))'
-                    : b.id === 'lattice'
-                      ? 'hsl(158 64% 11%)'
-                      : b.id === 'monogram'
-                        ? 'linear-gradient(135deg, hsl(158 64% 11%), hsl(158 70% 5%))'
+                    : b.id === 'default'
+                      ? 'hsl(158 48% 14%)'
+                      : b.id === 'kelly'
+                        ? 'linear-gradient(135deg, hsl(100 68% 38%), hsl(100 72% 20%))'
                         : 'linear-gradient(135deg, hsl(354 45% 28%), hsl(354 55% 18%))',
             }}
           >
             {/* Pattern Overlays for Preview */}
-            {b.id === 'default' && (
+            {b.id === 'slate' && (
               <div className="pointer-events-none absolute inset-0 opacity-20">
                 <div className="h-full w-full bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,rgba(255,255,255,0.15)_4px,rgba(255,255,255,0.15)_5px)]" />
               </div>
             )}
-            {(b.id === 'classic' || b.id === 'monogram') && (
+            {b.id === 'crimson' && (
               <div className="pointer-events-none absolute inset-0 opacity-10">
                 <div className="h-full w-full bg-[radial-gradient(circle_at_center,white_0%,transparent_70%)]" />
               </div>
             )}
-            {b.id === 'lattice' && (
-              <div
-                className="pointer-events-none absolute inset-0 opacity-40"
-                style={{
-                  backgroundImage:
-                    'repeating-linear-gradient(45deg, hsl(44 56% 54% / 0.4) 0 2px, transparent 2px 8px)',
-                }}
-              />
+            {b.id === 'kelly' && null}
+            {b.id === 'default' && (
+              <>
+                <div className="absolute inset-0.5 rounded-sm border border-gold/40" />
+                <div className="absolute inset-0 flex items-center justify-center p-2">
+                  <img
+                    src="/g-logo.png"
+                    alt=""
+                    className="h-1/2 w-1/2 object-contain"
+                  />
+                </div>
+              </>
             )}
             {b.id === 'royal' && (
               <div

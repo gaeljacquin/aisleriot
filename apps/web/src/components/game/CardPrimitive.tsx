@@ -130,10 +130,10 @@ function MinimalCard({
 }
 
 export const CARD_BACK_STYLES: Record<CardBack, string> = {
-  default: 'linear-gradient(135deg, hsl(215 25% 27%), hsl(215 25% 15%))',
-  classic: 'linear-gradient(135deg, hsl(354 50% 30%), hsl(354 60% 18%))',
-  lattice: 'hsl(158 64% 11%)',
-  monogram: 'linear-gradient(135deg, hsl(158 64% 11%), hsl(158 70% 5%))',
+  slate: 'linear-gradient(135deg, hsl(215 25% 27%), hsl(215 25% 15%))',
+  crimson: 'linear-gradient(135deg, hsl(354 50% 30%), hsl(354 60% 18%))',
+  default: 'hsl(158 48% 14%)',
+  kelly: 'linear-gradient(135deg, hsl(100 68% 38%), hsl(100 72% 20%))',
   royal: 'linear-gradient(135deg, hsl(354 45% 28%), hsl(354 55% 18%))',
 }
 
@@ -156,24 +156,27 @@ export function CardBackComponent({
       style={{ background: CARD_BACK_STYLES[back] }}
     >
       {/* Pattern Overlays */}
-      {back === 'default' && (
+      {back === 'slate' && (
         <div className="pointer-events-none absolute inset-0 opacity-20">
           <div className="h-full w-full bg-[repeating-linear-gradient(45deg,transparent,transparent_4px,rgba(255,255,255,0.15)_4px,rgba(255,255,255,0.15)_5px)]" />
         </div>
       )}
-      {(back === 'classic' || back === 'monogram') && (
+      {back === 'crimson' && (
         <div className="pointer-events-none absolute inset-0 opacity-10">
           <div className="h-full w-full bg-[radial-gradient(circle_at_center,white_0%,transparent_70%)]" />
         </div>
       )}
-      {back === 'lattice' && (
-        <div
-          className="absolute inset-0 opacity-40"
-          style={{
-            backgroundImage:
-              'repeating-linear-gradient(45deg, hsl(44 56% 54% / 0.4) 0 2px, transparent 2px 8px)',
-          }}
-        />
+      {back === 'default' && (
+        <>
+          <div className="absolute inset-1 rounded-sm border border-gold/40" />
+          <div className="absolute inset-0 flex items-center justify-center p-4">
+            <img
+              src="/g-logo.png"
+              alt=""
+              className="h-1/2 w-1/2 object-contain"
+            />
+          </div>
+        </>
       )}
       {back === 'royal' && (
         <div
