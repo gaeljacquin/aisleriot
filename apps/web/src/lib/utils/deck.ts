@@ -1,26 +1,28 @@
-import { decks } from 'cards'
 import type { Card, Suit, Rank } from '#/lib/types'
+
+const SUITS: Suit[] = ['hearts', 'diamonds', 'clubs', 'spades']
+const RANKS: Rank[] = [
+  'A',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+  'J',
+  'Q',
+  'K',
+]
 
 /**
  * Creates a standard 52-card deck, shuffles it deterministically if a seed is provided,
  * and returns it in our app's Card format.
  */
 export function createShuffledDeck(seed?: number): Card[] {
-  const deck = new decks.StandardDeck()
-  const drawn = deck.draw(52)
-
-  const cards = drawn.map((card) => {
-    // @ts-ignore - node-cards types are missing properties
-    const suit = card.suit.name as Suit
-    // @ts-ignore - node-cards types are missing properties
-    const rank = card.rank.abbrn as Rank
-
-    return {
-      suit,
-      rank,
-      faceUp: false,
-    }
-  })
+  const cards = createDeck()
 
   // Deterministic shuffle if seed is provided
   const result =
@@ -36,23 +38,21 @@ export function createShuffledDeck(seed?: number): Card[] {
   }))
 }
 
-/** Legacy helpers mapped to the new cards package */
-
 export function createDeck(): Card[] {
-  const deck = new decks.StandardDeck()
-  const drawn = deck.draw(52)
-  return drawn.map((card) => {
-    // @ts-ignore - node-cards types are missing properties
-    const rank = card.rank.abbrn as Rank
-    // @ts-ignore - node-cards types are missing properties
-    const suit = card.suit.name as Suit
-    return {
-      id: `${suit}-${rank}-${Math.random().toString(36).substring(2, 9)}`,
-      suit,
-      rank,
-      faceUp: false,
+  const cards: Card[] = []
+
+  for (const suit of SUITS) {
+    for (const rank of RANKS) {
+      cards.push({
+        id: `${suit}-${rank}-${Math.random().toString(36).substring(2, 9)}`,
+        suit,
+        rank,
+        faceUp: false,
+      })
     }
-  })
+  }
+
+  return cards
 }
 
 export function shuffleDeck<T>(items: T[], seed?: number): T[] {

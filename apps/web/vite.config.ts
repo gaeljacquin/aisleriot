@@ -94,7 +94,7 @@ const config = defineConfig({
     allowedHosts: true,
   },
   build: {
-    chunkSizeWarningLimit: 600,
+    chunkSizeWarningLimit: 800,
   },
 })
 

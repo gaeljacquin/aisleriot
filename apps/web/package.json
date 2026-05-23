@@ -29,7 +29,6 @@
     "@tanstack/router-plugin": "^1.167.35",
     "@workspace/constants": "workspace:*",
     "@workspace/ui": "workspace:*",
-    "cards": "^2.0.3",
     "motion": "^12.38.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
