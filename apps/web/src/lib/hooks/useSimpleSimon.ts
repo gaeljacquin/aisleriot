@@ -1,10 +1,7 @@
 import { useCallback } from 'react'
 import { useSimpleSimonStore } from '#/lib/stores/simple-simon'
 import { draggableFromIndex } from '#/lib/games/simple-simon/rules'
-import type {
-  SimpleSimonMove,
-  SimpleSimonPileId,
-} from '#/lib/games/simple-simon'
+import type { SimpleSimonMove } from '#/lib/games/simple-simon'
 
 export function useSimpleSimon() {
   const store = useSimpleSimonStore()

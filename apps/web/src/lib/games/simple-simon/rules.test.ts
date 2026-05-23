@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest'
-import { isValidSequence, isCompleteSuit, canMoveToTableau } from './rules'
+import { isValidSequence, canMoveToTableau } from './rules'
 import type { Card } from '#/lib/types'
 import { createInitialState } from './index'
 

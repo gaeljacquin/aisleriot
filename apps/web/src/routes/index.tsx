@@ -6,6 +6,7 @@ import {
   UserGroupIcon,
   ArrowRight01Icon,
   ArrowRight02Icon,
+  GiftIcon,
 } from '@hugeicons/core-free-icons'
 import { appInfo } from '@workspace/constants'
 import { cn } from '@workspace/ui/lib/utils'
@@ -35,6 +36,12 @@ const menuItems = [
     subtitle: 'whoami',
     icon: UserGroupIcon,
     to: '/credits' as const,
+  },
+  {
+    label: 'Bonus Content',
+    subtitle: 'DLCs',
+    icon: GiftIcon,
+    to: '/bonus-content' as const,
   },
   {
     label: 'More Games',

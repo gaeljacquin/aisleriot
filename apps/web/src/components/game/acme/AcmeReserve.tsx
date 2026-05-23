@@ -78,7 +78,7 @@ export default function AcmeReserve({
             pileId="reserve"
             card={card}
             cardIndex={index}
-            isDraggable={index === reserve.length - 1 || devMoveAnywhere}
+            isDraggable={index === reserve.length - 1 || !!devMoveAnywhere}
             onDoubleClick={
               index === reserve.length - 1 ? onDoubleClick : undefined
             }

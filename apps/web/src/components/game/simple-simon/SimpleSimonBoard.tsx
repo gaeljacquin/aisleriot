@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import {
   DndContext,
   DragOverlay,
@@ -15,7 +15,6 @@ import { ConfirmModal } from '#/components/ConfirmModal'
 import { useSimpleSimon } from '#/lib/hooks/useSimpleSimon'
 import { getVariant } from '@workspace/constants'
 import type {
-  SimpleSimonMove,
   DraggableCardData,
   DroppableZoneData,
 } from '#/lib/games/simple-simon'

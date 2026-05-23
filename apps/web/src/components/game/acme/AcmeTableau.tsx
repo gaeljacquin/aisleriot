@@ -133,7 +133,9 @@ function AcmeTableauColumn({
               pileId={entry.id}
               card={card}
               cardIndex={index}
-              isDraggable={index === entry.cards.length - 1 || devMoveAnywhere}
+              isDraggable={
+                index === entry.cards.length - 1 || !!devMoveAnywhere
+              }
               onDoubleClick={
                 index === entry.cards.length - 1 ? onDoubleClick : undefined
               }

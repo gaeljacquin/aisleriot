@@ -55,8 +55,6 @@ export default function AcmeWaste({
   onDoubleClick,
   devMoveAnywhere,
 }: AcmeWasteProps) {
-  const topWaste = waste.length > 0 ? waste[waste.length - 1] : null
-
   return (
     <div
       className="relative"

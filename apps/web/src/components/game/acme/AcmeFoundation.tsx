@@ -4,7 +4,6 @@ import AcmeCard from './AcmeCard'
 import CardSlot from '../CardSlot'
 import { getVariant } from '@workspace/constants'
 import type { AcmeFoundationEntry } from '#/lib/hooks/use-acme'
-import type { Suit } from '#/lib/types'
 
 interface AcmeFoundationProps {
   foundation: AcmeFoundationEntry[]
