@@ -12,6 +12,7 @@ import { HugeiconsIcon } from '@hugeicons/react'
 import { ArrowLeftBigIcon, ArrowRightBigIcon } from '@hugeicons/core-free-icons'
 
 import { useThemeStore } from '@/stores/theme'
+import { THEMES } from '@/lib/theme'
 import type { ThemeMode } from '@/lib/theme'
 
 const settingsSearchSchema = z.object({
@@ -26,10 +27,10 @@ export const Route = createFileRoute('/settings')({
 const THEMING_TEXT = 'Theming'
 const CARDSTYLETEXT = 'Card Style'
 
-const themeOptions: { value: ThemeMode; label: string }[] = [
-  { value: 'legacy-light', label: 'Legacy Light' },
-  { value: 'legacy-dark', label: 'Legacy Dark' },
-]
+const themeOptions = Object.entries(THEMES).map(([value, { label }]) => ({
+  value: value as ThemeMode,
+  label,
+}))
 
 function ThemeToggleGroup() {
   const { mode, setMode } = useThemeStore()

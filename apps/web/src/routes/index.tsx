@@ -10,6 +10,7 @@ import {
 import { appInfo } from '@workspace/constants'
 import { cn } from '@workspace/ui/lib/utils'
 import { useThemeStore } from '@/stores/theme'
+import { getThemeType } from '@/lib/theme'
 import Footer from '@/components/Footer'
 import ViewportDebugger from '@/components/ViewportDebugger'
 
@@ -48,7 +49,7 @@ function Home() {
   const { mode } = useThemeStore()
 
   // Use the JPEG versions as requested.
-  const logoSrc = mode === 'legacy-dark' ? '/logo-dark.jpg' : '/logo.jpg'
+  const logoSrc = getThemeType(mode) === 'dark' ? '/logo-dark.jpg' : '/logo.jpg'
 
   return (
     <main

@@ -1,12 +1,13 @@
 import { appInfo } from '@workspace/constants'
 import { useThemeStore } from '@/stores/theme'
+import { getThemeType } from '@/lib/theme'
 import BackLink from './BackLink'
 
 export default function NotFound() {
   const { mode } = useThemeStore()
 
   // Use the JPEG versions as requested.
-  const logoSrc = mode === 'legacy-dark' ? '/logo-dark.jpg' : '/logo.jpg'
+  const logoSrc = getThemeType(mode) === 'dark' ? '/logo-dark.jpg' : '/logo.jpg'
 
   return (
     <main
