@@ -48,7 +48,7 @@ function Home() {
   const { mode } = useThemeStore()
 
   // Use the JPEG versions as requested.
-  const logoSrc = mode === 'dark' ? '/logo-dark.jpg' : '/logo.jpg'
+  const logoSrc = mode === 'legacy-dark' ? '/logo-dark.jpg' : '/logo.jpg'
 
   return (
     <main

@@ -6,9 +6,11 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 import { appInfo } from '@workspace/constants'
 import { TooltipProvider } from '@workspace/ui/components/tooltip'
 import '@workspace/ui/globals.css'
+import NotFound from '@/components/NotFound'
 
 export const Route = createRootRoute({
   component: RootComponent,
+  notFoundComponent: NotFound,
 })
 
 function RootComponent() {
