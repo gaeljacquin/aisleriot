@@ -34,7 +34,7 @@ func loadEnv() {
 func main() {
 	loadEnv()
 	clientURLs := os.Getenv("CLIENT_URLS")
-	projectSuffix := os.Getenv("VERCEL_PROJECT_SUFFIX")
+	projectSuffix := os.Getenv("WEB_PROJECT_SUFFIX")
 	allowedOrigins := strings.Split(clientURLs, ",")
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
