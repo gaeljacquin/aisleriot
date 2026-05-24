@@ -158,3 +158,6 @@ temp/
 
 # Kilo
 .kilo*/
+
+# Go
+apps/api/api
