@@ -4,7 +4,7 @@ import type {
   SimpleSimonTableauId,
   SimpleSimonFoundationId,
 } from './types'
-import { TABLEAU_IDS, FOUNDATION_IDS } from './types'
+import { TABLEAU_IDS } from './types'
 
 export function dealSimpleSimon(seed?: number): SimpleSimonState {
   const deck = createShuffledDeck(seed)

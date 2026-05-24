@@ -3,6 +3,7 @@ import type { Card } from '#/lib/types'
 import type {
   SimpleSimonState,
   SimpleSimonPileId,
+  SimpleSimonTableauId,
   SimpleSimonMove,
 } from './types'
 import { TABLEAU_IDS, FOUNDATION_IDS } from './types'
@@ -50,13 +51,13 @@ export function canMoveToTableau(
   if (fromPileId === toPileId) return false
   if (!toPileId.startsWith('tableau-')) return false
 
-  const fromPile = state.tableau[fromPileId as any]
-  if (!fromPile || fromIndex < 0 || fromIndex >= fromPile.length) return false
+  const fromPile = state.tableau[fromPileId as SimpleSimonTableauId]
+  if (fromIndex < 0 || fromIndex >= fromPile.length) return false
 
   const sequence = fromPile.slice(fromIndex)
   if (!isValidSequence(sequence)) return false
 
-  const toPile = state.tableau[toPileId as any]
+  const toPile = state.tableau[toPileId as SimpleSimonTableauId]
   if (toPile.length === 0) return true // Any card/sequence to empty space
 
   const targetTop = toPile[toPile.length - 1]
@@ -120,8 +121,8 @@ export function draggableFromIndex(
   pileId: string,
 ): number {
   if (!pileId.startsWith('tableau-')) return 0
-  const pile = state.tableau[pileId as any]
-  if (!pile || pile.length === 0) return 0
+  const pile = state.tableau[pileId as SimpleSimonTableauId]
+  if (pile.length === 0) return 0
 
   let seqStart = pile.length - 1
 

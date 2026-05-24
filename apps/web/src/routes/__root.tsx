@@ -5,6 +5,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import { appInfo } from '@workspace/constants'
 import { TooltipProvider } from '@workspace/ui/components/tooltip'
+import { Toaster } from '@workspace/ui/components/sonner'
 import '@workspace/ui/globals.css'
 import NotFound from '@/components/NotFound'
 
@@ -25,6 +26,7 @@ function RootComponent() {
           <Outlet />
         </div>
       </div>
+      <Toaster />
       <TanStackDevtools
         config={{
           position: 'bottom-right',

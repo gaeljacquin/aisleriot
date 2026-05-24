@@ -1,0 +1,9 @@
+{
+  "name": "@workspace/api",
+  "private": true,
+  "scripts": {
+    "dev": "go run main.go",
+    "build": "go build -o api main.go",
+    "lint": "echo 'Go linting not configured yet'"
+  }
+}

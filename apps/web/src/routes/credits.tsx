@@ -6,11 +6,36 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@workspace/ui/components/avatar'
+import { Button } from '@workspace/ui/components/button'
+import { toast } from '@workspace/ui/components/sonner'
 import BackLink from '@/components/BackLink'
+import { useDevModeStore } from '@/stores/dev-mode'
 
 export const Route = createFileRoute('/credits')({ component: Credits })
 
 function Credits() {
+  const { isDevMode } = useDevModeStore()
+  const isVercelPreview = process.env.VERCEL_ENV === 'preview'
+  const isDev = import.meta.env.DEV || isDevMode || isVercelPreview
+
+  const handleHelloWorld = async () => {
+    const apiUrl = (process.env.API_URL as string) || 'http://localhost:8080'
+    console.log('Calling API at:', apiUrl)
+
+    try {
+      const response = await fetch(apiUrl)
+      if (!response.ok) {
+        throw new Error(`API responded with status: ${response.status}`)
+      }
+      const data = await response.json()
+      console.log('API Response:', data)
+      toast.success(data.message)
+    } catch (error) {
+      console.error('API Error:', error)
+      toast.error(error instanceof Error ? error.message : 'Failed to call API')
+    }
+  }
+
   return (
     <main className="relative flex min-h-full flex-col overflow-y-auto px-6 py-12 sm:py-15">
       <div className="mx-auto w-full max-w-xl">
@@ -61,6 +86,18 @@ function Credits() {
                 </div>
               </div>
             </div>
+
+            {isDev && (
+              <div className="flex justify-center">
+                <Button
+                  onClick={handleHelloWorld}
+                  variant="outline"
+                  className="border-gold/20 text-gold hover:bg-gold/10"
+                >
+                  Test API Connection
+                </Button>
+              </div>
+            )}
 
             <div className="h-px w-full bg-linear-to-r from-transparent via-gold/30 to-transparent" />
 

@@ -3,6 +3,10 @@ services:
     build:
       context: ..
       dockerfile: .devcontainer/Dockerfile
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
     volumes:
       - ..:/workspaces/aisleriot:cached
       # Anonymous volumes for node_modules to ensure they stay in the container

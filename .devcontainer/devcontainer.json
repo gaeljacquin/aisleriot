@@ -3,6 +3,11 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspaces/aisleriot",
+  "features": {
+    "ghcr.io/devcontainers/features/go:1": {
+      "version": "latest"
+    }
+  },
   "customizations": {
     "vscode": {
       "extensions": [
@@ -27,7 +32,8 @@
         "Google.gemini-code-assist",
         "kisstkondoros.vscode-gutter-preview",
         "IBM.output-colorizer",
-        "quicktype.quicktype"
+        "quicktype.quicktype",
+        "golang.go"
       ],
       "settings": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",

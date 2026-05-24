@@ -6,10 +6,12 @@ import {
   UserGroupIcon,
   ArrowRight01Icon,
   ArrowRight02Icon,
+  GiftIcon,
 } from '@hugeicons/core-free-icons'
 import { appInfo } from '@workspace/constants'
 import { cn } from '@workspace/ui/lib/utils'
 import { useThemeStore } from '@/stores/theme'
+import { useDevModeStore } from '@/stores/dev-mode'
 import { getThemeType } from '@/lib/theme'
 import Footer from '@/components/Footer'
 import ViewportDebugger from '@/components/ViewportDebugger'
@@ -37,6 +39,13 @@ const menuItems = [
     to: '/credits' as const,
   },
   {
+    label: 'Bonus Content',
+    subtitle: 'DLCs',
+    icon: GiftIcon,
+    to: '/bonus-content' as const,
+    devOnly: true,
+  },
+  {
     label: 'More Games',
     subtitle: "Let's have fun!",
     icon: ArrowRight01Icon,
@@ -47,9 +56,19 @@ const menuItems = [
 
 function Home() {
   const { mode } = useThemeStore()
+  const { isDevMode } = useDevModeStore()
+
+  const isVercelPreview =
+    typeof process !== 'undefined' && process.env.VERCEL_ENV === 'preview'
+  const isDev = import.meta.env.DEV || isDevMode || isVercelPreview
 
   // Use the JPEG versions as requested.
   const logoSrc = getThemeType(mode) === 'dark' ? '/logo-dark.jpg' : '/logo.jpg'
+
+  const filteredMenuItems = menuItems.filter((item) => {
+    if (item.devOnly && !isDev) return false
+    return true
+  })
 
   return (
     <main
@@ -87,7 +106,7 @@ function Home() {
 
           {/* Menu Grid - pulled up by being in the same centered container */}
           <section className="mx-auto mt-6 grid w-full max-w-md gap-3 md:mt-8 md:gap-4">
-            {menuItems.map((item, i) => (
+            {filteredMenuItems.map((item, i) => (
               <Link
                 key={item.label}
                 to={item.to}
