@@ -20,6 +20,8 @@ import {
 import { toast } from '@workspace/ui/components/sonner'
 import BackLink from '@/components/BackLink'
 import { ConfirmModal } from '@/components/ConfirmModal'
+import { useDevModeStore } from '@/stores/dev-mode'
+import NotFound from '@/components/NotFound'
 
 export const Route = createFileRoute('/bonus-content')({
   component: BonusContent,
@@ -80,8 +82,17 @@ const DLC_PACKS: DLCPack[] = [
 ]
 
 function BonusContent() {
+  const { isDevMode } = useDevModeStore()
   const [statuses, setStatuses] = useState<Record<number, DLCStatus>>({})
   const [confirmingPack, setConfirmingPack] = useState<DLCPack | null>(null)
+
+  const isVercelPreview =
+    typeof process !== 'undefined' && process.env.VERCEL_ENV === 'preview'
+  const isDev = import.meta.env.DEV || isDevMode || isVercelPreview
+
+  if (!isDev) {
+    return <NotFound />
+  }
 
   const handleDownload = (pack: DLCPack) => {
     if (
