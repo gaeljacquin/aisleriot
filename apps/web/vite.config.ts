@@ -85,6 +85,9 @@ const config = defineConfig(({ mode }) => {
     ],
     define: {
       'process.env.API_URL': JSON.stringify(env.API_URL || env.api_url),
+      'process.env.VERCEL_ENV': JSON.stringify(
+        env.VERCEL_ENV || env.vercel_env,
+      ),
     },
     resolve: {
       alias: {

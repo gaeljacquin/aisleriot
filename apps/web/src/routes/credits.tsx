@@ -15,7 +15,8 @@ export const Route = createFileRoute('/credits')({ component: Credits })
 
 function Credits() {
   const { isDevMode } = useDevModeStore()
-  const isDev = import.meta.env.DEV || isDevMode
+  const isVercelPreview = process.env.VERCEL_ENV === 'preview'
+  const isDev = import.meta.env.DEV || isDevMode || isVercelPreview
 
   const handleHelloWorld = async () => {
     const apiUrl = (process.env.API_URL as string) || 'http://localhost:8080'

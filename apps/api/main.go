@@ -34,6 +34,7 @@ func loadEnv() {
 func main() {
 	loadEnv()
 	clientURLs := os.Getenv("CLIENT_URLS")
+	projectSuffix := os.Getenv("VERCEL_PROJECT_SUFFIX")
 	allowedOrigins := strings.Split(clientURLs, ",")
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -48,6 +49,14 @@ func main() {
 					isAllowed = true
 					break
 				}
+			}
+
+			// Allow Vercel preview deployments
+			// Pattern: https://aisleriot-<deployment-id>-<suffix>.vercel.app
+			if !isAllowed && projectSuffix != "" &&
+				strings.HasPrefix(origin, "https://aisleriot-") &&
+				strings.HasSuffix(origin, "-"+projectSuffix+".vercel.app") {
+				isAllowed = true
 			}
 		}
 
