@@ -1,6 +1,7 @@
 {
   "$schema": "https://v2-9-8.turborepo.dev/schema.json",
   "ui": "tui",
+  "globalEnv": ["API_URL", "api_url"],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
