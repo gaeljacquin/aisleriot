@@ -29,6 +29,8 @@ import { GrandfathersClockCard } from './GrandfathersClockCard'
 import GrandfathersClockFoundation from './GrandfathersClockFoundation'
 import GrandfathersClockColumn from './GrandfathersClockColumn'
 import { BoardLabel } from '../BoardLabel'
+import { VictoryFanOut } from '..'
+import { useVictoryAnimationStore } from '#/stores/victory-animation'
 import type {
   DraggableCardData,
   DroppableZoneData,
@@ -56,6 +58,7 @@ const CLOCK_POSITIONS = [
 export default function GrandfathersClockBoard({
   onHowToPlay,
 }: GrandfathersClockBoardProps) {
+  const { isAnimating: isVictoryAnimating } = useVictoryAnimationStore()
   const {
     tableau,
     foundation,
@@ -258,7 +261,8 @@ export default function GrandfathersClockBoard({
             <div
               className={cn(
                 'mx-auto w-full flex flex-col 2xl:flex-row-reverse items-center 2xl:items-start 2xl:justify-center gap-6 sm:gap-6 md:gap-4 lg:gap-2 xl:gap-1 2xl:gap-16 2xl:pt-8',
-                isGameOver && 'opacity-50',
+                status === 'lost' && 'opacity-50',
+                isVictoryAnimating && 'pointer-events-none',
               )}
             >
               {/* Clock Foundations */}
@@ -307,6 +311,8 @@ export default function GrandfathersClockBoard({
               </div>
             </div>
           </div>
+
+          <VictoryFanOut isVisible={status === 'won'} />
 
           <div className="flex w-full justify-center pb-6 pt-2">
             <ActionRail

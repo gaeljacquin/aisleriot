@@ -35,12 +35,15 @@ import {
 } from '@hugeicons/core-free-icons'
 import { useDevModeStore } from '#/stores/dev-mode'
 import { BoardLabel } from '../BoardLabel'
+import { VictoryFanOut } from '..'
+import { useVictoryAnimationStore } from '#/stores/victory-animation'
 
 interface FreeCellBoardProps {
   onHowToPlay: () => void
 }
 
 export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
+  const { isAnimating: isVictoryAnimating } = useVictoryAnimationStore()
   const {
     tableau,
     freeCells,
@@ -250,7 +253,8 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
             <div
               className={cn(
                 'mx-auto w-full lg:w-fit flex flex-col items-center',
-                isGameOver && 'opacity-50',
+                status === 'lost' && 'opacity-50',
+                isVictoryAnimating && 'pointer-events-none',
               )}
               style={{ gap: 'var(--row-gap)' }}
             >
@@ -272,6 +276,8 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
               </div>
             </div>
           </div>
+
+          <VictoryFanOut isVisible={status === 'won'} />
 
           {/* Bottom Action Rail - pinned to bottom */}
           <div className="flex w-full justify-center pb-6 pt-2">

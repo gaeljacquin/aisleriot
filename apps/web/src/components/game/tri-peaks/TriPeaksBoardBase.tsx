@@ -21,6 +21,8 @@ import {
 } from '@hugeicons/core-free-icons'
 import { useDevModeStore } from '#/stores/dev-mode'
 import { BoardLabel } from '../BoardLabel'
+import { VictoryFanOut } from '..'
+import { useVictoryAnimationStore } from '#/stores/victory-animation'
 
 interface TriPeaksBoardBaseProps {
   useGame: () => UseTriPeaksResult
@@ -33,6 +35,7 @@ export default function TriPeaksBoardBase({
   onHowToPlay,
   variantId,
 }: TriPeaksBoardBaseProps) {
+  const { isAnimating: isVictoryAnimating } = useVictoryAnimationStore()
   const {
     cells,
     availableCells,
@@ -165,7 +168,8 @@ export default function TriPeaksBoardBase({
           <div
             className={cn(
               'mx-auto w-fit flex flex-col items-center gap-8',
-              status !== 'playing' && status !== 'idle' && 'opacity-50',
+              status === 'lost' && 'opacity-50',
+              isVictoryAnimating && 'pointer-events-none',
             )}
           >
             {/* Pyramid */}
@@ -205,6 +209,8 @@ export default function TriPeaksBoardBase({
             </div>
           </div>
         </div>
+
+        <VictoryFanOut isVisible={status === 'won'} />
 
         {/* Bottom Action Rail - pinned to bottom */}
         <div className="flex w-full justify-center pb-6 pt-2">

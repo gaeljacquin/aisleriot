@@ -63,10 +63,6 @@ export default function AcmeWaste({
       <CardSlot role="waste" className="absolute inset-0" />
       {waste.map((card, index) => {
         const isTop = index === waste.length - 1
-        const isVisible =
-          isTop || (waste.length > 1 && index === waste.length - 2)
-
-        if (!isVisible && !devMoveAnywhere) return null
 
         return (
           <div key={card.id} className="absolute inset-0">
@@ -75,7 +71,7 @@ export default function AcmeWaste({
               card={card}
               cardIndex={index}
               onDoubleClick={isTop ? onDoubleClick : undefined}
-              isDraggable={isTop || devMoveAnywhere}
+              isDraggable={isTop || !!devMoveAnywhere}
             />
           </div>
         )

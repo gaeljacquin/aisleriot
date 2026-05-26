@@ -29,7 +29,7 @@ function AcmeFoundationPile({ entry }: { entry: AcmeFoundationEntry }) {
     },
   })
 
-  const topCard = entry.cards[entry.cards.length - 1]
+  // const _topCard = entry.cards[entry.cards.length - 1]
 
   return (
     <div
@@ -49,11 +49,11 @@ function AcmeFoundationPile({ entry }: { entry: AcmeFoundationEntry }) {
         baseRank={variant.foundation_base_rank}
         className="absolute inset-0"
       />
-      {entry.cards.length > 0 && (
-        <div className="absolute inset-0">
-          <AcmeCard card={topCard} />
+      {entry.cards.map((card) => (
+        <div key={card.id} className="absolute inset-0">
+          <AcmeCard card={card} />
         </div>
-      )}
+      ))}
     </div>
   )
 }

@@ -29,6 +29,8 @@ import { useDevModeStore } from '#/stores/dev-mode'
 import Stock from '../Stock'
 import StockEmptyIndicator from '../StockEmptyIndicator'
 import { BoardLabel } from '../BoardLabel'
+import { VictoryFanOut } from '..'
+import { useVictoryAnimationStore } from '#/stores/victory-animation'
 import {
   AcmeTableau,
   AcmeReserve,
@@ -42,6 +44,7 @@ interface AcmeBoardProps {
 }
 
 export default function AcmeBoard({ onHowToPlay }: AcmeBoardProps) {
+  const { isAnimating: isVictoryAnimating } = useVictoryAnimationStore()
   const {
     tableau,
     foundation,
@@ -227,7 +230,8 @@ export default function AcmeBoard({ onHowToPlay }: AcmeBoardProps) {
             <div
               className={cn(
                 'mx-auto w-full lg:w-fit flex gap-[calc(var(--card-gap-free)*4)] items-start',
-                isGameOver && 'opacity-50',
+                status === 'lost' && 'opacity-50',
+                isVictoryAnimating && 'pointer-events-none',
               )}
             >
               {/* Left Column: Stock/Waste and Reserve */}
@@ -288,6 +292,8 @@ export default function AcmeBoard({ onHowToPlay }: AcmeBoardProps) {
               </div>
             </div>
           </div>
+
+          <VictoryFanOut isVisible={status === 'won'} />
 
           <div className="flex w-full justify-center pb-6 pt-2">
             <ActionRail

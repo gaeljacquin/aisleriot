@@ -35,6 +35,9 @@ export default function Card({
       onClick={onClick}
       role={onClick ? 'button' : undefined}
       aria-label={faceUp ? `${rank} of ${suit}` : 'Face-down card'}
+      data-card-id={`${rank}-${suit}`}
+      data-face-up={faceUp}
+      draggable="false"
     >
       <CardPrimitive
         suit={suit}

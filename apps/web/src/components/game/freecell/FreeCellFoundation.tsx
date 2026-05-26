@@ -29,7 +29,7 @@ export default function FreeCellFoundation({
     data: droppableData,
   })
 
-  const topCard = cards.length > 0 ? cards[cards.length - 1] : null
+  // const _topCard = cards.length > 0 ? cards[cards.length - 1] : null
 
   return (
     <div
@@ -51,15 +51,15 @@ export default function FreeCellFoundation({
         />
       </div>
 
-      {topCard && (
-        <div className="absolute inset-0">
+      {cards.map((card) => (
+        <div key={card.id} className="absolute inset-0">
           <Card
-            suit={topCard.suit}
-            rank={topCard.rank}
-            faceUp={topCard.faceUp}
+            suit={card.suit}
+            rank={card.rank}
+            faceUp={card.faceUp}
           />
         </div>
-      )}
+      ))}
     </div>
   )
 }

@@ -51,10 +51,7 @@ export default function KlondikeWaste({
   const visible = currentDealCount > 0 ? waste.slice(-currentDealCount) : []
 
   if (drawCount === 1) {
-    const top = visible.length > 0 ? visible[0] : null
     const isDragging = draggingFromIndex !== null
-    const underCard =
-      isDragging && waste.length > 1 ? waste[waste.length - 2] : null
 
     return (
       <div
@@ -66,40 +63,38 @@ export default function KlondikeWaste({
       >
         {baseSlot}
 
-        {/* Card under the dragging card — so we don't see an empty slot */}
-        {underCard && (
-          <div className="absolute inset-0">
-            <Card
-              suit={underCard.suit}
-              rank={underCard.rank}
-              faceUp={underCard.faceUp}
-            />
-          </div>
-        )}
+        {/* Render all cards so VictoryFanOut captures them */}
+        {waste.map((card, index) => {
+          const isTop = index === waste.length - 1
+          const isDraggingThis = isTop && isDragging
 
-        {/* Top card — always rendered so drag stays alive; hidden via opacity when dragging */}
-        {top && (
-          <div className="absolute inset-0">
-            <KlondikeCard
-              card={top}
-              pileId="waste"
-              fromIndex={waste.length - 1}
-              dragCards={[top]}
-              isHidden={isDragging}
-              onDoubleClick={onDoubleClick}
-            />
-          </div>
-        )}
+          return (
+            <div key={card.id} className="absolute inset-0">
+              {isTop ? (
+                <KlondikeCard
+                  card={card}
+                  pileId="waste"
+                  fromIndex={index}
+                  dragCards={[card]}
+                  isHidden={isDraggingThis}
+                  onDoubleClick={onDoubleClick}
+                />
+              ) : (
+                <Card
+                  suit={card.suit}
+                  rank={card.rank}
+                  faceUp={card.faceUp}
+                  className={isDraggingThis ? 'opacity-0' : ''}
+                />
+              )}
+            </div>
+          )
+        })}
       </div>
     )
   }
 
   // Draw 3
-  const underCard =
-    waste.length > visible.length
-      ? waste[waste.length - visible.length - 1]
-      : null
-
   return (
     <div
       className="relative flex-shrink-0"
@@ -113,16 +108,12 @@ export default function KlondikeWaste({
     >
       {baseSlot}
 
-      {/* Card under the current deal — visible if dragging the last card of the deal */}
-      {underCard && (
-        <div className="absolute top-0 left-0">
-          <Card
-            suit={underCard.suit}
-            rank={underCard.rank}
-            faceUp={underCard.faceUp}
-          />
+      {/* Render hidden cards underneath the visible ones */}
+      {waste.slice(0, -visible.length).map((card) => (
+        <div key={card.id} className="absolute top-0 left-0">
+          <Card suit={card.suit} rank={card.rank} faceUp={card.faceUp} />
         </div>
-      )}
+      ))}
 
       {visible.map((card, i) => {
         // absolute index in the full waste array is length - visibleCount + i

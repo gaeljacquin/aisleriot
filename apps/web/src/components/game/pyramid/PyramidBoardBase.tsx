@@ -25,6 +25,8 @@ import {
 } from '@hugeicons/core-free-icons'
 import { useDevModeStore } from '#/stores/dev-mode'
 import { BoardLabel } from '../BoardLabel'
+import { VictoryFanOut } from '..'
+import { useVictoryAnimationStore } from '#/stores/victory-animation'
 
 export interface PyramidBoardBaseStockRowContext<T extends UsePyramidResult> {
   stockCount: number
@@ -158,6 +160,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
   renderStockRow,
   onBeforeCellClick,
 }: PyramidBoardBaseProps<T>) {
+  const { isAnimating: isVictoryAnimating } = useVictoryAnimationStore()
   const {
     cells,
     availableCells,
@@ -372,7 +375,8 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
           <div
             className={cn(
               'mx-auto w-fit flex flex-col',
-              status !== 'playing' && status !== 'idle' && 'opacity-50',
+              status === 'lost' && 'opacity-50',
+              isVictoryAnimating && 'pointer-events-none',
             )}
             style={{ gap: 'var(--stock-row-mt)' }}
           >
@@ -417,6 +421,8 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
             )}
           </div>
         </div>
+
+        <VictoryFanOut isVisible={status === 'won'} />
 
         {/* Bottom Action Rail - pinned to bottom */}
         <div className="flex w-full justify-center pb-6 pt-2">

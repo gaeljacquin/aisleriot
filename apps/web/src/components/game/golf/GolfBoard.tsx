@@ -18,6 +18,8 @@ import {
   ViewIcon,
 } from '@hugeicons/core-free-icons'
 import { useDevModeStore } from '#/stores/dev-mode'
+import { VictoryFanOut } from '..'
+import { useVictoryAnimationStore } from '#/stores/victory-animation'
 import GolfColumn from './GolfColumn'
 import { WasteRefContext } from './WasteRefContext'
 
@@ -26,6 +28,7 @@ interface GolfBoardProps {
 }
 
 export function GolfBoard({ onHowToPlay }: GolfBoardProps) {
+  const { isAnimating: isVictoryAnimating } = useVictoryAnimationStore()
   const {
     columns,
     wasteTop,
@@ -155,7 +158,8 @@ export function GolfBoard({ onHowToPlay }: GolfBoardProps) {
           <div
             className={cn(
               'mx-auto w-fit flex flex-col items-center gap-8',
-              status !== 'playing' && status !== 'idle' && 'opacity-50',
+              status === 'lost' && 'opacity-50',
+              isVictoryAnimating && 'pointer-events-none',
             )}
           >
             {/* Tableau */}
@@ -202,6 +206,8 @@ export function GolfBoard({ onHowToPlay }: GolfBoardProps) {
             </div>
           </div>
         </div>
+
+        <VictoryFanOut isVisible={status === 'won'} />
 
         {/* Bottom Action Rail - pinned to bottom */}
         <div className="flex w-full justify-center pb-6 pt-2">

@@ -43,6 +43,8 @@ import {
   ViewIcon,
 } from '@hugeicons/core-free-icons'
 import { useDevModeStore } from '#/stores/dev-mode'
+import { VictoryFanOut } from '..'
+import { useVictoryAnimationStore } from '#/stores/victory-animation'
 
 interface AgnesBernauerBoardProps {
   onHowToPlay: () => void
@@ -51,6 +53,7 @@ interface AgnesBernauerBoardProps {
 export default function AgnesBernauerBoard({
   onHowToPlay,
 }: AgnesBernauerBoardProps) {
+  const { isAnimating: isVictoryAnimating } = useVictoryAnimationStore()
   const state = useAgnesBernauerStore()
   const { isDevMode, toggleDevMode } = useDevModeStore()
   const variant = getVariant('agnes-bernauer')
@@ -215,7 +218,8 @@ export default function AgnesBernauerBoard({
             <div
               className={cn(
                 'mx-auto w-full lg:w-fit flex flex-col items-center',
-                isGameOver && 'opacity-50',
+                state.status === 'lost' && 'opacity-50',
+                isVictoryAnimating && 'pointer-events-none',
               )}
               style={{ gap: 'var(--row-gap)' }}
             >
@@ -282,6 +286,8 @@ export default function AgnesBernauerBoard({
               </div>
             </div>
           </div>
+
+          <VictoryFanOut isVisible={state.status === 'won'} />
 
           <div className="flex w-full justify-center pb-6 pt-2">
             <ActionRail
