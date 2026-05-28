@@ -155,6 +155,7 @@ export function CardBackComponent({
         className,
       )}
       style={{ background: CARD_BACK_STYLES[back] }}
+      draggable="false"
     >
       {/* Pattern Overlays */}
       {back === 'slate' && (
@@ -175,6 +176,7 @@ export function CardBackComponent({
               src="/g-logo.png"
               alt=""
               className="h-[40cqh] w-[40cqw] object-contain opacity-90 @max-h-[24px]:hidden"
+              draggable="false"
             />
           </div>
         </>
@@ -207,7 +209,11 @@ export default function CardPrimitive({
 
   if (cardStyle === 'minimal') {
     return (
-      <div className={className} style={{ width: '100%', height: '100%' }}>
+      <div
+        className={className}
+        style={{ width: '100%', height: '100%' }}
+        draggable="false"
+      >
         <MinimalCard suit={suit} rank={rank} />
       </div>
     )
@@ -216,7 +222,11 @@ export default function CardPrimitive({
   const DeckComponent = DECK_COMPONENTS[cardStyle]
 
   return (
-    <div className={className} style={{ width: '100%', height: '100%' }}>
+    <div
+      className={className}
+      style={{ width: '100%', height: '100%' }}
+      draggable="false"
+    >
       <Suspense
         fallback={
           <div className="h-full w-full rounded-lg bg-white opacity-50" />

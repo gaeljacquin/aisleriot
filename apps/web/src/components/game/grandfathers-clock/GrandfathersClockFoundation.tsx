@@ -27,7 +27,7 @@ export default function GrandfathersClockFoundation({
     data: droppableData,
   })
 
-  const topCard = cards.length > 0 ? cards[cards.length - 1] : null
+  // const _topCard = cards.length > 0 ? cards[cards.length - 1] : null
 
   return (
     <div
@@ -45,11 +45,11 @@ export default function GrandfathersClockFoundation({
         <CardSlot role="foundation" label={label} />
       </div>
 
-      {topCard && (
-        <div className="absolute inset-0">
-          <GrandfathersClockCard card={topCard} />
+      {cards.map((card) => (
+        <div key={card.id} className="absolute inset-0">
+          <GrandfathersClockCard card={card} />
         </div>
-      )}
+      ))}
     </div>
   )
 }

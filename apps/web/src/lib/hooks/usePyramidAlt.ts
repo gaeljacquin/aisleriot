@@ -36,6 +36,7 @@ export function usePyramidAlt(): UsePyramidAltResult {
     cells,
     availableCells,
     wasteTop,
+    wasteCount: storeState.waste.length,
     stockCount: storeState.stock.length,
     canDraw: rulesCanDraw(storeState) && storeState.status === 'playing',
     canRecycle:

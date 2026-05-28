@@ -25,10 +25,13 @@ import {
 } from '@hugeicons/core-free-icons'
 import { useDevModeStore } from '#/stores/dev-mode'
 import { BoardLabel } from '../BoardLabel'
+import { VictoryFanOut } from '..'
+import { useVictoryAnimationStore } from '#/stores/victory-animation'
 
 export interface PyramidBoardBaseStockRowContext<T extends UsePyramidResult> {
   stockCount: number
   wasteTop: CardType | null
+  wasteCount: number
   canDraw: boolean
   canRecycle: boolean
   recyclesRemaining: number
@@ -65,6 +68,7 @@ function PyramidTable({
 
 function PyramidStockRow({
   stockCount,
+  wasteCount,
   canDraw,
   canRecycle,
   onDraw,
@@ -75,6 +79,7 @@ function PyramidStockRow({
   wasteHighlighted,
 }: {
   stockCount: number
+  wasteCount: number
   canDraw: boolean
   canRecycle: boolean
   onDraw: () => void
@@ -89,7 +94,7 @@ function PyramidStockRow({
       <div className="flex items-center gap-6 md:gap-10">
         <div className="flex items-center gap-2">
           <BoardLabel
-            label="Stock"
+            label={`Stock (${stockCount})`}
             className="[writing-mode:vertical-lr] rotate-180"
           />
           <div
@@ -130,7 +135,7 @@ function PyramidStockRow({
             />
           </div>
           <BoardLabel
-            label="Waste"
+            label={`Waste (${wasteCount})`}
             color="gold"
             className="[writing-mode:vertical-lr]"
           />
@@ -158,10 +163,12 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
   renderStockRow,
   onBeforeCellClick,
 }: PyramidBoardBaseProps<T>) {
+  const { isAnimating: isVictoryAnimating } = useVictoryAnimationStore()
   const {
     cells,
     availableCells,
     wasteTop,
+    wasteCount,
     stockCount,
     canDraw,
     canRecycle,
@@ -372,18 +379,24 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
           <div
             className={cn(
               'mx-auto w-fit flex flex-col',
-              status !== 'playing' && status !== 'idle' && 'opacity-50',
+              status === 'lost' && 'opacity-50',
+              isVictoryAnimating && 'pointer-events-none',
             )}
             style={{ gap: 'var(--stock-row-mt)' }}
           >
             {/* Pyramid Table */}
-            <div className="flex justify-center">
-              <PyramidTable
-                cells={cells}
-                availableCells={availableCells}
-                selectedId={selectedId}
-                onCellClick={handleCellClick}
+            <div className="flex flex-col items-center gap-2">
+              <BoardLabel
+                label={`Tableau (${cells.filter((c) => !c.removed).length})`}
               />
+              <div className="flex justify-center">
+                <PyramidTable
+                  cells={cells}
+                  availableCells={availableCells}
+                  selectedId={selectedId}
+                  onCellClick={handleCellClick}
+                />
+              </div>
             </div>
 
             {renderStockRow ? (
@@ -395,6 +408,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
                 onDraw,
                 onRecycle,
                 wasteTop,
+                wasteCount,
                 selectedCellId: selectedId,
                 handleWasteTopClick,
                 clearSelection,
@@ -405,6 +419,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
             ) : (
               <PyramidStockRow
                 stockCount={stockCount}
+                wasteCount={wasteCount}
                 canDraw={canDraw}
                 canRecycle={canRecycle}
                 onDraw={onDraw}
@@ -417,6 +432,8 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
             )}
           </div>
         </div>
+
+        <VictoryFanOut isVisible={status === 'won'} />
 
         {/* Bottom Action Rail - pinned to bottom */}
         <div className="flex w-full justify-center pb-6 pt-2">

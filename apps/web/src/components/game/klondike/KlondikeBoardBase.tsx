@@ -33,6 +33,8 @@ import {
 } from '@hugeicons/core-free-icons'
 import { useDevModeStore } from '#/stores/dev-mode'
 import { BoardLabel } from '../BoardLabel'
+import { VictoryFanOut } from '..'
+import { useVictoryAnimationStore } from '#/stores/victory-animation'
 
 const OVERLAY_CARD_OFFSET = 40
 const CARD_HEIGHT = 160
@@ -46,6 +48,7 @@ export default function KlondikeBoardBase({
   useGame,
   onHowToPlay,
 }: KlondikeBoardBaseProps) {
+  const { isAnimating: isVictoryAnimating } = useVictoryAnimationStore()
   const {
     tableau,
     foundation,
@@ -242,7 +245,8 @@ export default function KlondikeBoardBase({
           <div
             className={cn(
               'mx-auto w-fit flex flex-col gap-10',
-              isGameOver && 'opacity-50',
+              status === 'lost' && 'opacity-50',
+              isVictoryAnimating && 'pointer-events-none',
             )}
           >
             <div
@@ -253,7 +257,10 @@ export default function KlondikeBoardBase({
               }}
             >
               <div className="flex flex-col items-start gap-2">
-                <BoardLabel label="Stock" className="w-full" />
+                <BoardLabel
+                  label={`Stock (${stockCount})`}
+                  className="w-full"
+                />
                 <KlondikeStock
                   stockCount={stockCount}
                   stockEmpty={stockEmpty}
@@ -262,7 +269,11 @@ export default function KlondikeBoardBase({
                 />
               </div>
               <div className="flex flex-col items-start gap-2">
-                <BoardLabel label="Waste" color="gold" className="w-full" />
+                <BoardLabel
+                  label={`Waste (${waste.length})`}
+                  color="gold"
+                  className="w-full"
+                />
                 <KlondikeWaste
                   waste={waste}
                   drawCount={drawCount}
@@ -300,7 +311,12 @@ export default function KlondikeBoardBase({
 
             {/* Tableau */}
             <div className="flex flex-col items-center gap-2">
-              <BoardLabel label="Tableau" />
+              <BoardLabel
+                label={`Tableau (${tableau.reduce(
+                  (acc, col) => acc + col.cards.length,
+                  0,
+                )})`}
+              />
               <div
                 className="grid grid-cols-7"
                 style={{
@@ -329,6 +345,8 @@ export default function KlondikeBoardBase({
             </div>
           </div>
         </div>
+
+        <VictoryFanOut isVisible={status === 'won'} />
 
         {/* Bottom Action Rail - pinned to bottom */}
         <div className="flex w-full justify-center pb-6 pt-2">

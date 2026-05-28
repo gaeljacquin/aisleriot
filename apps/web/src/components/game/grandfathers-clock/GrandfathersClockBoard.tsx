@@ -29,6 +29,8 @@ import { GrandfathersClockCard } from './GrandfathersClockCard'
 import GrandfathersClockFoundation from './GrandfathersClockFoundation'
 import GrandfathersClockColumn from './GrandfathersClockColumn'
 import { BoardLabel } from '../BoardLabel'
+import { VictoryFanOut } from '..'
+import { useVictoryAnimationStore } from '#/stores/victory-animation'
 import type {
   DraggableCardData,
   DroppableZoneData,
@@ -56,6 +58,7 @@ const CLOCK_POSITIONS = [
 export default function GrandfathersClockBoard({
   onHowToPlay,
 }: GrandfathersClockBoardProps) {
+  const { isAnimating: isVictoryAnimating } = useVictoryAnimationStore()
   const {
     tableau,
     foundation,
@@ -258,7 +261,8 @@ export default function GrandfathersClockBoard({
             <div
               className={cn(
                 'mx-auto w-full flex flex-col 2xl:flex-row-reverse items-center 2xl:items-start 2xl:justify-center gap-6 sm:gap-6 md:gap-4 lg:gap-2 xl:gap-1 2xl:gap-16 2xl:pt-8',
-                isGameOver && 'opacity-50',
+                status === 'lost' && 'opacity-50',
+                isVictoryAnimating && 'pointer-events-none',
               )}
             >
               {/* Clock Foundations */}
@@ -293,7 +297,12 @@ export default function GrandfathersClockBoard({
 
               {/* Tableau */}
               <div className="flex flex-col items-center gap-4 md:gap-1 md:-mt-4 lg:-mt-10 xl:-mt-12 2xl:mt-0">
-                <BoardLabel label="Tableau" />
+                <BoardLabel
+                  label={`Tableau (${tableau.reduce(
+                    (acc, col) => acc + col.cards.length,
+                    0,
+                  )})`}
+                />
                 <div className="flex flex-wrap sm:flex-nowrap 2xl:grid 2xl:grid-cols-4 justify-center gap-2 sm:gap-3 md:gap-4 2xl:gap-x-8 2xl:gap-y-12">
                   {tableau.map((col) => (
                     <GrandfathersClockColumn
@@ -307,6 +316,8 @@ export default function GrandfathersClockBoard({
               </div>
             </div>
           </div>
+
+          <VictoryFanOut isVisible={status === 'won'} />
 
           <div className="flex w-full justify-center pb-6 pt-2">
             <ActionRail

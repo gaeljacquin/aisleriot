@@ -31,6 +31,8 @@ import {
 } from '@hugeicons/core-free-icons'
 import { useDevModeStore } from '#/stores/dev-mode'
 import { BoardLabel } from '../BoardLabel'
+import { VictoryFanOut } from '..'
+import { useVictoryAnimationStore } from '#/stores/victory-animation'
 import SimpleSimonTableau from './SimpleSimonTableau'
 import SimpleSimonFoundation from './SimpleSimonFoundation'
 import SimpleSimonCard from './SimpleSimonCard'
@@ -42,6 +44,7 @@ interface SimpleSimonBoardProps {
 export default function SimpleSimonBoard({
   onHowToPlay,
 }: SimpleSimonBoardProps) {
+  const { isAnimating: isVictoryAnimating } = useVictoryAnimationStore()
   const {
     tableau,
     foundations,
@@ -222,7 +225,8 @@ export default function SimpleSimonBoard({
           <div
             className={cn(
               'mx-auto w-fit flex flex-col items-center gap-10',
-              status !== 'playing' && 'opacity-50',
+              status === 'lost' && 'opacity-50',
+              isVictoryAnimating && 'pointer-events-none',
             )}
           >
             <div className="flex flex-col items-center gap-2">
@@ -246,7 +250,12 @@ export default function SimpleSimonBoard({
             </div>
 
             <div className="flex flex-col items-center gap-2">
-              <BoardLabel label="Tableau" />
+              <BoardLabel
+                label={`Tableau (${tableau.reduce(
+                  (acc, column) => acc + column.length,
+                  0,
+                )})`}
+              />
               <SimpleSimonTableau
                 tableau={tableau}
                 draggableFromIndex={draggableFromIndex}
@@ -255,6 +264,8 @@ export default function SimpleSimonBoard({
             </div>
           </div>
         </div>
+
+        <VictoryFanOut isVisible={status === 'won'} />
 
         <div className="flex w-full justify-center pb-6 pt-2">
           <ActionRail actions={actions} devActions={devActions} />

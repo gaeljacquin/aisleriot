@@ -43,7 +43,7 @@ export function ActionRail({
   return (
     <div
       className={cn(
-        'relative flex gap-2 p-1.5 rounded-full border border-gold/40 shadow-card-lift overflow-hidden',
+        'relative flex gap-2 p-1.5 rounded-full border border-gold/40 shadow-card-lift overflow-hidden z-[1000]',
         'bg-linear-to-b from-felt-light to-felt-deep dark:from-felt-light/40 dark:to-felt-deep/60',
         'shadow-[0_8px_32px_-8px_rgba(0,0,0,0.5)]',
         orientation === 'vertical'

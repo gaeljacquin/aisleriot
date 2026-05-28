@@ -37,7 +37,7 @@ export default function SimpleSimonFoundation({
     data: droppableData,
   })
 
-  const topCard = cards.length > 0 ? cards[cards.length - 1] : null
+  // const _topCard = cards.length > 0 ? cards[cards.length - 1] : null
 
   return (
     <div
@@ -57,11 +57,11 @@ export default function SimpleSimonFoundation({
         baseRank={variant.foundation_base_rank}
         className="absolute inset-0"
       />
-      {topCard && (
-        <div className="absolute inset-0">
-          <SimpleSimonCard card={topCard} />
+      {cards.map((card) => (
+        <div key={card.id} className="absolute inset-0">
+          <SimpleSimonCard card={card} />
         </div>
-      )}
+      ))}
     </div>
   )
 }

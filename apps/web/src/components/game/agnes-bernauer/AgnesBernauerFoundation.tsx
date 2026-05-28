@@ -57,8 +57,8 @@ export default function AgnesBernauerFoundation({
     },
   })
 
-  const topCard = cards.length > 0 ? cards[cards.length - 1] : null
-  const beneathCard = cards.length > 1 ? cards[cards.length - 2] : null
+  // const _topCard = cards.length > 0 ? cards[cards.length - 1] : null
+  // const _beneathCard = cards.length > 1 ? cards[cards.length - 2] : null
 
   return (
     <div
@@ -72,38 +72,39 @@ export default function AgnesBernauerFoundation({
         height: 'var(--card-height, 10rem)',
       }}
     >
-      <CardSlot role="foundation" suit={suit} baseRank={baseRank} />
+      <CardSlot
+        role="foundation"
+        suit={suit}
+        baseRank={baseRank}
+        className="absolute inset-0"
+      />
 
-      {isDraggingTop && beneathCard && (
-        <div className="absolute inset-0">
-          <Card
-            suit={beneathCard.suit}
-            rank={beneathCard.rank}
-            faceUp={beneathCard.faceUp}
-          />
-        </div>
-      )}
+      {cards.map((card, index) => {
+        const isTop = index === cards.length - 1
+        const isDraggingThis = isTop && isDraggingTop
 
-      {topCard && (
-        <div className="absolute inset-0">
-          {draggable ? (
-            <AgnesBernauerCard
-              card={topCard}
-              pileId={id}
-              fromIndex={cards.length - 1}
-              dragCards={[topCard]}
-              isHidden={isDraggingTop}
-              disabled={disabled}
-            />
-          ) : (
-            <Card
-              suit={topCard.suit}
-              rank={topCard.rank}
-              faceUp={topCard.faceUp}
-            />
-          )}
-        </div>
-      )}
+        return (
+          <div key={card.id} className="absolute inset-0">
+            {isTop && draggable ? (
+              <AgnesBernauerCard
+                card={card}
+                pileId={id}
+                fromIndex={index}
+                dragCards={[card]}
+                isHidden={isDraggingThis}
+                disabled={disabled}
+              />
+            ) : (
+              <Card
+                suit={card.suit}
+                rank={card.rank}
+                faceUp={card.faceUp}
+                className={isDraggingThis ? 'opacity-0' : ''}
+              />
+            )}
+          </div>
+        )
+      })}
     </div>
   )
 }

@@ -12,6 +12,7 @@ export interface UsePyramidResult {
   cells: PyramidCell[]
   availableCells: PyramidCellId[]
   wasteTop: Card | null
+  wasteCount: number
   stockCount: number
   canDraw: boolean
   canRecycle: boolean
@@ -48,6 +49,7 @@ export function usePyramid(): UsePyramidResult {
     cells,
     availableCells,
     wasteTop,
+    wasteCount: storeState.waste.length,
     stockCount: storeState.stock.length,
     canDraw: rulesCanDraw(storeState) && storeState.status === 'playing',
     canRecycle:

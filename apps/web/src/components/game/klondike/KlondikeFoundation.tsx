@@ -55,8 +55,8 @@ export default function KlondikeFoundation({
     },
   })
 
-  const topCard = cards.length > 0 ? cards[cards.length - 1] : null
-  const beneathCard = cards.length > 1 ? cards[cards.length - 2] : null
+  // const _topCard = cards.length > 0 ? cards[cards.length - 1] : null
+  // const _beneathCard = cards.length > 1 ? cards[cards.length - 2] : null
 
   return (
     <div
@@ -77,37 +77,31 @@ export default function KlondikeFoundation({
         baseRank={variant.foundation_base_rank}
       />
 
-      {/* Card beneath top — shown while the top card is being dragged */}
-      {isDraggingTop && beneathCard && (
-        <div className="absolute inset-0">
-          <Card
-            suit={beneathCard.suit}
-            rank={beneathCard.rank}
-            faceUp={beneathCard.faceUp}
-          />
-        </div>
-      )}
+      {cards.map((card, index) => {
+        const isTop = index === cards.length - 1
+        const isDraggingThis = isTop && isDraggingTop
 
-      {/* Top card — stays mounted (hidden when dragging) so drag stays alive */}
-      {topCard && (
-        <div className="absolute inset-0">
-          {draggable ? (
-            <KlondikeCard
-              card={topCard}
-              pileId={id}
-              fromIndex={cards.length - 1}
-              dragCards={[topCard]}
-              isHidden={isDraggingTop}
-            />
-          ) : (
-            <Card
-              suit={topCard.suit}
-              rank={topCard.rank}
-              faceUp={topCard.faceUp}
-            />
-          )}
-        </div>
-      )}
+        return (
+          <div key={card.id} className="absolute inset-0">
+            {isTop && draggable ? (
+              <KlondikeCard
+                card={card}
+                pileId={id}
+                fromIndex={index}
+                dragCards={[card]}
+                isHidden={isDraggingThis}
+              />
+            ) : (
+              <Card
+                suit={card.suit}
+                rank={card.rank}
+                faceUp={card.faceUp}
+                className={isDraggingThis ? 'opacity-0' : ''}
+              />
+            )}
+          </div>
+        )
+      })}
     </div>
   )
 }

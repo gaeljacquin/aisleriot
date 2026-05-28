@@ -105,6 +105,11 @@ function AcmeTableauColumn({
     },
   })
 
+  const containerHeight =
+    entry.cards.length === 0
+      ? 'var(--card-height)'
+      : `calc(((${entry.cards.length} - 1) * var(--card-offset-free)) + var(--card-height))`
+
   return (
     <div
       ref={setNodeRef}
@@ -114,7 +119,7 @@ function AcmeTableauColumn({
       )}
       style={{
         width: 'var(--card-width)',
-        minHeight: 'var(--card-height)',
+        minHeight: containerHeight,
       }}
     >
       <CardSlot role="tableau" showLogo className="absolute top-0 left-0" />

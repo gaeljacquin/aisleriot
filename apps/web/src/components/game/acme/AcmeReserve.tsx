@@ -55,12 +55,17 @@ export default function AcmeReserve({
   onDoubleClick,
   devMoveAnywhere,
 }: AcmeReserveProps) {
+  const containerHeight =
+    reserve.length === 0
+      ? 'var(--card-height)'
+      : `calc(((${reserve.length} - 1) * var(--card-offset-free)) + var(--card-height))`
+
   return (
     <div
       className="relative"
       style={{
         width: 'var(--card-width)',
-        minHeight: 'var(--card-height)',
+        minHeight: containerHeight,
       }}
     >
       <CardSlot role="reserve" className="absolute top-0 left-0" />

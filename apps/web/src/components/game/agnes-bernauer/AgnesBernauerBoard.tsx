@@ -43,6 +43,8 @@ import {
   ViewIcon,
 } from '@hugeicons/core-free-icons'
 import { useDevModeStore } from '#/stores/dev-mode'
+import { VictoryFanOut } from '..'
+import { useVictoryAnimationStore } from '#/stores/victory-animation'
 
 interface AgnesBernauerBoardProps {
   onHowToPlay: () => void
@@ -51,6 +53,7 @@ interface AgnesBernauerBoardProps {
 export default function AgnesBernauerBoard({
   onHowToPlay,
 }: AgnesBernauerBoardProps) {
+  const { isAnimating: isVictoryAnimating } = useVictoryAnimationStore()
   const state = useAgnesBernauerStore()
   const { isDevMode, toggleDevMode } = useDevModeStore()
   const variant = getVariant('agnes-bernauer')
@@ -215,14 +218,15 @@ export default function AgnesBernauerBoard({
             <div
               className={cn(
                 'mx-auto w-full lg:w-fit flex flex-col items-center',
-                isGameOver && 'opacity-50',
+                state.status === 'lost' && 'opacity-50',
+                isVictoryAnimating && 'pointer-events-none',
               )}
               style={{ gap: 'var(--row-gap)' }}
             >
               {/* Row 1: Stock and Foundations */}
               <div className="flex justify-center gap-4 w-full">
                 <div className="flex flex-col items-center gap-2">
-                  <BoardLabel label="Stock" />
+                  <BoardLabel label={`Stock (${state.stock.length})`} />
                   <Stock
                     count={state.stock.length}
                     onClick={state.flipStock}
@@ -251,7 +255,12 @@ export default function AgnesBernauerBoard({
 
               {/* Row 2: Reserve (7 piles aligned with Tableau) */}
               <div className="flex flex-col items-center gap-2">
-                <BoardLabel label="Reserve" />
+                <BoardLabel
+                  label={`Reserve (${Object.values(state.reserve).reduce(
+                    (acc, pile) => acc + pile.length,
+                    0,
+                  )})`}
+                />
                 <div className="flex justify-center gap-4 w-full">
                   {RESERVE_IDS.map((id) => (
                     <AgnesBernauerReserve
@@ -266,7 +275,12 @@ export default function AgnesBernauerBoard({
 
               {/* Row 3: Tableau */}
               <div className="flex flex-col items-center gap-2">
-                <BoardLabel label="Tableau" />
+                <BoardLabel
+                  label={`Tableau (${Object.values(state.tableau).reduce(
+                    (acc, pile) => acc + pile.length,
+                    0,
+                  )})`}
+                />
                 <div className="flex justify-center gap-4 w-full">
                   {TABLEAU_IDS.map((id) => (
                     <AgnesBernauerColumn
@@ -282,6 +296,8 @@ export default function AgnesBernauerBoard({
               </div>
             </div>
           </div>
+
+          <VictoryFanOut isVisible={state.status === 'won'} />
 
           <div className="flex w-full justify-center pb-6 pt-2">
             <ActionRail
