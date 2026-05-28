@@ -31,6 +31,7 @@ import { useVictoryAnimationStore } from '#/stores/victory-animation'
 export interface PyramidBoardBaseStockRowContext<T extends UsePyramidResult> {
   stockCount: number
   wasteTop: CardType | null
+  wasteCount: number
   canDraw: boolean
   canRecycle: boolean
   recyclesRemaining: number
@@ -67,6 +68,7 @@ function PyramidTable({
 
 function PyramidStockRow({
   stockCount,
+  wasteCount,
   canDraw,
   canRecycle,
   onDraw,
@@ -77,6 +79,7 @@ function PyramidStockRow({
   wasteHighlighted,
 }: {
   stockCount: number
+  wasteCount: number
   canDraw: boolean
   canRecycle: boolean
   onDraw: () => void
@@ -91,7 +94,7 @@ function PyramidStockRow({
       <div className="flex items-center gap-6 md:gap-10">
         <div className="flex items-center gap-2">
           <BoardLabel
-            label="Stock"
+            label={`Stock (${stockCount})`}
             className="[writing-mode:vertical-lr] rotate-180"
           />
           <div
@@ -132,7 +135,7 @@ function PyramidStockRow({
             />
           </div>
           <BoardLabel
-            label="Waste"
+            label={`Waste (${wasteCount})`}
             color="gold"
             className="[writing-mode:vertical-lr]"
           />
@@ -165,6 +168,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
     cells,
     availableCells,
     wasteTop,
+    wasteCount,
     stockCount,
     canDraw,
     canRecycle,
@@ -381,13 +385,18 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
             style={{ gap: 'var(--stock-row-mt)' }}
           >
             {/* Pyramid Table */}
-            <div className="flex justify-center">
-              <PyramidTable
-                cells={cells}
-                availableCells={availableCells}
-                selectedId={selectedId}
-                onCellClick={handleCellClick}
+            <div className="flex flex-col items-center gap-2">
+              <BoardLabel
+                label={`Tableau (${cells.filter((c) => !c.removed).length})`}
               />
+              <div className="flex justify-center">
+                <PyramidTable
+                  cells={cells}
+                  availableCells={availableCells}
+                  selectedId={selectedId}
+                  onCellClick={handleCellClick}
+                />
+              </div>
             </div>
 
             {renderStockRow ? (
@@ -399,6 +408,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
                 onDraw,
                 onRecycle,
                 wasteTop,
+                wasteCount,
                 selectedCellId: selectedId,
                 handleWasteTopClick,
                 clearSelection,
@@ -409,6 +419,7 @@ export default function PyramidBoardBase<T extends UsePyramidResult>({
             ) : (
               <PyramidStockRow
                 stockCount={stockCount}
+                wasteCount={wasteCount}
                 canDraw={canDraw}
                 canRecycle={canRecycle}
                 onDraw={onDraw}

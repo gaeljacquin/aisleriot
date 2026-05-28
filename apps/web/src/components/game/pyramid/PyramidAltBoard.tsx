@@ -56,7 +56,7 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
           >
             <div className="flex items-center gap-2">
               <BoardLabel
-                label="Stock"
+                label={`Stock (${ctx.stockCount})`}
                 className="[writing-mode:vertical-lr] rotate-180"
               />
               <div
@@ -200,7 +200,7 @@ export default function PyramidAltBoard({ onHowToPlay }: PyramidAltBoardProps) {
                 />
               </div>
               <BoardLabel
-                label="Waste"
+                label={`Waste (${ctx.game.wasteCount})`}
                 color="gold"
                 className="[writing-mode:vertical-lr]"
               />

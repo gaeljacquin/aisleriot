@@ -5,6 +5,7 @@ import type { Card, GameStatus, Pile } from '#/lib/types'
 export interface UseGolfResult {
   columns: Pile[]
   wasteTop: Card | null
+  wasteCount: number
   stockCount: number
   canDraw: boolean
   score: number
@@ -35,6 +36,7 @@ export function useGolf(): UseGolfResult {
   return {
     columns: storeState.columns,
     wasteTop,
+    wasteCount: storeState.waste.length,
     stockCount: storeState.stock.length,
     canDraw: storeState.stock.length > 0 && storeState.status === 'playing',
     score: storeState.score,

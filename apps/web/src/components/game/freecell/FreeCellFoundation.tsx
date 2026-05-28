@@ -53,11 +53,7 @@ export default function FreeCellFoundation({
 
       {cards.map((card) => (
         <div key={card.id} className="absolute inset-0">
-          <Card
-            suit={card.suit}
-            rank={card.rank}
-            faceUp={card.faceUp}
-          />
+          <Card suit={card.suit} rank={card.rank} faceUp={card.faceUp} />
         </div>
       ))}
     </div>

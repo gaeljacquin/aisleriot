@@ -297,7 +297,12 @@ export default function GrandfathersClockBoard({
 
               {/* Tableau */}
               <div className="flex flex-col items-center gap-4 md:gap-1 md:-mt-4 lg:-mt-10 xl:-mt-12 2xl:mt-0">
-                <BoardLabel label="Tableau" />
+                <BoardLabel
+                  label={`Tableau (${tableau.reduce(
+                    (acc, col) => acc + col.cards.length,
+                    0,
+                  )})`}
+                />
                 <div className="flex flex-wrap sm:flex-nowrap 2xl:grid 2xl:grid-cols-4 justify-center gap-2 sm:gap-3 md:gap-4 2xl:gap-x-8 2xl:gap-y-12">
                   {tableau.map((col) => (
                     <GrandfathersClockColumn

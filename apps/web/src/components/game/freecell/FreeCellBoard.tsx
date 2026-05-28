@@ -266,7 +266,12 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
               />
 
               <div className="flex flex-col items-center gap-2">
-                <BoardLabel label="Tableau" />
+                <BoardLabel
+                  label={`Tableau (${tableau.reduce(
+                    (acc, column) => acc + column.length,
+                    0,
+                  )})`}
+                />
                 <FreeCellTableau
                   tableau={tableau}
                   draggableFromIndex={draggableFromIndex}

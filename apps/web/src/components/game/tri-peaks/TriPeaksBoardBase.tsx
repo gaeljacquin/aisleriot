@@ -40,6 +40,7 @@ export default function TriPeaksBoardBase({
     cells,
     availableCells,
     wasteTop,
+    wasteCount,
     stockCount,
     canDraw,
     chain,
@@ -167,26 +168,31 @@ export default function TriPeaksBoardBase({
         <div className="flex-1 overflow-hidden felt-scroll px-4 sm:px-8 py-1 sm:py-2">
           <div
             className={cn(
-              'mx-auto w-fit flex flex-col items-center gap-8',
+              'mx-auto w-fit flex flex-col items-center gap-4',
               status === 'lost' && 'opacity-50',
               isVictoryAnimating && 'pointer-events-none',
             )}
           >
             {/* Pyramid */}
-            <PeakGrid
-              cells={cells}
-              availableCells={availableCells}
-              onPlayCard={onPlayCard}
-              isValidMove={(id) => devMoveAnywhere || isValidMove(id)}
-            />
+            <div className="flex flex-col items-center gap-2">
+              <BoardLabel
+                label={`Tableau (${cells.filter((c) => !c.removed).length})`}
+              />
+              <PeakGrid
+                cells={cells}
+                availableCells={availableCells}
+                onPlayCard={onPlayCard}
+                isValidMove={(id) => devMoveAnywhere || isValidMove(id)}
+              />
+            </div>
 
             {/* Stock + Waste row */}
             <div
-              className="mt-6 flex items-center justify-center"
+              className="mt-2 flex items-center justify-center"
               style={{ gap: 'var(--rail-gap)' }}
             >
               <div className="flex flex-col items-center gap-2">
-                <BoardLabel label="Stock" />
+                <BoardLabel label={`Stock (${stockCount})`} />
                 <Stock
                   count={stockCount}
                   onClick={onDraw}
@@ -194,7 +200,7 @@ export default function TriPeaksBoardBase({
                 />
               </div>
               <div className="flex flex-col items-center gap-2">
-                <BoardLabel label="Waste" color="gold" />
+                <BoardLabel label={`Waste (${wasteCount})`} color="gold" />
                 <div
                   ref={wasteRef}
                   className="relative"

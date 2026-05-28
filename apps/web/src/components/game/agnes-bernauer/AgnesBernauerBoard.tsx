@@ -226,7 +226,7 @@ export default function AgnesBernauerBoard({
               {/* Row 1: Stock and Foundations */}
               <div className="flex justify-center gap-4 w-full">
                 <div className="flex flex-col items-center gap-2">
-                  <BoardLabel label="Stock" />
+                  <BoardLabel label={`Stock (${state.stock.length})`} />
                   <Stock
                     count={state.stock.length}
                     onClick={state.flipStock}
@@ -255,7 +255,12 @@ export default function AgnesBernauerBoard({
 
               {/* Row 2: Reserve (7 piles aligned with Tableau) */}
               <div className="flex flex-col items-center gap-2">
-                <BoardLabel label="Reserve" />
+                <BoardLabel
+                  label={`Reserve (${Object.values(state.reserve).reduce(
+                    (acc, pile) => acc + pile.length,
+                    0,
+                  )})`}
+                />
                 <div className="flex justify-center gap-4 w-full">
                   {RESERVE_IDS.map((id) => (
                     <AgnesBernauerReserve
@@ -270,7 +275,12 @@ export default function AgnesBernauerBoard({
 
               {/* Row 3: Tableau */}
               <div className="flex flex-col items-center gap-2">
-                <BoardLabel label="Tableau" />
+                <BoardLabel
+                  label={`Tableau (${Object.values(state.tableau).reduce(
+                    (acc, pile) => acc + pile.length,
+                    0,
+                  )})`}
+                />
                 <div className="flex justify-center gap-4 w-full">
                   {TABLEAU_IDS.map((id) => (
                     <AgnesBernauerColumn

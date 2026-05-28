@@ -92,10 +92,10 @@ export default function KlondikeFoundation({
                 isHidden={isDraggingThis}
               />
             ) : (
-              <Card 
-                suit={card.suit} 
-                rank={card.rank} 
-                faceUp={card.faceUp} 
+              <Card
+                suit={card.suit}
+                rank={card.rank}
+                faceUp={card.faceUp}
                 className={isDraggingThis ? 'opacity-0' : ''}
               />
             )}

@@ -241,7 +241,7 @@ export default function AcmeBoard({ onHowToPlay }: AcmeBoardProps) {
               >
                 <div className="flex gap-[var(--card-gap-free)]">
                   <div className="flex flex-col items-center gap-2">
-                    <BoardLabel label="Stock" />
+                    <BoardLabel label={`Stock (${stock.length})`} />
                     {stock.length > 0 ? (
                       <Stock count={stock.length} onClick={onFlipStock} />
                     ) : (
@@ -252,7 +252,7 @@ export default function AcmeBoard({ onHowToPlay }: AcmeBoardProps) {
                     )}
                   </div>
                   <div className="flex flex-col items-center gap-2">
-                    <BoardLabel label="Waste" />
+                    <BoardLabel label={`Waste (${waste.length})`} />
                     <AcmeWaste
                       waste={waste}
                       devMoveAnywhere={devMoveAnywhere}
@@ -282,7 +282,12 @@ export default function AcmeBoard({ onHowToPlay }: AcmeBoardProps) {
                 </div>
 
                 <div className="flex flex-col items-center gap-2">
-                  <BoardLabel label="Tableau" />
+                  <BoardLabel
+                    label={`Tableau (${tableau.reduce(
+                      (acc, pile) => acc + pile.cards.length,
+                      0,
+                    )})`}
+                  />
                   <AcmeTableau
                     tableau={tableau}
                     devMoveAnywhere={devMoveAnywhere}

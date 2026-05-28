@@ -72,7 +72,12 @@ export default function AgnesBernauerFoundation({
         height: 'var(--card-height, 10rem)',
       }}
     >
-      <CardSlot role="foundation" suit={suit} baseRank={baseRank} className="absolute inset-0" />
+      <CardSlot
+        role="foundation"
+        suit={suit}
+        baseRank={baseRank}
+        className="absolute inset-0"
+      />
 
       {cards.map((card, index) => {
         const isTop = index === cards.length - 1
@@ -90,7 +95,12 @@ export default function AgnesBernauerFoundation({
                 disabled={disabled}
               />
             ) : (
-              <Card suit={card.suit} rank={card.rank} faceUp={card.faceUp} className={isDraggingThis ? 'opacity-0' : ''} />
+              <Card
+                suit={card.suit}
+                rank={card.rank}
+                faceUp={card.faceUp}
+                className={isDraggingThis ? 'opacity-0' : ''}
+              />
             )}
           </div>
         )

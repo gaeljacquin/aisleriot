@@ -209,7 +209,11 @@ export default function CardPrimitive({
 
   if (cardStyle === 'minimal') {
     return (
-      <div className={className} style={{ width: '100%', height: '100%' }} draggable="false">
+      <div
+        className={className}
+        style={{ width: '100%', height: '100%' }}
+        draggable="false"
+      >
         <MinimalCard suit={suit} rank={rank} />
       </div>
     )
@@ -218,7 +222,11 @@ export default function CardPrimitive({
   const DeckComponent = DECK_COMPONENTS[cardStyle]
 
   return (
-    <div className={className} style={{ width: '100%', height: '100%' }} draggable="false">
+    <div
+      className={className}
+      style={{ width: '100%', height: '100%' }}
+      draggable="false"
+    >
       <Suspense
         fallback={
           <div className="h-full w-full rounded-lg bg-white opacity-50" />

@@ -7,6 +7,7 @@ export interface UseTriPeaksResult {
   cells: TriPeaksCell[]
   availableCells: TriPeaksCellId[]
   wasteTop: Card | null
+  wasteCount: number
   stockCount: number
   canDraw: boolean
   chain: number
@@ -38,6 +39,7 @@ export function useTriPeaks(): UseTriPeaksResult {
     cells,
     availableCells,
     wasteTop,
+    wasteCount: storeState.waste.length,
     stockCount: storeState.stock.length,
     canDraw: storeState.stock.length > 0 && storeState.status === 'playing',
     chain: storeState.chain,

@@ -32,6 +32,7 @@ export function GolfBoard({ onHowToPlay }: GolfBoardProps) {
   const {
     columns,
     wasteTop,
+    wasteCount,
     stockCount,
     canDraw,
     score,
@@ -163,18 +164,26 @@ export function GolfBoard({ onHowToPlay }: GolfBoardProps) {
             )}
           >
             {/* Tableau */}
-            <div
-              className="flex justify-center"
-              style={{ gap: 'var(--card-gap-x)' }}
-            >
-              {columns.map((column) => (
-                <GolfColumn
-                  key={column.id}
-                  column={column}
-                  onPlayCard={onPlayCard}
-                  isValidMove={(id) => devMoveAnywhere || isValidMove(id)}
-                />
-              ))}
+            <div className="flex flex-col items-center gap-2">
+              <BoardLabel
+                label={`Tableau (${columns.reduce(
+                  (acc, col) => acc + col.cards.length,
+                  0,
+                )})`}
+              />
+              <div
+                className="flex justify-center"
+                style={{ gap: 'var(--card-gap-x)' }}
+              >
+                {columns.map((column) => (
+                  <GolfColumn
+                    key={column.id}
+                    column={column}
+                    onPlayCard={onPlayCard}
+                    isValidMove={(id) => devMoveAnywhere || isValidMove(id)}
+                  />
+                ))}
+              </div>
             </div>
 
             {/* Stock + Waste row */}
@@ -183,7 +192,7 @@ export function GolfBoard({ onHowToPlay }: GolfBoardProps) {
               style={{ gap: 'var(--rail-gap)' }}
             >
               <div className="flex flex-col items-center gap-2">
-                <BoardLabel label="Stock" />
+                <BoardLabel label={`Stock (${stockCount})`} />
                 <Stock
                   count={stockCount}
                   onClick={onDraw}
@@ -191,7 +200,7 @@ export function GolfBoard({ onHowToPlay }: GolfBoardProps) {
                 />
               </div>
               <div className="flex flex-col items-center gap-2">
-                <BoardLabel label="Waste" color="gold" />
+                <BoardLabel label={`Waste (${wasteCount})`} color="gold" />
                 <div
                   ref={wasteRef}
                   className="relative"

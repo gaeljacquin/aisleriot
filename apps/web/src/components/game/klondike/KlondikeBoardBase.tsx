@@ -257,7 +257,10 @@ export default function KlondikeBoardBase({
               }}
             >
               <div className="flex flex-col items-start gap-2">
-                <BoardLabel label="Stock" className="w-full" />
+                <BoardLabel
+                  label={`Stock (${stockCount})`}
+                  className="w-full"
+                />
                 <KlondikeStock
                   stockCount={stockCount}
                   stockEmpty={stockEmpty}
@@ -266,7 +269,11 @@ export default function KlondikeBoardBase({
                 />
               </div>
               <div className="flex flex-col items-start gap-2">
-                <BoardLabel label="Waste" color="gold" className="w-full" />
+                <BoardLabel
+                  label={`Waste (${waste.length})`}
+                  color="gold"
+                  className="w-full"
+                />
                 <KlondikeWaste
                   waste={waste}
                   drawCount={drawCount}
@@ -304,7 +311,12 @@ export default function KlondikeBoardBase({
 
             {/* Tableau */}
             <div className="flex flex-col items-center gap-2">
-              <BoardLabel label="Tableau" />
+              <BoardLabel
+                label={`Tableau (${tableau.reduce(
+                  (acc, col) => acc + col.cards.length,
+                  0,
+                )})`}
+              />
               <div
                 className="grid grid-cols-7"
                 style={{

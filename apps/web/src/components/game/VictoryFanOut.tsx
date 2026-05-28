@@ -48,10 +48,10 @@ export default function VictoryFanOut({ isVisible }: VictoryFanOutProps) {
   const [cards, setCards] = useState<CardState[]>([])
   const [isReturning, setIsReturning] = useState(false)
   const [isBoardReset, setIsBoardReset] = useState(false)
-  
+
   const { isAnimating, setIsAnimating } = useVictoryAnimationStore()
   const maxZIndexRef = useRef(100)
-  
+
   // Use layout effect to measure before paint when becoming visible
   useLayoutEffect(() => {
     if (isVisible && !isAnimating) {
@@ -60,10 +60,12 @@ export default function VictoryFanOut({ isVisible }: VictoryFanOutProps) {
 
       const viewportWidth = window.innerWidth
       const viewportHeight = window.innerHeight
-      const cardWidth = 112 
+      const cardWidth = 112
       const cardHeight = 160
 
-      const domCards = Array.from(document.querySelectorAll('[data-card-id]:not(.victory-card)'))
+      const domCards = Array.from(
+        document.querySelectorAll('[data-card-id]:not(.victory-card)'),
+      )
 
       const capturedCards = ALL_CARDS.map((cardInfo) => {
         const el = document.querySelector(`[data-card-id="${cardInfo.id}"]`)
@@ -107,7 +109,9 @@ export default function VictoryFanOut({ isVisible }: VictoryFanOutProps) {
     if (!isVisible && isAnimating && !isReturning && cards.length > 0) {
       // Re-measure positions. If the game was reset, this captures the NEW layout.
       let hasMoved = false
-      const domCards = Array.from(document.querySelectorAll('[data-card-id]:not(.victory-card)'))
+      const domCards = Array.from(
+        document.querySelectorAll('[data-card-id]:not(.victory-card)'),
+      )
 
       const updatedCards = cards.map((c) => {
         const el = document.querySelector(`[data-card-id="${c.id}"]`)
@@ -120,7 +124,10 @@ export default function VictoryFanOut({ isVisible }: VictoryFanOutProps) {
           returnX = rect.left
           returnY = rect.top
 
-          if (Math.abs(returnX - c.initialX) > 1 || Math.abs(returnY - c.initialY) > 1) {
+          if (
+            Math.abs(returnX - c.initialX) > 1 ||
+            Math.abs(returnY - c.initialY) > 1
+          ) {
             hasMoved = true
           }
 
@@ -171,20 +178,24 @@ export default function VictoryFanOut({ isVisible }: VictoryFanOutProps) {
     <>
       <style>{`
         /* Hide original cards when victory is active (including return) */
-        ${isAnimating ? `
+        ${
+          isAnimating
+            ? `
           [data-card-id]:not(.victory-card) {
             opacity: 0 !important;
             visibility: hidden !important;
             pointer-events: none !important;
           }
-        ` : ''}
+        `
+            : ''
+        }
       `}</style>
-      
+
       <div className="fixed inset-0 z-[50] pointer-events-none victory-overlay">
         {cards.map((card) => (
-          <DraggableVictoryCard 
-            key={card.id} 
-            card={card} 
+          <DraggableVictoryCard
+            key={card.id}
+            card={card}
             isReturning={isReturning}
             onReturnComplete={handleReturnComplete}
             bringToFront={bringToFront}
@@ -197,20 +208,20 @@ export default function VictoryFanOut({ isVisible }: VictoryFanOutProps) {
   )
 }
 
-function DraggableVictoryCard({ 
-  card, 
-  isReturning, 
+function DraggableVictoryCard({
+  card,
+  isReturning,
   onReturnComplete,
   bringToFront,
   maxZIndexRef,
   isBoardReset,
-}: { 
-  card: CardState, 
-  isReturning: boolean,
-  onReturnComplete: () => void,
-  bringToFront: () => void,
-  maxZIndexRef: React.MutableRefObject<number>,
-  isBoardReset: boolean,
+}: {
+  card: CardState
+  isReturning: boolean
+  onReturnComplete: () => void
+  bringToFront: () => void
+  maxZIndexRef: React.MutableRefObject<number>
+  isBoardReset: boolean
 }) {
   const [isDragging, setIsDragging] = useState(false)
   const [isAnimationComplete, setIsAnimationComplete] = useState(false)
@@ -248,7 +259,11 @@ function DraggableVictoryCard({
         x: isReturning ? (card.returnX ?? card.initialX) : card.targetX,
         y: isReturning ? (card.returnY ?? card.initialY) : card.targetY,
         rotate: isReturning ? 0 : card.rotation,
-        zIndex: isReturning ? (card.returnZIndex ?? card.originalZIndex) : (isDragging ? 999 : localZIndex),
+        zIndex: isReturning
+          ? (card.returnZIndex ?? card.originalZIndex)
+          : isDragging
+            ? 999
+            : localZIndex,
       }}
       style={{
         touchAction: 'none',
@@ -276,13 +291,15 @@ function DraggableVictoryCard({
       draggable="false"
       className={cn(
         'victory-card-wrapper pointer-events-auto',
-        isAnimationComplete && !isReturning ? 'cursor-grab active:cursor-grabbing' : 'cursor-default'
+        isAnimationComplete && !isReturning
+          ? 'cursor-grab active:cursor-grabbing'
+          : 'cursor-default',
       )}
     >
-      <Card 
-        suit={card.suit} 
-        rank={card.rank} 
-        faceUp={isReturning && isBoardReset ? false : true} 
+      <Card
+        suit={card.suit}
+        rank={card.rank}
+        faceUp={isReturning && isBoardReset ? false : true}
         className="victory-card"
       />
     </motion.div>

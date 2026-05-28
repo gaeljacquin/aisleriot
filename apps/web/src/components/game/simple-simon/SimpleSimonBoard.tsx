@@ -250,7 +250,12 @@ export default function SimpleSimonBoard({
             </div>
 
             <div className="flex flex-col items-center gap-2">
-              <BoardLabel label="Tableau" />
+              <BoardLabel
+                label={`Tableau (${tableau.reduce(
+                  (acc, column) => acc + column.length,
+                  0,
+                )})`}
+              />
               <SimpleSimonTableau
                 tableau={tableau}
                 draggableFromIndex={draggableFromIndex}
