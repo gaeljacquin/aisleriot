@@ -26,7 +26,14 @@ mutagen sync create \
   "$LOCAL_PATH" \
   "$REMOTE_FULL" \
   --name "$SYNC_NAME" \
-  --ignore-vcs
+  --ignore-vcs \
+  --sync-mode=one-way-replica \
+  --ignore "node_modules" \
+  --ignore ".next" \
+  --ignore ".turbo" \
+  --ignore "dist" \
+  --ignore "build" \
+  --ignore ".cache"
 
 if [ $? -eq 0 ]; then
   echo ""
