@@ -153,7 +153,7 @@ function BonusContent() {
                 className={cn(
                   'group relative flex flex-col items-start p-6 rounded-2xl border transition-all duration-300 text-left h-full overflow-hidden',
                   pack.comingSoon
-                    ? 'border-white/5 bg-white/5 opacity-50'
+                    ? 'border-gold/30 bg-felt-dark/80 shadow-glow-gold/10 opacity-85'
                     : isInstalled
                       ? 'border-gold/60 bg-gold/10 shadow-glow-gold/10'
                       : isDownloading
@@ -183,7 +183,7 @@ function BonusContent() {
                       isInstalled
                         ? 'border-gold/40 bg-gold/20 text-gold'
                         : pack.comingSoon
-                          ? 'border-white/10 bg-white/5 text-white/40'
+                          ? 'border-gold/20 bg-felt-deep/40 text-gold/70 group-hover:text-gold group-hover:border-gold/40 opacity-50'
                           : 'border-gold/20 bg-felt-deep/40 text-gold/70 group-hover:text-gold group-hover:border-gold/40',
                     )}
                   >
@@ -226,7 +226,7 @@ function BonusContent() {
                           className={cn(
                             'h-12 w-full rounded-xl border font-serif font-bold transition-all text-center text-sm truncate px-1 outline-none',
                             pack.comingSoon
-                              ? 'border-white/5 bg-white/5 text-white/40 cursor-not-allowed'
+                              ? 'border-gold/30 bg-felt-light/40 text-cream-dim hover:border-gold/60 hover:text-cream opacity-50 cursor-not-allowed'
                               : 'border-gold/30 bg-felt-light/40 text-cream-dim hover:border-gold/60 hover:text-cream cursor-pointer',
                           )}
                         >
@@ -264,7 +264,7 @@ function BonusContent() {
                         : isDownloading
                           ? 'border-gold/20 bg-felt-light/40 text-gold/50 cursor-wait'
                           : pack.comingSoon
-                            ? 'border-white/5 bg-white/5 text-white/40 cursor-not-allowed'
+                            ? 'border-gold/40 bg-gold text-felt-deep opacity-50 cursor-not-allowed'
                             : 'border-gold/40 bg-gold text-felt-deep hover:bg-gold-soft cursor-pointer shadow-sm hover:shadow-card',
                     )}
                   >
