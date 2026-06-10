@@ -135,27 +135,27 @@ export function MiniBoard({ id }: MiniBoardProps) {
           {/* Row 2: 6 cards */}
           <MiniCard
             {...peaks[3]}
-            className="absolute left-[10.1%] top-[16px] h-9 w-6.5"
+            className="absolute left-[10.1%] top-4 h-9 w-6.5"
           />
           <MiniCard
             {...peaks[4]}
-            className="absolute left-[20.3%] top-[16px] h-9 w-6.5"
+            className="absolute left-[20.3%] top-4 h-9 w-6.5"
           />
           <MiniCard
             {...peaks[5]}
-            className="absolute left-[40.5%] top-[16px] h-9 w-6.5"
+            className="absolute left-[40.5%] top-4 h-9 w-6.5"
           />
           <MiniCard
             {...peaks[6]}
-            className="absolute left-[50.7%] top-[16px] h-9 w-6.5"
+            className="absolute left-[50.7%] top-4 h-9 w-6.5"
           />
           <MiniCard
             {...peaks[7]}
-            className="absolute left-[70.9%] top-[16px] h-9 w-6.5"
+            className="absolute left-[70.9%] top-4 h-9 w-6.5"
           />
           <MiniCard
             {...peaks[8]}
-            className="absolute left-[81.1%] top-[16px] h-9 w-6.5"
+            className="absolute left-[81.1%] top-4 h-9 w-6.5"
           />
 
           {/* Row 3: 9 cards */}
@@ -163,13 +163,13 @@ export function MiniBoard({ id }: MiniBoardProps) {
             <MiniCard
               key={idx}
               {...peaks[idx]}
-              className="absolute h-9 w-6.5 top-[32px]"
+              className="absolute h-9 w-6.5 top-8"
               style={{ left: `${5.1 + i * 10.125}%` }}
             />
           ))}
 
           {/* Row 4: 10 cards */}
-          <div className="absolute inset-x-0 top-[48px] flex justify-between">
+          <div className="absolute inset-x-0 top-12 flex justify-between">
             {[18, 19, 20, 21, 22, 23, 24, 25, 26, 27].map((idx) => (
               <MiniCard key={idx} {...peaks[idx]} className="h-9 w-6.5" />
             ))}

@@ -239,7 +239,7 @@ export default function AcmeBoard({ onHowToPlay }: AcmeBoardProps) {
                 className="flex flex-col items-start"
                 style={{ gap: 'var(--row-gap)' }}
               >
-                <div className="flex gap-[var(--card-gap-free)]">
+                <div className="flex gap-(--card-gap-free)">
                   <div className="flex flex-col items-center gap-2">
                     <BoardLabel label={`Stock (${stock.length})`} />
                     {stock.length > 0 ? (

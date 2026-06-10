@@ -9,7 +9,7 @@ interface GrandfathersClockCardProps {
   className?: string
 }
 
-export const GrandfathersClockCard = memo(function GrandfathersClockCard({
+export const GrandfathersClockCard = memo(function GrandfathersClockCardInner({
   card,
   isHidden,
   onDoubleClick,

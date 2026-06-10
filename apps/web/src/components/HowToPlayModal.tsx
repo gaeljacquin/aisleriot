@@ -24,7 +24,7 @@ export function HowToPlayModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="max-w-[500px] border border-gold/40 bg-felt-deep/95 p-8 shadow-card-lift backdrop-blur-md"
+        className="max-w-125 border border-gold/40 bg-felt-deep/95 p-8 shadow-card-lift backdrop-blur-md"
       >
         <DialogHeader className="mb-2">
           <DialogTitle className="font-serif text-3xl font-bold tracking-tight text-gold">

@@ -58,7 +58,7 @@ export default function AcmeTableau({
   devMoveAnywhere,
 }: AcmeTableauProps) {
   return (
-    <div className="flex gap-[var(--card-gap-free)]">
+    <div className="flex gap-(--card-gap-free)">
       {tableau.map((entry) => (
         <AcmeTableauColumn
           key={entry.id}

@@ -46,7 +46,7 @@ export default function ViewportDebugger() {
         </span>
       </div>
       <span className="opacity-30 text-sky-600 dark:text-sky-400">|</span>
-      <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-sky-600/70 dark:text-sky-400/70">
+      <span className="text-[10px] font-bold uppercase tracking-widest text-sky-600/70 dark:text-sky-400/70">
         1rem = {dimensions.rem}px
       </span>
     </div>

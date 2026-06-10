@@ -97,7 +97,7 @@ export default function KlondikeWaste({
   // Draw 3
   return (
     <div
-      className="relative flex-shrink-0"
+      className="relative shrink-0"
       style={{
         width:
           visible.length > 1

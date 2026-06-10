@@ -268,7 +268,7 @@ export default function FreeCellBoard({ onHowToPlay }: FreeCellBoardProps) {
               <div className="flex flex-col items-center gap-2">
                 <BoardLabel
                   label={`Tableau (${tableau.reduce(
-                    (acc, column) => acc + column.length,
+                    (acc, column) => acc + column.cards.length,
                     0,
                   )})`}
                 />

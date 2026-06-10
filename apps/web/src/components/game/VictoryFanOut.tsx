@@ -191,7 +191,7 @@ export default function VictoryFanOut({ isVisible }: VictoryFanOutProps) {
         }
       `}</style>
 
-      <div className="fixed inset-0 z-[50] pointer-events-none victory-overlay">
+      <div className="fixed inset-0 z-50 pointer-events-none victory-overlay">
         {cards.map((card) => (
           <DraggableVictoryCard
             key={card.id}

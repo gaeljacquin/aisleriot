@@ -34,7 +34,7 @@ export function ConfirmModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="max-w-[400px] border border-gold/40 bg-felt-deep/95 p-8 shadow-card-lift backdrop-blur-md"
+        className="max-w-100 border border-gold/40 bg-felt-deep/95 p-8 shadow-card-lift backdrop-blur-md"
       >
         <DialogHeader className="mb-6 text-center">
           <DialogTitle className="font-serif text-3xl font-bold tracking-tight text-gold">

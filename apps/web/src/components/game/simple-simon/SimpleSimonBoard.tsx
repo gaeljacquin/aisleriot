@@ -231,7 +231,7 @@ export default function SimpleSimonBoard({
           >
             <div className="flex flex-col items-center gap-2">
               <BoardLabel label="Foundation" />
-              <div className="flex justify-center gap-[var(--card-gap-x)]">
+              <div className="flex justify-center gap-(--card-gap-x)">
                 {(
                   [
                     'foundation-0',
@@ -251,7 +251,7 @@ export default function SimpleSimonBoard({
 
             <div className="flex flex-col items-center gap-2">
               <BoardLabel
-                label={`Tableau (${tableau.reduce(
+                label={`Tableau (${Object.values(tableau).reduce(
                   (acc, column) => acc + column.length,
                   0,
                 )})`}

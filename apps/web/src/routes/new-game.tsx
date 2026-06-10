@@ -86,7 +86,7 @@ function NewGame() {
                 New Game
               </h1>
             </div>
-            <div className="w-[100px]" /> {/* Spacer to balance the BackLink */}
+            <div className="w-25" /> {/* Spacer to balance the BackLink */}
           </header>
 
           <section className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-2 lg:gap-12">
@@ -117,8 +117,8 @@ function NewGame() {
                     >
                       <DropdownMenuRadioGroup
                         value={gameFilter}
-                        onValueChange={(val) => {
-                          setGameFilter(val as GameFilter)
+                        onValueChange={(val: GameFilter) => {
+                          setGameFilter(val)
                           setIsFilterOpen(false)
                         }}
                       >
@@ -175,7 +175,9 @@ function NewGame() {
                   </div>
                   <Input
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setSearch(e.target.value)
+                    }
                     placeholder="Search..."
                     className="h-10 border-gold/80 bg-felt-deep/80 pl-10 pr-10 text-cream placeholder:text-cream-dim/50 focus-visible:ring-gold/30 rounded-lg font-serif"
                   />
@@ -199,7 +201,7 @@ function NewGame() {
               </div>
 
               <div className="overflow-hidden rounded-xl border border-gold/90 bg-felt-light/20">
-                <div className="flex h-[280px] flex-col gap-1 overflow-y-auto overflow-x-hidden p-2 scrollbar-thin scrollbar-thumb-gold/20">
+                <div className="flex h-70 flex-col gap-1 overflow-y-auto overflow-x-hidden p-2 scrollbar-thin scrollbar-thumb-gold/20">
                   {filteredVariants.length > 0 ? (
                     filteredVariants.map((variant) => {
                       const isSelected = variant.id === selectedId

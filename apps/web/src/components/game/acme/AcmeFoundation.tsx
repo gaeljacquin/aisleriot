@@ -11,7 +11,7 @@ interface AcmeFoundationProps {
 
 export default function AcmeFoundation({ foundation }: AcmeFoundationProps) {
   return (
-    <div className="flex gap-[var(--card-gap-free)]">
+    <div className="flex gap-(--card-gap-free)">
       {foundation.map((entry) => (
         <AcmeFoundationPile key={entry.id} entry={entry} />
       ))}

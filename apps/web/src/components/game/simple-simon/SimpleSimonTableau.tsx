@@ -15,7 +15,7 @@ export default function SimpleSimonTableau({
 }: SimpleSimonTableauProps) {
   return (
     <div
-      className="grid grid-cols-5 sm:grid-cols-10 justify-center gap-x-[var(--card-gap-x)] gap-y-8"
+      className="grid grid-cols-5 sm:grid-cols-10 justify-center gap-x-(--card-gap-x) gap-y-8"
       style={{
         width: 'fit-content',
         margin: '0 auto',
