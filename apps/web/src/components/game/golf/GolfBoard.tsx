@@ -164,7 +164,13 @@ export function GolfBoard({ onHowToPlay }: GolfBoardProps) {
             )}
           >
             {/* Tableau */}
-            <div className="flex flex-col items-center gap-2">
+            <div
+              className="flex flex-col items-center gap-2"
+              style={{
+                minHeight:
+                  'calc(6 * var(--card-overlap-y) + var(--card-height))',
+              }}
+            >
               <BoardLabel
                 label={`Tableau (${columns.reduce(
                   (acc, col) => acc + col.cards.length,
