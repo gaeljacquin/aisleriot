@@ -185,6 +185,7 @@ export function ActionRail({
                     'group flex items-center justify-center rounded-full border border-gold/20 bg-felt-deep/30 transition-all hover:bg-gold/10 hover:border-gold hover:shadow-sm cursor-pointer',
                     'w-11 h-11',
                   )}
+                  viewTransition
                 />
               }
             >

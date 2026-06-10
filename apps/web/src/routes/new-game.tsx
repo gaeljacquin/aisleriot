@@ -72,7 +72,7 @@ function NewGame() {
   function handlePlay(variantId: string) {
     const variant = gameVariants.find((v) => v.id === variantId)
     if (variant?.placeholder) return
-    navigate({ to: `/${variantId}` })
+    navigate({ to: `/${variantId}`, viewTransition: true })
   }
 
   return (

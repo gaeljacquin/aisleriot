@@ -100,7 +100,7 @@ function Home() {
               Aisle<span className="font-light italic text-gold">riot</span>
             </h1>
             <p className="mt-2 max-w-md text-md leading-relaxed text-cream-dim font-serif">
-              A Solitaire Suite
+              {appInfo.subtitle}
             </p>
           </section>
 
@@ -120,6 +120,7 @@ function Home() {
                 target={item.external ? '_blank' : undefined}
                 rel={item.external ? 'noopener noreferrer' : undefined}
                 style={{ animationDelay: `${i * 80}ms` }}
+                viewTransition
               >
                 <div
                   className={cn(

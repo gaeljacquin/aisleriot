@@ -43,6 +43,7 @@ export default function BackLink({
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      viewTransition
     >
       <motion.span
         animate={isHovered ? { x: [0, -4, 0] } : { x: 0 }}
