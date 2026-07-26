@@ -316,25 +316,32 @@ export function MiniBoard({ id }: MiniBoardProps) {
     )
   }
 
-  if (id === 'simple-simon') {
+  if (id === 'simple-simon' || id === 'spider') {
     return (
       <div className="flex w-full flex-col gap-2">
-        <div className="flex justify-center gap-1 mb-1">
-          {deal.foundations.map((card: any, i: number) => (
-            <div
-              key={i}
-              className="h-9 w-6.5 rounded-[0.5px] border border-gold/10 bg-white/5"
-            >
-              {card && (
-                <MiniCard
-                  suit={card.suit}
-                  rank={card.rank}
-                  faceUp={card.faceUp}
-                  className="h-full w-full"
-                />
-              )}
-            </div>
-          ))}
+        <div className="flex justify-between items-center px-1 mb-1">
+          {id === 'spider' ? (
+            <MiniCard faceUp={deal.stock.faceUp} className="h-9 w-6.5" />
+          ) : (
+            <div className="w-6.5" />
+          )}
+          <div className="flex justify-center gap-0.5">
+            {deal.foundations.map((card: any, i: number) => (
+              <div
+                key={i}
+                className="h-8 w-5.5 rounded-[0.5px] border border-gold/10 bg-white/5"
+              >
+                {card && (
+                  <MiniCard
+                    suit={card.suit}
+                    rank={card.rank}
+                    faceUp={card.faceUp}
+                    className="h-full w-full"
+                  />
+                )}
+              </div>
+            ))}
+          </div>
         </div>
         <div className="flex justify-between gap-0.5">
           {deal.tableau.map((column: any[], i: number) => (

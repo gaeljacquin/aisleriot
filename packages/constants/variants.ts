@@ -11,6 +11,7 @@ const gameVariantIds = [
   "simple-simon",
   "acme",
   "agnes-bernauer",
+  "spider",
 ]
 
 export type GameVariantId = (typeof gameVariantIds)[number]
@@ -249,6 +250,25 @@ const gameVariantsUnordered: GameVariant[] = [
     ],
     gael_favorite: true,
     foundation_base_rank: null,
+  },
+  {
+    id: "spider",
+    name: "Spider",
+    subtitle: "One Suit",
+    blurb:
+      "Build 8 descending suit sequences from King to Ace on a 10-column tableau.",
+    color: "bg-purple-100 dark:bg-purple-950",
+    rules: [
+      "Two decks of 104 cards, all of the same suit (Spades).",
+      "The tableau has 10 columns: 6 cards in the first 4 columns, 5 cards in the remaining 6. The top card of each column is face up.",
+      "Build down in rank regardless of suit. Cards of the same suit in descending sequence can be moved as a unit.",
+      "Click the stock to deal 1 card face-up to each tableau column. All tableau columns must contain at least 1 card to deal.",
+      "Completed 13-card suit sequences (King to Ace) are automatically removed from the tableau to foundations.",
+      "The game is won when all 8 suit sequences are completed.",
+    ],
+    most_popular: true,
+    gael_favorite: true,
+    foundation_base_rank: 'A',
   },
 ]
 
