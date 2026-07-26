@@ -24,15 +24,11 @@ docs/         # Developer documentation
 
 ## Getting Started
 
-1. **Prerequisite**: Set up a DevBox (e.g., using the provided `.devcontainer` with Docker and VS Code, or a remote environment).
-2. **Environment**: Ensure the `DEVBOX=true` environment variable is set. In the provided DevContainer, this is handled automatically.
-
-### CRITICAL: No Bare Metal
-**Do not run `pnpm install` or `pnpm update` on your local host machine (bare metal).** Always use the DevBox terminal for these commands for security.
+1. **Prerequisite**: A remote server or a devcontainer.
 
 ## Commands
 
-Run all commands from the root or within specific app/package directories inside the DevBox terminal:
+Run all commands from the root or within specific app/package directories:
 
 ```bash
 nr dev        # Start all apps in dev mode
