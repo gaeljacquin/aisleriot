@@ -1,4 +1,5 @@
-export type ThemeMode = 'glacier-dark' | 'legacy-light' | 'legacy-dark'
+export type ThemeMode =
+  'glacier-dark' | 'glacier-light' | 'legacy-light' | 'legacy-dark'
 export type ThemeType = 'light' | 'dark'
 
 export interface ThemeMetadata {
@@ -8,6 +9,7 @@ export interface ThemeMetadata {
 
 export const THEMES: Record<ThemeMode, ThemeMetadata> = {
   'glacier-dark': { label: 'Glacier Dark', type: 'dark' },
+  'glacier-light': { label: 'Glacier Light', type: 'light' },
   'legacy-light': { label: 'Legacy Light', type: 'light' },
   'legacy-dark': { label: 'Legacy Dark', type: 'dark' },
 }
@@ -21,6 +23,7 @@ export function getStoredMode(): ThemeMode {
   const stored = localStorage.getItem('theme')
   if (
     stored === 'glacier-dark' ||
+    stored === 'glacier-light' ||
     stored === 'legacy-light' ||
     stored === 'legacy-dark'
   ) {
@@ -38,6 +41,7 @@ export function applyThemeMode(mode: ThemeMode) {
     'light',
     'dark',
     'glacier-dark',
+    'glacier-light',
     'legacy-light',
     'legacy-dark',
   )
