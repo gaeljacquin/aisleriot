@@ -11,6 +11,7 @@ const gameVariantIds = [
   "simple-simon",
   "acme",
   "agnes-bernauer",
+  "westcliff",
 ]
 
 export type GameVariantId = (typeof gameVariantIds)[number]
@@ -249,6 +250,23 @@ const gameVariantsUnordered: GameVariant[] = [
     ],
     gael_favorite: true,
     foundation_base_rank: null,
+  },
+  {
+    id: "westcliff",
+    name: "Westcliff",
+    subtitle: "Ten Tableau Columns",
+    blurb:
+      "A Klondike variant with ten tableau columns of three cards. Spaces can be filled with any card or sequence.",
+    color: "bg-teal-100 dark:bg-teal-950",
+    rules: [
+      "The goal is to move all 52 cards to four foundation piles, built up by suit from Ace to King.",
+      "Cards in the tableau are arranged in 10 columns of 3 cards each (top card face up).",
+      "Tableau builds down in alternating colors.",
+      "A packed sequence (alternating colors, descending rank) or any portion of it may be moved to another tableau column.",
+      "Spaces (empty columns) may be filled with any available card or packed sequence.",
+      "Click the stock pile to flip one card at a time to the waste pile. There are no redeals.",
+    ],
+    foundation_base_rank: 'A',
   },
 ]
 

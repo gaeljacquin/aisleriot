@@ -26,6 +26,7 @@ import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SimpleSimonRouteImport } from './routes/simple-simon'
 import { Route as TriPeaksRouteImport } from './routes/tri-peaks'
 import { Route as TriPeaksAltRouteImport } from './routes/tri-peaks-alt'
+import { Route as WestcliffRouteImport } from './routes/westcliff'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -112,6 +113,11 @@ const TriPeaksAltRoute = TriPeaksAltRouteImport.update({
   path: '/tri-peaks-alt',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WestcliffRoute = WestcliffRouteImport.update({
+  id: '/westcliff',
+  path: '/westcliff',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -131,6 +137,7 @@ export interface FileRoutesByFullPath {
   '/simple-simon': typeof SimpleSimonRoute
   '/tri-peaks': typeof TriPeaksRoute
   '/tri-peaks-alt': typeof TriPeaksAltRoute
+  '/westcliff': typeof WestcliffRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -150,6 +157,7 @@ export interface FileRoutesByTo {
   '/simple-simon': typeof SimpleSimonRoute
   '/tri-peaks': typeof TriPeaksRoute
   '/tri-peaks-alt': typeof TriPeaksAltRoute
+  '/westcliff': typeof WestcliffRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -170,6 +178,7 @@ export interface FileRoutesById {
   '/simple-simon': typeof SimpleSimonRoute
   '/tri-peaks': typeof TriPeaksRoute
   '/tri-peaks-alt': typeof TriPeaksAltRoute
+  '/westcliff': typeof WestcliffRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -191,6 +200,7 @@ export interface FileRouteTypes {
     | '/simple-simon'
     | '/tri-peaks'
     | '/tri-peaks-alt'
+    | '/westcliff'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -210,6 +220,7 @@ export interface FileRouteTypes {
     | '/simple-simon'
     | '/tri-peaks'
     | '/tri-peaks-alt'
+    | '/westcliff'
   id:
     | '__root__'
     | '/'
@@ -229,6 +240,7 @@ export interface FileRouteTypes {
     | '/simple-simon'
     | '/tri-peaks'
     | '/tri-peaks-alt'
+    | '/westcliff'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -249,6 +261,7 @@ export interface RootRouteChildren {
   SimpleSimonRoute: typeof SimpleSimonRoute
   TriPeaksRoute: typeof TriPeaksRoute
   TriPeaksAltRoute: typeof TriPeaksAltRoute
+  WestcliffRoute: typeof WestcliffRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -372,6 +385,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TriPeaksAltRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/westcliff': {
+      id: '/westcliff'
+      path: '/westcliff'
+      fullPath: '/westcliff'
+      preLoaderRoute: typeof WestcliffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -393,6 +413,7 @@ const rootRouteChildren: RootRouteChildren = {
   SimpleSimonRoute: SimpleSimonRoute,
   TriPeaksRoute: TriPeaksRoute,
   TriPeaksAltRoute: TriPeaksAltRoute,
+  WestcliffRoute: WestcliffRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
