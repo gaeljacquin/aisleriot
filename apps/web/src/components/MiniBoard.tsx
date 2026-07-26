@@ -49,7 +49,7 @@ export function MiniBoard({ id }: MiniBoardProps) {
     )
   }
 
-  if (id === 'klondike-draw-1' || id === 'klondike-draw-3') {
+  if (id === 'klondike-draw-1' || id === 'klondike-draw-3' || id === 'westcliff') {
     return (
       <div className="flex w-full flex-col gap-2.5">
         <div className="flex justify-between">
