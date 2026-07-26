@@ -11,6 +11,7 @@ const gameVariantIds = [
   "simple-simon",
   "acme",
   "agnes-bernauer",
+  "fortune-favor",
 ]
 
 export type GameVariantId = (typeof gameVariantIds)[number]
@@ -234,21 +235,21 @@ const gameVariantsUnordered: GameVariant[] = [
     foundation_base_rank: 'A',
   },
   {
-    id: "agnes-bernauer",
-    name: "Agnes Bernauer",
-    subtitle: "Reserve Strategy",
+    id: "fortune-favor",
+    name: "Fortune's Favor",
+    subtitle: "Forty Thieves type",
     blurb:
-      "A Klondike variant with continuous building and reserve piles. The foundations start with a random base rank.",
-    color: "bg-amber-100 dark:bg-amber-950",
+      "A Forty Thieves variant. Build down in suit on twelve tableau piles. Empty spaces automatically fill from stock or waste.",
+    color: "bg-teal-100 dark:bg-teal-950",
     rules: [
-      "The goal is to move all cards to the foundations. Foundations build up in suit from a variable base card.",
-      "Tableau builds down in alternating colors. Ranking is continuous: King builds on Ace.",
-      "Foundation ranking is also continuous: Ace builds on King.",
-      "Empty tableau spaces can only be filled by cards or sequences starting with the rank one below the base rank.",
-      "Click the stock to deal one card to each of the seven reserve piles. Reserve cards are available for play to the tableau or foundations.",
+      "The goal is to move all 52 cards to four foundation piles, built up by suit from Ace to King.",
+      "The four Aces are removed from the deck and placed on the foundations to start.",
+      "The tableau consists of twelve piles in two rows of six cards each, dealt one card each to start.",
+      "Build down in suit (e.g. 10 of Hearts on Jack of Hearts). Only one card at a time can be moved.",
+      "Empty spaces in the tableau are automatically filled from the stock or waste.",
+      "Turn one card at a time from the stock to the waste. There is no redeal.",
     ],
-    gael_favorite: true,
-    foundation_base_rank: null,
+    foundation_base_rank: 'A',
   },
 ]
 

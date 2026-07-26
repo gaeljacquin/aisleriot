@@ -14,6 +14,7 @@ import { Route as AcmeRouteImport } from './routes/acme'
 import { Route as AgnesBernauerRouteImport } from './routes/agnes-bernauer'
 import { Route as BonusContentRouteImport } from './routes/bonus-content'
 import { Route as CreditsRouteImport } from './routes/credits'
+import { Route as FortuneFavorRouteImport } from './routes/fortune-favor'
 import { Route as FreecellRouteImport } from './routes/freecell'
 import { Route as GolfRouteImport } from './routes/golf'
 import { Route as GrandfathersClockRouteImport } from './routes/grandfathers-clock'
@@ -50,6 +51,11 @@ const BonusContentRoute = BonusContentRouteImport.update({
 const CreditsRoute = CreditsRouteImport.update({
   id: '/credits',
   path: '/credits',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FortuneFavorRoute = FortuneFavorRouteImport.update({
+  id: '/fortune-favor',
+  path: '/fortune-favor',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FreecellRoute = FreecellRouteImport.update({
@@ -119,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/agnes-bernauer': typeof AgnesBernauerRoute
   '/bonus-content': typeof BonusContentRoute
   '/credits': typeof CreditsRoute
+  '/fortune-favor': typeof FortuneFavorRoute
   '/freecell': typeof FreecellRoute
   '/golf': typeof GolfRoute
   '/grandfathers-clock': typeof GrandfathersClockRoute
@@ -138,6 +145,7 @@ export interface FileRoutesByTo {
   '/agnes-bernauer': typeof AgnesBernauerRoute
   '/bonus-content': typeof BonusContentRoute
   '/credits': typeof CreditsRoute
+  '/fortune-favor': typeof FortuneFavorRoute
   '/freecell': typeof FreecellRoute
   '/golf': typeof GolfRoute
   '/grandfathers-clock': typeof GrandfathersClockRoute
@@ -158,6 +166,7 @@ export interface FileRoutesById {
   '/agnes-bernauer': typeof AgnesBernauerRoute
   '/bonus-content': typeof BonusContentRoute
   '/credits': typeof CreditsRoute
+  '/fortune-favor': typeof FortuneFavorRoute
   '/freecell': typeof FreecellRoute
   '/golf': typeof GolfRoute
   '/grandfathers-clock': typeof GrandfathersClockRoute
@@ -179,6 +188,7 @@ export interface FileRouteTypes {
     | '/agnes-bernauer'
     | '/bonus-content'
     | '/credits'
+    | '/fortune-favor'
     | '/freecell'
     | '/golf'
     | '/grandfathers-clock'
@@ -198,6 +208,7 @@ export interface FileRouteTypes {
     | '/agnes-bernauer'
     | '/bonus-content'
     | '/credits'
+    | '/fortune-favor'
     | '/freecell'
     | '/golf'
     | '/grandfathers-clock'
@@ -217,6 +228,7 @@ export interface FileRouteTypes {
     | '/agnes-bernauer'
     | '/bonus-content'
     | '/credits'
+    | '/fortune-favor'
     | '/freecell'
     | '/golf'
     | '/grandfathers-clock'
@@ -237,6 +249,7 @@ export interface RootRouteChildren {
   AgnesBernauerRoute: typeof AgnesBernauerRoute
   BonusContentRoute: typeof BonusContentRoute
   CreditsRoute: typeof CreditsRoute
+  FortuneFavorRoute: typeof FortuneFavorRoute
   FreecellRoute: typeof FreecellRoute
   GolfRoute: typeof GolfRoute
   GrandfathersClockRoute: typeof GrandfathersClockRoute
@@ -286,6 +299,13 @@ declare module '@tanstack/react-router' {
       path: '/credits'
       fullPath: '/credits'
       preLoaderRoute: typeof CreditsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fortune-favor': {
+      id: '/fortune-favor'
+      path: '/fortune-favor'
+      fullPath: '/fortune-favor'
+      preLoaderRoute: typeof FortuneFavorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/freecell': {
@@ -381,6 +401,7 @@ const rootRouteChildren: RootRouteChildren = {
   AgnesBernauerRoute: AgnesBernauerRoute,
   BonusContentRoute: BonusContentRoute,
   CreditsRoute: CreditsRoute,
+  FortuneFavorRoute: FortuneFavorRoute,
   FreecellRoute: FreecellRoute,
   GolfRoute: GolfRoute,
   GrandfathersClockRoute: GrandfathersClockRoute,
