@@ -66,6 +66,58 @@
     --noise-filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.49 0 0 0 0 0.83 0 0 0 0 0.99 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+.glacier-light,
+[data-theme="glacier-light"] {
+    /* Surfaces — Glacier Light */
+    --felt-deep: #f8f9ff;
+    --felt: #eff4ff;
+    --felt-light: rgba(255, 255, 255, 0.75);
+    --felt-shadow: #dce9ff;
+
+    /* Primary Accent — Deepened Ice Blue (#0284c7) */
+    --gold: #0284c7;
+    --gold-soft: #007bb9;
+    --gold-deep: #004b73;
+
+    /* Ink — Crisp Navy On-Surface */
+    --cream: #0b1c30;
+    --cream-dim: #3f4850;
+
+    /* Card pip colors */
+    --card-red: #ba1a1a;
+    --card-black: #0b1c30;
+
+    /* Semantic Mappings */
+    --background: #f8f9ff;
+    --foreground: #0b1c30;
+    --card: rgba(255, 255, 255, 0.85);
+    --card-foreground: #0b1c30;
+    --popover: #ffffff;
+    --popover-foreground: #0b1c30;
+    --primary: #0284c7;
+    --primary-foreground: #ffffff;
+    --secondary: #d2e1f7;
+    --secondary-foreground: #0b1c30;
+    --muted: #e5eeff;
+    --muted-foreground: #3f4850;
+    --accent: #0284c7;
+    --accent-foreground: #ffffff;
+    --destructive: #ba1a1a;
+    --destructive-foreground: #ffffff;
+    --border: #bfc7d2;
+    --input: #f8fafc;
+    --ring: #0284c7;
+    --radius: 0.5rem;
+
+    /* Effects */
+    --shadow-card: 0 4px 20px 0 rgba(2, 132, 199, 0.08), 0 0 0 1px rgba(191, 199, 210, 0.4);
+    --shadow-card-lift: 0 12px 36px 0 rgba(2, 132, 199, 0.14), 0 0 20px rgba(125, 211, 252, 0.3);
+
+    --gradient-felt: radial-gradient(circle at 50% 10%, rgba(125, 211, 252, 0.25) 0%, transparent 60%),
+                       radial-gradient(ellipse at top, #eff4ff 0%, #f8f9ff 75%);
+    --noise-filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.02 0 0 0 0 0.52 0 0 0 0 0.78 0 0 0 0.03 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
 .legacy-dark,
 [data-theme="legacy-dark"] {
     /* Surfaces — Classic Green (Dark) */

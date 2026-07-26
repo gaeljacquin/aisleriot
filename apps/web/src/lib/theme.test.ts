@@ -39,6 +39,7 @@ describe('Theme management', () => {
       'light',
       'dark',
       'glacier-dark',
+      'glacier-light',
       'legacy-light',
       'legacy-dark',
     )
@@ -46,10 +47,14 @@ describe('Theme management', () => {
     document.documentElement.style.colorScheme = ''
   })
 
-  it('defines Glacier Dark as the first theme and labels it properly', () => {
+  it('defines Glacier themes and legacy themes with proper labels', () => {
     expect(THEMES['glacier-dark']).toEqual({
       label: 'Glacier Dark',
       type: 'dark',
+    })
+    expect(THEMES['glacier-light']).toEqual({
+      label: 'Glacier Light',
+      type: 'light',
     })
     expect(THEMES['legacy-light']).toEqual({
       label: 'Legacy Light',
@@ -74,6 +79,9 @@ describe('Theme management', () => {
 
     localStorage.setItem('theme', 'glacier-dark')
     expect(getStoredMode()).toBe('glacier-dark')
+
+    localStorage.setItem('theme', 'glacier-light')
+    expect(getStoredMode()).toBe('glacier-light')
   })
 
   it('migrates legacy light and dark values correctly', () => {
@@ -89,39 +97,40 @@ describe('Theme management', () => {
     expect(getStoredMode()).toBe('glacier-dark')
   })
 
-  it('applies glacier-dark mode to documentElement correctly', () => {
-    applyThemeMode('glacier-dark')
+  it('applies glacier-light mode to documentElement correctly', () => {
+    applyThemeMode('glacier-light')
 
-    expect(document.documentElement.classList.contains('dark')).toBe(true)
-    expect(document.documentElement.classList.contains('glacier-dark')).toBe(
+    expect(document.documentElement.classList.contains('light')).toBe(true)
+    expect(document.documentElement.classList.contains('glacier-light')).toBe(
       true,
     )
     expect(document.documentElement.getAttribute('data-theme')).toBe(
-      'glacier-dark',
+      'glacier-light',
     )
-    expect(document.documentElement.style.colorScheme).toBe('dark')
+    expect(document.documentElement.style.colorScheme).toBe('light')
   })
 
   it('switches between themes cleanly', () => {
     applyThemeMode('glacier-dark')
-    applyThemeMode('legacy-light')
+    applyThemeMode('glacier-light')
 
     expect(document.documentElement.classList.contains('glacier-dark')).toBe(
       false,
     )
     expect(document.documentElement.classList.contains('dark')).toBe(false)
     expect(document.documentElement.classList.contains('light')).toBe(true)
-    expect(document.documentElement.classList.contains('legacy-light')).toBe(
+    expect(document.documentElement.classList.contains('glacier-light')).toBe(
       true,
     )
     expect(document.documentElement.getAttribute('data-theme')).toBe(
-      'legacy-light',
+      'glacier-light',
     )
     expect(document.documentElement.style.colorScheme).toBe('light')
   })
 
   it('returns correct theme type for each theme mode', () => {
     expect(getThemeType('glacier-dark')).toBe('dark')
+    expect(getThemeType('glacier-light')).toBe('light')
     expect(getThemeType('legacy-dark')).toBe('dark')
     expect(getThemeType('legacy-light')).toBe('light')
   })
