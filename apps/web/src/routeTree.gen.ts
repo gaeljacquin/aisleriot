@@ -9,97 +9,27 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TriPeaksAltRouteImport } from './routes/tri-peaks-alt'
-import { Route as TriPeaksRouteImport } from './routes/tri-peaks'
-import { Route as SimpleSimonRouteImport } from './routes/simple-simon'
-import { Route as SettingsRouteImport } from './routes/settings'
-import { Route as PyramidAltRouteImport } from './routes/pyramid-alt'
-import { Route as PyramidRouteImport } from './routes/pyramid'
-import { Route as NewGameRouteImport } from './routes/new-game'
-import { Route as KlondikeDraw3RouteImport } from './routes/klondike-draw-3'
-import { Route as KlondikeDraw1RouteImport } from './routes/klondike-draw-1'
-import { Route as GrandfathersClockRouteImport } from './routes/grandfathers-clock'
-import { Route as GolfRouteImport } from './routes/golf'
-import { Route as FreecellRouteImport } from './routes/freecell'
-import { Route as CreditsRouteImport } from './routes/credits'
-import { Route as BonusContentRouteImport } from './routes/bonus-content'
-import { Route as AgnesBernauerRouteImport } from './routes/agnes-bernauer'
-import { Route as AcmeRouteImport } from './routes/acme'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AcmeRouteImport } from './routes/acme'
+import { Route as AgnesBernauerRouteImport } from './routes/agnes-bernauer'
+import { Route as BonusContentRouteImport } from './routes/bonus-content'
+import { Route as CreditsRouteImport } from './routes/credits'
+import { Route as FreecellRouteImport } from './routes/freecell'
+import { Route as GolfRouteImport } from './routes/golf'
+import { Route as GrandfathersClockRouteImport } from './routes/grandfathers-clock'
+import { Route as KlondikeDraw1RouteImport } from './routes/klondike-draw-1'
+import { Route as KlondikeDraw3RouteImport } from './routes/klondike-draw-3'
+import { Route as NewGameRouteImport } from './routes/new-game'
+import { Route as PyramidRouteImport } from './routes/pyramid'
+import { Route as PyramidAltRouteImport } from './routes/pyramid-alt'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as SimpleSimonRouteImport } from './routes/simple-simon'
+import { Route as TriPeaksRouteImport } from './routes/tri-peaks'
+import { Route as TriPeaksAltRouteImport } from './routes/tri-peaks-alt'
 
-const TriPeaksAltRoute = TriPeaksAltRouteImport.update({
-  id: '/tri-peaks-alt',
-  path: '/tri-peaks-alt',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TriPeaksRoute = TriPeaksRouteImport.update({
-  id: '/tri-peaks',
-  path: '/tri-peaks',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SimpleSimonRoute = SimpleSimonRouteImport.update({
-  id: '/simple-simon',
-  path: '/simple-simon',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SettingsRoute = SettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PyramidAltRoute = PyramidAltRouteImport.update({
-  id: '/pyramid-alt',
-  path: '/pyramid-alt',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PyramidRoute = PyramidRouteImport.update({
-  id: '/pyramid',
-  path: '/pyramid',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NewGameRoute = NewGameRouteImport.update({
-  id: '/new-game',
-  path: '/new-game',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const KlondikeDraw3Route = KlondikeDraw3RouteImport.update({
-  id: '/klondike-draw-3',
-  path: '/klondike-draw-3',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const KlondikeDraw1Route = KlondikeDraw1RouteImport.update({
-  id: '/klondike-draw-1',
-  path: '/klondike-draw-1',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GrandfathersClockRoute = GrandfathersClockRouteImport.update({
-  id: '/grandfathers-clock',
-  path: '/grandfathers-clock',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GolfRoute = GolfRouteImport.update({
-  id: '/golf',
-  path: '/golf',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FreecellRoute = FreecellRouteImport.update({
-  id: '/freecell',
-  path: '/freecell',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CreditsRoute = CreditsRouteImport.update({
-  id: '/credits',
-  path: '/credits',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BonusContentRoute = BonusContentRouteImport.update({
-  id: '/bonus-content',
-  path: '/bonus-content',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AgnesBernauerRoute = AgnesBernauerRouteImport.update({
-  id: '/agnes-bernauer',
-  path: '/agnes-bernauer',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AcmeRoute = AcmeRouteImport.update({
@@ -107,9 +37,79 @@ const AcmeRoute = AcmeRouteImport.update({
   path: '/acme',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AgnesBernauerRoute = AgnesBernauerRouteImport.update({
+  id: '/agnes-bernauer',
+  path: '/agnes-bernauer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BonusContentRoute = BonusContentRouteImport.update({
+  id: '/bonus-content',
+  path: '/bonus-content',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CreditsRoute = CreditsRouteImport.update({
+  id: '/credits',
+  path: '/credits',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FreecellRoute = FreecellRouteImport.update({
+  id: '/freecell',
+  path: '/freecell',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GolfRoute = GolfRouteImport.update({
+  id: '/golf',
+  path: '/golf',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GrandfathersClockRoute = GrandfathersClockRouteImport.update({
+  id: '/grandfathers-clock',
+  path: '/grandfathers-clock',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KlondikeDraw1Route = KlondikeDraw1RouteImport.update({
+  id: '/klondike-draw-1',
+  path: '/klondike-draw-1',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KlondikeDraw3Route = KlondikeDraw3RouteImport.update({
+  id: '/klondike-draw-3',
+  path: '/klondike-draw-3',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewGameRoute = NewGameRouteImport.update({
+  id: '/new-game',
+  path: '/new-game',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PyramidRoute = PyramidRouteImport.update({
+  id: '/pyramid',
+  path: '/pyramid',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PyramidAltRoute = PyramidAltRouteImport.update({
+  id: '/pyramid-alt',
+  path: '/pyramid-alt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SimpleSimonRoute = SimpleSimonRouteImport.update({
+  id: '/simple-simon',
+  path: '/simple-simon',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TriPeaksRoute = TriPeaksRouteImport.update({
+  id: '/tri-peaks',
+  path: '/tri-peaks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TriPeaksAltRoute = TriPeaksAltRouteImport.update({
+  id: '/tri-peaks-alt',
+  path: '/tri-peaks-alt',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -253,109 +253,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/tri-peaks-alt': {
-      id: '/tri-peaks-alt'
-      path: '/tri-peaks-alt'
-      fullPath: '/tri-peaks-alt'
-      preLoaderRoute: typeof TriPeaksAltRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tri-peaks': {
-      id: '/tri-peaks'
-      path: '/tri-peaks'
-      fullPath: '/tri-peaks'
-      preLoaderRoute: typeof TriPeaksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/simple-simon': {
-      id: '/simple-simon'
-      path: '/simple-simon'
-      fullPath: '/simple-simon'
-      preLoaderRoute: typeof SimpleSimonRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/settings': {
-      id: '/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof SettingsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pyramid-alt': {
-      id: '/pyramid-alt'
-      path: '/pyramid-alt'
-      fullPath: '/pyramid-alt'
-      preLoaderRoute: typeof PyramidAltRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pyramid': {
-      id: '/pyramid'
-      path: '/pyramid'
-      fullPath: '/pyramid'
-      preLoaderRoute: typeof PyramidRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/new-game': {
-      id: '/new-game'
-      path: '/new-game'
-      fullPath: '/new-game'
-      preLoaderRoute: typeof NewGameRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/klondike-draw-3': {
-      id: '/klondike-draw-3'
-      path: '/klondike-draw-3'
-      fullPath: '/klondike-draw-3'
-      preLoaderRoute: typeof KlondikeDraw3RouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/klondike-draw-1': {
-      id: '/klondike-draw-1'
-      path: '/klondike-draw-1'
-      fullPath: '/klondike-draw-1'
-      preLoaderRoute: typeof KlondikeDraw1RouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/grandfathers-clock': {
-      id: '/grandfathers-clock'
-      path: '/grandfathers-clock'
-      fullPath: '/grandfathers-clock'
-      preLoaderRoute: typeof GrandfathersClockRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/golf': {
-      id: '/golf'
-      path: '/golf'
-      fullPath: '/golf'
-      preLoaderRoute: typeof GolfRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/freecell': {
-      id: '/freecell'
-      path: '/freecell'
-      fullPath: '/freecell'
-      preLoaderRoute: typeof FreecellRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/credits': {
-      id: '/credits'
-      path: '/credits'
-      fullPath: '/credits'
-      preLoaderRoute: typeof CreditsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/bonus-content': {
-      id: '/bonus-content'
-      path: '/bonus-content'
-      fullPath: '/bonus-content'
-      preLoaderRoute: typeof BonusContentRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/agnes-bernauer': {
-      id: '/agnes-bernauer'
-      path: '/agnes-bernauer'
-      fullPath: '/agnes-bernauer'
-      preLoaderRoute: typeof AgnesBernauerRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/acme': {
@@ -365,11 +267,109 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AcmeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/agnes-bernauer': {
+      id: '/agnes-bernauer'
+      path: '/agnes-bernauer'
+      fullPath: '/agnes-bernauer'
+      preLoaderRoute: typeof AgnesBernauerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bonus-content': {
+      id: '/bonus-content'
+      path: '/bonus-content'
+      fullPath: '/bonus-content'
+      preLoaderRoute: typeof BonusContentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/credits': {
+      id: '/credits'
+      path: '/credits'
+      fullPath: '/credits'
+      preLoaderRoute: typeof CreditsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/freecell': {
+      id: '/freecell'
+      path: '/freecell'
+      fullPath: '/freecell'
+      preLoaderRoute: typeof FreecellRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/golf': {
+      id: '/golf'
+      path: '/golf'
+      fullPath: '/golf'
+      preLoaderRoute: typeof GolfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/grandfathers-clock': {
+      id: '/grandfathers-clock'
+      path: '/grandfathers-clock'
+      fullPath: '/grandfathers-clock'
+      preLoaderRoute: typeof GrandfathersClockRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/klondike-draw-1': {
+      id: '/klondike-draw-1'
+      path: '/klondike-draw-1'
+      fullPath: '/klondike-draw-1'
+      preLoaderRoute: typeof KlondikeDraw1RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/klondike-draw-3': {
+      id: '/klondike-draw-3'
+      path: '/klondike-draw-3'
+      fullPath: '/klondike-draw-3'
+      preLoaderRoute: typeof KlondikeDraw3RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/new-game': {
+      id: '/new-game'
+      path: '/new-game'
+      fullPath: '/new-game'
+      preLoaderRoute: typeof NewGameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pyramid': {
+      id: '/pyramid'
+      path: '/pyramid'
+      fullPath: '/pyramid'
+      preLoaderRoute: typeof PyramidRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pyramid-alt': {
+      id: '/pyramid-alt'
+      path: '/pyramid-alt'
+      fullPath: '/pyramid-alt'
+      preLoaderRoute: typeof PyramidAltRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/simple-simon': {
+      id: '/simple-simon'
+      path: '/simple-simon'
+      fullPath: '/simple-simon'
+      preLoaderRoute: typeof SimpleSimonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tri-peaks': {
+      id: '/tri-peaks'
+      path: '/tri-peaks'
+      fullPath: '/tri-peaks'
+      preLoaderRoute: typeof TriPeaksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tri-peaks-alt': {
+      id: '/tri-peaks-alt'
+      path: '/tri-peaks-alt'
+      fullPath: '/tri-peaks-alt'
+      preLoaderRoute: typeof TriPeaksAltRouteImport
       parentRoute: typeof rootRouteImport
     }
   }

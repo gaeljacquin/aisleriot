@@ -1,7 +1,6 @@
 import { URL, fileURLToPath } from 'node:url'
 import { defineConfig, loadEnv } from 'vite'
 import { devtools } from '@tanstack/devtools-vite'
-import tsconfigPaths from 'vite-tsconfig-paths'
 
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import { VitePWA } from 'vite-plugin-pwa'
@@ -15,7 +14,6 @@ const config = defineConfig(({ mode }) => {
   return {
     plugins: [
       devtools(),
-      tsconfigPaths({ projects: ['./tsconfig.json'] }),
       tailwindcss(),
       tanstackRouter({ target: 'react', autoCodeSplitting: true }),
       viteReact(),
@@ -90,6 +88,7 @@ const config = defineConfig(({ mode }) => {
       ),
     },
     resolve: {
+      tsconfigPaths: true,
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
         react: fileURLToPath(new URL('./node_modules/react', import.meta.url)),
