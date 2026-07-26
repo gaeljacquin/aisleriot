@@ -1,0 +1,5 @@
+export { default as FortuneFavorBoard } from './FortuneFavorBoard'
+export { default as FortuneFavorCard } from './FortuneFavorCard'
+export { default as FortuneFavorFoundation } from './FortuneFavorFoundation'
+export { default as FortuneFavorTableau } from './FortuneFavorTableau'
+export { default as FortuneFavorWaste } from './FortuneFavorWaste'

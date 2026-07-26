@@ -451,6 +451,53 @@ export function MiniBoard({ id }: MiniBoardProps) {
     )
   }
 
+  if (id === 'fortune-favor') {
+    const row1 = deal.tableau.slice(0, 6)
+    const row2 = deal.tableau.slice(6, 12)
+
+    return (
+      <div className="flex w-full flex-col gap-2 py-1 items-center">
+        <div className="flex justify-between items-center w-full px-2">
+          <div className="flex gap-1">
+            <MiniCard faceUp={deal.stock.faceUp} className="h-7 w-5" />
+            <MiniCard {...deal.waste} className="h-7 w-5" />
+          </div>
+          <div className="flex gap-1">
+            {deal.foundations.map((card: any, i: number) => (
+              <div
+                key={i}
+                className="h-7 w-5 rounded-[0.5px] border border-gold/10 bg-white/5"
+              >
+                {card && <MiniCard {...card} className="h-full w-full" />}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-1 w-full items-center">
+          <div className="flex justify-center gap-1 w-full">
+            {row1.map((column: any[], i: number) => (
+              <div key={i} className="flex flex-col">
+                {column.map((card, j) => (
+                  <MiniCard key={j} {...card} className="h-7 w-5" />
+                ))}
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-center gap-1 w-full">
+            {row2.map((column: any[], i: number) => (
+              <div key={i} className="flex flex-col">
+                {column.map((card, j) => (
+                  <MiniCard key={j} {...card} className="h-7 w-5" />
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   // pyramid
   return (
     <div className="flex w-full flex-col items-center">
