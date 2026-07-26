@@ -2,11 +2,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 export type CardStyle =
-  | 'basic'
-  | 'four-color'
-  | 'large'
-  | 'large-four-color'
-  | 'minimal'
+  'basic' | 'four-color' | 'large' | 'large-four-color' | 'minimal'
 export type CardBack = 'slate' | 'crimson' | 'default' | 'kelly' | 'royal'
 
 interface CardSettingsStore {

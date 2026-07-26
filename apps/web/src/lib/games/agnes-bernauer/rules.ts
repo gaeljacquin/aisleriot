@@ -86,9 +86,7 @@ export function isValidTableauSequence(cards: Card[]): boolean {
 export function canMoveToTableau(
   state: AgnesBernauerState,
   fromPile:
-    | AgnesBernauerTableauId
-    | AgnesBernauerFoundationId
-    | AgnesBernauerReserveId,
+    AgnesBernauerTableauId | AgnesBernauerFoundationId | AgnesBernauerReserveId,
   fromIndex: number,
   toPile: AgnesBernauerTableauId,
 ): boolean {
@@ -133,9 +131,7 @@ export function canMoveToTableau(
 export function canMoveToFoundation(
   state: AgnesBernauerState,
   fromPile:
-    | AgnesBernauerTableauId
-    | AgnesBernauerFoundationId
-    | AgnesBernauerReserveId,
+    AgnesBernauerTableauId | AgnesBernauerFoundationId | AgnesBernauerReserveId,
   fromIndex: number,
 ): boolean {
   const card = resolveSourceCard(state, fromPile, fromIndex)
@@ -200,9 +196,7 @@ export function getFoundationTargetId(
 function resolveSourceCard(
   state: AgnesBernauerState,
   fromPile:
-    | AgnesBernauerTableauId
-    | AgnesBernauerFoundationId
-    | AgnesBernauerReserveId,
+    AgnesBernauerTableauId | AgnesBernauerFoundationId | AgnesBernauerReserveId,
   fromIndex: number,
 ): Card | null {
   if (fromPile.startsWith('reserve-')) {

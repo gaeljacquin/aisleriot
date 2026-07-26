@@ -101,8 +101,7 @@ export default function GrandfathersClockBoard({
 
   function handleDragEnd(event: DragEndEvent) {
     const activeData = event.active.data.current as
-      | DraggableCardData
-      | undefined
+      DraggableCardData | undefined
     const overData = event.over?.data.current as DroppableZoneData | undefined
 
     if (activeData?.type === 'card' && overData?.type === 'pile') {

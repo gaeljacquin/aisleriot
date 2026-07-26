@@ -1,4 +1,4 @@
-export type ThemeMode = 'legacy-light' | 'legacy-dark'
+export type ThemeMode = 'glacier-dark' | 'legacy-light' | 'legacy-dark'
 export type ThemeType = 'light' | 'dark'
 
 export interface ThemeMetadata {
@@ -7,28 +7,41 @@ export interface ThemeMetadata {
 }
 
 export const THEMES: Record<ThemeMode, ThemeMetadata> = {
+  'glacier-dark': { label: 'Glacier Dark', type: 'dark' },
   'legacy-light': { label: 'Legacy Light', type: 'light' },
   'legacy-dark': { label: 'Legacy Dark', type: 'dark' },
 }
 
 export function getThemeType(mode: ThemeMode): ThemeType {
-  return THEMES[mode].type || 'dark'
+  return THEMES[mode]?.type || 'dark'
 }
 
 export function getStoredMode(): ThemeMode {
-  if (typeof window === 'undefined') return 'legacy-dark'
+  if (typeof window === 'undefined') return 'glacier-dark'
   const stored = localStorage.getItem('theme')
-  if (stored === 'legacy-light' || stored === 'legacy-dark') return stored
+  if (
+    stored === 'glacier-dark' ||
+    stored === 'legacy-light' ||
+    stored === 'legacy-dark'
+  ) {
+    return stored
+  }
   // Migration/Fallback for older values
   if (stored === 'light') return 'legacy-light'
   if (stored === 'dark') return 'legacy-dark'
-  return 'legacy-dark'
+  return 'glacier-dark'
 }
 
 export function applyThemeMode(mode: ThemeMode) {
   const type = getThemeType(mode)
-  document.documentElement.classList.remove('light', 'dark')
-  document.documentElement.classList.add(type)
-  document.documentElement.setAttribute('data-theme', type)
+  document.documentElement.classList.remove(
+    'light',
+    'dark',
+    'glacier-dark',
+    'legacy-light',
+    'legacy-dark',
+  )
+  document.documentElement.classList.add(type, mode)
+  document.documentElement.setAttribute('data-theme', mode)
   document.documentElement.style.colorScheme = type
 }

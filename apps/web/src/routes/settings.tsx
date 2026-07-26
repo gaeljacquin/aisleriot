@@ -39,7 +39,7 @@ function ThemeToggleGroup() {
     <div
       role="group"
       aria-label={THEMING_TEXT}
-      className="grid grid-cols-2 gap-3 sm:grid-cols-4"
+      className="grid grid-cols-2 gap-3 sm:grid-cols-3"
     >
       {themeOptions.map(({ value, label }) => (
         <button
