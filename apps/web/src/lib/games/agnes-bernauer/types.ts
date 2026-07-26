@@ -10,10 +10,7 @@ export type AgnesBernauerTableauId =
   | 'tableau-6'
 
 export type AgnesBernauerFoundationId =
-  | 'foundation-0'
-  | 'foundation-1'
-  | 'foundation-2'
-  | 'foundation-3'
+  'foundation-0' | 'foundation-1' | 'foundation-2' | 'foundation-3'
 
 export type AgnesBernauerReserveId =
   | 'reserve-0'
@@ -46,9 +43,7 @@ export interface AgnesBernauerState {
 
 export interface AgnesBernauerMove {
   fromPile:
-    | AgnesBernauerTableauId
-    | AgnesBernauerFoundationId
-    | AgnesBernauerReserveId
+    AgnesBernauerTableauId | AgnesBernauerFoundationId | AgnesBernauerReserveId
   fromIndex: number
   toPile: AgnesBernauerTableauId | AgnesBernauerFoundationId
 }
@@ -57,9 +52,7 @@ export interface DraggableCardData {
   type: 'card'
   cards: Card[]
   pileId:
-    | AgnesBernauerTableauId
-    | AgnesBernauerFoundationId
-    | AgnesBernauerReserveId
+    AgnesBernauerTableauId | AgnesBernauerFoundationId | AgnesBernauerReserveId
   fromIndex: number
 }
 

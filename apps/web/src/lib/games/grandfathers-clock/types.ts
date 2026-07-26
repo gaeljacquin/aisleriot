@@ -37,8 +37,7 @@ export const FOUNDATION_IDS = [
 ] as const
 
 export type GrandfathersClockPileId =
-  | (typeof TABLEAU_IDS)[number]
-  | (typeof FOUNDATION_IDS)[number]
+  (typeof TABLEAU_IDS)[number] | (typeof FOUNDATION_IDS)[number]
 
 export type DraggableCardData = {
   type: 'card'
