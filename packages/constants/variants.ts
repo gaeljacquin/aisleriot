@@ -12,24 +12,13 @@ const gameVariantIds = [
   "acme",
   "agnes-bernauer",
   "fortune-favor",
+  "spider",
 ]
 
 export type GameVariantId = (typeof gameVariantIds)[number]
 
 export type Rank =
-  | 'A'
-  | '2'
-  | '3'
-  | '4'
-  | '5'
-  | '6'
-  | '7'
-  | '8'
-  | '9'
-  | '10'
-  | 'J'
-  | 'Q'
-  | 'K'
+  "A" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "J" | "Q" | "K"
 
 export interface GameVariant {
   id: GameVariantId
@@ -61,7 +50,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "When the stock is empty, click the recycling indicator to flip the waste pile back into the stock.",
     ],
     most_popular: true,
-    foundation_base_rank: 'A',
+    foundation_base_rank: "A",
   },
   {
     id: "klondike-draw-3",
@@ -78,7 +67,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "When the stock is empty, click the recycling indicator to flip the waste pile back into the stock. A -100 score penalty applies per recycle.",
     ],
     most_popular: true,
-    foundation_base_rank: 'A',
+    foundation_base_rank: "A",
   },
   {
     id: "pyramid",
@@ -180,7 +169,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "Empty tableau columns can hold any card or sequence.",
     ],
     most_popular: true,
-    foundation_base_rank: 'A',
+    foundation_base_rank: "A",
   },
   {
     id: "grandfathers-clock",
@@ -214,7 +203,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "Nothing can be placed on an Ace.",
     ],
     gael_favorite: true,
-    foundation_base_rank: 'A',
+    foundation_base_rank: "A",
   },
   {
     id: "acme",
@@ -232,7 +221,7 @@ const gameVariantsUnordered: GameVariant[] = [
       "Only one card can be moved at a time.",
       "Turn one card at a time from the stock to the waste. One redeal is permitted.",
     ],
-    foundation_base_rank: 'A',
+    foundation_base_rank: "A",
   },
   {
     id: "fortune-favor",
@@ -249,7 +238,26 @@ const gameVariantsUnordered: GameVariant[] = [
       "Empty spaces in the tableau are automatically filled from the stock or waste.",
       "Turn one card at a time from the stock to the waste. There is no redeal.",
     ],
-    foundation_base_rank: 'A',
+    foundation_base_rank: "A",
+  },
+  {
+    id: "spider",
+    name: "Spider",
+    subtitle: "One Suit",
+    blurb:
+      "Build 8 descending suit sequences from King to Ace on a 10-column tableau.",
+    color: "bg-purple-100 dark:bg-purple-950",
+    rules: [
+      "Two decks of 104 cards, all of the same suit (Spades).",
+      "The tableau has 10 columns: 6 cards in the first 4 columns, 5 cards in the remaining 6. The top card of each column is face up.",
+      "Build down in rank regardless of suit. Cards of the same suit in descending sequence can be moved as a unit.",
+      "Click the stock to deal 1 card face-up to each tableau column. All tableau columns must contain at least 1 card to deal.",
+      "Completed 13-card suit sequences (King to Ace) are automatically removed from the tableau to foundations.",
+      "The game is won when all 8 suit sequences are completed.",
+    ],
+    most_popular: true,
+    gael_favorite: true,
+    foundation_base_rank: "A",
   },
 ]
 

@@ -661,4 +661,58 @@ export const PREVIEW_DEALS: Record<string, any> = {
       [{ suit: 'diamonds', rank: '2', faceUp: true }],
     ],
   },
+  spider: {
+    stock: { faceUp: false },
+    foundations: [
+      { suit: 'spades', rank: 'A', faceUp: true },
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+    ],
+    tableau: [
+      [
+        { suit: 'spades', rank: 'K', faceUp: false },
+        { suit: 'spades', rank: 'Q', faceUp: false },
+        { suit: 'spades', rank: 'J', faceUp: false },
+        { suit: 'spades', rank: '10', faceUp: true },
+      ],
+      [
+        { suit: 'spades', rank: 'Q', faceUp: false },
+        { suit: 'spades', rank: 'J', faceUp: false },
+        { suit: 'spades', rank: '10', faceUp: false },
+        { suit: 'spades', rank: '9', faceUp: true },
+      ],
+      [
+        { suit: 'spades', rank: 'J', faceUp: false },
+        { suit: 'spades', rank: '10', faceUp: false },
+        { suit: 'spades', rank: '9', faceUp: false },
+        { suit: 'spades', rank: '8', faceUp: true },
+      ],
+      [
+        { suit: 'spades', rank: '10', faceUp: false },
+        { suit: 'spades', rank: '9', faceUp: false },
+        { suit: 'spades', rank: '8', faceUp: true },
+      ],
+      [
+        { suit: 'spades', rank: '9', faceUp: false },
+        { suit: 'spades', rank: '8', faceUp: false },
+        { suit: 'spades', rank: '7', faceUp: true },
+      ],
+      [
+        { suit: 'spades', rank: '8', faceUp: false },
+        { suit: 'spades', rank: '7', faceUp: true },
+      ],
+      [
+        { suit: 'spades', rank: '7', faceUp: false },
+        { suit: 'spades', rank: '6', faceUp: true },
+      ],
+      [{ suit: 'spades', rank: '5', faceUp: true }],
+      [{ suit: 'spades', rank: '4', faceUp: true }],
+      [{ suit: 'spades', rank: '3', faceUp: true }],
+    ],
+  },
 }
