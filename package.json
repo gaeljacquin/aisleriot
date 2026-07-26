@@ -30,12 +30,12 @@
     "sync:reset": "mutagen sync reset aisleriot"
   },
   "devDependencies": {
-    "prettier": "^3.8.3",
-    "prettier-plugin-tailwindcss": "^0.8.0",
-    "turbo": "^2.9.17",
-    "typescript": "6.0.3"
+    "prettier": "^3.9.6",
+    "prettier-plugin-tailwindcss": "^0.8.1",
+    "turbo": "^2.10.7",
+    "typescript": "7.0.2"
   },
-  "packageManager": "pnpm@11.3.0",
+  "packageManager": "pnpm@11.17.0",
   "engines": {
     "node": ">=20"
   }
