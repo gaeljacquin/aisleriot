@@ -12,7 +12,6 @@ services:
       - /workspaces/aisleriot/apps/api/node_modules
       - /workspaces/aisleriot/packages/constants/node_modules
       - /workspaces/aisleriot/packages/ui/node_modules
-      - /workspaces/aisleriot/.kilocode/node_modules
       - /workspaces/aisleriot/.pnpm-store
     environment:
       - COREPACK_ENABLE_STRICT=0

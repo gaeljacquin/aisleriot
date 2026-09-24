@@ -17,18 +17,17 @@
         "ms-vscode.remote-tunnels",
         "ms-vscode.remote-explorer",
         "bradlc.vscode-tailwindcss",
-        // "ms-azuretools.vscode-docker",
-        // "kilocode.kilo-code",
         "ms-playwright.playwright",
         "alefragnani.Bookmarks",
         "streetsidesoftware.code-spell-checker",
         "dbaeumer.vscode-eslint",
-        "Google.gemini-cli-companion",
-        "Google.gemini-code-assist",
+        "openai.chatgpt",
         "kisstkondoros.vscode-gutter-preview",
         "IBM.output-colorizer",
         "quicktype.quicktype",
-        "golang.go"
+        "YoavBls.pretty-ts-errors",
+        "ms-vscode.remote-server",
+        "ms-vscode-remote.remote-containers"
       ],
       "settings": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -37,19 +36,18 @@
           "source.fixAll.eslint": "explicit"
         },
         "js/ts.tsdk": "node_modules/typescript/lib",
-        "npm.packageManager": "pnpm"
+        "npm.packageManager": "pnpm",
+        "terminal.integrated.defaultProfile.linux": "zsh"
       }
     }
   },
   "forwardPorts": [3000, 8080],
   "remoteUser": "root",
   "containerEnv": {
-    "PYTHON_KEYRING_BACKEND": "keyrings.alt.file.PlaintextKeyring"
+    "SHELL": "/bin/zsh"
   },
   "mounts": [
-    "source=${localEnv:HOME}/.gemini,target=/root/.gemini,type=bind",
-    // Mount a host directory to persist the container's keyring file
-    "source=${localEnv:HOME}/.gemini/devcontainer-keyring,target=/root/.local/share/python_keyring,type=bind"
+    "source=${localEnv:HOME}/.codex/auth.json,target=/root/.codex/auth.json,type=bind,consistency=cached"
   ],
   "postCreateCommand": "bash .devcontainer/post-create.sh"
 }
